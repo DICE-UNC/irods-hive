@@ -40,7 +40,7 @@ public class FrenchExample {
 		// maui objects
 		MauiModelBuilder modelBuilder = new MauiModelBuilder();
 		MauiTopicExtractor topicExtractor = new MauiTopicExtractor();
-		Wikipedia wikipedia = new Wikipedia("localhost", "enwiki_20090306", "root", null);
+		Wikipedia wikipedia = null; //new Wikipedia("localhost", "enwiki_20090306", "root", null);
 		
 		// Settings for the model builder
 		modelBuilder.inputDirectoryName = trainDir;

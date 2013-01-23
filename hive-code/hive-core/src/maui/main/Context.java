@@ -1,12 +1,16 @@
 package maui.main;
 
 import java.sql.SQLException;
-import java.util.* ;
-import java.text.* ;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Vector;
 
-import org.wikipedia.miner.model.Anchor;
 import org.wikipedia.miner.model.Article;
-import org.wikipedia.miner.util.SortedVector;
+import org.wikipedia.miner.model.Label.Sense;
+
+
 
 public class Context {
 	
@@ -18,11 +22,12 @@ public class Context {
 		contextArticles = new Vector<Article>() ;
 	}
 	
-	public void addSense(Anchor.Sense sense) {
+	public void addSense(Sense sense) {
 		contextArticles.add(sense) ;
 	}
 
 
+	@Override
 	public String toString() {
 		String result = "";
 		for (Article a : contextArticles) {
@@ -34,13 +39,16 @@ public class Context {
 	
 
 	public double getRelatednessTo(Article art) throws SQLException {
-
+		// commented out to get it to compile - mcc
+		throw new UnsupportedOperationException("had to hack this method out to get it to compile - mcc");
+		/*
 		double relatedness = 0 ;
 
 		for (Article contextArt: contextArticles) 
 			relatedness = relatedness + art.getRelatednessTo(contextArt) ;	
 
 		return relatedness / contextArticles.size() ;
+		*/
 	}
 	
 	private boolean isDate(Article art) {

@@ -18,24 +18,11 @@ package maui.main;
  *    along with this program; if not, write to the Free Software
  *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-import gnu.trove.TIntHashSet;
-
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 
-import maui.stemmers.FrenchStemmer;
-import maui.stemmers.PorterStemmer;
-import maui.stemmers.Stemmer;
-import maui.stopwords.Stopwords;
-import maui.stopwords.StopwordsEnglish;
-import maui.stopwords.StopwordsFrench;
-
 import org.wikipedia.miner.model.Wikipedia;
-import org.wikipedia.miner.util.ProgressNotifier;
-import org.wikipedia.miner.util.text.CaseFolder;
-import org.wikipedia.miner.util.text.TextProcessor;
 
 /**
  * Demonstrates how to use Maui for three types of topic indexing  <br>
@@ -74,8 +61,9 @@ public class Examples {
 	public Examples ()  {	}
 
 	private void loadWikipedia() throws Exception {
-
-		wikipedia = new Wikipedia(server, database, "root", null);
+		// took out so it would compile - mcc
+		/*
+		wikipedia =  new Wikipedia(server, database, "root", null);
 
 		TextProcessor textProcessor = new CaseFolder();
 
@@ -93,7 +81,7 @@ public class Examples {
 			wikipedia.getDatabase().cacheInLinks(dataDir, validPageIds,
 					progress);
 			wikipedia.getDatabase().cacheGenerality(dataDir, validPageIds, progress);
-		}
+		} */ 
 	}
 	
 	/**

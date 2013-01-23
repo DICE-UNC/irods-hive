@@ -3,11 +3,9 @@ package maui.main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,7 +20,8 @@ import weka.core.Utils;
 public class PrintGraphs {
 
 	public static void computeRelatedness(Collection<Article> topics) {
-
+		throw new UnsupportedOperationException("took this out for compile bugs...mcc");
+		/*
 		double relatedness = 0;
 		for (Article a : topics) {
 			for (Article c : topics) {
@@ -44,6 +43,7 @@ public class PrintGraphs {
 				}
 			}
 		}
+		*/
 	}
 
 	public static void computeGraph(HashMap<Article, Integer> topics,
@@ -84,6 +84,8 @@ public class PrintGraphs {
 
 				for (Article c : topics.keySet()) {
 					if (!c.equals(a)) {
+						// took out for compile stuff - mcc
+						/*
 						try {
 							relatedness = a.getRelatednessTo(c);
 							String relation = "\"" + a.getTitle() + "\" -- \""
@@ -109,6 +111,7 @@ public class PrintGraphs {
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
+						*/
 					}
 				}
 			}
@@ -128,9 +131,10 @@ public class PrintGraphs {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		// location of the Wikipedia data
-		Wikipedia wikipedia = new Wikipedia("localhost", "enwiki_20090306",
-				"root", null);
+		// location of the Wikipedia data - took out for compile - mcc
+		Wikipedia wikipedia = null;
+		//new Wikipedia("localhost", "enwiki_20090306",
+		//		"root", null);
 
 		// location of the directory with the keyphrase files
 		String inputDir = "/Users/alyona/Documents/PHD/chapters_txt/";

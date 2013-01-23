@@ -1,12 +1,10 @@
 package maui.util;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Vector;
 
-import org.wikipedia.miner.model.Anchor;
-import org.wikipedia.miner.model.Article;
-import org.wikipedia.miner.model.Anchor.Sense;
+import com.aliasi.medline.Article;
+import com.google.gwt.user.client.ui.Anchor;
 
 public class Candidate {
 		
