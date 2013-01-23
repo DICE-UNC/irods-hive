@@ -1,0 +1,17 @@
+*/.groovy
+.classpath
+*/.classpath
+.metadata
+.project
+.settings
+target
+*.log
+*.war
+Servers
+.DS_Store
+nbactions.xml
+idrop-web/web-app/WEB-INF/classes/
+*.jar
+nb-configuration.xml
+**/bin
+/idrop-web/target-eclipse/
