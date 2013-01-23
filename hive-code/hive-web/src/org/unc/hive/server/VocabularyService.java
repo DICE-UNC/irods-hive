@@ -73,13 +73,18 @@ public class VocabularyService {
 	}
 
 	public List<List<String>> getAllVocabularies() {
+		logger.info("getAllVocabularies()");
 		TreeMap<String, SKOSScheme> vocabularyMap = this.skosServer
 				.getSKOSSchemas();
+		logger.info("vocabMap from skosServer}" + vocabularyMap);
 		List<List<String>> vocabularyList = new ArrayList<List<String>>();
 		Set<String> vnames = vocabularyMap.keySet();
 		Iterator<String> it = vnames.iterator();
+		logger.info("getting ready to iterate through vocabularies...");
 		while (it.hasNext()) {
+			logger.info("vocab:" + it);
 			SKOSScheme vocabulary = vocabularyMap.get(it.next());
+			
 			List<String> vocabularyInfo = new ArrayList<String>();
 			vocabularyInfo.add(vocabulary.getName());
 			vocabularyInfo.add(Long.toString(vocabulary
@@ -96,6 +101,7 @@ public class VocabularyService {
 	}
 
 	public List<String> getAllVocabularyNames() {
+		logger.info("getAllVocabularyNames()");
 		TreeMap<String, SKOSScheme> vocabularyMap = this.skosServer
 				.getSKOSSchemas();
 		Set<String> keys = vocabularyMap.keySet();
@@ -104,6 +110,7 @@ public class VocabularyService {
 			names.add(key.toUpperCase());
 		}
 		
+		logger.info("names:" + names);
 		return names;
 
 	}

@@ -108,10 +108,14 @@ public class SKOSTaggerImpl implements SKOSTagger
 				String vocName = it.next();
 				SKOSScheme schema = vocabularies.get(vocName);
 				TaggerFactory.selectTagger(TaggerFactory.MAUITAGGER);
+				try {
 				Tagger tagger = TaggerFactory.getTagger(schema
 						.getKEAtestSetDir(), schema.getMauiModelPath(), schema
 						.getStopwordsPath(), schema);
 				this.taggers.put(vocName, tagger);
+				} catch (Exception e) {
+					logger.warn("error creating maui tagger ignored", e);
+				}
 			}
 		}
 		else if (this.algorithm.equals("dummy")) {

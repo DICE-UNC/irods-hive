@@ -62,10 +62,13 @@ public class SKOSServerImpl implements SKOSServer {
 	private TreeMap<String, SKOSScheme> schemes;
 
 	public SKOSServerImpl(String configFile) {
+		logger.info("SKOSServerImpl constructor");
         List<String> vocabularies = new ArrayList<String>();
 
         String taggerAlgorithm = "dummy";
         String path = "";
+        
+        logger.info("configFile:" + configFile);
         
         Configuration config = null;
         try {
@@ -75,6 +78,7 @@ public class SKOSServerImpl implements SKOSServer {
             if (path.isEmpty()) 
                 path = new File(configFile).getParentFile().getAbsolutePath();            
             vocabularies = config.getList("hive.vocabulary");
+            logger.info("found vocabularies from hive.vocabulary:" + vocabularies);
                             
         } catch (ConfigurationException e) {
             logger.error("Failure initializing SKOS Server", e);
@@ -85,6 +89,7 @@ public class SKOSServerImpl implements SKOSServer {
         try
         {
             for (String voc : vocabularies) {
+            	logger.info("creating SKOSSScheme from vocabulary:" + voc);
                 SKOSScheme schema = new SKOSSchemeImpl(path, voc, false);
                 this.schemes.put(voc, schema);
             }

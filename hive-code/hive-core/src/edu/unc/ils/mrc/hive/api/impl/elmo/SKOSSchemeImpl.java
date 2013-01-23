@@ -178,67 +178,67 @@ public class SKOSSchemeImpl implements SKOSScheme {
 			
 			// Scheme name
 			this.schemeName = properties.getProperty("name");
-			if (schemeName.isEmpty())
+			if (schemeName == null || schemeName.isEmpty())
 				logger.warn("name property is empty");
 
 			// Scheme long name
 			this.longName = properties.getProperty("longName");
-			if (longName.isEmpty())
+			if (longName == null || longName.isEmpty())
 				logger.warn("longName property is empty");
 
 			// Scheme URI
 			this.schemaURI = properties.getProperty("uri");
-			if (schemaURI.isEmpty())
+			if (schemaURI == null || schemaURI.isEmpty())
 				logger.warn("uri property is empty");
 			
 			// 
 			this.rdfFormat = properties.getProperty("rdfFormat", "rdfxml");
-			if (rdfFormat.isEmpty())
+			if (rdfFormat == null || rdfFormat.isEmpty())
 				logger.warn("rdfFormat property is empty");
 			
 			// Lucene index path
 			this.indexDirectory = properties.getProperty("index");
-			if (indexDirectory.isEmpty())
+			if (indexDirectory == null || indexDirectory.isEmpty())
 				logger.warn("index property is empty");			
 				
 			// Sesame store path
 			this.storeDirectory = properties.getProperty("store");
-			if (storeDirectory.isEmpty())
+			if (storeDirectory == null || storeDirectory.isEmpty())
 				logger.warn("store property is empty");
 			
 			// H2 store path
 			this.h2Directory = properties.getProperty("h2");
-			if (h2Directory.isEmpty())
+			if (h2Directory == null || h2Directory.isEmpty())
 				logger.warn("h2 property is empty");
 
 			// KEA+ model path
 			this.KEAModelPath = properties.getProperty("kea_model");
-			if (KEAModelPath.isEmpty())
+			if (KEAModelPath == null || KEAModelPath.isEmpty())
 				logger.warn("kea_model property is empty");
 			
 			// Maui model path
 			this.MauiModelPath = properties.getProperty("maui_model");
-			if (MauiModelPath.isEmpty())
+			if (MauiModelPath == null || MauiModelPath.isEmpty())
 				logger.warn("maui_model property is empty");			
 
 			// KEA+ test set path
 			this.KEAtestSetDir = properties.getProperty("kea_test_set");
-			if (KEAtestSetDir.isEmpty())
+			if (KEAtestSetDir == null || KEAtestSetDir.isEmpty())
 				logger.warn("kea_test_set property is empty");
 
 			// KEA+ training set path
 			this.KEAtrainSetDir = properties.getProperty("kea_training_set");
-			if (KEAtrainSetDir.isEmpty())
+			if (KEAtrainSetDir == null || KEAtrainSetDir.isEmpty())
 				logger.warn("kea_training_set property is empty");
 
 			// KEA+ stopwords path
 			this.stopwordsPath = properties.getProperty("stopwords");
-			if (stopwordsPath.isEmpty())
+			if (stopwordsPath == null || stopwordsPath.isEmpty())
 				logger.warn("stopwords property is empty");
 			
 			// Path to SKOS/RDF file
 			this.rdfPath = properties.getProperty("rdf_file");
-			if (rdfPath.isEmpty())
+			if (rdfPath == null || rdfPath.isEmpty())
 				logger.warn("rdf_file property is empty");			
 
 			// Lingpipe model path
