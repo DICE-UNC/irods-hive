@@ -120,6 +120,7 @@ public class VocabularySesame extends Vocabulary {
 	 * Starts initialization of the vocabulary.
 	 * 
 	 */
+	@Override
 	public void initialize() {
 
 		System.out.println("-- Loading the Index...");
@@ -146,6 +147,7 @@ public class VocabularySesame extends Vocabulary {
 	 * @param newStemmer
 	 *            The new Stemmer value.
 	 */
+	@Override
 	public void setStemmer(Stemmer newStemmer) {
 
 		this.m_Stemmer = newStemmer;
@@ -158,6 +160,7 @@ public class VocabularySesame extends Vocabulary {
 	 * @param newM_Stopwords
 	 *            The new M_Stopwords value.
 	 */
+	@Override
 	public void setStopwords(Stopwords newM_Stopwords) {
 		this.m_Stopwords = newM_Stopwords;
 	}
@@ -165,6 +168,7 @@ public class VocabularySesame extends Vocabulary {
 	/**
 	 * Builds the vocabulary indexes from SKOS file.
 	 */
+	@Override
 	public void buildSKOS() throws Exception {
 
 		System.out.println("-- Building the Vocabulary index from SKOS Sesame Store");
@@ -329,6 +333,7 @@ public class VocabularySesame extends Vocabulary {
 		VocabularyUSE.put(id_non_descriptor, id_descriptor);
 	}
 
+	@Override
 	public String remove(String[] words, int i) {
 
 		String result = "";
@@ -386,6 +391,7 @@ public class VocabularySesame extends Vocabulary {
 	/**
 	 * Builds the vocabulary index with descriptors/non-descriptors relations.
 	 */
+	@Override
 	public void buildUSE() throws Exception {
 		if (!useSkos) {
 			VocabularyUSE = new HashMap();
@@ -419,6 +425,7 @@ public class VocabularySesame extends Vocabulary {
 	/**
 	 * Builds the vocabulary index with semantically related terms.
 	 */
+	@Override
 	public void buildREL() throws Exception {
 		if (!useSkos) {
 
@@ -492,6 +499,7 @@ public class VocabularySesame extends Vocabulary {
 	 * @param phrase
 	 * @return id of the phrase in the vocabulary index
 	 */
+	@Override
 	public String getID(String phrase) {
 		String pseudo = pseudoPhrase(phrase);
 		String id = null;
@@ -510,6 +518,7 @@ public class VocabularySesame extends Vocabulary {
 	 * @param id
 	 * @return original version of the vocabulary term
 	 */
+	@Override
 	public String getOrig(String id) {
 		return (String) VocabularyENrev.get(id);
 	}
@@ -533,6 +542,7 @@ public class VocabularySesame extends Vocabulary {
 	 * @param id
 	 * @return a vector with ids related to the input id
 	 */
+	@Override
 	public Vector getRelated(String id) {
 		return (Vector) VocabularyREL.get(id);
 	}
@@ -545,6 +555,7 @@ public class VocabularySesame extends Vocabulary {
 	 *            , relation
 	 * @return a vector with ids related to the input id by a specified relation
 	 */
+	@Override
 	public Vector getRelated(String id, String relation) {
 		Vector related = new Vector();
 		Vector all_related = (Vector) VocabularyREL.get(id);
@@ -603,6 +614,7 @@ public class VocabularySesame extends Vocabulary {
 	 * of a phrase that only contains non-stopwords, which are stemmed and
 	 * sorted into alphabetical order.
 	 */
+	@Override
 	public String pseudoPhrase(String str) {
 		// System.err.print(str + "\t");
 		String[] pseudophrase;

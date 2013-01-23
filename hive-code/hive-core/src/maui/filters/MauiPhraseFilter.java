@@ -60,6 +60,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 * 
 	 * @return an enumeration of all the available options
 	 */
+	@Override
 	public Enumeration<Option> listOptions() {
 
 		Vector<Option> newVector = new Vector<Option>(3);
@@ -82,6 +83,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 * @return the capabilities of this object
 	 * @see Capabilities
 	 */
+	@Override
 	public Capabilities getCapabilities() {
 		Capabilities result = super.getCapabilities();
 
@@ -119,6 +121,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 * @exception Exception
 	 *                if an option is not supported
 	 */
+	@Override
 	public void setOptions(String[] options) throws Exception {
 
 		String list = Utils.getOption('R', options);
@@ -139,6 +142,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 * 
 	 * @return an array of strings suitable for passing to setOptions
 	 */
+	@Override
 	public String[] getOptions() {
 
 		String[] options = new String[4];
@@ -170,6 +174,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 *            structure is required).
 	 * @return true if the outputFormat may be collected immediately
 	 */
+	@Override
 	public boolean setInputFormat(Instances instanceInfo) throws Exception {
 
 		super.setInputFormat(instanceInfo);
@@ -191,6 +196,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 *                if the input instance was not of the correct format or if
 	 *                there was a problem with the filtering.
 	 */
+	@Override
 	public boolean input(Instance instance) throws Exception {
 
 		if (getInputFormat() == null) {
@@ -219,6 +225,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 * @exception Exception
 	 *                if there was a problem finishing the batch.
 	 */
+	@Override
 	public boolean batchFinished() throws Exception {
 
 		if (getInputFormat() == null) {
@@ -263,7 +270,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 				if (!m_SelectCols.isInRange(i)) {
 					int index = getOutputFormat().attribute(i).addStringValue(
 							instance.stringValue(i));
-					instVals[i] = (double) index;
+					instVals[i] = index;
 					continue;
 				}
 				String text = instance.stringValue(i);
@@ -272,7 +279,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 
 				int index = getOutputFormat().attribute(i).addStringValue(
 						tokenizedText);
-				instVals[i] = (double) index;
+				instVals[i] = index;
 			}
 		}
 		Instance inst = new Instance(instance.weight(), instVals);

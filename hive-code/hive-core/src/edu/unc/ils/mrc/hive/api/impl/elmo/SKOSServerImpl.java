@@ -25,14 +25,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package edu.unc.ils.mrc.hive.api.impl.elmo;
 
-import java.io.BufferedReader;
-
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -112,6 +105,7 @@ public class SKOSServerImpl implements SKOSServer {
 //        this.tagger.setConfig(config);
 	}
 
+	@Override
 	public SKOSTagger getSKOSTagger(String algorithm) { 
 		logger.debug("Using " + algorithm + "  tagger");
 		if (algorithm.toLowerCase().equals("maui"))

@@ -22,7 +22,6 @@ import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -106,6 +105,7 @@ public class ConceptBrowser implements EntryPoint, ValueChangeHandler<String> {
 		this.queryfromhome = History.getToken();
 	}
 
+	@Override
 	public void onModuleLoad() {
         final PopupPanel loadingPopup = new PopupPanel();
         loadingPopup.add(new Label(messages.conceptbrowser_loading()));
@@ -583,6 +583,7 @@ public class ConceptBrowser implements EntryPoint, ValueChangeHandler<String> {
 			configure.setCellHorizontalAlignment(hp, HasHorizontalAlignment.ALIGN_LEFT);
 
 			closeVocabulary.addClickHandler(new ClickHandler() {
+				@Override
 				public void onClick(ClickEvent e) {
 					if (closeVocabulary.isDown()) {
 						closeVocabulary.setDown(false);
@@ -631,6 +632,7 @@ public class ConceptBrowser implements EntryPoint, ValueChangeHandler<String> {
 				hp.setStyleName("selected");
 			}
 			hp.addClickHandler(new ClickHandler() {
+				@Override
 				public void onClick(ClickEvent e) {
 					Iterator<Widget> it = alphabetGrid.iterator();
 					while (it.hasNext()) {
@@ -674,6 +676,7 @@ public class ConceptBrowser implements EntryPoint, ValueChangeHandler<String> {
 		getAndDisplayConcepts(currentViewing.toString(), subAlpha.toString());
 	}
 
+	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
 		// TODO Auto-generated method stub
 
@@ -814,6 +817,7 @@ public class ConceptBrowser implements EntryPoint, ValueChangeHandler<String> {
 			this.SKOSCode = SKOSCode;
 		}
 		
+		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			final DecoratedPopupPanel skosDlg = new DecoratedPopupPanel(false);
@@ -1007,6 +1011,7 @@ public class ConceptBrowser implements EntryPoint, ValueChangeHandler<String> {
 			HTML msg = new HTML(messages.conceptbrowser_areYouSure(associateVoc), true);
 			vp.add(msg);
 			yesBtn.addClickHandler(new ClickHandler() {
+				@Override
 				public void onClick(ClickEvent e) {
 					trigger.setDown(true);
 					toBeDeleted.removeFromParent();
@@ -1027,6 +1032,7 @@ public class ConceptBrowser implements EntryPoint, ValueChangeHandler<String> {
 				}
 			});
 			cancelBtn.addClickHandler(new ClickHandler() {
+				@Override
 				public void onClick(ClickEvent e) {
 					trigger.setDown(false);
 					ConfirmDialog.this.hide();
@@ -1040,10 +1046,12 @@ public class ConceptBrowser implements EntryPoint, ValueChangeHandler<String> {
 			this.add(vp);
 		}
 
+		@Override
 		public void show() {
 			super.show();
 		}
 
+		@Override
 		public void hide() {
 			super.hide();
 		}
@@ -1217,6 +1225,7 @@ public class ConceptBrowser implements EntryPoint, ValueChangeHandler<String> {
 	
 	class OpenNewVocabularyHandler implements ClickHandler
 	{
+		@Override
 		public void onClick(ClickEvent event) {
 			final PopupPanel pop = new PopupPanel(true, false);
 			pop.addStyleName("add-pop");
@@ -1227,6 +1236,7 @@ public class ConceptBrowser implements EntryPoint, ValueChangeHandler<String> {
 					final Hyperlink hp = new Hyperlink(c.toUpperCase(), c.toUpperCase());
 					hp.addClickHandler(new ClickHandler() {
 
+						@Override
 						public void onClick(ClickEvent e) {
 							openedVocabularies.add(c.toLowerCase());
 							currentViewing = c.toUpperCase();
@@ -1258,6 +1268,7 @@ public class ConceptBrowser implements EntryPoint, ValueChangeHandler<String> {
 							});
 
 							closeVocabulary.addClickHandler(new ClickHandler() {
+										@Override
 										public void onClick(ClickEvent e) {
 											if (closeVocabulary.isDown()) {
 												closeVocabulary.setDown(false);

@@ -5,12 +5,12 @@
 
 	<property name="src.dir" value="src" />
 	<property name="web.dir" value="war" />
-	<property name="lib.dir" value="${web.dir}/WEB-INF/lib" />
-	<property name="build.dir" value="${web.dir}/WEB-INF/classes" />
+	<property name="lib.dir" value="lib" />
+	<property name="build.dir" value="classes" />
 	<property name="name" value="hiveweb" />
 
 	<path id="master-classpath">
-		<fileset dir="${web.dir}/WEB-INF/lib">
+		<fileset dir="lib">
 			<include name="*.jar" />
 		</fileset>
 		<!-- We need the servlet API classes: -->

@@ -33,7 +33,6 @@ import com.aliasi.corpus.parsers.MedPostPosParser;
 
 import com.aliasi.hmm.HmmCharLmEstimator;
 
-import com.aliasi.util.Files;
 import com.aliasi.util.Streams;
 
 import java.io.File;

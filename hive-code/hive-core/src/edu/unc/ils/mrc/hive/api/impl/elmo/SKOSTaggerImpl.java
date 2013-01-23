@@ -145,6 +145,7 @@ public class SKOSTaggerImpl implements SKOSTagger
 	 * @param numTerms		Number of terms to be returned
 	 * @return
 	 */
+	@Override
 	public List<SKOSConcept> getTags(URL url, List<String> vocabulary, 
 			SKOSSearcher searcher, int maxHops, int numTerms, boolean diff, int minOccur)
 	{
@@ -174,6 +175,7 @@ public class SKOSTaggerImpl implements SKOSTagger
 	 * @param numTerms		Number of terms to be returned
 	 * @return
 	 */
+	@Override
 	public List<SKOSConcept> getTags(String filePath, List<String> vocabularies, 
 			SKOSSearcher searcher, int numTerms, int minOccur) 
 	{
@@ -395,6 +397,7 @@ public class SKOSTaggerImpl implements SKOSTagger
 		return result;
 	}
 	
+	@Override
 	public void setConfig(Configuration config)
 	{
 		this.config = config;

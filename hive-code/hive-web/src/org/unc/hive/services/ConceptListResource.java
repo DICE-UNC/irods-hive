@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.servlet.ServletContext;
-
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Request;
@@ -17,9 +15,6 @@ import org.restlet.resource.StringRepresentation;
 import org.restlet.resource.Variant;
 import org.unc.hive.server.VocabularyService;
 
-import com.noelios.restlet.ext.servlet.ServletContextAdapter;
-
-import edu.unc.ils.mrc.hive.api.SKOSConcept;
 import edu.unc.ils.mrc.hive.api.SKOSSearcher;
 
 public class ConceptListResource extends Resource {

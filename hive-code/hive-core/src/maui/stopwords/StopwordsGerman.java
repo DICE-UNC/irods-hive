@@ -317,7 +317,8 @@ public class StopwordsGerman extends Stopwords {
   /** 
    * Returns true if the given string is a stop word.
    */
-  public boolean isStopword(String str) {
+  @Override
+public boolean isStopword(String str) {
 
     return m_Stopwords.containsKey(str.toLowerCase());
   }

@@ -649,6 +649,7 @@ public class HiveVocabularyImpl implements HiveVocabulary
 	 * Returns the total number of top concepts in this vocabulary.
 	 * @return
 	 */
+	@Override
 	public long getNumTopConcepts()
 	{
 		long topConcepts = 0;
@@ -719,7 +720,8 @@ public class HiveVocabularyImpl implements HiveVocabulary
 	/**
 	 * 
 	 */
-    public void close() {
+    @Override
+	public void close() {
         try {
             this.manager.close();
             this.factory.close();
@@ -782,11 +784,13 @@ public class HiveVocabularyImpl implements HiveVocabulary
 		return((HiveH2IndexImpl)h2Index).getStats();
 	}
 	
+	@Override
 	public HiveConcept findConceptByName(String name) throws Exception 
 	{
 		return((HiveH2IndexImpl)h2Index).findConceptByName(name);
 	}
 	
+	@Override
 	public Map<String, QName> findAllConcepts(boolean topOnly) {
 	
 		Map<String, QName> concepts = new TreeMap<String, QName>();

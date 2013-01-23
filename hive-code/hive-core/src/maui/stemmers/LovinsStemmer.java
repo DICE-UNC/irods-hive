@@ -363,27 +363,27 @@ public class LovinsStemmer extends Stemmer implements Serializable {
 	String ending = word.substring(length - el);
 	String conditionCode = null;
 	switch (el) {
-	case 11: conditionCode = (String)m_l11.get(ending);
+	case 11: conditionCode = m_l11.get(ending);
 	  break;
-	case 10: conditionCode = (String)m_l10.get(ending);
+	case 10: conditionCode = m_l10.get(ending);
 	  break; 
-	case 9: conditionCode = (String)m_l9.get(ending);
+	case 9: conditionCode = m_l9.get(ending);
 	  break;
-	case 8: conditionCode = (String)m_l8.get(ending);
+	case 8: conditionCode = m_l8.get(ending);
 	  break;   
-	case 7: conditionCode = (String)m_l7.get(ending);
+	case 7: conditionCode = m_l7.get(ending);
 	  break;   
-	case 6: conditionCode = (String)m_l6.get(ending);
+	case 6: conditionCode = m_l6.get(ending);
 	  break;   
-	case 5: conditionCode = (String)m_l5.get(ending);
+	case 5: conditionCode = m_l5.get(ending);
 	  break;   
-	case 4: conditionCode = (String)m_l4.get(ending);
+	case 4: conditionCode = m_l4.get(ending);
 	  break;   
-	case 3: conditionCode = (String)m_l3.get(ending);
+	case 3: conditionCode = m_l3.get(ending);
 	  break;   
-	case 2: conditionCode = (String)m_l2.get(ending);
+	case 2: conditionCode = m_l2.get(ending);
 	  break;   
-	case 1: conditionCode = (String)m_l1.get(ending);
+	case 1: conditionCode = m_l1.get(ending);
 	  break;   
 	default:
 	}
@@ -838,7 +838,8 @@ public class LovinsStemmer extends Stemmer implements Serializable {
    * 
    * @param word a string consisting of a single word
    */
-  public String stem(String word) {
+  @Override
+public String stem(String word) {
 
     if (word.length() > 2) {
       return recodeEnding(removeEnding(word.toLowerCase()));
@@ -859,8 +860,8 @@ public class LovinsStemmer extends Stemmer implements Serializable {
       StringBuffer wordBuffer = new StringBuffer();
       while ((num = System.in.read()) != -1) {
 	char c = (char)num;
-	if (((num >= (int)'A') && (num <= (int)'Z')) ||
-	    ((num >= (int)'a') && (num <= (int)'z'))) {
+	if (((num >= 'A') && (num <= 'Z')) ||
+	    ((num >= 'a') && (num <= 'z'))) {
 	  wordBuffer.append(c);
 	} else {
 	  if (wordBuffer.length() > 0) {

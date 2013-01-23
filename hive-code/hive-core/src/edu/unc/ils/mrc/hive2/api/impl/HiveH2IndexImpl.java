@@ -162,6 +162,7 @@ public class HiveH2IndexImpl implements HiveIndex
 	/**
 	 * Create the H2 database structure
 	 */
+	@Override
 	public void createIndex() throws SQLException 
 	{
 		logger.trace("createIndex()" + h2path);
@@ -339,6 +340,7 @@ public class HiveH2IndexImpl implements HiveIndex
 	/**
 	 * Adds the specified concept to the CONCEPT table
 	 */
+	@Override
 	public void addConcept(HiveConcept concept) throws SQLException 
 	{
 		logger.trace("addConcept: " + concept.getQName());
@@ -387,6 +389,7 @@ public class HiveH2IndexImpl implements HiveIndex
 	/**
 	 * Updates a record in the CONCEPT table
 	 */
+	@Override
 	public void updateConcept(HiveConcept concept) throws SQLException 
 	{
 		logger.trace("updateConcept: " + concept.getQName());
@@ -433,6 +436,7 @@ public class HiveH2IndexImpl implements HiveIndex
 	/**
 	 * Removes a record from the CONCEPT table
 	 */
+	@Override
 	public void removeConcept(QName qname) throws SQLException 
 	{
 		logger.trace("removeConcept: " + qname);
@@ -589,6 +593,7 @@ public class HiveH2IndexImpl implements HiveIndex
 	/**
 	 * Returns the total number of concepts in this vocabulary
 	 */
+	@Override
 	public long getNumConcepts() throws Exception 
 	{
 		logger.trace("getNumConcepts()");

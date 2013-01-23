@@ -30,7 +30,6 @@ import java.io.IOException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.CorruptIndexException;
@@ -76,6 +75,7 @@ public class ConceptIndexer implements Indexer
 	/**
 	 * Index the specified Concept
 	 */
+	@Override
 	public void indexConcept(Concept concept) 
 	{
 		logger.trace("indexConcept " + concept.getQName());
@@ -243,6 +243,7 @@ public class ConceptIndexer implements Indexer
 	/**
 	 * Close the index
 	 */
+	@Override
 	public void close() {
 	    logger.trace("close");
 	    

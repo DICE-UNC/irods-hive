@@ -51,8 +51,8 @@ public class Candidate {
 			this.name = name;
 			this.frequency = 1;
 			
-			this.firstOccurrence = (double)firstOccurrence;	
-			this.lastOccurrence = (double)firstOccurrence;
+			this.firstOccurrence = firstOccurrence;	
+			this.lastOccurrence = firstOccurrence;
 			this.fullForm = fullForm;
 			
 			fullForms = new HashMap<String,Counter>();
@@ -67,8 +67,8 @@ public class Candidate {
 			this.name = name;
 			this.frequency = 1;
 			
-			this.firstOccurrence = (double)firstOccurrence;	
-			this.lastOccurrence = (double)firstOccurrence;
+			this.firstOccurrence = firstOccurrence;	
+			this.lastOccurrence = firstOccurrence;
 			this.fullForm = fullForm;
 			
 			fullForms = new HashMap<String,Counter>();
@@ -195,11 +195,12 @@ public class Candidate {
 		 */
 		public void normalize(int totalFrequency, int documentLength) {
 			termFrequency = frequency/(double)totalFrequency;
-			firstOccurrence = firstOccurrence/(double)documentLength;
-			lastOccurrence = lastOccurrence/(double)documentLength;
+			firstOccurrence = firstOccurrence/documentLength;
+			lastOccurrence = lastOccurrence/documentLength;
 			
 		}
 		
+		@Override
 		public String toString() {
 			return name + " (" + fullForm + "," + title + ")";
 		}

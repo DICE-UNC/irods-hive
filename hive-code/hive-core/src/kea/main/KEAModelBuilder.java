@@ -15,14 +15,8 @@ import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openrdf.elmo.ElmoModule;
 import org.openrdf.elmo.sesame.SesameManager;
-import org.openrdf.elmo.sesame.SesameManagerFactory;
-import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.sail.nativerdf.NativeStore;
-
 import edu.unc.ils.mrc.hive.HiveException;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
 import edu.unc.ils.mrc.hive.api.impl.elmo.SKOSSchemeImpl;
@@ -514,6 +508,7 @@ public class KEAModelBuilder implements OptionHandler {
 	 * @param options the list of options as an array of strings
 	 * @exception Exception if an option is not supported
 	 */
+	@Override
 	public void setOptions(String[] options) throws Exception {
 		
 		String dirName = Utils.getOption('l', options);
@@ -613,6 +608,7 @@ public class KEAModelBuilder implements OptionHandler {
 	 *
 	 * @return an array of strings suitable for passing to setOptions
 	 */
+	@Override
 	public String [] getOptions() {
 		
 		String [] options = new String [26];
@@ -665,6 +661,7 @@ public class KEAModelBuilder implements OptionHandler {
 	 *
 	 * @return an enumeration of all the available options
 	 */
+	@Override
 	public Enumeration listOptions() {
 		
 		Vector newVector = new Vector(14);
@@ -811,7 +808,7 @@ public class KEAModelBuilder implements OptionHandler {
 					txtStr.append((char)c);
 				}
 				is.close();
-				newInst[0] = (double)data.attribute(0).addStringValue(txtStr.toString());
+				newInst[0] = data.attribute(0).addStringValue(txtStr.toString());
 			} catch (Exception e) {
 				if (m_debug) {
 					System.err.println("Can't find document for stem " + str + ".");
@@ -831,7 +828,7 @@ public class KEAModelBuilder implements OptionHandler {
 				while ((c = is.read()) != -1) {
 					keyStr.append((char)c);
 				}      
-				newInst[1] = (double)data.attribute(1).addStringValue(keyStr.toString());
+				newInst[1] = data.attribute(1).addStringValue(keyStr.toString());
 			} catch (Exception e) {
 				if (m_debug) {
 					System.err.println("Can't find keyphrases for stem " + str + ".");

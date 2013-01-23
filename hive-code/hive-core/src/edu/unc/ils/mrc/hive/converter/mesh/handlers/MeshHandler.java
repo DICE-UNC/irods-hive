@@ -20,7 +20,8 @@ public class MeshHandler extends DefaultHandler
 		this.parent = parent;
 	}
 	
-    public void characters(char[] ch, int start, int length) throws SAXException  {
+    @Override
+	public void characters(char[] ch, int start, int length) throws SAXException  {
     	currentValue += new String(ch, start, length);
     }
 }

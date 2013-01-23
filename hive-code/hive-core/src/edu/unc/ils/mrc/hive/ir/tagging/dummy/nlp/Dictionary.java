@@ -25,8 +25,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package edu.unc.ils.mrc.hive.ir.tagging.dummy.nlp;
 
-import java.util.ArrayList;
-
 public class Dictionary {
 	
 	private String[] words;

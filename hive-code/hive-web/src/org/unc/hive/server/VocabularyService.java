@@ -1,6 +1,5 @@
 package org.unc.hive.server;
 
-import java.io.File;
 import java.net.URL;
 
 
@@ -14,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.Map.Entry;
-
 import edu.unc.ils.mrc.hive.api.ConceptNode;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
 import edu.unc.ils.mrc.hive.api.SKOSSearcher;

@@ -29,6 +29,7 @@ public class IndexerServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	// @Override
+	@Override
 	public void init(ServletConfig config) {
 		try {
 			super.init(config);
@@ -51,6 +52,7 @@ public class IndexerServiceImpl extends RemoteServiceServlet implements
      *  
      *   
      */
+	@Override
 	public List<ConceptProxy> getTags(String input, List<String> openedVocabularies, int maxHops, 
 			int numTerms, boolean diff, int minOccur, String algorithm) 
 	{

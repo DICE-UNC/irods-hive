@@ -42,6 +42,7 @@ public class NumbersFilter extends Filter {
 	 * @exception NullPointerException if no input structure has been defined,
 	 * @exception Exception if there was a problem finishing the batch.
 	 */
+	@Override
 	public boolean batchFinished() throws Exception {
 
 		if (getInputFormat() == null) {
@@ -59,6 +60,7 @@ public class NumbersFilter extends Filter {
 	 * ignored - only the structure is required).
 	 * @return true if the outputFormat may be collected immediately 
 	 */
+	@Override
 	public boolean setInputFormat(Instances instanceInfo) throws Exception {
 
 		super.setInputFormat(instanceInfo);
@@ -72,6 +74,7 @@ public class NumbersFilter extends Filter {
 	 * @return            the capabilities of this object
 	 * @see               Capabilities
 	 */
+	@Override
 	public Capabilities getCapabilities() {
 		Capabilities result = super.getCapabilities();
 
@@ -97,6 +100,7 @@ public class NumbersFilter extends Filter {
 	 * @exception Exception if the input instance was not of the correct 
 	 * format or if there was a problem with the filtering.
 	 */
+	@Override
 	public boolean input(Instance instance) throws Exception {
 
 		if (getInputFormat() == null) {
@@ -177,7 +181,7 @@ public class NumbersFilter extends Filter {
 					str = filterNumbers(str);
 				}
 				int index = getOutputFormat().attribute(i).addStringValue(str);
-				instVals[i] = (double) index;
+				instVals[i] = index;
 			}
 		}
 		Instance inst = new Instance(instance.weight(), instVals);

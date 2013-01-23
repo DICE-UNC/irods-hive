@@ -2,23 +2,11 @@ package edu.unc.ils.mrc.hive.util;
 
 import java.io.ByteArrayInputStream;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-
-import java.io.PrintWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -59,6 +47,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
+import org.apache.tika.metadata.TikaMetadataKeys;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
@@ -539,7 +528,7 @@ public class SimpleTextCrawler
 		int slash = path.lastIndexOf('/');
 		String name = path.substring(slash + 1);
 		if (name.length() > 0) {
-			metadata.set(Metadata.RESOURCE_NAME_KEY, name);
+			metadata.set(TikaMetadataKeys.RESOURCE_NAME_KEY, name);
 		}		
 		Parser parser = new AutoDetectParser();
 		ContentHandler handler = new BodyContentHandler(-1);

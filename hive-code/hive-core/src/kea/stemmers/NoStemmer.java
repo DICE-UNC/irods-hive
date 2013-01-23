@@ -12,6 +12,7 @@ public class NoStemmer extends Stemmer {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Override
 	public String stem(String str)  {
 	return str.toLowerCase();
     }

@@ -94,7 +94,8 @@ public class GermanStemmer extends Stemmer
      * @param term  The term that should be stemmed.
      * @return      Discriminator for <tt>term</tt>
      */
-    public String stem( String term )
+    @Override
+	public String stem( String term )
     {
 	// Mark a possible noun.
 	uppercase = Character.isUpperCase( term.charAt( 0 ) );

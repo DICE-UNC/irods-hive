@@ -8,17 +8,12 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import org.openrdf.elmo.sesame.SesameManager;
-
-import kea.stemmers.SpanishStemmerSB;
 import kea.stemmers.SremovalStemmer;
 import kea.stemmers.Stemmer;
 import kea.stopwords.Stopwords;
 import kea.stopwords.StopwordsEnglish;
-import kea.stopwords.StopwordsSpanish;
 import kea.util.Counter;
 import kea.vocab.Vocabulary;
-import kea.vocab.VocabularySesame;
 import weka.core.Attribute;
 import weka.core.Capabilities;
 import weka.core.FastVector;
@@ -599,6 +594,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @exception Exception
 	 *                if an option is not supported
 	 */
+	@Override
 	public void setOptions(String[] options) throws Exception {
 
 		setKFused(Utils.getFlag('K', options));
@@ -641,6 +637,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * 
 	 * @return an array of strings suitable for passing to setOptions
 	 */
+	@Override
 	public String[] getOptions() {
 
 		String[] options = new String[13];
@@ -678,6 +675,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * 
 	 * @return an enumeration of all the available options
 	 */
+	@Override
 	public Enumeration listOptions() {
 
 		Vector newVector = new Vector(7);
@@ -728,6 +726,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 *            structure is required).
 	 * @return true if the outputFormat may be collected immediately
 	 */
+	@Override
 	public boolean setInputFormat(Instances instanceInfo) throws Exception {
 
 		if (instanceInfo.classIndex() >= 0) {
@@ -763,6 +762,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @return the capabilities of this object
 	 * @see Capabilities
 	 */
+	@Override
 	public Capabilities getCapabilities() {
 		Capabilities result = super.getCapabilities();
 
@@ -1090,7 +1090,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 		// Just devide by length to get approximation of probability
 		// that phrase in document is our phrase
 		// newInst[m_TfidfIndex] = (localVal / ((double)length));
-		newInst[m_TfidfIndex] = (localVal / ((double) length))
+		newInst[m_TfidfIndex] = (localVal / (length))
 				* (-Math.log((globalVal + 1) / ((double) m_NumDocs + 1)));
 
 		// Compute first occurrence
@@ -1131,7 +1131,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 				// System.err.println("Appearence " + i + " is at " + a);
 				summ += (a - mean) * (a - mean);
 			}
-			double stdev = Math.sqrt(summ / (double) app.size());
+			double stdev = Math.sqrt(summ / app.size());
 
 			newInst[m_STDEVIndex] = stdev;
 
@@ -1161,7 +1161,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 			// System.out.println("Node feature for " + m_Vocabulary.getOrig(id)
 			// + " = " + intern);
 
-			newInst[m_NodeIndex] = (double) intern;
+			newInst[m_NodeIndex] = intern;
 
 		}
 
@@ -1178,7 +1178,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 				newInst[m_LengthIndex] = 1.0;
 			} else {
 				String[] words = split(original, " ");
-				newInst[m_LengthIndex] = (double) words.length;
+				newInst[m_LengthIndex] = words.length;
 			}
 
 		}
@@ -1460,12 +1460,12 @@ public class KEAFilter extends Filter implements OptionHandler {
 						// Add phrase
 						int index = outputFormatPeek().attribute(pos)
 								.addStringValue(phrase);
-						newInst[pos++] = (double) index;
+						newInst[pos++] = index;
 
 						// Add original version
 						index = outputFormatPeek().attribute(pos)
 								.addStringValue(phrase);
-						newInst[pos++] = (double) index;
+						newInst[pos++] = index;
 
 						// Add TFxIDF
 						newInst[pos++] = Instance.missingValue();
@@ -1675,7 +1675,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 							// String pseudo = pseudoPhrase(orig);
 							id = pseudo;
 						} else {
-							id = (String) vocabulary.getID(orig);
+							id = vocabulary.getID(orig);
 						}
 
 						if (id != null) {
@@ -1776,7 +1776,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 							id = pseudo;
 						} else {
 							// Match against the Vocabulary
-							id = (String) vocabulary.getID(orig);
+							id = vocabulary.getID(orig);
 						}
 						
 						// System.out.println(orig + "\t" + pseudo + " \t " +
@@ -1829,7 +1829,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 								// update its values in the old vector
 
 								// Update number of occurrences
-								((Counter) ((FastVector) vec).elementAt(1))
+								((Counter) vec.elementAt(1))
 										.increment();
 
 								if (m_STDEVfeature) {
@@ -1858,7 +1858,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 			FastVector info = (FastVector) hash.get(phrase);
 
 			// Occurring less than m_MinNumOccur? //m_MinNumOccur
-			if (((Counter) ((FastVector) info).elementAt(1)).value() < m_MinNumOccur) {
+			if (((Counter) info.elementAt(1)).value() < m_MinNumOccur) {
 				phrases.remove();
 				continue;
 			}
@@ -1923,7 +1923,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 				if (m_vocabulary.equals("none")) {
 					id = orig;
 				} else {
-					id = (String) vocabulary.getID(orig);
+					id = vocabulary.getID(orig);
 				}
 				if (id != null) {
 					// System.err.println("\t" + id);

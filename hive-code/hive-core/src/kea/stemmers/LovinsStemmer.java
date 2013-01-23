@@ -838,7 +838,8 @@ public class LovinsStemmer extends Stemmer implements Serializable {
    * 
    * @param word a string consisting of a single word
    */
-  public String stem(String word) {
+  @Override
+public String stem(String word) {
 
     if (word.length() > 2) {
       return recodeEnding(removeEnding(word.toLowerCase()));
@@ -859,8 +860,8 @@ public class LovinsStemmer extends Stemmer implements Serializable {
       StringBuffer wordBuffer = new StringBuffer();
       while ((num = System.in.read()) != -1) {
 	char c = (char)num;
-	if (((num >= (int)'A') && (num <= (int)'Z')) ||
-	    ((num >= (int)'a') && (num <= (int)'z'))) {
+	if (((num >= 'A') && (num <= 'Z')) ||
+	    ((num >= 'a') && (num <= 'z'))) {
 	  wordBuffer.append(c);
 	} else {
 	  if (wordBuffer.length() > 0) {

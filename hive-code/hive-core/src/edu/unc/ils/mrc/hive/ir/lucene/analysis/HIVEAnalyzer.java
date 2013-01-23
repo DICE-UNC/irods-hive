@@ -12,7 +12,8 @@ import org.apache.lucene.analysis.TokenStream;
  */
 public class HIVEAnalyzer extends Analyzer
 {
-   public final TokenStream tokenStream(String fieldName, Reader reader) 
+   @Override
+public final TokenStream tokenStream(String fieldName, Reader reader) 
    {
         return new PorterStemFilter(new LowerCaseTokenizer(reader));
    }

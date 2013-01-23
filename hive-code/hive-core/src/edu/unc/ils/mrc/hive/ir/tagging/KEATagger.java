@@ -167,6 +167,7 @@ public class KEATagger implements Tagger{
 		stopwatch.lap("ExtractKeyPhrasesFromFile - " + vocabulary);
 	}
 	
+	@Override
 	public void extractKeyphrasesFromFile(String baseName) {
 		extractKeyphrasesFromFile(baseName, DEFAULT_NUM_PHRASES, 2);
 	}
@@ -177,6 +178,7 @@ public class KEATagger implements Tagger{
 		return null;
 	}
 	
+	@Override
 	public String getVocabulary() {
 		return this.vocabulary;
 	}

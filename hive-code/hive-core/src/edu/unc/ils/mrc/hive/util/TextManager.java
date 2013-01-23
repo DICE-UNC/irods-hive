@@ -44,6 +44,7 @@ import java.util.List;
 
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
+import org.apache.tika.metadata.TikaMetadataKeys;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
@@ -98,7 +99,7 @@ public class TextManager
 			Metadata metadata = new Metadata();
 			File file = new File(inputPath);
 			if (file.isFile()) {
-				metadata.set(Metadata.RESOURCE_NAME_KEY, file.getName());
+				metadata.set(TikaMetadataKeys.RESOURCE_NAME_KEY, file.getName());
 				is = new FileInputStream(file);
 			} else {
 				URL url = new URL(inputPath);
@@ -106,7 +107,7 @@ public class TextManager
 				int slash = path.lastIndexOf('/');
 				String name = path.substring(slash + 1);
 				if (name.length() > 0) {
-					metadata.set(Metadata.RESOURCE_NAME_KEY, name);
+					metadata.set(TikaMetadataKeys.RESOURCE_NAME_KEY, name);
 				}
 				is = url.openStream();
 			}

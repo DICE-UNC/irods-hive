@@ -125,7 +125,8 @@ public class SKOSImporter implements Importer
     /**
      * Import the SKOS RDF/XML file into the Sesame store
      */
-    public void importThesaurustoDB() throws HiveException
+    @Override
+	public void importThesaurustoDB() throws HiveException
     {
         logger.info("Importing thesaurus " + this.SKOSfile.getPath() + " to Sesame store");
         
@@ -155,7 +156,8 @@ public class SKOSImporter implements Importer
      * Iterates through all concepts in the Sesame DB and adds concepts to Lucene index
      * as well as alphabetic and top-concept maps. 
      */
-    public void importThesaurustoInvertedIndex() {
+    @Override
+	public void importThesaurustoInvertedIndex() {
         logger.info("Creating inverted index for thesaurus " + this.SKOSfile.getPath());
         
         StopWatch stopWatch = new Log4JStopWatch();
@@ -237,7 +239,8 @@ public class SKOSImporter implements Importer
         logger.info("Top concept index created");
     }
 
-    public void close() {
+    @Override
+	public void close() {
         try {
             this.manager.close();
             this.factory.close();

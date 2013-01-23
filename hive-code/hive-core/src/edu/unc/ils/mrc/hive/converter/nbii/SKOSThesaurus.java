@@ -16,22 +16,27 @@ public class SKOSThesaurus implements Thesaurus {
 		this.thesaurus = new HashMap<String, Concept>();
 	}
 
+	@Override
 	public Iterator<Concept> getIterator() {
 		return this.thesaurus.values().iterator();
 	}
 
+	@Override
 	public void addConcept(Concept concept) {
 		this.thesaurus.put(concept.getUri(), concept);
 	}
 
+	@Override
 	public Concept getConcept(String prefLabel) {
 		return this.thesaurus.get(prefLabel);
 	}
 
+	@Override
 	public int getSize() {
 		return this.thesaurus.size();
 	}
 
+	@Override
 	public void printThesaurus(String fileName) {
 
 		try {

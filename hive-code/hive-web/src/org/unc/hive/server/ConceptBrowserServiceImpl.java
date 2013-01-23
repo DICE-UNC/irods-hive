@@ -5,10 +5,7 @@ import org.unc.hive.server.VocabularyService;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeMap;
-import java.lang.Integer;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -33,6 +30,7 @@ public class ConceptBrowserServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	// @Override
+	@Override
 	public void init(ServletConfig config) {
 		try {
 			super.init(config);
@@ -94,6 +92,7 @@ public class ConceptBrowserServiceImpl extends RemoteServiceServlet implements
 		return this.service.getLastUpdateDate(vocabulary);
 	}
 
+	@Override
 	public List<List<String>> getAllVocabularies() {
 		return this.service.getAllVocabularies();
 	}
@@ -109,11 +108,13 @@ public class ConceptBrowserServiceImpl extends RemoteServiceServlet implements
      *   */
    
 	
+	@Override
 	public List<ConceptProxy> getChildConcept(String nameSpaceURI,
 			String localPart) {
 		return this.service.getChildConcept(nameSpaceURI, localPart);
 	}
 
+	@Override
 	public ConceptProxy getConceptByURI(String namespaceURI, String localPart) {
 		return this.service.getConceptByURI(namespaceURI, localPart);
 	}
@@ -124,21 +125,25 @@ public class ConceptBrowserServiceImpl extends RemoteServiceServlet implements
      *   */
    
 	
+	@Override
 	public List<ConceptProxy> searchForConcept(String keywords, List<String> openedVocabularies)
 	{
 		return this.service.searchConcept(keywords, openedVocabularies);
 	}
 	
+	@Override
 	public List<String> getAllVocabulariesName()
 	{
 		return this.service.getAllVocabularyNames();
 	}
 	
+	@Override
 	public List<ConceptProxy> getSubTopConcept(String vocabulary,String letter, boolean brief)
 	{
 		return this.service.getSubTopConcept(vocabulary, letter, brief);
 	}
 	
+	@Override
 	public ConceptProxy getFirstConcept(String vocabulary)
 	{
 		return this.service.getFirstConcept(vocabulary);
@@ -149,6 +154,7 @@ public class ConceptBrowserServiceImpl extends RemoteServiceServlet implements
 		return new String();
 	}/* Retrieve and open a new vocabulary from sever */
 	
+	@Override
 	public HashMap<String, HashMap<String,String>> getVocabularyProperties() {
 		return this.service.getVocabularyProperties();
 	}

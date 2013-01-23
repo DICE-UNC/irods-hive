@@ -51,7 +51,6 @@ import kea.stopwords.StopwordsEnglish;
 import kea.util.Counter;
 import kea.vocab.Vocabulary;
 import kea.vocab.VocabularyH2;
-import kea.vocab.VocabularySesame;
 
 /**
  * Extracts keyphrases from the documents in a given directory. Assumes that the
@@ -497,6 +496,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	 * @exception Exception
 	 *                if an option is not supported
 	 */
+	@Override
 	public void setOptions(String[] options) throws Exception {
 
 		String dirName = Utils.getOption('l', options);
@@ -587,6 +587,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	 * 
 	 * @return an array of strings suitable for passing to setOptions
 	 */
+	@Override
 	public String[] getOptions() {
 
 		String[] options = new String[21];
@@ -634,6 +635,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	 * 
 	 * @return an enumeration of all the available options
 	 */
+	@Override
 	public Enumeration listOptions() {
 
 		Vector newVector = new Vector(13);
@@ -757,7 +759,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 				}
 				is.close();
 
-				newInst[0] = (double) data.attribute(0).addStringValue(
+				newInst[0] = data.attribute(0).addStringValue(
 						txtStr.toString());
 
 			} catch (Exception e) {
@@ -789,7 +791,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 				
 				is.close();
 
-				newInst[1] = (double) data.attribute(1).addStringValue(
+				newInst[1] = data.attribute(1).addStringValue(
 						keyStr.toString());
 			} catch (Exception e) {
 				if (m_debug) {

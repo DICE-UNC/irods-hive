@@ -2,12 +2,6 @@ package org.unc.hive.client;
 
 import java.util.HashMap;
 import java.util.List;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -29,9 +23,11 @@ public class RecordFormatter {
     	conceptBrowserService.getVocabularyProperties(
 				new AsyncCallback<HashMap<String, HashMap<String,String>>>() {
 				
+				@Override
 				public void onFailure(Throwable caught) {
 					Window.alert(caught.getMessage());
 				}
+				@Override
 				public void onSuccess(HashMap<String, HashMap<String,String>> result) {
 				   props = result;
 				}

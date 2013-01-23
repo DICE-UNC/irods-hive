@@ -46,6 +46,7 @@ public class ConceptNode
 		this.altLabels = altLabels;
 	}
 	
+	@Override
 	public String toString() {
 		return toString(this);
 	}

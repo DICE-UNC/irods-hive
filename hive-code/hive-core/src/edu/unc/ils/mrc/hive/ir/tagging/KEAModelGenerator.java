@@ -28,13 +28,11 @@ package edu.unc.ils.mrc.hive.ir.tagging;
 import org.apache.commons.logging.Log;
 
 import org.apache.commons.logging.LogFactory;
-import org.openrdf.repository.RepositoryException;
 import org.perf4j.StopWatch;
 import org.perf4j.log4j.Log4JStopWatch;
 
 import edu.unc.ils.mrc.hive.HiveException;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
-import edu.unc.ils.mrc.hive.api.impl.elmo.SKOSSchemeImpl;
 import kea.main.KEAModelBuilder;
 import kea.stemmers.PorterStemmer;
 import kea.stemmers.Stemmer;

@@ -5,21 +5,18 @@ import java.util.TreeMap;
 //jpb import com.claudiushauptmann.gwt.multipage.client.MultipageEntryPoint;
 import org.gwtmultipage.client.MultipageEntryPoint;
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayInteger;
 import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.LinkElement;
 import com.google.gwt.dom.client.ScriptElement;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.RootPanel;
 
 @MultipageEntryPoint(urlPattern = "/test.html")
 
 public class TestVis implements EntryPoint {
 
-	  public void onModuleLoad() {
+	  @Override
+	public void onModuleLoad() {
 		  
 		  loadTermVisScript();
 		  

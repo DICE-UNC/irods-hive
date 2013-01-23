@@ -1,7 +1,5 @@
 package maui.main;
 
-import java.util.HashSet;
-
 import maui.stemmers.FrenchStemmer;
 import maui.stemmers.Stemmer;
 import maui.stopwords.Stopwords;

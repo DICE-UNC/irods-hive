@@ -24,7 +24,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @author Joan Boone
  */
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -35,7 +34,6 @@ import edu.unc.ils.mrc.hive.api.SKOSScheme;
 import maui.main.MauiTopicExtractor;
 import maui.stemmers.PorterStemmer;
 import maui.stemmers.Stemmer;
-import maui.stopwords.Stopwords;
 import maui.stopwords.StopwordsEnglish;
 
 public class MauiTagger implements Tagger{
@@ -128,6 +126,7 @@ public class MauiTagger implements Tagger{
 		stopwatch.lap("ExtractKeyPhrasesFromFile - " + vocabulary);
 	}
 	
+	@Override
 	public void extractKeyphrasesFromFile(String baseName) {
 		extractKeyphrasesFromFile(baseName, DEFAULT_NUM_PHRASES, 2);
 	}
@@ -138,6 +137,7 @@ public class MauiTagger implements Tagger{
 		return null;
 	}
 	
+	@Override
 	public String getVocabulary() {
 		return this.vocabulary;
 	}

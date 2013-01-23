@@ -87,26 +87,32 @@ public class VocabularyH2 implements Vocabulary
         driver.registerPool(vocabularyName, connectionPool);
 	}
 
+	@Override
 	public void setLanguage(String language) {
 		this.language = language;
 	}
 
+	@Override
 	public void setEncoding(String encoding) {
 		this.encoding = encoding;
 	}
 
+	@Override
 	public void setLowerCase(boolean toLowerCase) {
 		this.toLowerCase = toLowerCase;
 	}
 
+	@Override
 	public void setReorder(boolean reorder) {
 		this.reorder = reorder;
 	}
 
+	@Override
 	public void setStemmer(Stemmer stemmer) {
 		this.stemmer = stemmer;
 	}
 	
+	@Override
 	public void setDebug(boolean debugMode) {
 		this.debugMode = debugMode;
 	}
@@ -116,6 +122,7 @@ public class VocabularyH2 implements Vocabulary
 	 * @throws Exception 
 	 *
 	 */
+	@Override
 	public void initialize() throws Exception {
 
 	}
@@ -124,6 +131,7 @@ public class VocabularyH2 implements Vocabulary
 	 * Set the stopwords class.
 	 * @param stopwords 
 	 */
+	@Override
 	public void setStopwords(Stopwords stopwords) {
 		this.stopwords = stopwords;
 	}
@@ -138,7 +146,8 @@ public class VocabularyH2 implements Vocabulary
 	 * @param phrase
 	 * @return term id
 	 */
-    public String getID(String phrase) 
+    @Override
+	public String getID(String phrase) 
     {
         String id = null;
         if (phrase != null) {
@@ -187,7 +196,8 @@ public class VocabularyH2 implements Vocabulary
         return id;
     }
     
-    public String getIDFromPrefLabel(String prefLabel) 
+    @Override
+	public String getIDFromPrefLabel(String prefLabel) 
     {
         String id = null;
         if (prefLabel != null) {
@@ -323,6 +333,7 @@ public class VocabularyH2 implements Vocabulary
 	 * @param phrase
 	 * @return a vector list of all senses of a given term
 	 */
+	@Override
 	public Vector<String> getSenses(String phrase) 
 	{
 		String normalized = normalizePhrase(phrase);
@@ -427,7 +438,8 @@ public class VocabularyH2 implements Vocabulary
      * @param id - id of some phrase in the vocabulary
      * @return phrase, i.e. the full form listed in the vocabulary
      */
-    public String getTerm(String id) 
+    @Override
+	public String getTerm(String id) 
     {
         String orig = null;
 
@@ -461,7 +473,8 @@ public class VocabularyH2 implements Vocabulary
     }
 
 
-    public Vector<String> getRelated(String id) 
+    @Override
+	public Vector<String> getRelated(String id) 
     {
         
         Vector<String> related = new Vector<String>();
@@ -503,7 +516,8 @@ public class VocabularyH2 implements Vocabulary
      * @param relation - a given semantic relation
      * @return a vector with ids related to the input id by a specified relation
      */
-    public Vector<String> getRelated(String id, String relation) 
+    @Override
+	public Vector<String> getRelated(String id, String relation) 
     {
         Vector<String> related = new Vector<String>();
 

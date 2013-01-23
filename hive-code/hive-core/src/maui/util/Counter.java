@@ -58,6 +58,7 @@ public class Counter implements Serializable {
 	/**
 	 * Returns the value as a string
 	 */
+	@Override
 	public String toString() {
 		return String.valueOf(value);
 	}

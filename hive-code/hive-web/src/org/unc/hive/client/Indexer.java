@@ -25,7 +25,6 @@ import com.google.gwt.user.client.ui.CaptionPanel;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.DisclosureHandler;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.DisclosurePanelImages;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -133,6 +132,7 @@ public class Indexer implements EntryPoint {
 			hp.add(vname);
 			configure.add(hp);
 			closeVocabulary.addClickHandler(new ClickHandler() {
+				@Override
 				public void onClick(ClickEvent e) {
 					if (closeVocabulary.isDown()) {
 						closeVocabulary.setDown(false);
@@ -153,6 +153,7 @@ public class Indexer implements EntryPoint {
 		this.openNewVocabulary = new Button(messages.indexer_selectButton() );
 
 		openNewVocabulary.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				final PopupPanel pop = new PopupPanel(true, false);
 				addVocabularyPanel.clear();
@@ -162,6 +163,7 @@ public class Indexer implements EntryPoint {
 						final Hyperlink hp = new Hyperlink(c, c);
 						hp.addClickHandler(new ClickHandler() {
 
+							@Override
 							public void onClick(ClickEvent e) {
 								openedVocabularies.add(c.toLowerCase());
 								final ToggleButton closeVocabulary = new ToggleButton(
@@ -181,6 +183,7 @@ public class Indexer implements EntryPoint {
 
 								closeVocabulary
 										.addClickHandler(new ClickHandler() {
+											@Override
 											public void onClick(ClickEvent e) {
 												if (closeVocabulary.isDown()) {
 													closeVocabulary
@@ -298,11 +301,13 @@ public class Indexer implements EntryPoint {
 		uploadholder.add(form);
 		uploadholder.add(uploadButton);
 		uploadButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent e) {
 				form.submit();
 			}
 		});
 		form.addSubmitHandler(new FormPanel.SubmitHandler() {
+			@Override
 			public void onSubmit(SubmitEvent event) {
 				// This event is fired just before the form is submitted. We can
 				// take this opportunity to perform validation.
@@ -320,6 +325,7 @@ public class Indexer implements EntryPoint {
 		});
 
 		form.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
+			@Override
 			public void onSubmitComplete(SubmitCompleteEvent event) {
 				String result = event.getResults();
 				if (result.contains("success")) {
@@ -753,6 +759,7 @@ public class Indexer implements EntryPoint {
 			HTML msg = new HTML(messages.indexer_doYouReally(associateVoc), true);
 			vp.add(msg);
 			yesBtn.addClickHandler(new ClickHandler() {
+				@Override
 				public void onClick(ClickEvent e) {
 					trigger.setDown(true);
 					toBeDeleted.removeFromParent();
@@ -762,6 +769,7 @@ public class Indexer implements EntryPoint {
 				}
 			});
 			cancelBtn.addClickHandler(new ClickHandler() {
+				@Override
 				public void onClick(ClickEvent e) {
 					trigger.setDown(false);
 					ConfirmDialog.this.hide();
@@ -775,10 +783,12 @@ public class Indexer implements EntryPoint {
 			this.add(vp);
 		}
 
+		@Override
 		public void show() {
 			super.show();
 		}
 
+		@Override
 		public void hide() {
 			super.hide();
 		}
@@ -839,6 +849,7 @@ public class Indexer implements EntryPoint {
 			this.SKOSCode = SKOSCode;
 		}
 
+		@Override
 		public void onClick(ClickEvent event) {
 			// TODO Auto-generated method stub
 			final DecoratedPopupPanel skosDlg = new DecoratedPopupPanel(false);
@@ -876,6 +887,7 @@ public class Indexer implements EntryPoint {
 			super();
 		}
 
+		@Override
 		public void onClick(ClickEvent event) {
 			if (selectedConcepts.isEmpty()) {
 				Window.alert(messages.indexer_selectConceptMessage());
@@ -908,16 +920,17 @@ public class Indexer implements EntryPoint {
 			formatter.init();
 
 			formatList.addChangeHandler(new ChangeHandler() {
+				@Override
 				public void onChange(ChangeEvent event) {
 					recText = "";
-					recText = formatter.format(selectedConcepts, formatList
+					recText = RecordFormatter.format(selectedConcepts, formatList
 							.getItemText(formatList.getSelectedIndex()));
 					recs.setValue(recText);
 				}
 			});
 
 			// default record format is SKOS RDF/XML
-			recText = formatter.format(selectedConcepts, messages.indexer_formatSkos() );
+			recText = RecordFormatter.format(selectedConcepts, messages.indexer_formatSkos() );
 			recs.setValue(recText);
 
 			PushButton closeButton = new PushButton(new Image(

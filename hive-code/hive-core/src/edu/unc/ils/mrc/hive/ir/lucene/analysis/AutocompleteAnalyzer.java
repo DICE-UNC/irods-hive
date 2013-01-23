@@ -24,6 +24,7 @@ public class AutocompleteAnalyzer extends Analyzer
 	    "they", "this", "to", "was", "will", "with"
 	    };
 
+	@Override
 	public TokenStream tokenStream(String fieldName,
 			Reader reader) 
 	{

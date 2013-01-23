@@ -1,23 +1,13 @@
 package maui.filters;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.lang.Math;
-import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /*
 import org.wikipedia.miner.model.Anchor;
 import org.wikipedia.miner.model.Article;
@@ -43,12 +33,8 @@ import weka.core.Instances;
 import weka.core.Utils;
 import weka.core.Capabilities.Capability;
 import weka.filters.Filter;
-import weka.filters.supervised.attribute.Discretize;
 import weka.classifiers.Classifier;
-import weka.classifiers.bayes.NaiveBayesSimple;
 import weka.classifiers.meta.Bagging;
-import weka.classifiers.meta.FilteredClassifier;
-import weka.classifiers.meta.RegressionByDiscretization;
 
 /**
  * This filter converts the incoming data into data appropriate for keyphrase
@@ -464,6 +450,7 @@ public class MauiFilter extends Filter {
 	 *            structure is required).
 	 * @return true if the outputFormat may be collected immediately
 	 */
+	@Override
 	public boolean setInputFormat(Instances instanceInfo) throws Exception {
 
 		if (instanceInfo.classIndex() >= 0) {
@@ -500,6 +487,7 @@ public class MauiFilter extends Filter {
 	 * @return the capabilities of this object
 	 * @see Capabilities
 	 */
+	@Override
 	public Capabilities getCapabilities() {
 		Capabilities result = super.getCapabilities();
 
@@ -529,6 +517,7 @@ public class MauiFilter extends Filter {
 	 *                if the input instance was not of the correct format or if
 	 *                there was a problem with the filtering.
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public boolean input(Instance instance) throws Exception {
 
@@ -581,6 +570,7 @@ public class MauiFilter extends Filter {
 	 * @exception Exception
 	 *                if no input structure has been defined
 	 */
+	@Override
 	public boolean batchFinished() throws Exception {
 
 		if (getInputFormat() == null) {
@@ -844,7 +834,7 @@ public class MauiFilter extends Filter {
 		String title = candidate.getTitle();
 
 		// Compute TFxIDF
-		Counter counterGlobal = (Counter) globalDictionary.get(name);
+		Counter counterGlobal = globalDictionary.get(name);
 		double globalVal = 0;
 		if (counterGlobal != null) {
 			globalVal = counterGlobal.value();
@@ -898,7 +888,7 @@ public class MauiFilter extends Filter {
 				newInst[lengthIndex] = 1.0;
 			} else {
 				String[] words = original.split(" ");
-				newInst[lengthIndex] = (double) words.length;
+				newInst[lengthIndex] = words.length;
 			}
 		}
 
@@ -935,7 +925,7 @@ public class MauiFilter extends Filter {
 			if (nodeDegree != 0) {
 			//	System.err.println(candidate + " has node degree " + nodeDegree);
 			}
-			newInst[nodeDegreeIndex] = (double) nodeDegree;
+			newInst[nodeDegreeIndex] = nodeDegree;
 		}
 /*
 		Anchor anchor = null;
@@ -1078,7 +1068,7 @@ public class MauiFilter extends Filter {
 			if (nominalClassValue) {
 				newInst[numFeatures] = 1; // Keyphrase
 			} else {
-				double c = (double) ((Counter) hashKeyphrases.get(checkManual))
+				double c = (double) hashKeyphrases.get(checkManual)
 				.value()
 				/ numIndexers;
 				newInst[numFeatures] = c; // Keyphrase

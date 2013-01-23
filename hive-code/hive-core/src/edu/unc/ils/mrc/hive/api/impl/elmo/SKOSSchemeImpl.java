@@ -320,6 +320,7 @@ public class SKOSSchemeImpl implements SKOSScheme {
 		return MauiModelPath;
 	}
 	
+	@Override
 	public String getAtomFeedURL() {
 		return this.atomFeedURL;
 	}

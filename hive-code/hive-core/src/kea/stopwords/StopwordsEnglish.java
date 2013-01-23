@@ -47,6 +47,7 @@ public class StopwordsEnglish extends Stopwords {
 	/**
 	 * Returns true if the given string is a stop word.
 	 */
+	@Override
 	public boolean isStopword(String str) {
 
 		return m_Stopwords.containsKey(str.toLowerCase());

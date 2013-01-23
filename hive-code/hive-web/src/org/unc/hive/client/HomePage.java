@@ -1,8 +1,6 @@
 package org.unc.hive.client;
 
 import java.util.List;
-import java.util.Locale;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -10,7 +8,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -48,6 +45,7 @@ public class HomePage implements EntryPoint {
 	
 	private HIVEMessages messages = (HIVEMessages)GWT.create(HIVEMessages.class);
 
+	@Override
 	public void onModuleLoad() {
 		// TODO Auto-generated method stub
 		vocabularyStatistics = new CaptionPanel(messages.homepage_stats() );

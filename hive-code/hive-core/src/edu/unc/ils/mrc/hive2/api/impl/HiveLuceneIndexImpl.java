@@ -148,10 +148,12 @@ public class HiveLuceneIndexImpl implements HiveIndex
 		}
 	}
 
+	@Override
 	public void startTransaction() {
 		this.inTransaction = true;
 	}
 	
+	@Override
 	public void commit() throws CorruptIndexException, IOException {
 	
 		writer.commit();
@@ -161,6 +163,7 @@ public class HiveLuceneIndexImpl implements HiveIndex
 	/**
 	 * Adds the specified concept to the Lucene index
 	 */
+	@Override
 	public void addConcept(HiveConcept concept) 
 	{
 		logger.debug("addConcept(): " + concept.getQName());

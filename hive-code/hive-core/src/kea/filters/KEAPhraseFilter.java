@@ -68,7 +68,8 @@ public class KEAPhraseFilter extends Filter implements OptionHandler {
    *
    * @return an enumeration of all the available options
    */
-  public Enumeration listOptions() {
+  @Override
+public Enumeration listOptions() {
 
     Vector newVector = new Vector(3);
 
@@ -92,7 +93,8 @@ public class KEAPhraseFilter extends Filter implements OptionHandler {
    * @return            the capabilities of this object
    * @see               Capabilities
    */
-  public Capabilities getCapabilities() {
+  @Override
+public Capabilities getCapabilities() {
     Capabilities result = super.getCapabilities();
 
     // attributes
@@ -124,7 +126,8 @@ public class KEAPhraseFilter extends Filter implements OptionHandler {
    * @param options the list of options as an array of strings
    * @exception Exception if an option is not supported
    */
-  public void setOptions(String[] options) throws Exception {
+  @Override
+public void setOptions(String[] options) throws Exception {
 
     String list = Utils.getOption('R', options);
     if (list.length() != 0) {
@@ -144,7 +147,8 @@ public class KEAPhraseFilter extends Filter implements OptionHandler {
    *
    * @return an array of strings suitable for passing to setOptions
    */
-  public String [] getOptions() {
+  @Override
+public String [] getOptions() {
 
     String [] options = new String [4];
     int current = 0;
@@ -173,7 +177,8 @@ public class KEAPhraseFilter extends Filter implements OptionHandler {
    * ignored - only the structure is required).
    * @return true if the outputFormat may be collected immediately 
    */
-  public boolean setInputFormat(Instances instanceInfo) throws Exception {
+  @Override
+public boolean setInputFormat(Instances instanceInfo) throws Exception {
 
     super.setInputFormat(instanceInfo);
     setOutputFormat(instanceInfo);
@@ -193,7 +198,8 @@ public class KEAPhraseFilter extends Filter implements OptionHandler {
    * @exception Exception if the input instance was not of the correct 
    * format or if there was a problem with the filtering.
    */
-  public boolean input(Instance instance) throws Exception {
+  @Override
+public boolean input(Instance instance) throws Exception {
 
     if (getInputFormat() == null) {
       throw new Exception("No input instance format defined");
@@ -220,7 +226,8 @@ public class KEAPhraseFilter extends Filter implements OptionHandler {
    * @exception NullPointerException if no input structure has been defined,
    * @exception Exception if there was a problem finishing the batch.
    */
-  public boolean batchFinished() throws Exception {
+  @Override
+public boolean batchFinished() throws Exception {
 
     if (getInputFormat() == null) {
       throw new NullPointerException("No input instance format defined");
@@ -263,7 +270,7 @@ public class KEAPhraseFilter extends Filter implements OptionHandler {
 	if (!m_SelectCols.isInRange(i)) {
 	  int index = getOutputFormat().attribute(i).
 	    addStringValue(instance.stringValue(i));
-	  instVals[i] = (double)index;
+	  instVals[i] = index;
 	  continue;
 	}
 	// aly: str = text of the document
@@ -275,7 +282,7 @@ public class KEAPhraseFilter extends Filter implements OptionHandler {
 	// System.out.println(resultStr.toString());
 	int index = getOutputFormat().attribute(i).
 	  addStringValue(tokenized);
-	instVals[i] = (double)index;
+	instVals[i] = index;
       }
     }
     Instance inst = new Instance(instance.weight(), instVals);

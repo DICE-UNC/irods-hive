@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,8 +13,6 @@ import java.util.HashSet;
 import org.wikipedia.miner.model.Article;
 import org.wikipedia.miner.model.Wikipedia;
 import org.wikipedia.miner.util.text.CaseFolder;
-
-import weka.core.Utils;
 
 public class PrintGraphs {
 

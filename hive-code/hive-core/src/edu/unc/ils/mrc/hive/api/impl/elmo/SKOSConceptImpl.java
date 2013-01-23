@@ -64,6 +64,7 @@ public class SKOSConceptImpl implements SKOSConcept {
 		this.scopeNotes = new ArrayList<String>();
 	}
 	
+	@Override
 	public int getNumberOfChildren() {
 		return this.narrowers.size();
 	}
@@ -144,6 +145,7 @@ public class SKOSConceptImpl implements SKOSConcept {
 		this.scopeNotes.add(scopeNote);
 	}
 
+	@Override
 	public String getSKOSFormat()
 	{
 	    logger.trace("getSKOSFormat");
@@ -204,14 +206,17 @@ public class SKOSConceptImpl implements SKOSConcept {
 		return skos.toString();
 	}
 
+	@Override
 	public void setScore(double score) {
 		this.score = score;
 	}
 
+	@Override
 	public double getScore() {
 		return score;
 	}
 	
+	@Override
 	public boolean isLeaf() {
 		return isLeaf;
 	}
@@ -221,10 +226,12 @@ public class SKOSConceptImpl implements SKOSConcept {
 	}
 	
 	
+	@Override
 	public String getTree() {
 		return tree;
 	}
 
+	@Override
 	public void setTree(String tree) {
 		this.tree = tree;
 	}

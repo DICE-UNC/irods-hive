@@ -34,6 +34,7 @@ import java.util.Comparator;
 
 public class ComparadorRanking implements Comparator<Rankeable>{
     
+	@Override
 	public int compare(Rankeable obj1, Rankeable obj2) {
 		Rankeable r1 = obj1;
 		Rankeable r2 = obj2;

@@ -28,10 +28,6 @@ package edu.unc.ils.mrc.hive.ir.tagging;
 import org.apache.log4j.Logger;
 
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
-import edu.unc.ils.mrc.hive.api.impl.elmo.SKOSTaggerImpl;
-import edu.unc.ils.mrc.hive.ir.lucene.search.ConceptMultiSearcher;
-import edu.unc.ils.mrc.hive.ir.lucene.search.Searcher;
-import edu.unc.ils.mrc.hive.ir.lucene.search.SearcherFactory;
 
 public class TaggerFactory {
 	

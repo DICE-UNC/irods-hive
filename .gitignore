@@ -1,17 +1,30 @@
-*/.groovy
-.classpath
-*/.classpath
-.metadata
-.project
-.settings
-target
-*.log
+## generic files to ignore
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+
+#java specific
+*.class
+
+#netbeans ignore personal stuff 
+nbproject/private/
+
+
+## generic files to ignore
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+
+
+
+# Package Files #
+#*.jar - we keep the libs since it's ant
 *.war
-Servers
-.DS_Store
-nbactions.xml
-idrop-web/web-app/WEB-INF/classes/
-*.jar
-nb-configuration.xml
-**/bin
-/idrop-web/target-eclipse/
+*.ear
+
+.project
+.classpath

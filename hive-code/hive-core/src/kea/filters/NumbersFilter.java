@@ -48,7 +48,8 @@ public class NumbersFilter extends Filter {
    * @exception NullPointerException if no input structure has been defined,
    * @exception Exception if there was a problem finishing the batch.
    */
-  public boolean batchFinished() throws Exception {
+  @Override
+public boolean batchFinished() throws Exception {
 
     if (getInputFormat() == null) {
       throw new NullPointerException("No input instance format defined");
@@ -65,7 +66,8 @@ public class NumbersFilter extends Filter {
    * ignored - only the structure is required).
    * @return true if the outputFormat may be collected immediately 
    */
-  public boolean setInputFormat(Instances instanceInfo) throws Exception {
+  @Override
+public boolean setInputFormat(Instances instanceInfo) throws Exception {
 
     super.setInputFormat(instanceInfo);
     setOutputFormat(instanceInfo);
@@ -78,7 +80,8 @@ public class NumbersFilter extends Filter {
    * @return            the capabilities of this object
    * @see               Capabilities
    */
-  public Capabilities getCapabilities() {
+  @Override
+public Capabilities getCapabilities() {
     Capabilities result = super.getCapabilities();
 
     // attributes
@@ -103,7 +106,8 @@ public class NumbersFilter extends Filter {
    * @exception Exception if the input instance was not of the correct 
    * format or if there was a problem with the filtering.
    */
-  public boolean input(Instance instance) throws Exception {
+  @Override
+public boolean input(Instance instance) throws Exception {
 
     if (getInputFormat() == null) {
       throw new Exception("No input instance format defined");
@@ -174,7 +178,7 @@ public class NumbersFilter extends Filter {
 	  }
 	}
 	int index = getOutputFormat().attribute(i).addStringValue(resultStr.toString());
-	instVals[i] = (double)index;
+	instVals[i] = index;
       }
     }
     Instance inst = new Instance(instance.weight(), instVals);

@@ -11,8 +11,6 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.JobKey;
-import org.unc.hive.server.VocabularyService;
-
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
 import edu.unc.ils.mrc.hive.api.impl.elmo.SKOSSchemeImpl;
 import edu.unc.ils.mrc.hive.sync.lcsh.AtomSynchronizer;
@@ -40,7 +38,8 @@ public class SyncJob implements Job {
      * @throws JobExecutionException
      *             if there is an exception while executing the job.
      */
-    @SuppressWarnings("unchecked")
+    @Override
+	@SuppressWarnings("unchecked")
     public void execute(JobExecutionContext context)
         throws JobExecutionException {
     	

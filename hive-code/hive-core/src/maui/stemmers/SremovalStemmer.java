@@ -14,6 +14,7 @@ public class SremovalStemmer extends Stemmer {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Override
 	public String stem(String str)  {
         // check for zero length
 	if (str.length() > 3) {

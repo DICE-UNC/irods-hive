@@ -4,13 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Vector;
 
-import kea.stemmers.SpanishStemmerSB;
 import kea.stemmers.Stemmer;
 import kea.stopwords.Stopwords;
 
@@ -139,6 +135,7 @@ public class VocabularyJena extends Vocabulary {
 	 * Starts initialization of the vocabulary.
 	 *
 	 */
+	@Override
 	public void initialize() {
 		
 		System.err.println("-- Loading the Index...");
@@ -163,6 +160,7 @@ public class VocabularyJena extends Vocabulary {
 	 * Set the Stemmer value.
 	 * @param newStemmer The new Stemmer value.
 	 */
+	@Override
 	public void setStemmer(Stemmer newStemmer) {	
 
 			this.m_Stemmer = newStemmer;
@@ -172,6 +170,7 @@ public class VocabularyJena extends Vocabulary {
 	 * Set the M_Stopwords value.
 	 * @param newM_Stopwords The new M_Stopwords value.
 	 */
+	@Override
 	public void setStopwords(Stopwords newM_Stopwords) {	
 		this.m_Stopwords = newM_Stopwords;
 	}
@@ -180,6 +179,7 @@ public class VocabularyJena extends Vocabulary {
 	/**
 	 * Builds the vocabulary indexes from SKOS file.
 	 */
+	@Override
 	public void buildSKOS() throws Exception {
 		
 		
@@ -314,7 +314,7 @@ public class VocabularyJena extends Vocabulary {
         	    		rt.add(id_related);         	    		
         	    		VocabularyREL.put(id,rt);
         	    	}	else {      	    		
-        	    		Vector rt = (Vector)VocabularyREL.get(id);
+        	    		Vector rt = VocabularyREL.get(id);
         	    		rt.add(id_related);         	    		
         	    	}
         	    	
@@ -357,7 +357,8 @@ public class VocabularyJena extends Vocabulary {
         VocabularyUSE.put(id_non_descriptor,id_descriptor);
     }
    
-    public String remove (String[] words, int i) {
+    @Override
+	public String remove (String[] words, int i) {
 
         String result = "";
         for (int j = 0; j < words.length; j++) {
@@ -414,6 +415,7 @@ public class VocabularyJena extends Vocabulary {
 	/**
 	 * Builds the vocabulary index with descriptors/non-descriptors relations.
 	 */
+	@Override
 	public void buildUSE() throws Exception {
 		if (!useSkos) {
 			VocabularyUSE = new HashMap<String,String>();
@@ -445,6 +447,7 @@ public class VocabularyJena extends Vocabulary {
 	/**
 	 * Builds the vocabulary index with semantically related terms.
 	 */
+	@Override
 	public void buildREL() throws Exception {
 		if (!useSkos) {
 			
@@ -520,13 +523,14 @@ public class VocabularyJena extends Vocabulary {
 	 * @param phrase
 	 * @return id of the phrase in the vocabulary index
 	 */
+	@Override
 	public String getID(String phrase) {
 		String pseudo = pseudoPhrase(phrase);
 		String id = null;
 		if (pseudo != null) {
-			id = (String)VocabularyEN.get(pseudo);
+			id = VocabularyEN.get(pseudo);
 			if (VocabularyUSE.containsKey(id)) {
-				id = (String)VocabularyUSE.get(id);
+				id = VocabularyUSE.get(id);
 			}
 		}
 		return id;
@@ -537,8 +541,9 @@ public class VocabularyJena extends Vocabulary {
 	 * @param id
 	 * @return original version of the vocabulary term
 	 */
+	@Override
 	public String getOrig(String id) {
-		return (String)VocabularyENrev.get(id);
+		return VocabularyENrev.get(id);
 	}
 	
 	/**
@@ -547,7 +552,7 @@ public class VocabularyJena extends Vocabulary {
 	 * @return id of the descriptor
 	 */
 	public String getDescriptor(String id) {
-		return (String)VocabularyUSE.get(id);
+		return VocabularyUSE.get(id);
 	}
 	
 	/**
@@ -555,6 +560,7 @@ public class VocabularyJena extends Vocabulary {
 	 * @param id
 	 * @return a vector with ids related to the input id
 	 */
+	@Override
 	public Vector<String> getRelated(String id) {
 		return VocabularyREL.get(id);
 	}
@@ -567,15 +573,16 @@ public class VocabularyJena extends Vocabulary {
 	 * @param id, relation
 	 * @return a vector with ids related to the input id by a specified relation
 	 */
+	@Override
 	public Vector<String> getRelated (String id, String relation) {
 		Vector<String> related = new Vector<String>(); 
-		Vector<String> all_related = (Vector<String>)VocabularyREL.get(id);
+		Vector<String> all_related = VocabularyREL.get(id);
 		if (all_related != null) {
     	
 			for (int d = 0; d < all_related.size(); d++) {
-				String rel_id = (String)all_related.elementAt(d);	
+				String rel_id = all_related.elementAt(d);	
 			
-				String rel = (String)VocabularyRT.get(id + "-" + rel_id);
+				String rel = VocabularyRT.get(id + "-" + rel_id);
 
 				if (rel != null) { 
 					if (rel.equals(relation)) {

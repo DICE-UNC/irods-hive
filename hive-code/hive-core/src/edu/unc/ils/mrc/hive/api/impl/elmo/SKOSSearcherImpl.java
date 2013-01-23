@@ -38,22 +38,15 @@ import javax.xml.namespace.QName;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openrdf.concepts.skos.core.Concept;
-import org.openrdf.elmo.ElmoModule;
 import org.openrdf.elmo.sesame.SesameManager;
-import org.openrdf.elmo.sesame.SesameManagerFactory;
 import org.openrdf.model.Value;
 import org.openrdf.query.BindingSet;
 import org.openrdf.query.MalformedQueryException;
 import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.query.TupleQuery;
 import org.openrdf.query.TupleQueryResult;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.contextaware.ContextAwareConnection;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.sail.nativerdf.NativeStore;
-
 import edu.unc.ils.mrc.hive.api.SKOSConcept;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
 import edu.unc.ils.mrc.hive.api.SKOSSearcher;
@@ -184,6 +177,7 @@ public class SKOSSearcherImpl implements SKOSSearcher {
 		return null;
 	}
 
+	@Override
 	public TreeMap<String,QName> searchChildrenByURI(String uri, String lp) {
 	    logger.trace("searchChildrenByURI " + uri + "," + lp);
 	    
@@ -226,6 +220,7 @@ public class SKOSSearcherImpl implements SKOSSearcher {
 		return null;
 	}
 	
+	@Override
 	public List<HashMap> SPARQLSelect(String qs, String vocabulary) {
 	    logger.trace("SPARQLSelect " + qs + "," + vocabulary);
 	    
@@ -269,6 +264,7 @@ public class SKOSSearcherImpl implements SKOSSearcher {
 		return null;
 	}
 
+	@Override
 	public void close() {
 	    logger.trace("close");
 	    

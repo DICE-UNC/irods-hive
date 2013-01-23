@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.Vector;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -29,7 +27,6 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import edu.unc.ils.mrc.hive.converter.mesh.handlers.Concept;
-import edu.unc.ils.mrc.hive.converter.mesh.handlers.ConceptRelation;
 import edu.unc.ils.mrc.hive.converter.mesh.handlers.Descriptor;
 import edu.unc.ils.mrc.hive.converter.mesh.handlers.DescriptorHandler;
 import edu.unc.ils.mrc.hive.converter.mesh.handlers.Term;
@@ -116,7 +113,8 @@ public class MeshConverter extends DefaultHandler
 	/**
 	 * Basic element handler for DescriptorRecords
 	 */
-    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
+    @Override
+	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
     {
     	if (qName.equals("DescriptorRecord"))
     	{
@@ -134,7 +132,8 @@ public class MeshConverter extends DefaultHandler
     /**
      * Basic element handler for DescriptorRecords 
      */
-    public void endElement(String uri, String localName, String qName) throws SAXException
+    @Override
+	public void endElement(String uri, String localName, String qName) throws SAXException
     {
     	if (qName.equals("DescriptorRecord"))
     	{	
@@ -199,7 +198,8 @@ public class MeshConverter extends DefaultHandler
     /**
      * Process all of the concepts and generate the SKOS output
      */
-    public void endDocument()
+    @Override
+	public void endDocument()
     {
     	// List of SKOS Concepts 
     	Map<String, MeshConcept> skosConcepts = new HashMap<String, MeshConcept>();

@@ -126,8 +126,8 @@ public class MauiWrapper {
 
 		double[] newInst = new double[3];
 
-		newInst[0] = (double) data.attribute(0).addStringValue("inputFile");
-		newInst[1] = (double) data.attribute(1).addStringValue(text);
+		newInst[0] = data.attribute(0).addStringValue("inputFile");
+		newInst[1] = data.attribute(1).addStringValue(text);
 		newInst[2] = Instance.missingValue();
 		data.add(new Instance(1.0, newInst));
 

@@ -43,7 +43,6 @@ import maui.stemmers.*;
 import maui.stopwords.*;
 import maui.vocab.Vocabulary;
 import maui.vocab.VocabularyH2;
-import maui.vocab.VocabularyJena;
 
 /**
  * Builds a topic indexing model from the documents in a given
@@ -366,6 +365,7 @@ public class MauiModelBuilder implements OptionHandler {
 	 * @param options the list of options as an array of strings
 	 * @exception Exception if an option is not supported
 	 */
+	@Override
 	public void setOptions(String[] options) throws Exception {
 
 		String dirName = Utils.getOption('l', options);
@@ -456,6 +456,7 @@ public class MauiModelBuilder implements OptionHandler {
 	 *
 	 * @return an array of strings suitable for passing to setOptions
 	 */
+	@Override
 	public String[] getOptions() {
 
 		String[] options = new String[23];
@@ -499,6 +500,7 @@ public class MauiModelBuilder implements OptionHandler {
 	 *
 	 * @return an enumeration of all the available options
 	 */
+	@Override
 	public Enumeration<Option> listOptions() {
 
 		Vector<Option> newVector = new Vector<Option>(12);
@@ -644,7 +646,7 @@ public class MauiModelBuilder implements OptionHandler {
 
 			double[] newInst = new double[3];
 
-			newInst[0] = (double) data.attribute(0).addStringValue(fileName);
+			newInst[0] = data.attribute(0).addStringValue(fileName);
 
 			File documentTextFile = new File(inputDirectoryName + "/"
 					+ fileName + ".txt");
@@ -661,7 +663,7 @@ public class MauiModelBuilder implements OptionHandler {
 				}
 	
 				// Adding the text of the document to the instance
-				newInst[1] = (double) data.attribute(1).addStringValue(documentText);
+				newInst[1] = data.attribute(1).addStringValue(documentText);
 
 			} catch (Exception e) {
 
@@ -680,7 +682,7 @@ public class MauiModelBuilder implements OptionHandler {
 				}
 				
 				// Adding the topics to the file
-				newInst[2] = (double) data.attribute(2).addStringValue(documentTopics);
+				newInst[2] = data.attribute(2).addStringValue(documentTopics);
 
 			} catch (Exception e) {
 
@@ -756,7 +758,7 @@ public class MauiModelBuilder implements OptionHandler {
 			System.err.println("\nOptions:\n");
 			Enumeration<Option> en = modelBuilder.listOptions();
 			while (en.hasMoreElements()) {
-				Option option = (Option) en.nextElement();
+				Option option = en.nextElement();
 				System.err.println(option.synopsis());
 				System.err.println(option.description());
 			}
