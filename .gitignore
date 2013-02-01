@@ -4,7 +4,7 @@
 *.DS_Store
 *.swp
 *.out
-
+*.settings
 #java specific
 *.class
 
@@ -19,6 +19,7 @@ nbproject/private/
 *.swp
 *.out
 
+**/target
 
 
 # Package Files #
