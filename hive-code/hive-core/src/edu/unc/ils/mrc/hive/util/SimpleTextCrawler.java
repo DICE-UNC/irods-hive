@@ -498,6 +498,7 @@ public class SimpleTextCrawler
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
+	@SuppressWarnings("deprecation")
 	protected String getTextFromHtml(String html) throws IOException, SAXException, TikaException 
 	{
 		InputStream is = new ByteArrayInputStream(html.getBytes());

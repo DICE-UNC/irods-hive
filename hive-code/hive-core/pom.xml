@@ -2,11 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.irods.jargon</groupId>
-	<artifactId>jargon-hive</artifactId>
+	<artifactId>hive-core</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>jargon-hive</name>
-	<description>Jargon-hive integrates Jargon and iRODS with the HIVE framework</description>
+	<description>HIVE Core libraries updated for use with Jargon and iRODS</description>
 	<url>https://code.renci.org/gf/project/irodshive/</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -15,7 +14,6 @@
 		<elmo.version>1.5</elmo.version>
 		<lucene.version>2.4.1</lucene.version>
 		<sesame.version>2.2.4</sesame.version>
-		<hive.version>1.0-SNAPSHOT</hive.version>
 	</properties>
 	<issueManagement>
 		<system>gForge</system>
@@ -177,11 +175,6 @@
 	</reporting>
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>org.irods.jargon</groupId>
-				<artifactId>hive-core</artifactId>
-				<version>${hive.version}</version>
-			</dependency>
 			<dependency>
 				<groupId>org.irods.jargon</groupId>
 				<artifactId>jargon-core</artifactId>
@@ -469,6 +462,7 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<sourceDirectory>${basedir}/src</sourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -490,6 +484,7 @@
 					<source>1.6</source>
 					<target>1.6</target>
 					<compilerArgument>-Xlint:-unchecked</compilerArgument>
+
 				</configuration>
 			</plugin>
 			<plugin>
@@ -529,4 +524,5 @@
 			</build>
 		</profile>
 	</profiles>
+	<name>hive-core</name>
 </project>
