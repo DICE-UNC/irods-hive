@@ -31,7 +31,7 @@ public class HiveContainerImplTest {
 	public void testInit() throws Exception {
 		HiveConfiguration hiveConfiguration = new HiveConfiguration();
 		hiveConfiguration
-				.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
+				.setHiveConfigLocation("C:/Users/Koushyar/Documents/hive/irodshive/hive-code/hive-web/war/WEB-INF/hive.properties");
 		HiveContainer hiveContainer = new HiveContainerImpl();
 		hiveContainer.setHiveConfiguration(hiveConfiguration);
 		hiveContainer.init();

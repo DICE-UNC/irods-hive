@@ -3,9 +3,16 @@
  */
 package org.irods.jargon.hive.container;
 
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeMap;
+
 import org.irods.jargon.hive.exception.JargonHiveException;
 
+import edu.unc.ils.mrc.hive.api.SKOSScheme;
+import edu.unc.ils.mrc.hive.api.SKOSSearcher;
 import edu.unc.ils.mrc.hive.api.SKOSServer;
+import edu.unc.ils.mrc.hive.api.impl.elmo.SKOSServerImpl;
 
 /**
  * Main container for integrating iRODS and HIVE, contains the core HIVE
@@ -91,7 +98,39 @@ public class HiveContainerImpl implements HiveContainer {
 	}
 
 	private void startupSkosServer() throws JargonHiveException {
+		
+		//logger.debug("starting SKOSServerImpl");
+		// Levanto el servidor de vocabularios
+		SKOSServer server = new SKOSServerImpl(hiveConfiguration.getHiveConfigLocation()); 
+		// Le pido un Searcher
+		
+		//TreeMap<String, SKOSScheme> schemaMap = server.getSKOSSchemas(); //added by Mike
+		//logger.info("schema as tree map:" + schemaMap); //added by Mike
+		
+		SKOSSearcher searcher = server.getSKOSSearcher();
+	    
+		//server.getSKOSSchemas()
+		/**
+		 * Statistics test
+		 */
 
+		TreeMap<String, SKOSScheme> vocabularies = server.getSKOSSchemas();
+		Set<String> keys = vocabularies.keySet();
+		Iterator<String> it = keys.iterator();
+		while (it.hasNext()) {
+			SKOSScheme voc = vocabularies.get(it.next());
+			System.out.println("NAME: " + voc.getName());
+			System.out.println("\t LONG NAME: " + voc.getLongName());
+			System.out.println("\t NUMBER OF CONCEPTS: "
+					+ voc.getNumberOfConcepts());
+			System.out.println("\t NUMBER OF RELATIONS: "
+					+ voc.getNumberOfRelations());
+			System.out.println("\t DATE: " + voc.getLastDate());
+			System.out.println();
+			System.out.println("\t SIZE: " + voc.getSubAlphaIndex("a").size());
+			System.out.println();
+			//System.out.println("\t TOP CONCEPTS: " + voc.getNumberOfTopConcepts());
+		}
 	}
 
 	@Override
