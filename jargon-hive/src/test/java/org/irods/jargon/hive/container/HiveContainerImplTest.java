@@ -1,7 +1,6 @@
 package org.irods.jargon.hive.container;
 
-import static org.junit.Assert.fail;
-
+import org.irods.jargon.hive.service.VocabularyService;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -30,8 +29,9 @@ public class HiveContainerImplTest {
 	@Test
 	public void testInit() throws Exception {
 		HiveConfiguration hiveConfiguration = new HiveConfiguration();
-		//hiveConfiguration.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
-		hiveConfiguration.setHiveConfigLocation("C:/Users/Koushyar/Documents/hive/irodshive/hive-code/hive-web/war/WEB-INF/conf/hive.properties");
+		hiveConfiguration
+				.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
+		// hiveConfiguration.setHiveConfigLocation("C:/Users/Koushyar/Documents/hive/irodshive/hive-code/hive-web/war/WEB-INF/conf/hive.properties");
 		HiveContainer hiveContainer = new HiveContainerImpl();
 		hiveContainer.setHiveConfiguration(hiveConfiguration);
 		hiveContainer.init();
@@ -41,13 +41,17 @@ public class HiveContainerImplTest {
 	}
 
 	@Test
-	public void testShutdown() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetSkosServer() {
-		fail("Not yet implemented");
+	public void testInstanceVocabularyServer() throws Exception {
+		HiveConfiguration hiveConfiguration = new HiveConfiguration();
+		hiveConfiguration
+				.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
+		// hiveConfiguration.setHiveConfigLocation("C:/Users/Koushyar/Documents/hive/irodshive/hive-code/hive-web/war/WEB-INF/conf/hive.properties");
+		HiveContainer hiveContainer = new HiveContainerImpl();
+		hiveContainer.setHiveConfiguration(hiveConfiguration);
+		hiveContainer.init();
+		VocabularyService vocabularyService = hiveContainer
+				.instanceVocabularyService();
+		Assert.assertNotNull("did not get vocab service", vocabularyService);
 	}
 
 }

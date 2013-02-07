@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.irods.jargon.hive.exception.JargonHiveException;
+import org.irods.jargon.hive.service.VocabularyService;
 
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
 import edu.unc.ils.mrc.hive.api.SKOSSearcher;
@@ -47,6 +48,22 @@ public class HiveContainerImpl implements HiveContainer {
 	@Override
 	public HiveConfiguration getHiveConfiguration() {
 		return hiveConfiguration;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.irods.jargon.hive.container.HiveContainer#instanceVocabularyService()
+	 */
+	@Override
+	public VocabularyService instanceVocabularyService()
+			throws JargonHiveException {
+		if (!started) {
+			throw new JargonHiveException(
+					"skosServer not started, please call init()");
+		}
+		return new VocabularyService(this);
 	}
 
 	/*

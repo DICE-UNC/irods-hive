@@ -1,6 +1,7 @@
 package org.irods.jargon.hive.container;
 
 import org.irods.jargon.hive.exception.JargonHiveException;
+import org.irods.jargon.hive.service.VocabularyService;
 
 import edu.unc.ils.mrc.hive.api.SKOSServer;
 
@@ -40,5 +41,13 @@ public interface HiveContainer {
 	SKOSServer getSkosServer();
 
 	public abstract void shutdown();
+
+	/**
+	 * Get an instance of the <code>VocabularyService<code>
+	 * 
+	 * @return
+	 * @throws JargonHiveException
+	 */
+	VocabularyService instanceVocabularyService() throws JargonHiveException;
 
 }
