@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -34,6 +35,8 @@ public class HiveContainerImplTest {
 		HiveContainer hiveContainer = new HiveContainerImpl();
 		hiveContainer.setHiveConfiguration(hiveConfiguration);
 		hiveContainer.init();
+		Assert.assertNotNull("did not start skos server",
+				hiveContainer.getSkosServer());
 
 	}
 
