@@ -25,7 +25,7 @@ public class HiveContainerImpl implements HiveContainer {
 	 * HIVE core service that picks up configured vocabularies and indexers.
 	 * This is started up by this container class using the given config.
 	 */
-	private final SKOSServer skosServer;
+	private final SKOSServer skosServer = null;
 
 	/**
 	 * Configuration properties used to initialize HIVE services

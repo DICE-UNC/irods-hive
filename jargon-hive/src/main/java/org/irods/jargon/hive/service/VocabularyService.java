@@ -17,6 +17,7 @@ import javax.xml.namespace.QName;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.irods.jargon.hive.container.HiveContainer;
+import org.unc.hive.client.ConceptProxy;
 
 import edu.unc.ils.mrc.hive.api.ConceptNode;
 import edu.unc.ils.mrc.hive.api.SKOSConcept;
@@ -126,7 +127,7 @@ public class VocabularyService {
 
 	public List<ConceptProxy> getSubTopConcept(String vocabulary,
 			String letter, boolean brief) {
-		TreeMap<String, SKOSScheme> vocabularies = this.skosServer
+		TreeMap<String, SKOSScheme> vocabularies = this.getSkosServer()
 				.getSKOSSchemas();
 		SKOSScheme targetVoc = vocabularies.get(vocabulary);
 
@@ -229,7 +230,7 @@ public class VocabularyService {
 	}
 
 	public ConceptProxy getConceptByURI(String namespaceURI, String localPart) {
-		SKOSSearcher searcher = this.skosServer.getSKOSSearcher();
+		SKOSSearcher searcher = this.getSkosServer().getSKOSSearcher();
 		SKOSConcept concept = searcher.searchConceptByURI(namespaceURI,
 				localPart);
 		String preLabel = concept.getPrefLabel();
@@ -411,27 +412,6 @@ public class VocabularyService {
 
 	public void close() {
 		this.hiveContainer.shutdown();
-	}
-
-	public static void main(String[] args) {
-		VocabularyService service = VocabularyService
-				.getInstance("war/WEB-INF/conf/hive.properties");
-		System.out.println("Number of Concepts: "
-				+ service.getNumberOfConcept("mesh"));
-		TreeMap<String, SKOSScheme> voc = service.skosServer.getSKOSSchemas();
-		Set<String> set = voc.keySet();
-		for (String s : set) {
-			System.out.println("KEY: " + s);
-			SKOSScheme sc = voc.get(s);
-			System.out.println("NAME: " + sc.getName());
-			System.out.println("LONG NAME: " + sc.getLongName());
-			System.out.println("bvDATE: " + sc.getLastDate());
-		}
-
-		ConceptProxy c = service.getFirstConcept("nbii");
-		System.out.println(c.getPreLabel());
-
-		service.close();
 	}
 
 }
