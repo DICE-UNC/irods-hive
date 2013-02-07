@@ -32,7 +32,7 @@ public class HiveContainerImpl implements HiveContainer {
 	 * HIVE core service that picks up configured vocabularies and indexers.
 	 * This is started up by this container class using the given config.
 	 */
-	private final SKOSServer skosServer = null;
+	private SKOSServer skosServer = null;
 
 	/**
 	 * Configuration properties used to initialize HIVE services
@@ -98,23 +98,25 @@ public class HiveContainerImpl implements HiveContainer {
 	}
 
 	private void startupSkosServer() throws JargonHiveException {
-		
-		//logger.debug("starting SKOSServerImpl");
+
+		// logger.debug("starting SKOSServerImpl");
 		// Levanto el servidor de vocabularios
-		SKOSServer server = new SKOSServerImpl(hiveConfiguration.getHiveConfigLocation()); 
+		skosServer = new SKOSServerImpl(
+				hiveConfiguration.getHiveConfigLocation());
 		// Le pido un Searcher
-		
-		//TreeMap<String, SKOSScheme> schemaMap = server.getSKOSSchemas(); //added by Mike
-		//logger.info("schema as tree map:" + schemaMap); //added by Mike
-		
-		SKOSSearcher searcher = server.getSKOSSearcher();
-	    
-		//server.getSKOSSchemas()
+
+		// TreeMap<String, SKOSScheme> schemaMap = server.getSKOSSchemas();
+		// //added by Mike
+		// logger.info("schema as tree map:" + schemaMap); //added by Mike
+
+		SKOSSearcher searcher = skosServer.getSKOSSearcher();
+
+		// server.getSKOSSchemas()
 		/**
 		 * Statistics test
 		 */
 
-		TreeMap<String, SKOSScheme> vocabularies = server.getSKOSSchemas();
+		TreeMap<String, SKOSScheme> vocabularies = skosServer.getSKOSSchemas();
 		Set<String> keys = vocabularies.keySet();
 		Iterator<String> it = keys.iterator();
 		while (it.hasNext()) {
@@ -129,7 +131,8 @@ public class HiveContainerImpl implements HiveContainer {
 			System.out.println();
 			System.out.println("\t SIZE: " + voc.getSubAlphaIndex("a").size());
 			System.out.println();
-			//System.out.println("\t TOP CONCEPTS: " + voc.getNumberOfTopConcepts());
+			// System.out.println("\t TOP CONCEPTS: " +
+			// voc.getNumberOfTopConcepts());
 		}
 	}
 
