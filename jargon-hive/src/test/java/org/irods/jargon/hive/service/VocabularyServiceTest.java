@@ -2,6 +2,8 @@ package org.irods.jargon.hive.service;
 
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.irods.jargon.hive.container.HiveConfiguration;
 import org.irods.jargon.hive.container.HiveContainer;
 import org.irods.jargon.hive.container.HiveContainerImpl;
@@ -10,6 +12,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.unc.hive.client.ConceptProxy;
 
+import com.ibm.icu.impl.Assert;
+
 public class VocabularyServiceTest {
 
 	static final HiveConfiguration hiveConfiguration = new HiveConfiguration();
@@ -17,9 +21,9 @@ public class VocabularyServiceTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		hiveConfiguration
-				.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
-		// hiveConfiguration.setHiveConfigLocation("C:/Users/Koushyar/Documents/hive/irodshive/hive-code/hive-web/war/WEB-INF/conf/hive.properties");
+		//hiveConfiguration
+		//		.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
+		hiveConfiguration.setHiveConfigLocation("C:/Users/Koushyar/Documents/hive/irodshive/hive-code/hive-web/war/WEB-INF/conf/hive.properties");
 
 		hiveContainer.setHiveConfiguration(hiveConfiguration);
 		hiveContainer.init();
@@ -30,6 +34,30 @@ public class VocabularyServiceTest {
 		hiveContainer.shutdown();
 	}
 
+	@Test
+	public void testGetAgrovoc() throws Exception {
+		// Assert.assertNotNull("did not start skos server",
+		// hiveContainer.getSkosServer());
+		VocabularyService vocabularyService = new VocabularyService(
+				hiveContainer);
+		
+		//vocabularyService.
+		
+	}
+	
+	
+	@Test
+	public void testListVocabularyNames() throws Exception {
+		// Assert.assertNotNull("did not start skos server",
+		// hiveContainer.getSkosServer());
+		VocabularyService vocabularyService = new VocabularyService(
+				hiveContainer);
+		
+		List <String> allVocabNames = vocabularyService.getAllVocabularyNames();
+		TestCase.assertFalse("did not load vocabularies", allVocabNames.isEmpty());
+		
+	}
+	
 	@Test
 	public void testInit() throws Exception {
 		// Assert.assertNotNull("did not start skos server",
