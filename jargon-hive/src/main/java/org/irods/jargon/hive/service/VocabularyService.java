@@ -101,6 +101,37 @@ public class VocabularyService {
 		return vocabularyList;
 	}
 
+	/**
+	 * Return a vocabulary (as a <code>SKOSScheme</code>) based on the name
+	 * 
+	 * @param vocabularyName
+	 *            <code>String</code> with the vocabulary name
+	 * @return {@link SKOSScheme} that represents the vocabulary with the given
+	 *         name
+	 * @throws VocabularyNotFoundException
+	 */
+	public SKOSScheme getVocabularyByName(final String vocabularyName)
+			throws VocabularyNotFoundException {
+		logger.info("getVocabularyByName()");
+
+		if (vocabularyName == null || vocabularyName.isEmpty()) {
+			throw new IllegalArgumentException("null or empty vocabularyName");
+		}
+
+		logger.info("looking for name:" + vocabularyName);
+
+		SKOSScheme vocab = this.getSkosServer().getSKOSSchemas()
+				.get(vocabularyName);
+
+		if (vocab == null) {
+			throw new VocabularyNotFoundException(
+					"did not find requested vocabulary in HIVE");
+		}
+
+		return vocab;
+
+	}
+
 	public List<String> getAllVocabularyNames() {
 		logger.info("getAllVocabularyNames()");
 		TreeMap<String, SKOSScheme> vocabularyMap = this.getSkosServer()

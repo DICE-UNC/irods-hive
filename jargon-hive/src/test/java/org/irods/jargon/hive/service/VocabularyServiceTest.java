@@ -12,7 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.unc.hive.client.ConceptProxy;
 
-import com.ibm.icu.impl.Assert;
+import edu.unc.ils.mrc.hive.api.SKOSScheme;
 
 public class VocabularyServiceTest {
 
@@ -21,9 +21,10 @@ public class VocabularyServiceTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		//hiveConfiguration
-		//		.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
-		hiveConfiguration.setHiveConfigLocation("C:/Users/Koushyar/Documents/hive/irodshive/hive-code/hive-web/war/WEB-INF/conf/hive.properties");
+		hiveConfiguration
+				.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
+		// hiveConfiguration
+		// .setHiveConfigLocation("C:/Users/Koushyar/Documents/hive/irodshive/hive-code/hive-web/war/WEB-INF/conf/hive.properties");
 
 		hiveContainer.setHiveConfiguration(hiveConfiguration);
 		hiveContainer.init();
@@ -40,24 +41,24 @@ public class VocabularyServiceTest {
 		// hiveContainer.getSkosServer());
 		VocabularyService vocabularyService = new VocabularyService(
 				hiveContainer);
-		
-		//vocabularyService.
-		
+
+		SKOSScheme actual = vocabularyService.getVocabularyByName("agrovoc");
+		TestCase.assertNotNull("did not get vocab", actual);
 	}
-	
-	
+
 	@Test
 	public void testListVocabularyNames() throws Exception {
 		// Assert.assertNotNull("did not start skos server",
 		// hiveContainer.getSkosServer());
 		VocabularyService vocabularyService = new VocabularyService(
 				hiveContainer);
-		
-		List <String> allVocabNames = vocabularyService.getAllVocabularyNames();
-		TestCase.assertFalse("did not load vocabularies", allVocabNames.isEmpty());
-		
+
+		List<String> allVocabNames = vocabularyService.getAllVocabularyNames();
+		TestCase.assertFalse("did not load vocabularies",
+				allVocabNames.isEmpty());
+
 	}
-	
+
 	@Test
 	public void testInit() throws Exception {
 		// Assert.assertNotNull("did not start skos server",
