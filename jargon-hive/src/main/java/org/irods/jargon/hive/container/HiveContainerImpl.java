@@ -120,7 +120,10 @@ public class HiveContainerImpl implements HiveContainer {
 		// Levanto el servidor de vocabularios
 		skosServer = new SKOSServerImpl(
 				hiveConfiguration.getHiveConfigLocation());
-		// Le pido un Searcher
+
+		if (skosServer == null) {
+			throw new JargonHiveException("unable to start HIVE server");
+		}
 
 		// TreeMap<String, SKOSScheme> schemaMap = server.getSKOSSchemas();
 		// //added by Mike

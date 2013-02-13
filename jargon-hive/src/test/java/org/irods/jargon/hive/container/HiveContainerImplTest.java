@@ -10,12 +10,22 @@ import org.junit.Test;
 
 public class HiveContainerImplTest {
 
+	static final HiveConfiguration hiveConfiguration = new HiveConfiguration();
+	static final HiveContainer hiveContainer = new HiveContainerImpl();
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		hiveConfiguration
+				.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
+		// hiveConfiguration.setHiveConfigLocation("C:/Users/Koushyar/Documents/hive/irodshive/hive-code/hive-web/war/WEB-INF/conf/hive.properties");
+
+		hiveContainer.setHiveConfiguration(hiveConfiguration);
+		hiveContainer.init();
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		hiveContainer.shutdown();
 	}
 
 	@Before
@@ -28,13 +38,9 @@ public class HiveContainerImplTest {
 
 	@Test
 	public void testInit() throws Exception {
-		HiveConfiguration hiveConfiguration = new HiveConfiguration();
-		hiveConfiguration
-				.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
+
 		// hiveConfiguration.setHiveConfigLocation("C:/Users/Koushyar/Documents/hive/irodshive/hive-code/hive-web/war/WEB-INF/conf/hive.properties");
-		HiveContainer hiveContainer = new HiveContainerImpl();
-		hiveContainer.setHiveConfiguration(hiveConfiguration);
-		hiveContainer.init();
+
 		Assert.assertNotNull("did not start skos server",
 				hiveContainer.getSkosServer());
 
@@ -45,7 +51,6 @@ public class HiveContainerImplTest {
 		HiveConfiguration hiveConfiguration = new HiveConfiguration();
 		hiveConfiguration
 				.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
-		// hiveConfiguration.setHiveConfigLocation("C:/Users/Koushyar/Documents/hive/irodshive/hive-code/hive-web/war/WEB-INF/conf/hive.properties");
 		HiveContainer hiveContainer = new HiveContainerImpl();
 		hiveContainer.setHiveConfiguration(hiveConfiguration);
 		hiveContainer.init();

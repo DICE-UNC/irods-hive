@@ -54,10 +54,12 @@ public class VocabularyService {
 		return this.hiveContainer.getSkosServer().getSKOSSearcher();
 	}
 
-	public long getNumberOfConcept(String vocabularyName) throws VocabularyNotFoundException {
+	public long getNumberOfConcept(String vocabularyName)
+			throws VocabularyNotFoundException {
 		SKOSScheme vocab = getSkosServer().getSKOSSchemas().get(vocabularyName);
 		if (vocab == null) {
-			throw new VocabularyNotFoundException("did not find:" + vocabularyName);
+			throw new VocabularyNotFoundException("did not find:"
+					+ vocabularyName);
 		}
 		return vocab.getNumberOfConcepts();
 	}
