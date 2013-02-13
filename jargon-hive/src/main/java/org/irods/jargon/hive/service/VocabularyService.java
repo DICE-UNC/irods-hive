@@ -17,6 +17,7 @@ import javax.xml.namespace.QName;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.irods.jargon.hive.container.HiveContainer;
+import org.irods.jargon.hive.exception.VocabularyNotFoundException;
 import org.unc.hive.client.ConceptProxy;
 
 import edu.unc.ils.mrc.hive.api.ConceptNode;
@@ -53,9 +54,12 @@ public class VocabularyService {
 		return this.hiveContainer.getSkosServer().getSKOSSearcher();
 	}
 
-	public long getNumberOfConcept(String vocabularyName) {
-		return getSkosServer().getSKOSSchemas().get(vocabularyName)
-				.getNumberOfConcepts();
+	public long getNumberOfConcept(String vocabularyName) throws VocabularyNotFoundException {
+		SKOSScheme vocab = getSkosServer().getSKOSSchemas().get(vocabularyName);
+		if (vocab == null) {
+			throw new VocabularyNotFoundException("did not find:" + vocabularyName);
+		}
+		return vocab.getNumberOfConcepts();
 	}
 
 	public long getNumerOfRelations(String vocabularyName) {
