@@ -47,21 +47,21 @@ public class VocabularyServiceTest {
 		TestCase.assertNotNull("did not get vocab", actual);
 	}
 
-	// tested (goes to class.class)!
+	// tested
 	@Test
 	public void testGetFirstConcept() throws Exception {
 		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
-		ConceptProxy X = vocabularyService.getFirstConcept("agrovoc");
-		TestCase.assertFalse("did not load first concept", X==null);
+		ConceptProxy x = vocabularyService.getFirstConcept("agrovoc");
+		TestCase.assertNotNull("did not load first concept", x);
 	}
 	
-	// tested (goes to class.class)!
+	// tested
 	@Test
 	public void testSuggestTermsFor() throws Exception {
 		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
-		List<AutocompleteTerm> X = null;
-		X = vocabularyService.suggestTermsFor("agrovoc", "ability", 3);
-		TestCase.assertFalse("did not find suggested terms", X==null );
+		List<AutocompleteTerm> x = null;
+		x = vocabularyService.suggestTermsFor("agrovoc", "ability", 3);
+		TestCase.assertFalse("did not find suggested terms", x==null );
 	}
 	
 	// tested
@@ -83,7 +83,7 @@ public class VocabularyServiceTest {
 		TestCase.assertFalse("did not get concept by URI", X==null);
 	}
 	
-	/*
+
 	@Test
 	public void testSearchConcept() throws Exception {
 		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
@@ -92,7 +92,6 @@ public class VocabularyServiceTest {
 		rankedList = vocabularyService.searchConcept("ability", openVocabularies);
 		TestCase.assertFalse("did not find concept", rankedList.isEmpty());
 	}
-	*/
 	
 	// tested
 	@Test
