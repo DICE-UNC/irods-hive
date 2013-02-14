@@ -40,7 +40,7 @@ public class VocabularyServiceTest {
 	public void testGetAgrovoc() throws Exception {
 		// Assert.assertNotNull("did not start skos server",
 		// hiveContainer.getSkosServer());
-		VocabularyService vocabularyService = new VocabularyService(
+		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
 
 		SKOSScheme actual = vocabularyService.getVocabularyByName("agrovoc");
@@ -50,7 +50,7 @@ public class VocabularyServiceTest {
 	// tested
 	@Test
 	public void testGetFirstConcept() throws Exception {
-		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		VocabularyService vocabularyService = new VocabularyServiceImpl(hiveContainer);
 		ConceptProxy x = vocabularyService.getFirstConcept("agrovoc");
 		TestCase.assertNotNull("did not load first concept", x);
 	}
@@ -58,7 +58,7 @@ public class VocabularyServiceTest {
 	// tested
 	@Test
 	public void testSuggestTermsFor() throws Exception {
-		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		VocabularyService vocabularyService = new VocabularyServiceImpl(hiveContainer);
 		List<AutocompleteTerm> x = null;
 		x = vocabularyService.suggestTermsFor("agrovoc", "ability", 3);
 		TestCase.assertFalse("did not find suggested terms", x==null );
@@ -69,7 +69,7 @@ public class VocabularyServiceTest {
 	public void testListVocabularyNames() throws Exception {
 		// Assert.assertNotNull("did not start skos server",
 		// hiveContainer.getSkosServer());
-		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		VocabularyService vocabularyService = new VocabularyServiceImpl(hiveContainer);
 
 		List<String> allVocabNames = vocabularyService.getAllVocabularyNames();
 		TestCase.assertFalse("did not load vocabularies", allVocabNames.isEmpty());
@@ -78,7 +78,7 @@ public class VocabularyServiceTest {
 	//tested
 	@Test
 	public void testgetConceptByURI() throws Exception {
-		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		VocabularyService vocabularyService = new VocabularyServiceImpl(hiveContainer);
 		ConceptProxy X = vocabularyService.getConceptByURI("http://www.fao.org/aos/agrovoc#", "c_49830");
 		TestCase.assertFalse("did not get concept by URI", X==null);
 	}
@@ -86,7 +86,7 @@ public class VocabularyServiceTest {
 
 	@Test
 	public void testSearchConcept() throws Exception {
-		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		VocabularyService vocabularyService = new VocabularyServiceImpl(hiveContainer);
 		List<ConceptProxy> rankedList = null;
 		List<String> openVocabularies = vocabularyService.getAllVocabularyNames();
 		rankedList = vocabularyService.searchConcept("ability", openVocabularies);
@@ -96,7 +96,7 @@ public class VocabularyServiceTest {
 	// tested
 	@Test
 	public void testGetChildConcept() throws Exception {
-		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		VocabularyService vocabularyService = new VocabularyServiceImpl(hiveContainer);
 		List <ConceptProxy> ChildrenList = null;
 		ChildrenList = vocabularyService.getChildConcept("http://www.fao.org/aos/agrovoc#", "c_49830");
 		TestCase.assertFalse("did not load child concept", ChildrenList.isEmpty());
@@ -105,7 +105,7 @@ public class VocabularyServiceTest {
 	// tested
 	@Test
 	public void testGetSubTopConcept() throws Exception {
-		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		VocabularyService vocabularyService = new VocabularyServiceImpl(hiveContainer);
 		List<ConceptProxy> fatherList = null;
 		fatherList = vocabularyService.getSubTopConcept("agrovoc", "A", true);
 		TestCase.assertFalse("did not load sub top concept", fatherList.isEmpty());
@@ -114,7 +114,7 @@ public class VocabularyServiceTest {
 	// tested
 	@Test
 	public void testGetNumberOfConceptAndRelations() throws Exception {
-		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		VocabularyService vocabularyService = new VocabularyServiceImpl(hiveContainer);
 		long x = vocabularyService.getNumberOfConcept("agrovoc");
 		long y = vocabularyService.getNumerOfRelations("agrovoc");
 		System.out.println(x);
@@ -124,7 +124,7 @@ public class VocabularyServiceTest {
 	// tested
 	@Test
 	public void testGetLastUpdate() throws Exception {
-		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		VocabularyService vocabularyService = new VocabularyServiceImpl(hiveContainer);
 		vocabularyService.getLastUpdateDate("agrovoc");
 	}
 	

@@ -9,6 +9,7 @@ import java.util.TreeMap;
 
 import org.irods.jargon.hive.exception.JargonHiveException;
 import org.irods.jargon.hive.service.VocabularyService;
+import org.irods.jargon.hive.service.VocabularyServiceImpl;
 
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
 import edu.unc.ils.mrc.hive.api.SKOSSearcher;
@@ -63,7 +64,7 @@ public class HiveContainerImpl implements HiveContainer {
 			throw new JargonHiveException(
 					"skosServer not started, please call init()");
 		}
-		return new VocabularyService(this);
+		return new VocabularyServiceImpl(this);
 	}
 
 	/*
