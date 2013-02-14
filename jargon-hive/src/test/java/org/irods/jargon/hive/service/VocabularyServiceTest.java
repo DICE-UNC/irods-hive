@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.unc.hive.client.ConceptProxy;
 
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
+import edu.unc.ils.mrc.hive.ir.lucene.search.AutocompleteTerm;
 
 public class VocabularyServiceTest {
 
@@ -21,10 +22,9 @@ public class VocabularyServiceTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		hiveConfiguration
-				.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
-		// hiveConfiguration
-		// .setHiveConfigLocation("C:/Users/Koushyar/Documents/hive/irodshive/hive-code/hive-web/war/WEB-INF/conf/hive.properties");
+		//hiveConfiguration
+		//		.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
+		hiveConfiguration.setHiveConfigLocation("C:/Users/Koushyar/Documents/hive/irodshive/hive-code/hive-web/war/WEB-INF/conf/hive.properties");
 
 		hiveContainer.setHiveConfiguration(hiveConfiguration);
 		hiveContainer.init();
@@ -35,6 +35,7 @@ public class VocabularyServiceTest {
 		hiveContainer.shutdown();
 	}
 
+	//tested
 	@Test
 	public void testGetAgrovoc() throws Exception {
 		// Assert.assertNotNull("did not start skos server",
@@ -46,35 +47,87 @@ public class VocabularyServiceTest {
 		TestCase.assertNotNull("did not get vocab", actual);
 	}
 
+	// tested (goes to class.class)!
+	@Test
+	public void testGetFirstConcept() throws Exception {
+		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		ConceptProxy X = vocabularyService.getFirstConcept("agrovoc");
+		TestCase.assertFalse("did not load first concept", X==null);
+	}
+	
+	// tested (goes to class.class)!
+	@Test
+	public void testSuggestTermsFor() throws Exception {
+		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		List<AutocompleteTerm> X = null;
+		X = vocabularyService.suggestTermsFor("agrovoc", "ability", 3);
+		TestCase.assertFalse("did not find suggested terms", X==null );
+	}
+	
+	// tested
 	@Test
 	public void testListVocabularyNames() throws Exception {
 		// Assert.assertNotNull("did not start skos server",
 		// hiveContainer.getSkosServer());
-		VocabularyService vocabularyService = new VocabularyService(
-				hiveContainer);
+		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
 
 		List<String> allVocabNames = vocabularyService.getAllVocabularyNames();
-		TestCase.assertFalse("did not load vocabularies",
-				allVocabNames.isEmpty());
-
+		TestCase.assertFalse("did not load vocabularies", allVocabNames.isEmpty());
 	}
 
+	//tested
 	@Test
-	public void testInit() throws Exception {
-		// Assert.assertNotNull("did not start skos server",
-		// hiveContainer.getSkosServer());
-		VocabularyService vocabularyService = new VocabularyService(
-				hiveContainer);
-		vocabularyService.getNumberOfConcept("AGROVOC");
-		vocabularyService.getNumerOfRelations("AGROVOC");
-		vocabularyService.getAllVocabularyNames();
-
-		List<ConceptProxy> fatherList = null;
-		fatherList = vocabularyService.getSubTopConcept("AGROVOC", "A", true);
-		int i = 0;
-		for (i = 0; i < fatherList.size(); i++)
-			System.out.println(fatherList.get(i));
-
+	public void testgetConceptByURI() throws Exception {
+		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		ConceptProxy X = vocabularyService.getConceptByURI("http://www.fao.org/aos/agrovoc#", "c_49830");
+		TestCase.assertFalse("did not get concept by URI", X==null);
 	}
+	
+	/*
+	@Test
+	public void testSearchConcept() throws Exception {
+		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		List<ConceptProxy> rankedList = null;
+		List<String> openVocabularies = vocabularyService.getAllVocabularyNames();
+		rankedList = vocabularyService.searchConcept("ability", openVocabularies);
+		TestCase.assertFalse("did not find concept", rankedList.isEmpty());
+	}
+	*/
+	
+	// tested
+	@Test
+	public void testGetChildConcept() throws Exception {
+		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		List <ConceptProxy> ChildrenList = null;
+		ChildrenList = vocabularyService.getChildConcept("http://www.fao.org/aos/agrovoc#", "c_49830");
+		TestCase.assertFalse("did not load child concept", ChildrenList.isEmpty());
+	}
+	
+	// tested
+	@Test
+	public void testGetSubTopConcept() throws Exception {
+		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		List<ConceptProxy> fatherList = null;
+		fatherList = vocabularyService.getSubTopConcept("agrovoc", "A", true);
+		TestCase.assertFalse("did not load sub top concept", fatherList.isEmpty());
+	}
+		
+	// tested
+	@Test
+	public void testGetNumberOfConceptAndRelations() throws Exception {
+		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		long x = vocabularyService.getNumberOfConcept("agrovoc");
+		long y = vocabularyService.getNumerOfRelations("agrovoc");
+		System.out.println(x);
+		System.out.println(y);
+	}
+
+	// tested
+	@Test
+	public void testGetLastUpdate() throws Exception {
+		VocabularyService vocabularyService = new VocabularyService(hiveContainer);
+		vocabularyService.getLastUpdateDate("agrovoc");
+	}
+	
 
 }
