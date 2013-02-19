@@ -325,7 +325,9 @@ public class VocabularyServiceImpl implements VocabularyService {
 		if (result.size() != 0) {
 			for (SKOSConcept c : result) {
 				String origin = getSkosServer().getOrigin(c.getQName());
-				if (openedVocabularies.contains(origin.toLowerCase())) {
+				// shim for case problem in search of vocabulary service mcc
+				if (openedVocabularies.contains(origin.toLowerCase())
+						|| openedVocabularies.contains(origin.toUpperCase())) {
 					String preLabel = c.getPrefLabel();
 					QName qname = c.getQName();
 					String namespace = qname.getNamespaceURI();
