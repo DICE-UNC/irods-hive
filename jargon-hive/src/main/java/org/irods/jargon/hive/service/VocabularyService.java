@@ -47,7 +47,7 @@ public interface VocabularyService {
 	public abstract HashMap<String, HashMap<String, String>> getVocabularyProperties();
 
 	public abstract List<ConceptProxy> getSubTopConcept(String vocabulary,
-			String letter, boolean brief);
+			String letter, boolean brief) throws VocabularyNotFoundException;
 
 	/**
 	 * @gwt.typeArgs <client.ConceptProxy>
@@ -97,5 +97,25 @@ public interface VocabularyService {
 	public abstract void close();
 
 	void setHiveContainer(HiveContainer hiveContainer);
+
+	/**
+	 * Create a <code>ConceptProxy</code> that represents the top level of a
+	 * given vocabulary. This wraps the <code>getTopSubConcept</code> method to
+	 * give a consistent view as a <code>ConceptProxy</code>.
+	 * 
+	 * @param vocabulary
+	 *            <code>String</code> with a vocabulary name as stored in HIVE,
+	 *            required
+	 * @param letter
+	 *            <code>String</code> with the index letter. If not specified
+	 *            will default to 'A'
+	 * @param brief
+	 *            <code>boolean</code> that indicates that only basic data is
+	 *            retrieved
+	 * @return {@link ConceptProxy} marked as 'topLevel'
+	 * @throws VocabularyNotFoundException
+	 */
+	ConceptProxy getConceptProxyForTopOfVocabulary(String vocabulary,
+			String letter, boolean brief) throws VocabularyNotFoundException;
 
 }

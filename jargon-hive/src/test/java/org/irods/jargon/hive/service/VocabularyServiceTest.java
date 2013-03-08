@@ -2,11 +2,13 @@ package org.irods.jargon.hive.service;
 
 import java.util.List;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.irods.jargon.hive.container.HiveConfiguration;
 import org.irods.jargon.hive.container.HiveContainer;
 import org.irods.jargon.hive.container.HiveContainerImpl;
+import org.irods.jargon.hive.exception.VocabularyNotFoundException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -122,6 +124,39 @@ public class VocabularyServiceTest {
 		fatherList = vocabularyService.getSubTopConcept("agrovoc", "A", true);
 		TestCase.assertFalse("did not load sub top concept",
 				fatherList.isEmpty());
+	}
+
+	@Test
+	public void testGetConceptProxyForTopOfVocabulary() throws Exception {
+		VocabularyService vocabularyService = new VocabularyServiceImpl(
+				hiveContainer);
+		ConceptProxy proxy = vocabularyService
+				.getConceptProxyForTopOfVocabulary("agrovoc", "", true);
+		Assert.assertNotNull("null proxy", proxy);
+		Assert.assertTrue("did not set as top level", proxy.isTopLevel());
+		Assert.assertEquals("did not set vocab name", "agrovoc",
+				proxy.getOrigin());
+		Assert.assertFalse("did not set child (narrower) terms", proxy
+				.getNarrower().isEmpty());
+	}
+
+	@Test(expected = VocabularyNotFoundException.class)
+	public void testGetConceptProxyForTopOfVocabularyNotExists()
+			throws Exception {
+		VocabularyService vocabularyService = new VocabularyServiceImpl(
+				hiveContainer);
+		vocabularyService.getConceptProxyForTopOfVocabulary("bogusvocabhere",
+				"", true);
+
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetConceptProxyForTopOfVocabularyNullVocab()
+			throws Exception {
+		VocabularyService vocabularyService = new VocabularyServiceImpl(
+				hiveContainer);
+		vocabularyService.getConceptProxyForTopOfVocabulary(null, "", true);
+
 	}
 
 	// tested

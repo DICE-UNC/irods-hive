@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * 
  */
 public class ConceptProxy implements IsSerializable {
+	private boolean topLevel = false;
 	private String preLabel;
 	private String URI;
 	private String origin;
@@ -137,6 +138,25 @@ public class ConceptProxy implements IsSerializable {
 
 	public List<String> getScopeNotes() {
 		return this.scopeNotes;
+	}
+
+	/**
+	 * Is this concept the 'top level' set of terms for a vocabulary? In this
+	 * case there is no URI
+	 * 
+	 * @return
+	 */
+	public boolean isTopLevel() {
+		return topLevel;
+	}
+
+	/**
+	 * Indicate that this concept proxy is the top level of a vocabulary 'tree'
+	 * 
+	 * @param topLevel
+	 */
+	public void setTopLevel(final boolean topLevel) {
+		this.topLevel = topLevel;
 	}
 
 	public void put(List<String> altlabel, HashMap<String, String> broader,

@@ -224,16 +224,61 @@ public class VocabularyServiceImpl implements VocabularyService {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.irods.jargon.hive.service.VocabularyService#
+	 * getConceptProxyForTopOfVocabulary(java.lang.String, java.lang.String,
+	 * boolean)
+	 */
+	@Override
+	public ConceptProxy getConceptProxyForTopOfVocabulary(String vocabulary,
+			String letter, boolean brief) throws VocabularyNotFoundException {
+		logger.info("getConceptProxyForTopOfVocabulary()");
+
+		if (vocabulary == null || vocabulary.isEmpty()) {
+			throw new IllegalArgumentException("null or empty vocabulary");
+		}
+
+		if (letter == null || letter.isEmpty()) {
+			letter = "A";
+		}
+
+		logger.info("vocabulary:" + vocabulary);
+		logger.info("letter:" + letter);
+		logger.info("brief:" + brief);
+
+		logger.info("getting list of concept proxies for children...");
+		List<ConceptProxy> children = getSubTopConcept(vocabulary, letter,
+				brief);
+		logger.info("converting to hashmap and building wrapper concept proxy");
+
+		ConceptProxy parent = new ConceptProxy();
+		parent.setOrigin(vocabulary);
+		parent.setTopLevel(true);
+		parent.setNarrower(new HashMap<String, String>());
+		for (ConceptProxy child : children) {
+			parent.getNarrower().put(child.getPreLabel(), child.getURI());
+		}
+
+		return parent;
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see
 	 * org.irods.jargon.hive.service.VocabularyService#getSubTopConcept(java
 	 * .lang.String, java.lang.String, boolean)
 	 */
 	@Override
 	public List<ConceptProxy> getSubTopConcept(String vocabulary,
-			String letter, boolean brief) {
+			String letter, boolean brief) throws VocabularyNotFoundException {
 		TreeMap<String, SKOSScheme> vocabularies = this.getSkosServer()
 				.getSKOSSchemas();
 		SKOSScheme targetVoc = vocabularies.get(vocabulary);
+
+		if (targetVoc == null) {
+			throw new VocabularyNotFoundException("vocabulary not found");
+		}
 
 		List<SKOSConcept> top = targetVoc.getSubTopConceptIndex(letter);
 		List<ConceptProxy> fatherList = new ArrayList<ConceptProxy>();
