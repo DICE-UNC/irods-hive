@@ -11,7 +11,7 @@ import org.junit.Test;
 public class HiveContainerImplTest {
 
 	static final HiveConfiguration hiveConfiguration = new HiveConfiguration();
-	static final HiveContainer hiveContainer = new HiveContainerImpl();
+	static HiveContainer hiveContainer = new HiveContainerImpl();
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -26,6 +26,8 @@ public class HiveContainerImplTest {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		hiveContainer.shutdown();
+		hiveContainer = null;
+		Thread.sleep(10000);
 	}
 
 	@Before
@@ -48,12 +50,7 @@ public class HiveContainerImplTest {
 
 	@Test
 	public void testInstanceVocabularyServer() throws Exception {
-		HiveConfiguration hiveConfiguration = new HiveConfiguration();
-		hiveConfiguration
-				.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
-		HiveContainer hiveContainer = new HiveContainerImpl();
-		hiveContainer.setHiveConfiguration(hiveConfiguration);
-		hiveContainer.init();
+
 		VocabularyService vocabularyService = hiveContainer
 				.instanceVocabularyService();
 		Assert.assertNotNull("did not get vocab service", vocabularyService);

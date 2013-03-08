@@ -191,7 +191,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		Set<String> keys = vocabularyMap.keySet();
 		List<String> names = new ArrayList<String>();
 		for (String key : keys) {
-			names.add(key.toUpperCase());
+			names.add(key);
 		}
 
 		logger.info("names:" + names);
