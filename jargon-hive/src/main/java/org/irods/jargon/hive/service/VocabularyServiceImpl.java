@@ -444,16 +444,6 @@ public class VocabularyServiceImpl implements VocabularyService {
 		}
 
 		ConceptProxy cp = new ConceptProxy(origin, preLabel, uri);
-		if (broaders.isEmpty())
-			broaders = null;
-		if (narrowers.isEmpty())
-			narrowers = null;
-		if (relateds.isEmpty())
-			relateds = null;
-		if (altLabel.isEmpty())
-			altLabel = null;
-		if (scopeNotes.isEmpty())
-			scopeNotes = null;
 		cp.put(altLabel, broaders, narrowers, relateds, scopeNotes, skosCode);
 		return cp;
 	}
