@@ -1,5 +1,6 @@
 package org.unc.hive.client;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,11 +19,11 @@ public class ConceptProxy implements IsSerializable {
 	private String URI;
 	private String origin;
 	private String SKOSCode;
-	private HashMap<String, String> narrower = null;
-	private HashMap<String, String> broader = null;
-	private HashMap<String, String> related = null;
-	private List<String> altLabel = null;
-	private List<String> scopeNotes = null;
+	private Map<String, String> narrower = new HashMap<String, String>();
+	private Map<String, String> broader = new HashMap<String, String>();
+	private Map<String, String> related = new HashMap<String, String>();
+	private List<String> altLabel = new ArrayList<String>();
+	private List<String> scopeNotes = new ArrayList<String>();
 	private boolean isleaf = false;
 	private double score;
 
@@ -104,7 +105,7 @@ public class ConceptProxy implements IsSerializable {
 		this.narrower = new HashMap<String, String>(map);
 	}
 
-	public HashMap<String, String> getNarrower() {
+	public Map<String, String> getNarrower() {
 		return this.narrower;
 	}
 
@@ -112,7 +113,7 @@ public class ConceptProxy implements IsSerializable {
 		this.broader = new HashMap<String, String>(map);
 	}
 
-	public HashMap<String, String> getBroader() {
+	public Map<String, String> getBroader() {
 		return this.broader;
 	}
 
@@ -120,7 +121,7 @@ public class ConceptProxy implements IsSerializable {
 		this.related = new HashMap<String, String>(map);
 	}
 
-	public HashMap<String, String> getRelated() {
+	public Map<String, String> getRelated() {
 		return this.related;
 	}
 
@@ -159,8 +160,8 @@ public class ConceptProxy implements IsSerializable {
 		this.topLevel = topLevel;
 	}
 
-	public void put(List<String> altlabel, HashMap<String, String> broader,
-			HashMap<String, String> narrower, HashMap<String, String> related,
+	public void put(List<String> altlabel, Map<String, String> broader,
+			Map<String, String> narrower, Map<String, String> related,
 			List<String> scopeNote, String skosCode) {
 		this.altLabel = altlabel;
 		this.broader = broader;
