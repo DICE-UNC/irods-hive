@@ -1,31 +1,15 @@
-## generic files to ignore
-*~
-*.lock
-*.DS_Store
-*.swp
-*.out
-*.settings
-#java specific
 *.class
 
-#netbeans ignore personal stuff 
-nbproject/private/
-
-
-## generic files to ignore
-*~
-*.lock
-*.DS_Store
-*.swp
-*.out
-
-**/target
-
-
 # Package Files #
-#*.jar - we keep the libs since it's ant
+*.jar
 *.war
 *.ear
 
-.project
+
+*/target/**
+
 .classpath
+.project
+.settings/
+
+.DS_Store

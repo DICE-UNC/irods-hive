@@ -19,14 +19,14 @@ public class IRODSHiveException extends JargonException {
 	/**
 	 * @param message
 	 */
-	public IRODSHiveException(String message) {
+	public IRODSHiveException(final String message) {
 		super(message);
 	}
 
 	/**
 	 * @param cause
 	 */
-	public IRODSHiveException(Throwable cause) {
+	public IRODSHiveException(final Throwable cause) {
 		super(cause);
 	}
 
@@ -34,7 +34,7 @@ public class IRODSHiveException extends JargonException {
 	 * @param message
 	 * @param cause
 	 */
-	public IRODSHiveException(String message, Throwable cause) {
+	public IRODSHiveException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
@@ -42,7 +42,8 @@ public class IRODSHiveException extends JargonException {
 	 * @param cause
 	 * @param underlyingIRODSExceptionCode
 	 */
-	public IRODSHiveException(Throwable cause, int underlyingIRODSExceptionCode) {
+	public IRODSHiveException(final Throwable cause,
+			final int underlyingIRODSExceptionCode) {
 		super(cause, underlyingIRODSExceptionCode);
 	}
 
@@ -50,7 +51,8 @@ public class IRODSHiveException extends JargonException {
 	 * @param message
 	 * @param underlyingIRODSExceptionCode
 	 */
-	public IRODSHiveException(String message, int underlyingIRODSExceptionCode) {
+	public IRODSHiveException(final String message,
+			final int underlyingIRODSExceptionCode) {
 		super(message, underlyingIRODSExceptionCode);
 	}
 
@@ -59,8 +61,8 @@ public class IRODSHiveException extends JargonException {
 	 * @param cause
 	 * @param underlyingIRODSExceptionCode
 	 */
-	public IRODSHiveException(String message, Throwable cause,
-			int underlyingIRODSExceptionCode) {
+	public IRODSHiveException(final String message, final Throwable cause,
+			final int underlyingIRODSExceptionCode) {
 		super(message, cause, underlyingIRODSExceptionCode);
 	}
 
