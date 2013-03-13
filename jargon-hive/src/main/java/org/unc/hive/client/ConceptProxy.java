@@ -26,39 +26,48 @@ public class ConceptProxy implements IsSerializable {
 	private List<String> scopeNotes = new ArrayList<String>();
 	private boolean isleaf = false;
 	private double score;
+	/**
+	 * allows specification that this concept is 'selected' in the current
+	 * context. e.g. this concept has been applied to a resource, such as an
+	 * iRODS file or collection. This value is meant for custom client use, and
+	 * is not set by HIVE itself.
+	 */
+	private boolean selected = false;
 
 	public ConceptProxy() {
 
 	}
 
-	public ConceptProxy(String prelabel, String uri) {
+	public ConceptProxy(final String prelabel, final String uri) {
 		this.preLabel = prelabel;
 		this.URI = uri;
 	}
 
-	public ConceptProxy(String origin, String prelabel, String uri,
-			boolean isleaf) {
+	public ConceptProxy(final String origin, final String prelabel,
+			final String uri, final boolean isleaf) {
 		this.origin = origin;
 		this.preLabel = prelabel;
 		this.URI = uri;
 		this.isleaf = isleaf;
 	}
 
-	public ConceptProxy(String origin, String prelabel, String uri) {
+	public ConceptProxy(final String origin, final String prelabel,
+			final String uri) {
 		this.origin = origin;
 		this.preLabel = prelabel;
 		this.URI = uri;
 	}
 
-	public ConceptProxy(String origin, String prelabel, String uri, double score) {
+	public ConceptProxy(final String origin, final String prelabel,
+			final String uri, final double score) {
 		this.origin = origin;
 		this.preLabel = prelabel;
 		this.URI = uri;
 		this.score = score;
 	}
 
-	public ConceptProxy(String origin, String prelabel, String uri,
-			String skosCode) {
+	public ConceptProxy(final String origin, final String prelabel,
+			final String uri, final String skosCode) {
 		this.origin = origin;
 		this.preLabel = prelabel;
 		this.URI = uri;
@@ -77,7 +86,7 @@ public class ConceptProxy implements IsSerializable {
 		return this.isleaf;
 	}
 
-	public void setOrigin(String origin) {
+	public void setOrigin(final String origin) {
 		this.origin = origin;
 	}
 
@@ -85,7 +94,7 @@ public class ConceptProxy implements IsSerializable {
 		return this.origin;
 	}
 
-	public void setPreLabel(String prelabel) {
+	public void setPreLabel(final String prelabel) {
 		preLabel = prelabel;
 	}
 
@@ -93,7 +102,7 @@ public class ConceptProxy implements IsSerializable {
 		return this.preLabel;
 	}
 
-	public void setURI(String uri) {
+	public void setURI(final String uri) {
 		URI = uri;
 	}
 
@@ -101,7 +110,7 @@ public class ConceptProxy implements IsSerializable {
 		return URI;
 	}
 
-	public void setNarrower(Map<String, String> map) {
+	public void setNarrower(final Map<String, String> map) {
 		this.narrower = new HashMap<String, String>(map);
 	}
 
@@ -109,7 +118,7 @@ public class ConceptProxy implements IsSerializable {
 		return this.narrower;
 	}
 
-	public void setBroader(Map<String, String> map) {
+	public void setBroader(final Map<String, String> map) {
 		this.broader = new HashMap<String, String>(map);
 	}
 
@@ -117,7 +126,7 @@ public class ConceptProxy implements IsSerializable {
 		return this.broader;
 	}
 
-	public void setRelated(HashMap<String, String> map) {
+	public void setRelated(final HashMap<String, String> map) {
 		this.related = new HashMap<String, String>(map);
 	}
 
@@ -125,7 +134,7 @@ public class ConceptProxy implements IsSerializable {
 		return this.related;
 	}
 
-	public void setAltLabel(List<String> altlabel) {
+	public void setAltLabel(final List<String> altlabel) {
 		this.altLabel = altlabel;
 	}
 
@@ -133,7 +142,7 @@ public class ConceptProxy implements IsSerializable {
 		return this.altLabel;
 	}
 
-	public void setScopeNotes(List<String> notes) {
+	public void setScopeNotes(final List<String> notes) {
 		this.scopeNotes = notes;
 	}
 
@@ -160,14 +169,24 @@ public class ConceptProxy implements IsSerializable {
 		this.topLevel = topLevel;
 	}
 
-	public void put(List<String> altlabel, Map<String, String> broader,
-			Map<String, String> narrower, Map<String, String> related,
-			List<String> scopeNote, String skosCode) {
+	public void put(final List<String> altlabel,
+			final Map<String, String> broader,
+			final Map<String, String> narrower,
+			final Map<String, String> related, final List<String> scopeNote,
+			final String skosCode) {
 		this.altLabel = altlabel;
 		this.broader = broader;
 		this.narrower = narrower;
 		this.related = related;
 		this.scopeNotes = scopeNote;
 		this.SKOSCode = skosCode;
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(final boolean selected) {
+		this.selected = selected;
 	}
 }
