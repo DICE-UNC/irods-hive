@@ -78,6 +78,12 @@ public class IRODSHiveServiceImpl extends AbstractIRODSTaggingService implements
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.irods.jargon.hive.irods.IRODSHiveService#
+	 * deleteVocbularyEntryForPathAndURI(java.lang.String, java.lang.String)
+	 */
 	@Override
 	public void deleteVocbularyEntryForPathAndURI(
 			final String irodsAbsolutePath, final String vocabularyTermURI)

@@ -10,7 +10,7 @@
 	</parent>
 	<artifactId>jargon-hive-irods</artifactId>
 	<name>jargon-hive-irods</name>
-	<url>http://maven.apache.org</url>
+	<url>https://code.renci.org/gf/project/irodshive/</url>
 	<dependencies>
 	<dependency>
 			<groupId>junit</groupId>

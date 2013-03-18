@@ -501,5 +501,6 @@
 	</profiles>
   <modules>
     <module>jargon-hive-irods</module>
+    <module>jargon-hive-3store-integration</module>
   </modules>
 </project>
