@@ -10,7 +10,7 @@
 	<url>https://code.renci.org/gf/project/irodshive/</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jargon.version>3.3.0-SNAPSHOT</jargon.version>
+		<jargon.version>3.3.2-SNAPSHOT</jargon.version>
 		<spring.core.version>3.0.5.RELEASE</spring.core.version>
 		<elmo.version>1.5</elmo.version>
 		<lucene.version>2.4.1</lucene.version>
