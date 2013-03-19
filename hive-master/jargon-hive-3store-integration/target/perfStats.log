@@ -98,3 +98,177 @@ Tag                                                  Avg(ms)         Min        
 Performance Statistics   2013-03-19 10:08:30 - 2013-03-19 10:08:40
 Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
 
+Performance Statistics   2013-03-19 10:17:00 - 2013-03-19 10:17:10
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+retrieveObjectStatForPath                               48.0           8          88        40.0           2
+
+Performance Statistics   2013-03-19 10:17:40 - 2013-03-19 10:17:50
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+retrieveObjectStatForPath                               41.0           7          75        34.0           2
+
+Performance Statistics   2013-03-19 10:25:30 - 2013-03-19 10:25:40
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+retrieveObjectStatForPath                               79.0          11         147        68.0           2
+
+Performance Statistics   2013-03-19 10:25:40 - 2013-03-19 10:25:50
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:27:20 - 2013-03-19 10:27:30
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+retrieveObjectStatForPath                               41.5          10          73        31.5           2
+
+Performance Statistics   2013-03-19 10:27:30 - 2013-03-19 10:27:40
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:27:40 - 2013-03-19 10:27:50
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:27:50 - 2013-03-19 10:28:00
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:39:30 - 2013-03-19 10:39:40
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+retrieveObjectStatForPath                              204.0          14         394       190.0           2
+
+Performance Statistics   2013-03-19 10:47:00 - 2013-03-19 10:47:10
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+retrieveObjectStatForPath                               45.5          12          79        33.5           2
+
+Performance Statistics   2013-03-19 10:47:10 - 2013-03-19 10:47:20
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:48:00 - 2013-03-19 10:48:10
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+retrieveObjectStatForPath                               53.5          31          76        22.5           2
+
+Performance Statistics   2013-03-19 10:48:10 - 2013-03-19 10:48:20
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:48:20 - 2013-03-19 10:48:30
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:51:40 - 2013-03-19 10:51:50
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+retrieveObjectStatForPath                               30.5          11          50        19.5           2
+
+Performance Statistics   2013-03-19 10:51:50 - 2013-03-19 10:52:00
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:52:00 - 2013-03-19 10:52:10
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:52:10 - 2013-03-19 10:52:20
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:52:20 - 2013-03-19 10:52:30
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:52:30 - 2013-03-19 10:52:40
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:52:40 - 2013-03-19 10:52:50
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:52:50 - 2013-03-19 10:53:00
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:53:00 - 2013-03-19 10:53:10
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:53:10 - 2013-03-19 10:53:20
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:53:20 - 2013-03-19 10:53:30
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:53:30 - 2013-03-19 10:53:40
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:53:40 - 2013-03-19 10:53:50
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:53:50 - 2013-03-19 10:54:00
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:54:00 - 2013-03-19 10:54:10
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:54:10 - 2013-03-19 10:54:20
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:54:20 - 2013-03-19 10:54:30
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:54:30 - 2013-03-19 10:54:40
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:54:40 - 2013-03-19 10:54:50
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:54:50 - 2013-03-19 10:55:00
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:55:00 - 2013-03-19 10:55:10
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:55:50 - 2013-03-19 10:56:00
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+retrieveObjectStatForPath                               28.5           8          49        20.5           2
+
+Performance Statistics   2013-03-19 10:56:00 - 2013-03-19 10:56:10
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:56:10 - 2013-03-19 10:56:20
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:56:20 - 2013-03-19 10:56:30
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:56:30 - 2013-03-19 10:56:40
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:56:40 - 2013-03-19 10:56:50
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:56:50 - 2013-03-19 10:57:00
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:57:20 - 2013-03-19 10:57:30
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:57:30 - 2013-03-19 10:57:40
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:57:40 - 2013-03-19 10:57:50
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:57:50 - 2013-03-19 10:58:00
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:58:00 - 2013-03-19 10:58:10
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:58:10 - 2013-03-19 10:58:20
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:58:20 - 2013-03-19 10:58:30
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:58:30 - 2013-03-19 10:58:40
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:58:40 - 2013-03-19 10:58:50
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 10:59:40 - 2013-03-19 10:59:50
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+retrieveObjectStatForPath                              183.0          10         356       173.0           2
+
+Performance Statistics   2013-03-19 11:11:00 - 2013-03-19 11:11:10
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+retrieveObjectStatForPath                               46.0           8          84        38.0           2
+
+Performance Statistics   2013-03-19 11:18:50 - 2013-03-19 11:19:00
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+retrieveObjectStatForPath                               35.5           8          63        27.5           2
+

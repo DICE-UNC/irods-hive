@@ -1,5 +1,7 @@
 package org.irods.jargon.hive.external.indexer;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 
 import org.irods.jargon.core.exception.JargonException;
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
 /**
@@ -70,6 +73,23 @@ public class JenaHiveIndexerVisitor extends
 			// load iRODS RDF
 
 			// load vocabulary files
+			for (String vocabFileName : jenaHiveVisitorConfiguration
+					.getVocabularyRDFFileNames()) {
+				InputStream in = FileManager.get().open(vocabFileName);
+				if (in == null) {
+					throw new IllegalArgumentException("File: " + vocabFileName
+							+ " not found");
+				}
+
+				// read the RDF/XML file
+				jenaModel.read(in, null);
+				try {
+					in.close();
+				} catch (IOException e) {
+					log.error("io exception closing stream, ignored");
+				}
+
+			}
 
 		} else {
 			log.error("model type not currently supported:{}",
