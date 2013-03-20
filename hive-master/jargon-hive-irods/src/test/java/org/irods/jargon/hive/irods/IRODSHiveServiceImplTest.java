@@ -1,5 +1,7 @@
 package org.irods.jargon.hive.irods;
 
+import java.io.File;
+import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 
@@ -23,6 +25,7 @@ public class IRODSHiveServiceImplTest {
 	public static final String IRODS_TEST_SUBDIR_PATH = "IRODSHiveServiceImplTest";
 	private static org.irods.jargon.testutils.IRODSTestSetupUtilities irodsTestSetupUtilities = null;
 	private static IRODSFileSystem irodsFileSystem = null;
+	private static File vocabFile = null;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -33,6 +36,21 @@ public class IRODSHiveServiceImplTest {
 		irodsTestSetupUtilities
 				.initializeDirectoryForTest(IRODS_TEST_SUBDIR_PATH);
 		irodsFileSystem = IRODSFileSystem.instance();
+
+		ClassLoader loader = IRODSHiveServiceImplTest.class.getClassLoader();
+		URL resc = loader.getResource("agrovoc.rdf");
+
+		if (resc == null) {
+			throw new Exception("unable to load agrovoc");
+		}
+
+		String vocabFileName = resc.getFile();
+
+		vocabFile = new File(vocabFileName);
+
+		if (!vocabFile.exists()) {
+			throw new Exception("unable to load agrovoc test vocabulary");
+		}
 	}
 
 	@AfterClass
@@ -630,7 +648,7 @@ public class IRODSHiveServiceImplTest {
 		entry.setVocabularyName("agrovoc");
 
 		irodsHiveService.saveOrUpdateVocabularyTerm(entry);
-		irodsHiveService.deleteVocbularyEntryForPathAndURI(
+		irodsHiveService.deleteVocabularyEntryForPathAndURI(
 				targetIrodsCollection, testURI);
 
 		HiveVocabularyEntry actual = irodsHiveService
@@ -670,7 +688,7 @@ public class IRODSHiveServiceImplTest {
 		entry.setVocabularyName("agrovoc");
 
 		irodsHiveService.saveOrUpdateVocabularyTerm(entry);
-		irodsHiveService.deleteVocbularyEntryForPathAndURI(
+		irodsHiveService.deleteVocabularyEntryForPathAndURI(
 				targetIrodsCollection, testURI);
 
 		HiveVocabularyEntry actual = irodsHiveService

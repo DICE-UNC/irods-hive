@@ -105,7 +105,7 @@ public interface IRODSHiveService {
 	 *             thrown if the iRODS file or collection is not found
 	 * @throws IRODSHiveException
 	 */
-	void deleteVocbularyEntryForPathAndURI(String irodsAbsolutePath,
+	void deleteVocabularyEntryForPathAndURI(String irodsAbsolutePath,
 			String vocabularyTermURI) throws FileNotFoundException,
 			IRODSHiveException;
 

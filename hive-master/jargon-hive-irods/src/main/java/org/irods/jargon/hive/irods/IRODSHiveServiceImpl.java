@@ -59,7 +59,7 @@ public class IRODSHiveServiceImpl extends AbstractIRODSTaggingService implements
 	 * @param irodsAccount
 	 * @throws JargonException
 	 */
-	protected IRODSHiveServiceImpl(
+	public IRODSHiveServiceImpl(
 			final IRODSAccessObjectFactory irodsAccessObjectFactory,
 			final IRODSAccount irodsAccount) throws IRODSHiveException {
 		super(irodsAccessObjectFactory, irodsAccount);
@@ -85,11 +85,11 @@ public class IRODSHiveServiceImpl extends AbstractIRODSTaggingService implements
 	 * deleteVocbularyEntryForPathAndURI(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void deleteVocbularyEntryForPathAndURI(
+	public void deleteVocabularyEntryForPathAndURI(
 			final String irodsAbsolutePath, final String vocabularyTermURI)
 			throws FileNotFoundException, IRODSHiveException {
 
-		log.info("deleteVocbularyEntryForPathAndURI()");
+		log.info("deleteVocabularyEntryForPathAndURI()");
 
 		if (irodsAbsolutePath == null || irodsAbsolutePath.isEmpty()) {
 			throw new IllegalArgumentException(
