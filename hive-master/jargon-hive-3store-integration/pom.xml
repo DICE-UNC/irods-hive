@@ -23,6 +23,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.irods.jargon</groupId>
+			<artifactId>jargon-hive-irods</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.irods.jargon</groupId>
 			<artifactId>jargon-data-utils</artifactId>
 		</dependency>
 		<dependency>

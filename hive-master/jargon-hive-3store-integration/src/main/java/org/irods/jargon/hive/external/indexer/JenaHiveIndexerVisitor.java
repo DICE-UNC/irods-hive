@@ -40,6 +40,14 @@ public class JenaHiveIndexerVisitor extends
 	public static final Logger log = LoggerFactory
 			.getLogger(JenaHiveIndexerVisitor.class);
 
+	/**
+	 * Create a visitor with a given configuration, which dictates the Jena
+	 * model type, other rdf to add to the model, etc
+	 * 
+	 * @param configuration
+	 *            {@link JenaHiveVisitorConfiguration}
+	 * @throws JargonException
+	 */
 	public JenaHiveIndexerVisitor(
 			final JenaHiveVisitorConfiguration configuration)
 			throws JargonException {

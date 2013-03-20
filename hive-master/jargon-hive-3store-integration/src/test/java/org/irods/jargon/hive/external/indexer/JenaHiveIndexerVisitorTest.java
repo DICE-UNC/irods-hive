@@ -1,6 +1,7 @@
 package org.irods.jargon.hive.external.indexer;
 
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.util.Properties;
 
@@ -11,6 +12,7 @@ import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
 import org.irods.jargon.core.pub.IRODSFileSystem;
 import org.irods.jargon.core.query.MetaDataAndDomainData;
 import org.irods.jargon.core.query.MetaDataAndDomainData.MetadataDomain;
+import org.irods.jargon.core.utils.IRODSUriUtils;
 import org.irods.jargon.datautils.visitor.AbstractIRODSVisitorInvoker;
 import org.irods.jargon.datautils.visitor.AbstractIRODSVisitorInvoker.VisitorDesiredAction;
 import org.irods.jargon.testutils.TestingPropertiesHelper;
@@ -22,6 +24,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ResIterator;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.vocabulary.RDFS;
 
 /**
  * @author Mike Conway - DICE (www.irods.org)
@@ -96,6 +101,10 @@ public class JenaHiveIndexerVisitorTest {
 		IRODSAccessObjectFactory irodsAccessObjectFactory = Mockito
 				.mock(IRODSAccessObjectFactory.class);
 
+		URI irodsURI = IRODSUriUtils
+				.buildURIForAnAccountWithNoUserInformationIncluded(
+						irodsAccount, testCollection);
+
 		AbstractIRODSVisitorInvoker<MetaDataAndDomainData, Model> invoker = Mockito
 				.mock(AbstractIRODSVisitorInvoker.class);
 		Mockito.when(invoker.getIrodsAccount()).thenReturn(irodsAccount);
@@ -116,6 +125,20 @@ public class JenaHiveIndexerVisitorTest {
 		Assert.assertEquals(VisitorDesiredAction.CONTINUE, action);
 		Model jenaModel = visitor.complete(invoker);
 		Assert.assertNotNull("null jena model", jenaModel);
+
+		ResIterator iter = jenaModel.listSubjectsWithProperty(RDFS.label);
+		Resource resc = null;
+		while (iter.hasNext()) {
+			resc = iter.nextResource();
+			break;
+		}
+
+		Assert.assertNotNull("no resc found with label", resc);
+
+		String uri = resc.getURI();
+		Assert.assertEquals("did not get uri of collection",
+				irodsURI.toString(), uri);
+		jenaModel.close();
 
 	}
 

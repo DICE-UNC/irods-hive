@@ -579,11 +579,7 @@ public class IRODSHiveServiceImpl extends AbstractIRODSTaggingService implements
 			throw new IllegalArgumentException("null objstat");
 		}
 
-		List<AVUQueryElement> avuQueryElements = new ArrayList<AVUQueryElement>(
-				1);
-		avuQueryElements.add(AVUQueryElement.instanceForValueQuery(
-				AVUQueryPart.UNITS, AVUQueryOperatorEnum.EQUAL,
-				VOCABULARY_AVU_UNIT));
+		List<AVUQueryElement> avuQueryElements = buildQueryToFindHiveMetadata();
 
 		List<MetaDataAndDomainData> metadata;
 		if (objStat.isSomeTypeOfCollection()) {
@@ -604,6 +600,23 @@ public class IRODSHiveServiceImpl extends AbstractIRODSTaggingService implements
 
 		}
 		return metadata;
+	}
+
+	/**
+	 * Handy method to build the metadata query used to find HIVE AVUs
+	 * 
+	 * @return <code>List</code> of {@link AVUQueryElements} that constitute the
+	 *         appropriate metadata query
+	 * @throws JargonQueryException
+	 */
+	public static List<AVUQueryElement> buildQueryToFindHiveMetadata()
+			throws JargonQueryException {
+		List<AVUQueryElement> avuQueryElements = new ArrayList<AVUQueryElement>(
+				1);
+		avuQueryElements.add(AVUQueryElement.instanceForValueQuery(
+				AVUQueryPart.UNITS, AVUQueryOperatorEnum.EQUAL,
+				VOCABULARY_AVU_UNIT));
+		return avuQueryElements;
 	}
 
 }

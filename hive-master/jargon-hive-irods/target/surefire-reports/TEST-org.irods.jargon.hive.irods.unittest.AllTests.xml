@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="4.552" errors="0" skipped="0" tests="21" name="org.irods.jargon.hive.irods.unittest.AllTests">
+<testsuite failures="0" time="5.375" errors="0" skipped="0" tests="21" name="org.irods.jargon.hive.irods.unittest.AllTests">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Libraries"/>
@@ -22,7 +22,7 @@
     <property name="basedir" value="/Users/mikeconway/projects/hive/irodshive/hive-master/jargon-hive-irods"/>
     <property name="java.endorsed.dirs" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/endorsed"/>
     <property name="os.arch" value="x86_64"/>
-    <property name="surefire.real.class.path" value="/var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/surefirebooter7170510952459235271.jar"/>
+    <property name="surefire.real.class.path" value="/var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/surefirebooter4222293778857457774.jar"/>
     <property name="java.io.tmpdir" value="/var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/"/>
     <property name="line.separator" value="
 "/>
@@ -46,7 +46,7 @@
     <property name="java.vm.specification.version" value="1.0"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home"/>
-    <property name="sun.java.command" value="/var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/surefirebooter7170510952459235271.jar /var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/surefire4239715712020717933tmp /var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/surefire8616093432018519321tmp"/>
+    <property name="sun.java.command" value="/var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/surefirebooter4222293778857457774.jar /var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/surefire5409626451247598734tmp /var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/surefire5694106919585013873tmp"/>
     <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="apple.awt.CToolkit"/>
@@ -65,25 +65,25 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0.675" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTerm"/>
-  <testcase time="0.115" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTermCollectionModifyURI"/>
-  <testcase time="0.005" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTermMissingCollection"/>
-  <testcase time="0.477" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTermDataObject"/>
-  <testcase time="0.224" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTermDataObjectAsModify"/>
-  <testcase time="0.094" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTermDataObjectSayItsACollection"/>
+  <testcase time="0.665" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTerm"/>
+  <testcase time="0.153" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTermCollectionModifyURI"/>
+  <testcase time="0.033" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTermMissingCollection"/>
+  <testcase time="0.191" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTermDataObject"/>
+  <testcase time="0.375" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTermDataObjectAsModify"/>
+  <testcase time="0.121" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTermDataObjectSayItsACollection"/>
   <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntry"/>
   <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryNullEntry"/>
-  <testcase time="0.006" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryNullVocab"/>
+  <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryNullVocab"/>
   <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryBlankVocab"/>
   <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryNullName"/>
   <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryBlankName"/>
-  <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryNullDomain"/>
-  <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryNullLabel"/>
-  <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryBlankLabel"/>
+  <testcase time="0" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryNullDomain"/>
+  <testcase time="0" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryNullLabel"/>
+  <testcase time="0" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryBlankLabel"/>
   <testcase time="0.002" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryNullURI"/>
-  <testcase time="0" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryBlankURI"/>
-  <testcase time="0.116" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testListVocabularyTermsForIRODSAbsolutePathCollection"/>
-  <testcase time="0.161" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testListVocabularyTermsForIRODSAbsolutePathDataObject"/>
-  <testcase time="0.093" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testDeleteVocabularyTermCollection"/>
-  <testcase time="0.181" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testDeleteVocabularyTermDataObject"/>
+  <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryBlankURI"/>
+  <testcase time="0.188" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testListVocabularyTermsForIRODSAbsolutePathCollection"/>
+  <testcase time="0.316" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testListVocabularyTermsForIRODSAbsolutePathDataObject"/>
+  <testcase time="0.155" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testDeleteVocabularyTermCollection"/>
+  <testcase time="0.234" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testDeleteVocabularyTermDataObject"/>
 </testsuite>

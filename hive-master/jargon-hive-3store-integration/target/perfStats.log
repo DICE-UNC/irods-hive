@@ -272,3 +272,35 @@ Performance Statistics   2013-03-19 11:18:50 - 2013-03-19 11:19:00
 Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
 retrieveObjectStatForPath                               35.5           8          63        27.5           2
 
+Performance Statistics   2013-03-19 11:31:40 - 2013-03-19 11:31:50
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+retrieveObjectStatForPath                               48.5           9          88        39.5           2
+
+Performance Statistics   2013-03-19 11:31:50 - 2013-03-19 11:32:00
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 11:32:00 - 2013-03-19 11:32:10
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 11:32:10 - 2013-03-19 11:32:20
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 11:32:20 - 2013-03-19 11:32:30
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 11:32:30 - 2013-03-19 11:32:40
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 11:33:00 - 2013-03-19 11:33:10
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 11:33:10 - 2013-03-19 11:33:20
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 11:33:20 - 2013-03-19 11:33:30
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+
+Performance Statistics   2013-03-19 11:38:20 - 2013-03-19 11:38:30
+Tag                                                  Avg(ms)         Min         Max     Std Dev       Count
+retrieveObjectStatForPath                              242.5           8         477       234.5           2
+
