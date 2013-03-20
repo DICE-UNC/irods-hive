@@ -105,13 +105,14 @@ public class JenaHiveIndexerVisitorTest {
 				.buildURIForAnAccountWithNoUserInformationIncluded(
 						irodsAccount, testCollection);
 
-		AbstractIRODSVisitorInvoker<MetaDataAndDomainData, Model> invoker = Mockito
+		@SuppressWarnings("unchecked")
+		AbstractIRODSVisitorInvoker<MetaDataAndDomainData> invoker = Mockito
 				.mock(AbstractIRODSVisitorInvoker.class);
 		Mockito.when(invoker.getIrodsAccount()).thenReturn(irodsAccount);
 		Mockito.when(invoker.getIrodsAccessObjectFactory()).thenReturn(
 				irodsAccessObjectFactory);
 
-		JenaHiveVisitorConfiguration configuration = new JenaHiveVisitorConfiguration();
+		JenaHiveConfiguration configuration = new JenaHiveConfiguration();
 		configuration.getVocabularyRDFFileNames().add(vocabFile.getPath());
 
 		JenaHiveIndexerVisitor visitor = new JenaHiveIndexerVisitor(
@@ -123,7 +124,7 @@ public class JenaHiveIndexerVisitorTest {
 
 		VisitorDesiredAction action = visitor.invoke(metadata, invoker);
 		Assert.assertEquals(VisitorDesiredAction.CONTINUE, action);
-		Model jenaModel = visitor.complete(invoker);
+		Model jenaModel = visitor.getJenaModel();
 		Assert.assertNotNull("null jena model", jenaModel);
 
 		ResIterator iter = jenaModel.listSubjectsWithProperty(RDFS.label);
@@ -142,22 +143,21 @@ public class JenaHiveIndexerVisitorTest {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvokeNullMetadata() throws Exception {
-		String testCollection = "/xxx/home/testSaveOrUpdateVocabularyTerm";
-
 		IRODSAccount irodsAccount = testingPropertiesHelper
 				.buildIRODSAccountFromTestProperties(testingProperties);
 		IRODSAccessObjectFactory irodsAccessObjectFactory = Mockito
 				.mock(IRODSAccessObjectFactory.class);
 
-		AbstractIRODSVisitorInvoker<MetaDataAndDomainData, Model> invoker = Mockito
+		AbstractIRODSVisitorInvoker<MetaDataAndDomainData> invoker = Mockito
 				.mock(AbstractIRODSVisitorInvoker.class);
 		Mockito.when(invoker.getIrodsAccount()).thenReturn(irodsAccount);
 		Mockito.when(invoker.getIrodsAccessObjectFactory()).thenReturn(
 				irodsAccessObjectFactory);
 
-		JenaHiveVisitorConfiguration configuration = new JenaHiveVisitorConfiguration();
+		JenaHiveConfiguration configuration = new JenaHiveConfiguration();
 
 		JenaHiveIndexerVisitor visitor = new JenaHiveIndexerVisitor(
 				configuration);
@@ -169,12 +169,7 @@ public class JenaHiveIndexerVisitorTest {
 	public void testInvokeNullInvoker() throws Exception {
 		String testCollection = "/xxx/home/testSaveOrUpdateVocabularyTerm";
 
-		IRODSAccount irodsAccount = testingPropertiesHelper
-				.buildIRODSAccountFromTestProperties(testingProperties);
-		IRODSAccessObjectFactory irodsAccessObjectFactory = Mockito
-				.mock(IRODSAccessObjectFactory.class);
-
-		JenaHiveVisitorConfiguration configuration = new JenaHiveVisitorConfiguration();
+		JenaHiveConfiguration configuration = new JenaHiveConfiguration();
 
 		JenaHiveIndexerVisitor visitor = new JenaHiveIndexerVisitor(
 				configuration);

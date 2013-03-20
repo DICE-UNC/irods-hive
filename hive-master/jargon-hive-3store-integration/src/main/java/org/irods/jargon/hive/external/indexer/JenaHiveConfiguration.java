@@ -11,7 +11,7 @@ import java.util.List;
  * @author Mike Conway - DICE (www.irods.org)
  * 
  */
-public class JenaHiveVisitorConfiguration {
+public class JenaHiveConfiguration {
 
 	/**
 	 * Determines jena model type
@@ -39,12 +39,19 @@ public class JenaHiveVisitorConfiguration {
 	 */
 	private String irodsRDFFileName = "";
 
+	/**
+	 * Configuration tells indexer service to close the Jena model automatically
+	 */
+	private boolean autoCloseJenaModel = false;
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("JenaHiveVisitorConfiguration");
 		sb.append("\n\t jenaModelType:");
 		sb.append(jenaModelType);
+		sb.append("\n\t autoCloseJenaModel:");
+		sb.append(autoCloseJenaModel);
 		sb.append("\n\t irodsRDFFileName:");
 		sb.append(irodsRDFFileName);
 
@@ -60,7 +67,7 @@ public class JenaHiveVisitorConfiguration {
 		return sb.toString();
 	}
 
-	public JenaHiveVisitorConfiguration() {
+	public JenaHiveConfiguration() {
 	}
 
 	public JenaModelType getJenaModelType() {
@@ -86,6 +93,21 @@ public class JenaHiveVisitorConfiguration {
 
 	public void setIrodsRDFFileName(final String irodsRDFFileName) {
 		this.irodsRDFFileName = irodsRDFFileName;
+	}
+
+	/**
+	 * @return the autoCloseJenaModel
+	 */
+	public boolean isAutoCloseJenaModel() {
+		return autoCloseJenaModel;
+	}
+
+	/**
+	 * @param autoCloseJenaModel
+	 *            the autoCloseJenaModel to set
+	 */
+	public void setAutoCloseJenaModel(final boolean autoCloseJenaModel) {
+		this.autoCloseJenaModel = autoCloseJenaModel;
 	}
 
 }

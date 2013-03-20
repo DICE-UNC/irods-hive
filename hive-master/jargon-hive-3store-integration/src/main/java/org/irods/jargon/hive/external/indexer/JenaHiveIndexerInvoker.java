@@ -18,8 +18,6 @@ import org.irods.jargon.hive.irods.IRODSHiveServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.hp.hpl.jena.rdf.model.Model;
-
 /**
  * Invoker class uses a jargon framework to query for HIVE vocabulary terms in
  * AVUs, and to process each of these terms, adding it to a Jena model.
@@ -31,7 +29,7 @@ import com.hp.hpl.jena.rdf.model.Model;
  * 
  */
 public class JenaHiveIndexerInvoker extends
-		AbstractIRODSVisitorInvoker<MetaDataAndDomainData, Model> {
+		AbstractIRODSVisitorInvoker<MetaDataAndDomainData> {
 
 	public static final Logger log = LoggerFactory
 			.getLogger(JenaHiveIndexerInvoker.class);
@@ -57,7 +55,7 @@ public class JenaHiveIndexerInvoker extends
 	public JenaHiveIndexerInvoker(
 			final IRODSAccessObjectFactory irodsAccessObjectFactory,
 			final IRODSAccount irodsAccount,
-			final AbstractIRODSVisitor<MetaDataAndDomainData, Model> visitor)
+			final AbstractIRODSVisitor<MetaDataAndDomainData> visitor)
 			throws JargonException {
 		super(irodsAccessObjectFactory, irodsAccount, visitor);
 
