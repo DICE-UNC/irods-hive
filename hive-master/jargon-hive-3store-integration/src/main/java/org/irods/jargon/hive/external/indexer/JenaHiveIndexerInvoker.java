@@ -258,16 +258,8 @@ public class JenaHiveIndexerInvoker extends
 		return collectionsProcessed;
 	}
 
-	public void setCollectionsProcessed(final int collectionsProcessed) {
-		this.collectionsProcessed = collectionsProcessed;
-	}
-
 	public int getDataObjectsProcessed() {
 		return dataObjectsProcessed;
-	}
-
-	public void setDataObjectsProcessed(final int dataObjectsProcessed) {
-		this.dataObjectsProcessed = dataObjectsProcessed;
 	}
 
 }

@@ -1,5 +1,6 @@
 package org.irods.jargon.hive.external.indexer.unittest;
 
+import org.irods.jargon.hive.external.indexer.JenaHiveIndexerInvokerTest;
 import org.irods.jargon.hive.external.indexer.JenaHiveIndexerVisitorTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -12,7 +13,8 @@ import org.junit.runners.Suite;
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ JenaHiveIndexerVisitorTest.class })
+@Suite.SuiteClasses({ JenaHiveIndexerVisitorTest.class,
+		JenaHiveIndexerInvokerTest.class })
 public class AllTests {
 
 }
