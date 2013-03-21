@@ -6,6 +6,7 @@ import java.net.URI;
 
 import org.irods.jargon.core.exception.JargonException;
 import org.irods.jargon.core.query.MetaDataAndDomainData;
+import org.irods.jargon.core.query.MetaDataAndDomainData.MetadataDomain;
 import org.irods.jargon.core.utils.IRODSUriUtils;
 import org.irods.jargon.datautils.visitor.AbstractIRODSVisitor;
 import org.irods.jargon.datautils.visitor.AbstractIRODSVisitorInvoker;
@@ -14,7 +15,12 @@ import org.irods.jargon.hive.external.indexer.JenaHiveConfiguration.JenaModelTyp
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.hp.hpl.jena.ontology.Individual;
+import com.hp.hpl.jena.ontology.OntClass;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
@@ -34,6 +40,9 @@ public class JenaHiveIndexerVisitor extends
 	private JenaHiveConfiguration jenaHiveVisitorConfiguration = null;
 	private com.hp.hpl.jena.rdf.model.Model jenaModel;
 	public static final String MODEL_KEY = "model";
+	private boolean ontConfigured = false;
+	private OntClass collOnt = null;
+	private OntClass dataOnt = null;
 
 	public static final Logger log = LoggerFactory
 			.getLogger(JenaHiveIndexerVisitor.class);
@@ -73,35 +82,75 @@ public class JenaHiveIndexerVisitor extends
 			/*
 			 * Note this will eventually be parameterized
 			 */
+
 			jenaModel = ModelFactory.createDefaultModel();
 
-			// load iRODS RDF
-
-			// load vocabulary files
-			for (String vocabFileName : jenaHiveVisitorConfiguration
-					.getVocabularyRDFFileNames()) {
-				InputStream in = FileManager.get().open(vocabFileName);
-				if (in == null) {
-					throw new IllegalArgumentException("File: " + vocabFileName
-							+ " not found");
-				}
-
-				// read the RDF/XML file
-				jenaModel.read(in, null);
-				try {
-					in.close();
-				} catch (IOException e) {
-					log.error("io exception closing stream, ignored");
-				}
-
-			}
-
+		} else if (jenaHiveVisitorConfiguration.getJenaModelType() == JenaModelType.MEMORY_ONT) {
+			log.info("building memory ont model...");
+			jenaModel = ModelFactory
+					.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
 		} else {
 			log.error("model type not currently supported:{}",
 					jenaHiveVisitorConfiguration.getJenaModelType());
 			throw new JargonException("unsupported jena model type");
 		}
 
+		// load iRODS RDF
+
+		if (!getJenaHiveVisitorConfiguration().isIrodsOntologyConfigured()) {
+
+			ontConfigured = false;
+			log.info("no ontology file for iRODS, skipped");
+		} else {
+			log.info("loading iRODS ontology file");
+			ontConfigured = true;
+			InputStream in = FileManager.get().open(
+					jenaHiveVisitorConfiguration.getIrodsRDFFileName());
+			if (in == null) {
+				log.error(
+						"not able to load ontology file for iRODS based on config:{}",
+						jenaHiveVisitorConfiguration);
+				throw new JargonException("unable to load ontology file");
+			}
+
+			// read the RDF/XML file
+			jenaModel.read(in, null);
+			try {
+				in.close();
+			} catch (IOException e) {
+				log.error("io exception closing stream, ignored");
+			}
+
+			OntModel ontModel = (OntModel) jenaModel;
+
+			com.hp.hpl.jena.rdf.model.Resource r = ontModel
+					.getResource(JenaHiveConfiguration.NS + "Collection");
+			collOnt = r.as(OntClass.class);
+
+			r = ontModel.getResource(JenaHiveConfiguration.NS + "DataObject");
+
+			dataOnt = r.as(OntClass.class);
+
+		}
+
+		// load vocabulary files
+		for (String vocabFileName : jenaHiveVisitorConfiguration
+				.getVocabularyRDFFileNames()) {
+			InputStream in = FileManager.get().open(vocabFileName);
+			if (in == null) {
+				throw new IllegalArgumentException("File: " + vocabFileName
+						+ " not found");
+			}
+
+			// read the RDF/XML file
+			jenaModel.read(in, null);
+			try {
+				in.close();
+			} catch (IOException e) {
+				log.error("io exception closing stream, ignored");
+			}
+
+		}
 	}
 
 	/**
@@ -143,7 +192,32 @@ public class JenaHiveIndexerVisitor extends
 				metadata.getAvuAttribute());
 		log.info("created resource in model");
 
+		if (!ontConfigured) {
+			return VisitorDesiredAction.CONTINUE;
+		}
+
+		/*
+		 * If ontConfigured is true, and I have an irods ontology file, generate
+		 * additional iRODS statements
+		 */
+
+		log.info("generating additional ontology statements");
+		Individual indiv;
+		log.info("cast to ontmodel");
+		OntModel ontModel = (OntModel) jenaModel;
+		log.info("cast done, creating indiv...");
+		if (metadata.getMetadataDomain() == MetadataDomain.COLLECTION) {
+			indiv = ontModel.createIndividual(irodsURI.toString(), collOnt);
+		} else {
+			indiv = ontModel.createIndividual(irodsURI.toString(), dataOnt);
+		}
+		log.info("indiv done create prop");
+		Property absPathProp = ontModel.getProperty(JenaHiveConfiguration.NS,
+				"absolutePath");
+		indiv.addProperty(absPathProp, metadata.getDomainObjectUniqueName());
+
 		return VisitorDesiredAction.CONTINUE;
+
 	}
 
 	/**
@@ -152,9 +226,7 @@ public class JenaHiveIndexerVisitor extends
 	 */
 	@Override
 	public void complete() throws JargonException {
-
 		log.info("complete()");
-
 	}
 
 	public JenaHiveConfiguration getJenaHiveVisitorConfiguration() {

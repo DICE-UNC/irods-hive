@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="5.375" errors="0" skipped="0" tests="21" name="org.irods.jargon.hive.irods.unittest.AllTests">
+<testsuite failures="0" time="2.436" errors="1" skipped="0" tests="1" name="org.irods.jargon.hive.irods.unittest.AllTests">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Libraries"/>
@@ -22,7 +22,7 @@
     <property name="basedir" value="/Users/mikeconway/projects/hive/irodshive/hive-master/jargon-hive-irods"/>
     <property name="java.endorsed.dirs" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/endorsed"/>
     <property name="os.arch" value="x86_64"/>
-    <property name="surefire.real.class.path" value="/var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/surefirebooter4222293778857457774.jar"/>
+    <property name="surefire.real.class.path" value="/var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/surefirebooter8217979666083439966.jar"/>
     <property name="java.io.tmpdir" value="/var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/"/>
     <property name="line.separator" value="
 "/>
@@ -35,7 +35,6 @@
     <property name="java.class.version" value="50.0"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="os.version" value="10.8.2"/>
-    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="user.home" value="/Users/mikeconway"/>
     <property name="user.timezone" value="America/New_York"/>
     <property name="java.awt.printerjob" value="apple.awt.CPrinterJob"/>
@@ -46,7 +45,7 @@
     <property name="java.vm.specification.version" value="1.0"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home"/>
-    <property name="sun.java.command" value="/var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/surefirebooter4222293778857457774.jar /var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/surefire5409626451247598734tmp /var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/surefire5694106919585013873tmp"/>
+    <property name="sun.java.command" value="/var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/surefirebooter8217979666083439966.jar /var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/surefire4818903818059711627tmp /var/folders/_f/hdswt3zx31nb6ztnx7zhqg1h0000gn/T/surefire1001060509981218521tmp"/>
     <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="apple.awt.CToolkit"/>
@@ -61,29 +60,39 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="mrj.version" value="1070.1.6.0_37-434"/>
-    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
-    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0.665" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTerm"/>
-  <testcase time="0.153" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTermCollectionModifyURI"/>
-  <testcase time="0.033" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTermMissingCollection"/>
-  <testcase time="0.191" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTermDataObject"/>
-  <testcase time="0.375" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTermDataObjectAsModify"/>
-  <testcase time="0.121" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testSaveOrUpdateVocabularyTermDataObjectSayItsACollection"/>
-  <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntry"/>
-  <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryNullEntry"/>
-  <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryNullVocab"/>
-  <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryBlankVocab"/>
-  <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryNullName"/>
-  <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryBlankName"/>
-  <testcase time="0" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryNullDomain"/>
-  <testcase time="0" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryNullLabel"/>
-  <testcase time="0" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryBlankLabel"/>
-  <testcase time="0.002" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryNullURI"/>
-  <testcase time="0.001" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testValidateHiveVocabularyEntryBlankURI"/>
-  <testcase time="0.188" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testListVocabularyTermsForIRODSAbsolutePathCollection"/>
-  <testcase time="0.316" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testListVocabularyTermsForIRODSAbsolutePathDataObject"/>
-  <testcase time="0.155" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testDeleteVocabularyTermCollection"/>
-  <testcase time="0.234" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="testDeleteVocabularyTermDataObject"/>
+  <testcase time="0" classname="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest" name="org.irods.jargon.hive.irods.IRODSHiveServiceImplTest">
+    <error message="unable to load agrovoc" type="java.lang.Exception">java.lang.Exception: unable to load agrovoc
+	at org.irods.jargon.hive.irods.IRODSHiveServiceImplTest.setUpBeforeClass(IRODSHiveServiceImplTest.java:44)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:27)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:24)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:59)
+	at org.apache.maven.surefire.suite.AbstractDirectoryTestSuite.executeTestSet(AbstractDirectoryTestSuite.java:115)
+	at org.apache.maven.surefire.suite.AbstractDirectoryTestSuite.execute(AbstractDirectoryTestSuite.java:102)
+	at org.apache.maven.surefire.Surefire.run(Surefire.java:180)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.apache.maven.surefire.booter.SurefireBooter.runSuitesInProcess(SurefireBooter.java:350)
+	at org.apache.maven.surefire.booter.SurefireBooter.main(SurefireBooter.java:1021)
+</error>
+  </testcase>
 </testsuite>

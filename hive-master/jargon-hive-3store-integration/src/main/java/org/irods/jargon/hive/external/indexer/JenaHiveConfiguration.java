@@ -13,6 +13,9 @@ import java.util.List;
  */
 public class JenaHiveConfiguration {
 
+	public static String SOURCE = "http://www.irods.org/ontologies/2013/2/iRODS.owl";
+	public static String NS = SOURCE + "#";
+
 	/**
 	 * Determines jena model type
 	 * 
@@ -20,7 +23,7 @@ public class JenaHiveConfiguration {
 	 * 
 	 */
 	public enum JenaModelType {
-		MEMORY
+		MEMORY, MEMORY_ONT
 	}
 
 	/**
@@ -35,7 +38,9 @@ public class JenaHiveConfiguration {
 	private List<String> vocabularyRDFFileNames = new ArrayList<String>();
 
 	/**
-	 * File path to iRODS schema file, this is loaded into the triple store
+	 * File path to iRODS schema file, this is loaded into the triple store.
+	 * NOTE: the presence of the schema file will cause additional RDF
+	 * statements to be generated based on the available metadata
 	 */
 	private String irodsRDFFileName = "";
 
@@ -108,6 +113,21 @@ public class JenaHiveConfiguration {
 	 */
 	public void setAutoCloseJenaModel(final boolean autoCloseJenaModel) {
 		this.autoCloseJenaModel = autoCloseJenaModel;
+	}
+
+	/**
+	 * See if an iRODS ontology is configured, if so, statements generated will
+	 * also utilize the given ontology to add additional catalog information
+	 * 
+	 * @return <code>boolean</code> of <code>true</code> if an ontology file is
+	 *         present, and ontologies should be generated
+	 */
+	public boolean isIrodsOntologyConfigured() {
+		if (irodsRDFFileName == null || irodsRDFFileName.isEmpty()) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 }
