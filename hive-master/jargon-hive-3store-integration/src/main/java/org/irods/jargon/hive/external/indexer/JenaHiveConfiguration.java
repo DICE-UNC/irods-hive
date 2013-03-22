@@ -23,13 +23,13 @@ public class JenaHiveConfiguration {
 	 * 
 	 */
 	public enum JenaModelType {
-		MEMORY, MEMORY_ONT
+		MEMORY_ONT
 	}
 
 	/**
 	 * Type of Jena model to build
 	 */
-	private JenaModelType jenaModelType = JenaModelType.MEMORY;
+	private JenaModelType jenaModelType = JenaModelType.MEMORY_ONT;
 
 	/**
 	 * List of vocabulary file paths to load, this is loaded into the triple
@@ -39,8 +39,6 @@ public class JenaHiveConfiguration {
 
 	/**
 	 * File path to iRODS schema file, this is loaded into the triple store.
-	 * NOTE: the presence of the schema file will cause additional RDF
-	 * statements to be generated based on the available metadata
 	 */
 	private String irodsRDFFileName = "";
 
@@ -113,21 +111,6 @@ public class JenaHiveConfiguration {
 	 */
 	public void setAutoCloseJenaModel(final boolean autoCloseJenaModel) {
 		this.autoCloseJenaModel = autoCloseJenaModel;
-	}
-
-	/**
-	 * See if an iRODS ontology is configured, if so, statements generated will
-	 * also utilize the given ontology to add additional catalog information
-	 * 
-	 * @return <code>boolean</code> of <code>true</code> if an ontology file is
-	 *         present, and ontologies should be generated
-	 */
-	public boolean isIrodsOntologyConfigured() {
-		if (irodsRDFFileName == null || irodsRDFFileName.isEmpty()) {
-			return false;
-		} else {
-			return true;
-		}
 	}
 
 }

@@ -29,6 +29,7 @@ public class JenaHiveIndexerServiceImplTest {
 	private static org.irods.jargon.testutils.IRODSTestSetupUtilities irodsTestSetupUtilities = null;
 	private static IRODSFileSystem irodsFileSystem = null;
 	private static File jenaVocabFile = null;
+	private static File ontFile = null;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -53,6 +54,20 @@ public class JenaHiveIndexerServiceImplTest {
 
 		if (!jenaVocabFile.exists()) {
 			throw new Exception("unable to load agrovoc test vocabulary");
+		}
+
+		URL ont = loader.getResource("irodsSchema.xml");
+
+		if (ont == null) {
+			throw new Exception("unable to load ont");
+		}
+
+		String ontFileName = ont.getFile();
+
+		ontFile = new File(ontFileName);
+
+		if (!ontFile.exists()) {
+			throw new Exception("unable to load irods ontology");
 		}
 
 	}
@@ -164,6 +179,7 @@ public class JenaHiveIndexerServiceImplTest {
 		jenaHiveConfiguration.setAutoCloseJenaModel(false);
 		JenaHiveConfiguration configuration = new JenaHiveConfiguration();
 		configuration.getVocabularyRDFFileNames().add(jenaVocabFile.getPath());
+		configuration.setIrodsRDFFileName(ontFile.getPath());
 
 		JenaHiveIndexer jenaHiveIndexerService = new JenaHiveIndexerServiceImpl(
 				irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount,

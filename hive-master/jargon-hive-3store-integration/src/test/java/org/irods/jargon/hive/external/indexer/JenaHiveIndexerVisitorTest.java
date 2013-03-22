@@ -24,9 +24,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ResIterator;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.vocabulary.RDFS;
 
 /**
  * @author Mike Conway - DICE (www.irods.org)
@@ -40,6 +37,7 @@ public class JenaHiveIndexerVisitorTest {
 	private static org.irods.jargon.testutils.IRODSTestSetupUtilities irodsTestSetupUtilities = null;
 	private static IRODSFileSystem irodsFileSystem = null;
 	private static File vocabFile = null;
+	private static File ontFile = null;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -64,6 +62,20 @@ public class JenaHiveIndexerVisitorTest {
 
 		if (!vocabFile.exists()) {
 			throw new Exception("unable to load agrovoc test vocabulary");
+		}
+
+		URL ont = loader.getResource("irodsSchema.xml");
+
+		if (ont == null) {
+			throw new Exception("unable to load ont");
+		}
+
+		String ontFileName = ont.getFile();
+
+		ontFile = new File(ontFileName);
+
+		if (!ontFile.exists()) {
+			throw new Exception("unable to load irods ontology");
 		}
 
 	}
@@ -114,6 +126,7 @@ public class JenaHiveIndexerVisitorTest {
 
 		JenaHiveConfiguration configuration = new JenaHiveConfiguration();
 		configuration.getVocabularyRDFFileNames().add(vocabFile.getPath());
+		configuration.setIrodsRDFFileName(ontFile.getPath());
 
 		JenaHiveIndexerVisitor visitor = new JenaHiveIndexerVisitor(
 				configuration);
@@ -126,19 +139,6 @@ public class JenaHiveIndexerVisitorTest {
 		Assert.assertEquals(VisitorDesiredAction.CONTINUE, action);
 		Model jenaModel = visitor.getJenaModel();
 		Assert.assertNotNull("null jena model", jenaModel);
-
-		ResIterator iter = jenaModel.listSubjectsWithProperty(RDFS.label);
-		Resource resc = null;
-		while (iter.hasNext()) {
-			resc = iter.nextResource();
-			break;
-		}
-
-		Assert.assertNotNull("no resc found with label", resc);
-
-		String uri = resc.getURI();
-		Assert.assertEquals("did not get uri of collection",
-				irodsURI.toString(), uri);
 		jenaModel.close();
 
 	}
@@ -158,6 +158,8 @@ public class JenaHiveIndexerVisitorTest {
 				irodsAccessObjectFactory);
 
 		JenaHiveConfiguration configuration = new JenaHiveConfiguration();
+		configuration.getVocabularyRDFFileNames().add(vocabFile.getPath());
+		configuration.setIrodsRDFFileName(ontFile.getPath());
 
 		JenaHiveIndexerVisitor visitor = new JenaHiveIndexerVisitor(
 				configuration);
@@ -170,6 +172,8 @@ public class JenaHiveIndexerVisitorTest {
 		String testCollection = "/xxx/home/testSaveOrUpdateVocabularyTerm";
 
 		JenaHiveConfiguration configuration = new JenaHiveConfiguration();
+		configuration.getVocabularyRDFFileNames().add(vocabFile.getPath());
+		configuration.setIrodsRDFFileName(ontFile.getPath());
 
 		JenaHiveIndexerVisitor visitor = new JenaHiveIndexerVisitor(
 				configuration);

@@ -54,6 +54,16 @@
     
 
 
+    <!-- http://www.irods.org/ontologies/2013/2/iRODS.owl#correspondingConcept -->
+
+    <owl:ObjectProperty rdf:about="http://www.irods.org/ontologies/2013/2/iRODS.owl#correspondingConcept">
+        <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+        <rdfs:comment>corresponding SKOS concept</rdfs:comment>
+        <rdfs:domain rdf:resource="http://www.irods.org/ontologies/2013/2/iRODS.owl#IrodsDomainThing"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.irods.org/ontologies/2013/2/iRODS.owl#hasChild -->
 
     <owl:ObjectProperty rdf:about="http://www.irods.org/ontologies/2013/2/iRODS.owl#hasChild">

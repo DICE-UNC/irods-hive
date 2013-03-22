@@ -22,7 +22,6 @@ import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.util.FileManager;
-import com.hp.hpl.jena.vocabulary.RDFS;
 
 /**
  * 'strategy' type object that will be called for each item in a query of HIVE
@@ -38,9 +37,8 @@ public class JenaHiveIndexerVisitor extends
 		AbstractIRODSVisitor<MetaDataAndDomainData> {
 
 	private JenaHiveConfiguration jenaHiveVisitorConfiguration = null;
-	private com.hp.hpl.jena.rdf.model.Model jenaModel;
+	private OntModel jenaModel;
 	public static final String MODEL_KEY = "model";
-	private boolean ontConfigured = false;
 	private OntClass collOnt = null;
 	private OntClass dataOnt = null;
 
@@ -76,16 +74,7 @@ public class JenaHiveIndexerVisitor extends
 		log.info("initializeJena()");
 		checkContracts();
 
-		if (jenaHiveVisitorConfiguration.getJenaModelType() == JenaModelType.MEMORY) {
-			log.info("building memory model...");
-
-			/*
-			 * Note this will eventually be parameterized
-			 */
-
-			jenaModel = ModelFactory.createDefaultModel();
-
-		} else if (jenaHiveVisitorConfiguration.getJenaModelType() == JenaModelType.MEMORY_ONT) {
+		if (jenaHiveVisitorConfiguration.getJenaModelType() == JenaModelType.MEMORY_ONT) {
 			log.info("building memory ont model...");
 			jenaModel = ModelFactory
 					.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
@@ -97,46 +86,36 @@ public class JenaHiveIndexerVisitor extends
 
 		// load iRODS RDF
 
-		if (!getJenaHiveVisitorConfiguration().isIrodsOntologyConfigured()) {
-
-			ontConfigured = false;
-			log.info("no ontology file for iRODS, skipped");
-		} else {
-			log.info("loading iRODS ontology file");
-			ontConfigured = true;
-			InputStream in = FileManager.get().open(
-					jenaHiveVisitorConfiguration.getIrodsRDFFileName());
-			if (in == null) {
-				log.error(
-						"not able to load ontology file for iRODS based on config:{}",
-						jenaHiveVisitorConfiguration);
-				throw new JargonException("unable to load ontology file");
-			}
-
-			// read the RDF/XML file
-			jenaModel.read(in, null);
-			try {
-				in.close();
-			} catch (IOException e) {
-				log.error("io exception closing stream, ignored");
-			}
-
-			OntModel ontModel = (OntModel) jenaModel;
-
-			com.hp.hpl.jena.rdf.model.Resource r = ontModel
-					.getResource(JenaHiveConfiguration.NS + "Collection");
-			collOnt = r.as(OntClass.class);
-
-			r = ontModel.getResource(JenaHiveConfiguration.NS + "DataObject");
-
-			dataOnt = r.as(OntClass.class);
-
+		log.info("loading iRODS ontology file");
+		InputStream in = FileManager.get().open(
+				jenaHiveVisitorConfiguration.getIrodsRDFFileName());
+		if (in == null) {
+			log.error(
+					"not able to load ontology file for iRODS based on config:{}",
+					jenaHiveVisitorConfiguration);
+			throw new JargonException("unable to load ontology file");
 		}
+
+		// read the RDF/XML file
+		jenaModel.read(in, null);
+		try {
+			in.close();
+		} catch (IOException e) {
+			log.error("io exception closing stream, ignored");
+		}
+
+		com.hp.hpl.jena.rdf.model.Resource r = jenaModel
+				.getResource(JenaHiveConfiguration.NS + "Collection");
+		collOnt = r.as(OntClass.class);
+
+		r = jenaModel.getResource(JenaHiveConfiguration.NS + "DataObject");
+
+		dataOnt = r.as(OntClass.class);
 
 		// load vocabulary files
 		for (String vocabFileName : jenaHiveVisitorConfiguration
 				.getVocabularyRDFFileNames()) {
-			InputStream in = FileManager.get().open(vocabFileName);
+			in = FileManager.get().open(vocabFileName);
 			if (in == null) {
 				throw new IllegalArgumentException("File: " + vocabFileName
 						+ " not found");
@@ -149,8 +128,8 @@ public class JenaHiveIndexerVisitor extends
 			} catch (IOException e) {
 				log.error("io exception closing stream, ignored");
 			}
-
 		}
+
 	}
 
 	/**
@@ -187,34 +166,24 @@ public class JenaHiveIndexerVisitor extends
 						metadata.getDomainObjectUniqueName());
 		log.info("URI:{}", irodsURI);
 
-		// build the triple
-		jenaModel.createResource(irodsURI.toString()).addProperty(RDFS.label,
-				metadata.getAvuAttribute());
-		log.info("created resource in model");
-
-		if (!ontConfigured) {
-			return VisitorDesiredAction.CONTINUE;
-		}
-
-		/*
-		 * If ontConfigured is true, and I have an irods ontology file, generate
-		 * additional iRODS statements
-		 */
-
-		log.info("generating additional ontology statements");
+		log.info("generating  ontology statements");
 		Individual indiv;
-		log.info("cast to ontmodel");
-		OntModel ontModel = (OntModel) jenaModel;
-		log.info("cast done, creating indiv...");
+
+		log.info("creating indiv...");
 		if (metadata.getMetadataDomain() == MetadataDomain.COLLECTION) {
-			indiv = ontModel.createIndividual(irodsURI.toString(), collOnt);
+			indiv = jenaModel.createIndividual(irodsURI.toString(), collOnt);
 		} else {
-			indiv = ontModel.createIndividual(irodsURI.toString(), dataOnt);
+			indiv = jenaModel.createIndividual(irodsURI.toString(), dataOnt);
 		}
 		log.info("indiv done create prop");
-		Property absPathProp = ontModel.getProperty(JenaHiveConfiguration.NS,
+		Property absPathProp = jenaModel.getProperty(JenaHiveConfiguration.NS,
 				"absolutePath");
 		indiv.addProperty(absPathProp, metadata.getDomainObjectUniqueName());
+		Property conceptProp = jenaModel.getProperty(JenaHiveConfiguration.NS,
+				"correspondingConcept");
+		com.hp.hpl.jena.rdf.model.Resource concept = jenaModel
+				.createResource(metadata.getAvuAttribute());
+		indiv.addProperty(conceptProp, concept);
 
 		return VisitorDesiredAction.CONTINUE;
 
