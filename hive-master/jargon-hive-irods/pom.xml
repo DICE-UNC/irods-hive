@@ -25,11 +25,12 @@
 			<groupId>org.irods.jargon</groupId>
 			<artifactId>jargon-user-tagging</artifactId>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>org.irods.jargon</groupId>
 			<artifactId>jargon-hive</artifactId>
 			<version>${project.version}</version>
-		</dependency>
+		</dependency> -->
 		
 	</dependencies>
 	<build>

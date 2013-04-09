@@ -121,11 +121,31 @@
     
 
 
+    <!-- http://www.irods.org/ontologies/2013/2/iRODS.owl#hasDownloadLocation -->
+
+    <owl:DatatypeProperty rdf:about="http://www.irods.org/ontologies/2013/2/iRODS.owl#hasDownloadLocation">
+        <rdfs:comment>indicates a location (URL) from which the given data can be downloaded</rdfs:comment>
+        <rdfs:domain rdf:resource="http://www.irods.org/ontologies/2013/2/iRODS.owl#DataObject"/>
+        <rdfs:range rdf:resource="&xsd;anyURI"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://www.irods.org/ontologies/2013/2/iRODS.owl#hasSizeInBytes -->
 
     <owl:DatatypeProperty rdf:about="http://www.irods.org/ontologies/2013/2/iRODS.owl#hasSizeInBytes">
         <rdfs:domain rdf:resource="http://www.irods.org/ontologies/2013/2/iRODS.owl#DataObject"/>
         <rdfs:range rdf:resource="&xsd;long"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.irods.org/ontologies/2013/2/iRODS.owl#hasWebInformationLink -->
+
+    <owl:DatatypeProperty rdf:about="http://www.irods.org/ontologies/2013/2/iRODS.owl#hasWebInformationLink">
+        <rdfs:comment>Represents a link to the system data via iDrop or other viewer, as opposed to a plain download link, this represents a human interface view in a browser</rdfs:comment>
+        <rdfs:domain rdf:resource="http://www.irods.org/ontologies/2013/2/iRODS.owl#IrodsFileSystem"/>
+        <rdfs:range rdf:resource="&xsd;anyURI"/>
     </owl:DatatypeProperty>
     
 
@@ -244,7 +264,7 @@
     <rdf:Description>
         <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.irods.org/ontologies/2013/2/iRODS.owl#IrodsFileSystem"/>
+            <rdf:Description rdf:about="http://www.irods.org/ontologies/2013/2/iRODS.owl#Collection"/>
             <rdf:Description rdf:about="http://www.irods.org/ontologies/2013/2/iRODS.owl#Resource"/>
             <rdf:Description rdf:about="http://www.irods.org/ontologies/2013/2/iRODS.owl#User"/>
             <rdf:Description rdf:about="http://www.irods.org/ontologies/2013/2/iRODS.owl#Zone"/>
@@ -253,7 +273,7 @@
     <rdf:Description>
         <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.irods.org/ontologies/2013/2/iRODS.owl#Collection"/>
+            <rdf:Description rdf:about="http://www.irods.org/ontologies/2013/2/iRODS.owl#IrodsFileSystem"/>
             <rdf:Description rdf:about="http://www.irods.org/ontologies/2013/2/iRODS.owl#Resource"/>
             <rdf:Description rdf:about="http://www.irods.org/ontologies/2013/2/iRODS.owl#User"/>
             <rdf:Description rdf:about="http://www.irods.org/ontologies/2013/2/iRODS.owl#Zone"/>

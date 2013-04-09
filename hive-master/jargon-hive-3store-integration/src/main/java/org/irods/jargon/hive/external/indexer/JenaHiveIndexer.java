@@ -1,6 +1,7 @@
 package org.irods.jargon.hive.external.indexer;
 
 import org.irods.jargon.core.exception.JargonException;
+import org.irods.jargon.hive.external.utils.JenaHiveConfiguration;
 
 import com.hp.hpl.jena.rdf.model.Model;
 

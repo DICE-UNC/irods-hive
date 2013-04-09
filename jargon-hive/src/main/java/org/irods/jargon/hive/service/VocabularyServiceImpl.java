@@ -44,7 +44,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 	private final int DEFAULT_MIN_OCCUR = 2;
 
 	@Override
-	public void setHiveContainer(HiveContainer hiveContainer) {
+	public void setHiveContainer(final HiveContainer hiveContainer) {
 		this.hiveContainer = hiveContainer;
 	}
 
@@ -78,7 +78,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 * .lang.String)
 	 */
 	@Override
-	public long getNumberOfConcept(String vocabularyName)
+	public long getNumberOfConcept(final String vocabularyName)
 			throws VocabularyNotFoundException {
 		SKOSScheme vocab = getSkosServer().getSKOSSchemas().get(vocabularyName);
 		if (vocab == null) {
@@ -96,7 +96,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 * .lang.String)
 	 */
 	@Override
-	public long getNumerOfRelations(String vocabularyName) {
+	public long getNumerOfRelations(final String vocabularyName) {
 		return getSkosServer().getSKOSSchemas().get(vocabularyName)
 				.getNumberOfRelations();
 	}
@@ -109,7 +109,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 * .lang.String)
 	 */
 	@Override
-	public Date getLastUpdateDate(String vocabularyName) {
+	public Date getLastUpdateDate(final String vocabularyName) {
 		return this.getSkosServer().getSKOSSchemas().get(vocabularyName)
 				.getLastUpdateDate();
 	}
@@ -229,8 +229,9 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 * boolean)
 	 */
 	@Override
-	public ConceptProxy getConceptProxyForTopOfVocabulary(String vocabulary,
-			String letter, boolean brief) throws VocabularyNotFoundException {
+	public ConceptProxy getConceptProxyForTopOfVocabulary(
+			final String vocabulary, String letter, final boolean brief)
+			throws VocabularyNotFoundException {
 		logger.info("getConceptProxyForTopOfVocabulary()");
 
 		if (vocabulary == null || vocabulary.isEmpty()) {
@@ -270,8 +271,9 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 * .lang.String, java.lang.String, boolean)
 	 */
 	@Override
-	public List<ConceptProxy> getSubTopConcept(String vocabulary,
-			String letter, boolean brief) throws VocabularyNotFoundException {
+	public List<ConceptProxy> getSubTopConcept(final String vocabulary,
+			final String letter, final boolean brief)
+			throws VocabularyNotFoundException {
 		TreeMap<String, SKOSScheme> vocabularies = this.getSkosServer()
 				.getSKOSSchemas();
 		SKOSScheme targetVoc = vocabularies.get(vocabulary);
@@ -295,8 +297,9 @@ public class VocabularyServiceImpl implements VocabularyService {
 								q.getLocalPart());
 				int numberOfChildren = concept.getNumberOfChildren();
 
-				if (numberOfChildren == 0)
+				if (numberOfChildren == 0) {
 					isleaf = true;
+				}
 			}
 			String uri = q.getNamespaceURI();
 			String localPart = q.getLocalPart();
@@ -318,8 +321,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 */
 
 	@Override
-	public List<ConceptProxy> getChildConcept(String nameSpaceURI,
-			String localPart) {
+	public List<ConceptProxy> getChildConcept(final String nameSpaceURI,
+			final String localPart) {
 		SKOSSearcher searcher = this.getSkosServer().getSKOSSearcher();
 		TreeMap<String, QName> children = searcher.searchChildrenByURI(
 				nameSpaceURI, localPart);
@@ -336,8 +339,9 @@ public class VocabularyServiceImpl implements VocabularyService {
 						.searchConceptByURI(namespace, localPart);
 				int numberOfChildren = concept.getNumberOfChildren();
 				boolean isleaf = true;
-				if (numberOfChildren != 0)
+				if (numberOfChildren != 0) {
 					isleaf = false;
+				}
 				String URI = namespace + " " + lp;
 				ConceptProxy cpr = new ConceptProxy(origin, preLabel, URI,
 						isleaf);
@@ -356,8 +360,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 */
 
 	@Override
-	public List<ConceptProxy> searchConcept(String keyword,
-			List<String> openedVocabularies) {
+	public List<ConceptProxy> searchConcept(final String keyword,
+			final List<String> openedVocabularies) {
 
 		// maintain the rank list
 		SKOSSearcher searcher = this.getSkosServer().getSKOSSearcher();
@@ -383,7 +387,6 @@ public class VocabularyServiceImpl implements VocabularyService {
 
 				}
 			}
-
 		}
 		return rankedlist;
 	}
@@ -396,7 +399,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 * lang.String, java.lang.String)
 	 */
 	@Override
-	public ConceptProxy getConceptByURI(String namespaceURI, String localPart) {
+	public ConceptProxy getConceptByURI(final String namespaceURI,
+			final String localPart) {
 		SKOSSearcher searcher = this.getSkosServer().getSKOSSearcher();
 		SKOSConcept concept = searcher.searchConceptByURI(namespaceURI,
 				localPart);
@@ -456,8 +460,9 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 * java.util.List, int, java.lang.String)
 	 */
 	@Override
-	public List<ConceptProxy> getTags(String input,
-			List<String> openedVocabularies, int numTerms, String algorithm) {
+	public List<ConceptProxy> getTags(final String input,
+			final List<String> openedVocabularies, final int numTerms,
+			final String algorithm) {
 		logger.debug("getTags for " + input);
 
 		SKOSTagger tagger = this.getSkosServer().getSKOSTagger(algorithm);
@@ -489,9 +494,9 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 * java.util.List, int, int, java.lang.String)
 	 */
 	@Override
-	public List<ConceptProxy> getTags(String input,
-			List<String> openedVocabularies, int numTerms, int minPhraseOccur,
-			String algorithm) {
+	public List<ConceptProxy> getTags(final String input,
+			final List<String> openedVocabularies, final int numTerms,
+			final int minPhraseOccur, final String algorithm) {
 		SKOSTagger tagger = this.getSkosServer().getSKOSTagger(algorithm);
 		List<SKOSConcept> candidates = tagger.getTags(input,
 				openedVocabularies, this.getSKOSSearcher(), numTerms,
@@ -529,7 +534,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 * .Map)
 	 */
 	@Override
-	public Map<String, String> getStringMap(Map<String, QName> qnameMap) {
+	public Map<String, String> getStringMap(final Map<String, QName> qnameMap) {
 		Map<String, String> stringMap = new HashMap<String, String>();
 		for (String key : qnameMap.keySet()) {
 			QName value = qnameMap.get(key);
@@ -546,9 +551,10 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 * java.util.List, int, int, boolean, int, java.lang.String)
 	 */
 	@Override
-	public List<ConceptProxy> getTags(URL url, List<String> openedVocabularies,
-			int maxHops, int numTerms, boolean diff, int minOccur,
-			String algorithm) {
+	public List<ConceptProxy> getTags(final URL url,
+			final List<String> openedVocabularies, final int maxHops,
+			final int numTerms, final boolean diff, final int minOccur,
+			final String algorithm) {
 		SKOSTagger tagger = this.getSkosServer().getSKOSTagger(algorithm);
 		List<SKOSConcept> candidates = tagger.getTags(url, openedVocabularies,
 				this.getSKOSSearcher(), maxHops, numTerms, diff, minOccur);
@@ -575,9 +581,9 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 * .String, java.util.List, int, int, java.lang.String)
 	 */
 	@Override
-	public List<ConceptNode> getTagsAsTree(String text,
-			List<String> openedVocabularies, int maxHops, int numTerms,
-			String algorithm) {
+	public List<ConceptNode> getTagsAsTree(final String text,
+			final List<String> openedVocabularies, final int maxHops,
+			final int numTerms, final String algorithm) {
 		SKOSTagger tagger = this.getSkosServer().getSKOSTagger(algorithm);
 		List<ConceptNode> tree = tagger.getTagsAsTree(text, openedVocabularies,
 				this.getSKOSSearcher(), maxHops, numTerms);
@@ -592,7 +598,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 * lang.String)
 	 */
 	@Override
-	public ConceptProxy getFirstConcept(String vocabulary) {
+	public ConceptProxy getFirstConcept(final String vocabulary) {
 		TreeMap<String, SKOSScheme> vocabularyMap = this.getSkosServer()
 				.getSKOSSchemas();
 		SKOSScheme voc = vocabularyMap.get(vocabulary.toLowerCase());
@@ -611,8 +617,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 * lang.String, java.lang.String, int)
 	 */
 	@Override
-	public List<AutocompleteTerm> suggestTermsFor(String vocabulary,
-			String str, int numTerms) throws Exception {
+	public List<AutocompleteTerm> suggestTermsFor(final String vocabulary,
+			final String str, final int numTerms) throws Exception {
 		TreeMap<String, SKOSScheme> vocabularyMap = this.getSkosServer()
 				.getSKOSSchemas();
 		SKOSScheme voc = vocabularyMap.get(vocabulary.toLowerCase());

@@ -1,28 +1,32 @@
-package org.irods.jargon.hive.external.indexer;
+package org.irods.jargon.hive.external.utils;
 
-import org.irods.jargon.hive.external.utils.HiveException;
+import org.irods.jargon.core.exception.JargonException;
 
 /**
- * General exception for HiveIndexer
+ * General HIVE exception that also wraps any underlying
+ * <code>JargonException</code> for areas where iRODS interaction may occur
  * 
  * @author Mike Conway - DICE (www.irods.org)
  * 
  */
-public class HiveIndexerException extends HiveException {
+public class HiveException extends JargonException {
 
-	private static final long serialVersionUID = 867196915409098622L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -463769474594043308L;
 
 	/**
 	 * @param message
 	 */
-	public HiveIndexerException(final String message) {
+	public HiveException(final String message) {
 		super(message);
 	}
 
 	/**
 	 * @param cause
 	 */
-	public HiveIndexerException(final Throwable cause) {
+	public HiveException(final Throwable cause) {
 		super(cause);
 	}
 
@@ -30,7 +34,7 @@ public class HiveIndexerException extends HiveException {
 	 * @param message
 	 * @param cause
 	 */
-	public HiveIndexerException(final String message, final Throwable cause) {
+	public HiveException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
@@ -38,7 +42,7 @@ public class HiveIndexerException extends HiveException {
 	 * @param cause
 	 * @param underlyingIRODSExceptionCode
 	 */
-	public HiveIndexerException(final Throwable cause,
+	public HiveException(final Throwable cause,
 			final int underlyingIRODSExceptionCode) {
 		super(cause, underlyingIRODSExceptionCode);
 	}
@@ -47,7 +51,7 @@ public class HiveIndexerException extends HiveException {
 	 * @param message
 	 * @param underlyingIRODSExceptionCode
 	 */
-	public HiveIndexerException(final String message,
+	public HiveException(final String message,
 			final int underlyingIRODSExceptionCode) {
 		super(message, underlyingIRODSExceptionCode);
 	}
@@ -57,7 +61,7 @@ public class HiveIndexerException extends HiveException {
 	 * @param cause
 	 * @param underlyingIRODSExceptionCode
 	 */
-	public HiveIndexerException(final String message, final Throwable cause,
+	public HiveException(final String message, final Throwable cause,
 			final int underlyingIRODSExceptionCode) {
 		super(message, cause, underlyingIRODSExceptionCode);
 	}

@@ -4,6 +4,7 @@ import org.irods.jargon.core.connection.IRODSAccount;
 import org.irods.jargon.core.exception.JargonException;
 import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
 import org.irods.jargon.core.service.AbstractJargonService;
+import org.irods.jargon.hive.external.utils.JenaHiveConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +20,8 @@ import com.hp.hpl.jena.rdf.model.Model;
  * @author Mike Conway - DICE (www.irods.org)
  * 
  */
-public class JenaHiveIndexerServiceImpl extends AbstractJargonService implements JenaHiveIndexer {
+public class JenaHiveIndexerServiceImpl extends AbstractJargonService implements
+		JenaHiveIndexer {
 
 	public static final Logger log = LoggerFactory
 			.getLogger(JenaHiveIndexerServiceImpl.class);
@@ -43,7 +45,9 @@ public class JenaHiveIndexerServiceImpl extends AbstractJargonService implements
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.irods.jargon.hive.external.indexer.JenaHiveIndexer#execute()
 	 */
 	@Override
@@ -53,8 +57,7 @@ public class JenaHiveIndexerServiceImpl extends AbstractJargonService implements
 		JenaHiveIndexerVisitor visitor = new JenaHiveIndexerVisitor(
 				jenaHiveConfiguration);
 		JenaHiveIndexerInvoker invoker = new JenaHiveIndexerInvoker(
-				this.getIrodsAccessObjectFactory(), this.getIrodsAccount(),
-				visitor);
+				getIrodsAccessObjectFactory(), getIrodsAccount(), visitor);
 		log.info("executing...");
 		invoker.execute();
 		log.info("executed, now get the Jena model and return to the caller");

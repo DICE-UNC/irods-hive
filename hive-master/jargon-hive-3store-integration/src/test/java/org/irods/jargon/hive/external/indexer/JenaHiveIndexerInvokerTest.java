@@ -18,6 +18,7 @@ import org.irods.jargon.hive.irods.IRODSHiveServiceImpl;
 import org.irods.jargon.testutils.TestingPropertiesHelper;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 public class JenaHiveIndexerInvokerTest {
@@ -39,9 +40,9 @@ public class JenaHiveIndexerInvokerTest {
 		JenaHiveIndexerVisitor visitor = Mockito
 				.mock(JenaHiveIndexerVisitor.class);
 		Mockito.when(
-				visitor.invoke(Mockito.any(MetaDataAndDomainData.class),
-						Mockito.any(JenaHiveIndexerInvoker.class))).thenReturn(
-				VisitorDesiredAction.CONTINUE);
+				visitor.invoke(Matchers.any(MetaDataAndDomainData.class),
+						Matchers.any(JenaHiveIndexerInvoker.class)))
+				.thenReturn(VisitorDesiredAction.CONTINUE);
 
 		List<MetaDataAndDomainData> collectionMetadata = new ArrayList<MetaDataAndDomainData>();
 		MetaDataAndDomainData collectionMetadataValue = MetaDataAndDomainData
@@ -93,9 +94,9 @@ public class JenaHiveIndexerInvokerTest {
 		JenaHiveIndexerVisitor visitor = Mockito
 				.mock(JenaHiveIndexerVisitor.class);
 		Mockito.when(
-				visitor.invoke(Mockito.any(MetaDataAndDomainData.class),
-						Mockito.any(JenaHiveIndexerInvoker.class))).thenReturn(
-				VisitorDesiredAction.CONTINUE);
+				visitor.invoke(Matchers.any(MetaDataAndDomainData.class),
+						Matchers.any(JenaHiveIndexerInvoker.class)))
+				.thenReturn(VisitorDesiredAction.CONTINUE);
 
 		List<MetaDataAndDomainData> collectionMetadata = new ArrayList<MetaDataAndDomainData>();
 		MetaDataAndDomainData collectionMetadataValue = MetaDataAndDomainData
@@ -157,9 +158,9 @@ public class JenaHiveIndexerInvokerTest {
 		JenaHiveIndexerVisitor visitor = Mockito
 				.mock(JenaHiveIndexerVisitor.class);
 		Mockito.when(
-				visitor.invoke(Mockito.any(MetaDataAndDomainData.class),
-						Mockito.any(JenaHiveIndexerInvoker.class))).thenReturn(
-				VisitorDesiredAction.CONTINUE);
+				visitor.invoke(Matchers.any(MetaDataAndDomainData.class),
+						Matchers.any(JenaHiveIndexerInvoker.class)))
+				.thenReturn(VisitorDesiredAction.CONTINUE);
 
 		List<MetaDataAndDomainData> collectionMetadata = new ArrayList<MetaDataAndDomainData>();
 		MetaDataAndDomainData collectionMetadataValue = MetaDataAndDomainData
@@ -243,9 +244,9 @@ public class JenaHiveIndexerInvokerTest {
 		JenaHiveIndexerVisitor visitor = Mockito
 				.mock(JenaHiveIndexerVisitor.class);
 		Mockito.when(
-				visitor.invoke(Mockito.any(MetaDataAndDomainData.class),
-						Mockito.any(JenaHiveIndexerInvoker.class))).thenReturn(
-				VisitorDesiredAction.CONTINUE);
+				visitor.invoke(Matchers.any(MetaDataAndDomainData.class),
+						Matchers.any(JenaHiveIndexerInvoker.class)))
+				.thenReturn(VisitorDesiredAction.CONTINUE);
 
 		List<MetaDataAndDomainData> collectionMetadata = new ArrayList<MetaDataAndDomainData>();
 		MetaDataAndDomainData collectionMetadataValue = MetaDataAndDomainData
@@ -290,9 +291,9 @@ public class JenaHiveIndexerInvokerTest {
 		JenaHiveIndexerVisitor visitor = Mockito
 				.mock(JenaHiveIndexerVisitor.class);
 		Mockito.when(
-				visitor.invoke(Mockito.any(MetaDataAndDomainData.class),
-						Mockito.any(JenaHiveIndexerInvoker.class))).thenReturn(
-				VisitorDesiredAction.CONTINUE);
+				visitor.invoke(Matchers.any(MetaDataAndDomainData.class),
+						Matchers.any(JenaHiveIndexerInvoker.class)))
+				.thenReturn(VisitorDesiredAction.CONTINUE);
 
 		List<MetaDataAndDomainData> collectionMetadata = new ArrayList<MetaDataAndDomainData>();
 
@@ -338,9 +339,9 @@ public class JenaHiveIndexerInvokerTest {
 		JenaHiveIndexerVisitor visitor = Mockito
 				.mock(JenaHiveIndexerVisitor.class);
 		Mockito.when(
-				visitor.invoke(Mockito.any(MetaDataAndDomainData.class),
-						Mockito.any(JenaHiveIndexerInvoker.class))).thenReturn(
-				VisitorDesiredAction.CONTINUE);
+				visitor.invoke(Matchers.any(MetaDataAndDomainData.class),
+						Matchers.any(JenaHiveIndexerInvoker.class)))
+				.thenReturn(VisitorDesiredAction.CONTINUE);
 
 		List<MetaDataAndDomainData> collectionMetadata = new ArrayList<MetaDataAndDomainData>();
 

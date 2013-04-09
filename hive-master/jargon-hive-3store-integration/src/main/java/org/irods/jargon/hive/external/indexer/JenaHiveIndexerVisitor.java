@@ -11,7 +11,9 @@ import org.irods.jargon.core.utils.IRODSUriUtils;
 import org.irods.jargon.datautils.visitor.AbstractIRODSVisitor;
 import org.irods.jargon.datautils.visitor.AbstractIRODSVisitorInvoker;
 import org.irods.jargon.datautils.visitor.AbstractIRODSVisitorInvoker.VisitorDesiredAction;
-import org.irods.jargon.hive.external.indexer.JenaHiveConfiguration.JenaModelType;
+import org.irods.jargon.hive.external.utils.JenaHiveConfiguration;
+import org.irods.jargon.hive.external.utils.JenaHiveConfiguration.JenaModelType;
+import org.irods.jargon.hive.external.utils.JenaModelManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +39,7 @@ public class JenaHiveIndexerVisitor extends
 		AbstractIRODSVisitor<MetaDataAndDomainData> {
 
 	private JenaHiveConfiguration jenaHiveVisitorConfiguration = null;
+	private JenaModelManager jenaModelManager = null;
 	private OntModel jenaModel;
 	public static final String MODEL_KEY = "model";
 	private OntClass collOnt = null;
@@ -79,9 +82,10 @@ public class JenaHiveIndexerVisitor extends
 			jenaModel = ModelFactory
 					.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF);
 		} else {
-			log.error("model type not currently supported:{}",
-					jenaHiveVisitorConfiguration.getJenaModelType());
-			throw new JargonException("unsupported jena model type");
+			log.info("building jena database model...");
+			jenaModelManager = new JenaModelManager();
+			jenaModel = jenaModelManager
+					.buildJenaDatabaseModel(jenaHiveVisitorConfiguration);
 		}
 
 		// load iRODS RDF
@@ -160,6 +164,11 @@ public class JenaHiveIndexerVisitor extends
 
 		log.info("metadata:{}", metadata);
 
+		if (metadata.getDomainObjectUniqueName().indexOf("/trash") > -1) {
+			log.info("ignoring trash");
+			return VisitorDesiredAction.CONTINUE;
+		}
+
 		URI irodsURI = IRODSUriUtils
 				.buildURIForAnAccountWithNoUserInformationIncluded(
 						invoker.getIrodsAccount(),
@@ -185,6 +194,39 @@ public class JenaHiveIndexerVisitor extends
 				.createResource(metadata.getAvuAttribute());
 		indiv.addProperty(conceptProp, concept);
 
+		/*
+		 * if idrop context, add some links
+		 */
+
+		if (!jenaHiveVisitorConfiguration.getIdropContext().isEmpty()) {
+			log.info("generating idrop links");
+			StringBuilder publicLink = new StringBuilder();
+			publicLink.append(jenaHiveVisitorConfiguration.getIdropContext());
+			publicLink.append("/home/link?irodsURI=");
+			publicLink.append(IRODSUriUtils
+					.buildURIForAnAccountWithNoUserInformationIncluded(
+							invoker.getIrodsAccount(),
+							metadata.getDomainObjectUniqueName()));
+			Property publicLinkProp = jenaModel.getProperty(
+					JenaHiveConfiguration.NS, "hasWebInformationLink");
+			concept = jenaModel.createResource(publicLink.toString());
+			indiv.addProperty(publicLinkProp, concept);
+
+			if (metadata.getMetadataDomain() == MetadataDomain.DATA) {
+				log.info("adding download link");
+				StringBuilder downloadLink = new StringBuilder();
+				downloadLink.append(jenaHiveVisitorConfiguration
+						.getIdropContext());
+				downloadLink.append("/file/download");
+				downloadLink.append(metadata.getDomainObjectUniqueName());
+				Property downlaodProp = jenaModel.getProperty(
+						JenaHiveConfiguration.NS, "hasDownloadLocation");
+				concept = jenaModel.createResource(downloadLink.toString());
+				indiv.addProperty(downlaodProp, concept);
+			}
+
+		}
+
 		return VisitorDesiredAction.CONTINUE;
 
 	}
@@ -196,6 +238,9 @@ public class JenaHiveIndexerVisitor extends
 	@Override
 	public void complete() throws JargonException {
 		log.info("complete()");
+		if (jenaModelManager != null) {
+			jenaModelManager.close();
+		}
 	}
 
 	public JenaHiveConfiguration getJenaHiveVisitorConfiguration() {

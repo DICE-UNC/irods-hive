@@ -64,7 +64,7 @@ public class JenaHiveIndexerInvoker extends
 	@Override
 	public void close() throws JargonException {
 		log.info("close()...closing iRODS connection...");
-		this.getIrodsAccessObjectFactory().closeSessionAndEatExceptions();
+		getIrodsAccessObjectFactory().closeSessionAndEatExceptions();
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class JenaHiveIndexerInvoker extends
 	protected boolean hasMore() throws JargonException {
 
 		log.info("hasMore()");
-		if (this.metadataList.isEmpty() && this.collectionsDone) {
+		if (metadataList.isEmpty() && collectionsDone) {
 			log.info("collections are done, there were no data objects either...done");
 			return false;
 		}
@@ -104,21 +104,20 @@ public class JenaHiveIndexerInvoker extends
 			throws JargonException {
 		log.info("processEndOfCurrentListAndSeeIfMoreToReturn()");
 
-		log.info("current index:{}", this.currentIdx);
-		log.info("collections done:{}", this.collectionsDone);
+		log.info("current index:{}", currentIdx);
+		log.info("collections done:{}", collectionsDone);
 
-		if (metadataList.isEmpty() && this.collectionsDone) {
+		if (metadataList.isEmpty() && collectionsDone) {
 			log.info("collections done, no data objects");
 			return false;
 		}
 
-		MetaDataAndDomainData last = this.metadataList
-				.get(metadataList.size() - 1);
+		MetaDataAndDomainData last = metadataList.get(metadataList.size() - 1);
 		log.info("last element:{}", last);
 
 		if (last.isLastResult()) {
 			log.info("last result..see if collections, and if so get data objects");
-			if (!this.collectionsDone) {
+			if (!collectionsDone) {
 				return queryDataObjects(0);
 			} else {
 				log.info("last result, was doing data objects to nothign else to process");
@@ -126,7 +125,7 @@ public class JenaHiveIndexerInvoker extends
 			}
 		} else {
 			log.info("requery, not at last record");
-			if (this.collectionsDone) {
+			if (collectionsDone) {
 				log.info("requery data objects");
 				return queryDataObjects(last.getCount());
 			} else {
@@ -143,14 +142,14 @@ public class JenaHiveIndexerInvoker extends
 	@Override
 	protected void initializeInvoker() throws JargonException {
 		log.info("initializeInvoker()");
-		dataObjectAO = this.getIrodsAccessObjectFactory().getDataObjectAO(
+		dataObjectAO = getIrodsAccessObjectFactory().getDataObjectAO(
 				getIrodsAccount());
-		collectionAO = this.getIrodsAccessObjectFactory().getCollectionAO(
+		collectionAO = getIrodsAccessObjectFactory().getCollectionAO(
 				getIrodsAccount());
 
 		try {
 			query = IRODSHiveServiceImpl.buildQueryToFindHiveMetadata();
-			this.metadataList = collectionAO.findMetadataValuesByMetadataQuery(
+			metadataList = collectionAO.findMetadataValuesByMetadataQuery(
 					query, 0);
 			if (metadataList.isEmpty()) {
 				queryDataObjects(0);
@@ -181,11 +180,11 @@ public class JenaHiveIndexerInvoker extends
 
 		try {
 			collectionsDone = true;
-			this.metadataList = dataObjectAO.findMetadataValuesByMetadataQuery(
+			metadataList = dataObjectAO.findMetadataValuesByMetadataQuery(
 					query, offset);
 			// -1 because it will be incremented in 'next()' method, which
 			// expects to advance before accessing
-			this.currentIdx = -1;
+			currentIdx = -1;
 			if (metadataList.isEmpty()) {
 				return false;
 			} else {
@@ -213,11 +212,11 @@ public class JenaHiveIndexerInvoker extends
 
 		try {
 
-			this.metadataList = collectionAO.findMetadataValuesByMetadataQuery(
+			metadataList = collectionAO.findMetadataValuesByMetadataQuery(
 					query, offset);
 			// -1 because it will be incremented in 'next()' method, which
 			// expects to advance before accessing
-			this.currentIdx = -1;
+			currentIdx = -1;
 			if (metadataList.isEmpty()) {
 				return false;
 			} else {
@@ -239,15 +238,15 @@ public class JenaHiveIndexerInvoker extends
 	@Override
 	protected MetaDataAndDomainData next() throws NoMoreItemsException,
 			JargonException {
-		this.currentIdx++;
-		if (currentIdx >= this.metadataList.size()) {
+		currentIdx++;
+		if (currentIdx >= metadataList.size()) {
 			throw new NoMoreItemsException("unable to get next item");
 		}
 		MetaDataAndDomainData metadata = metadataList.get(currentIdx);
 		if (metadata.getMetadataDomain() == MetadataDomain.COLLECTION) {
-			this.collectionsProcessed++;
+			collectionsProcessed++;
 		} else {
-			this.dataObjectsProcessed++;
+			dataObjectsProcessed++;
 		}
 		return metadata;
 	}

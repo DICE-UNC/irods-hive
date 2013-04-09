@@ -1,7 +1,6 @@
 package org.irods.jargon.hive.external.indexer;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
 import java.util.Properties;
 
@@ -12,9 +11,9 @@ import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
 import org.irods.jargon.core.pub.IRODSFileSystem;
 import org.irods.jargon.core.query.MetaDataAndDomainData;
 import org.irods.jargon.core.query.MetaDataAndDomainData.MetadataDomain;
-import org.irods.jargon.core.utils.IRODSUriUtils;
 import org.irods.jargon.datautils.visitor.AbstractIRODSVisitorInvoker;
 import org.irods.jargon.datautils.visitor.AbstractIRODSVisitorInvoker.VisitorDesiredAction;
+import org.irods.jargon.hive.external.utils.JenaHiveConfiguration;
 import org.irods.jargon.testutils.TestingPropertiesHelper;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -112,10 +111,6 @@ public class JenaHiveIndexerVisitorTest {
 				.buildIRODSAccountFromTestProperties(testingProperties);
 		IRODSAccessObjectFactory irodsAccessObjectFactory = Mockito
 				.mock(IRODSAccessObjectFactory.class);
-
-		URI irodsURI = IRODSUriUtils
-				.buildURIForAnAccountWithNoUserInformationIncluded(
-						irodsAccount, testCollection);
 
 		@SuppressWarnings("unchecked")
 		AbstractIRODSVisitorInvoker<MetaDataAndDomainData> invoker = Mockito
