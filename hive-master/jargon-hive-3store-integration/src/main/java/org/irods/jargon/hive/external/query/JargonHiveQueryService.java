@@ -24,4 +24,16 @@ public interface JargonHiveQueryService {
 	 */
 	String queryForUri(String vocabularyUri) throws HiveQueryException;
 
+	/**
+	 * Given a vocabulary term in URI format, return a <code>String</code> in
+	 * JSON format with the SPARQL results for terms that are realted to this
+	 * term
+	 * 
+	 * @param vocabularyUri
+	 *            <code>String</code> in URI format that is a vocabulary term
+	 * @return <code>String</code> of JSON with the query results
+	 * @throws HiveQueryException
+	 */
+	String queryForUriRelated(String vocabularyUri) throws HiveQueryException;
+
 }

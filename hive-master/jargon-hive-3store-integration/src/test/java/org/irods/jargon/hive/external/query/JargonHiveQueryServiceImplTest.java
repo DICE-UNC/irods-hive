@@ -91,7 +91,7 @@ public class JargonHiveQueryServiceImplTest {
 
 		String[] terms = { "http://www.fao.org/aos/agrovoc#c_28638",
 				"http://www.fao.org/aos/agrovoc#c_1669",
-				"http://www.fao.org/aos/agrovoc#c_431",
+				"http://www.fao.org/aos/agrovoc#c_20",
 				"http://www.fao.org/aos/agrovoc#c_5630",
 				"http://www.fao.org/aos/agrovoc#c_16137",
 				"http://www.fao.org/aos/agrovoc#c_919",
@@ -231,4 +231,20 @@ public class JargonHiveQueryServiceImplTest {
 
 	}
 
+	@Test
+	public void testQueryForRelatedUri() throws Exception {
+		IRODSAccount irodsAccount = testingPropertiesHelper
+				.buildIRODSAccountFromTestProperties(testingProperties);
+		JargonHiveQueryService queryService = new JargonHiveQueryServiceImpl(
+				irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount,
+				configuration);
+
+		String testUri = "http://www.fao.org/aos/agrovoc#c_8879";
+		String json = queryService.queryForUriRelated(testUri);
+		Assert.assertNotNull("null json returned", json);
+		Assert.assertFalse("empty json returned", json.isEmpty());
+		Assert.assertTrue("did not find file in json",
+				json.indexOf(IRODS_TEST_SUBDIR_PATH) > -1);
+
+	}
 }

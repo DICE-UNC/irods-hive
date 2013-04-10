@@ -33,6 +33,7 @@ public class JargonHiveQueryServiceImpl extends AbstractJargonService implements
 	private final JenaHiveSPARQLService jenaHiveSPARQLService;
 
 	public static final String SPARQL_ALL_FOR_TERM = "/sparql-template/queryAllForTerm.txt";
+	public static final String SPARQL_ALL_FOR_RELATED_TERM = "/sparql-template/queryAllForRelatedTerm.txt";
 
 	public static final String TERM = "term";
 
@@ -76,15 +77,55 @@ public class JargonHiveQueryServiceImpl extends AbstractJargonService implements
 		}
 
 		log.info("vocabularyUri:{}", vocabularyUri);
+		String sparqlTemplate = SPARQL_ALL_FOR_TERM;
+		return queryGivenTemplateAndMapReturnJSON(vocabularyUri, sparqlTemplate);
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.irods.jargon.hive.external.query.JargonHiveQueryService#
+	 * queryForUriRelated(java.lang.String)
+	 */
+	@Override
+	public String queryForUriRelated(final String vocabularyUri)
+			throws HiveQueryException {
+
+		log.info("queryForUriRelated(final String vocabularyUri)");
+
+		if (vocabularyUri == null || vocabularyUri.isEmpty()) {
+			throw new IllegalArgumentException("null or empty vocabularyUri");
+		}
+
+		log.info("vocabularyUri:{}", vocabularyUri);
+		String sparqlTemplate = SPARQL_ALL_FOR_RELATED_TERM;
+		return queryGivenTemplateAndMapReturnJSON(vocabularyUri, sparqlTemplate);
+	}
+
+	/**
+	 * Do a query given a vocabulary URI and the appropriate sparql template
+	 * expecting to substitute the term value
+	 * 
+	 * @param vocabularyUri
+	 * @param sparqlTemplate
+	 * @return
+	 * @throws HiveQueryException
+	 */
+	private String queryGivenTemplateAndMapReturnJSON(
+			final String vocabularyUri, final String sparqlTemplate)
+			throws HiveQueryException {
 		Map<String, String> params = new HashMap<String, String>();
+
 		params.put(TERM, vocabularyUri);
 		try {
 			String query = SPARQLTemplateUtils
-					.getSPARQLTemplateAndSubstituteValues(SPARQL_ALL_FOR_TERM,
+					.getSPARQLTemplateAndSubstituteValues(sparqlTemplate,
 							params);
 			log.info("built query:{}", query);
-			return jenaHiveSPARQLService.queryAndReturnJSONAsString(query);
+			String json = jenaHiveSPARQLService
+					.queryAndReturnJSONAsString(query);
+			log.info("json data to reutnr:{}", json);
+			return json;
 		} catch (HiveTemplateException e) {
 			throw new HiveQueryException(
 					"error making query from sparql template", e);
