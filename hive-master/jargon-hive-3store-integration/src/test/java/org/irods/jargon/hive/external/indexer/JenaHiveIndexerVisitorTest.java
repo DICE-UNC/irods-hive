@@ -14,6 +14,7 @@ import org.irods.jargon.core.query.MetaDataAndDomainData.MetadataDomain;
 import org.irods.jargon.datautils.visitor.AbstractIRODSVisitorInvoker;
 import org.irods.jargon.datautils.visitor.AbstractIRODSVisitorInvoker.VisitorDesiredAction;
 import org.irods.jargon.hive.external.utils.JenaHiveConfiguration;
+import org.irods.jargon.hive.external.utils.JenaHiveConfiguration.JenaModelType;
 import org.irods.jargon.testutils.TestingPropertiesHelper;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -122,6 +123,7 @@ public class JenaHiveIndexerVisitorTest {
 		JenaHiveConfiguration configuration = new JenaHiveConfiguration();
 		configuration.getVocabularyRDFFileNames().add(vocabFile.getPath());
 		configuration.setIrodsRDFFileName(ontFile.getPath());
+		configuration.setJenaModelType(JenaModelType.MEMORY_ONT);
 
 		JenaHiveIndexerVisitor visitor = new JenaHiveIndexerVisitor(
 				configuration);
@@ -155,6 +157,7 @@ public class JenaHiveIndexerVisitorTest {
 		JenaHiveConfiguration configuration = new JenaHiveConfiguration();
 		configuration.getVocabularyRDFFileNames().add(vocabFile.getPath());
 		configuration.setIrodsRDFFileName(ontFile.getPath());
+		configuration.setJenaModelType(JenaModelType.MEMORY_ONT);
 
 		JenaHiveIndexerVisitor visitor = new JenaHiveIndexerVisitor(
 				configuration);
@@ -169,6 +172,7 @@ public class JenaHiveIndexerVisitorTest {
 		JenaHiveConfiguration configuration = new JenaHiveConfiguration();
 		configuration.getVocabularyRDFFileNames().add(vocabFile.getPath());
 		configuration.setIrodsRDFFileName(ontFile.getPath());
+		configuration.setJenaModelType(JenaModelType.MEMORY_ONT);
 
 		JenaHiveIndexerVisitor visitor = new JenaHiveIndexerVisitor(
 				configuration);

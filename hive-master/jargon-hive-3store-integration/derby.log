@@ -1,12 +1,12 @@
 ----------------------------------------------------------------
-2013-04-10 12:41:32.624 GMT:
- Booting Derby version The Apache Software Foundation - Apache Derby - 10.6.1.0 - (938214): instance a816c00e-013d-f3f7-21f6-000001e21688 
-on database directory /Users/mikeconway/temp/irodsscratch/JenaHiveSPARQLServiceImplTest/derbyDir/JenaHiveSPARQLServiceImplTest   with class loader sun.misc.Launcher$AppClassLoader@1f3e8d89
+2013-04-10 19:05:18.378 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.6.1.0 - (938214): instance a816c00e-013d-f556-7aa2-000013fb5d10 
+on database directory /Users/mikeconway/temp/irodsscratch/JenaHiveSPARQLServiceImplTest/derbyDir/JenaHiveSPARQLServiceImplTest   with class loader sun.misc.Launcher$AppClassLoader@2e1ed620
 
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-2013-04-10 12:43:14.100 GMT:
- Booting Derby version The Apache Software Foundation - Apache Derby - 10.6.1.0 - (938214): instance 854d7347-013d-f3f7-21f6-000001e21688 
-on database directory /Users/mikeconway/temp/irodsscratch/JargonHiveQueryServiceImplTest/derbyDir/JargonHiveQueryServiceImplTest   with class loader sun.misc.Launcher$AppClassLoader@1f3e8d89
+2013-04-10 19:07:14.131 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.6.1.0 - (938214): instance 854d7347-013d-f556-7aa2-000013fb5d10 
+on database directory /Users/mikeconway/temp/irodsscratch/JargonHiveQueryServiceImplTest/derbyDir/JargonHiveQueryServiceImplTest   with class loader sun.misc.Launcher$AppClassLoader@2e1ed620
 
 Database Class Loader started - derby.database.classpath=''

@@ -3,9 +3,6 @@ package org.irods.jargon.hive.external.query;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.irods.jargon.core.connection.IRODSAccount;
-import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
-import org.irods.jargon.core.service.AbstractJargonService;
 import org.irods.jargon.hive.external.sparql.HiveQueryException;
 import org.irods.jargon.hive.external.sparql.JenaHiveSPARQLService;
 import org.irods.jargon.hive.external.sparql.JenaHiveSPARQLServiceImpl;
@@ -24,8 +21,7 @@ import org.slf4j.LoggerFactory;
  * @author Mike Conway - DICE (www.irods.org)
  * 
  */
-public class JargonHiveQueryServiceImpl extends AbstractJargonService implements
-		JargonHiveQueryService {
+public class JargonHiveQueryServiceImpl implements JargonHiveQueryService {
 
 	public static final Logger log = LoggerFactory
 			.getLogger(JargonHiveQueryServiceImpl.class);
@@ -43,11 +39,8 @@ public class JargonHiveQueryServiceImpl extends AbstractJargonService implements
 	 * @param jenaHiveConfiguration
 	 */
 	public JargonHiveQueryServiceImpl(
-			final IRODSAccessObjectFactory irodsAccessObjectFactory,
-			final IRODSAccount irodsAccount,
 			final JenaHiveConfiguration jenaHiveConfiguration)
 			throws HiveException {
-		super(irodsAccessObjectFactory, irodsAccount);
 
 		if (jenaHiveConfiguration == null) {
 			throw new IllegalArgumentException("null jenaHiveConfiguration");
@@ -55,7 +48,7 @@ public class JargonHiveQueryServiceImpl extends AbstractJargonService implements
 
 		this.jenaHiveConfiguration = jenaHiveConfiguration;
 		jenaHiveSPARQLService = new JenaHiveSPARQLServiceImpl(
-				irodsAccessObjectFactory, irodsAccount, jenaHiveConfiguration);
+				jenaHiveConfiguration);
 		jenaHiveSPARQLService.init();
 	}
 

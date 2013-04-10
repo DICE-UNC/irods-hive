@@ -216,11 +216,11 @@ public class JargonHiveQueryServiceImplTest {
 
 	@Test
 	public void testQueryForUri() throws Exception {
-		IRODSAccount irodsAccount = testingPropertiesHelper
+		testingPropertiesHelper
 				.buildIRODSAccountFromTestProperties(testingProperties);
 		JargonHiveQueryService queryService = new JargonHiveQueryServiceImpl(
-				irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount,
-				configuration);
+
+		configuration);
 
 		String testUri = "http://www.fao.org/aos/agrovoc#c_1669";
 		String json = queryService.queryForUri(testUri);
@@ -233,11 +233,11 @@ public class JargonHiveQueryServiceImplTest {
 
 	@Test
 	public void testQueryForRelatedUri() throws Exception {
-		IRODSAccount irodsAccount = testingPropertiesHelper
+		testingPropertiesHelper
 				.buildIRODSAccountFromTestProperties(testingProperties);
 		JargonHiveQueryService queryService = new JargonHiveQueryServiceImpl(
-				irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount,
-				configuration);
+
+		configuration);
 
 		String testUri = "http://www.fao.org/aos/agrovoc#c_8879";
 		String json = queryService.queryForUriRelated(testUri);

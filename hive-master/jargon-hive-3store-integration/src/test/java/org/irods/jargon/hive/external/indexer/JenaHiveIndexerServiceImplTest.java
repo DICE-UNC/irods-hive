@@ -12,6 +12,7 @@ import org.irods.jargon.core.pub.io.IRODSFile;
 import org.irods.jargon.core.query.MetaDataAndDomainData.MetadataDomain;
 import org.irods.jargon.core.utils.IRODSUriUtils;
 import org.irods.jargon.hive.external.utils.JenaHiveConfiguration;
+import org.irods.jargon.hive.external.utils.JenaHiveConfiguration.JenaModelType;
 import org.irods.jargon.hive.irods.HiveVocabularyEntry;
 import org.irods.jargon.hive.irods.IRODSHiveService;
 import org.irods.jargon.hive.irods.IRODSHiveServiceImpl;
@@ -181,6 +182,7 @@ public class JenaHiveIndexerServiceImplTest {
 		JenaHiveConfiguration configuration = new JenaHiveConfiguration();
 		configuration.getVocabularyRDFFileNames().add(jenaVocabFile.getPath());
 		configuration.setIrodsRDFFileName(ontFile.getPath());
+		configuration.setJenaModelType(JenaModelType.MEMORY_ONT);
 
 		JenaHiveIndexer jenaHiveIndexerService = new JenaHiveIndexerServiceImpl(
 				irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount,

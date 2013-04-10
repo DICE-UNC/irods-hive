@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 
 import org.irods.jargon.core.connection.IRODSAccount;
 import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
-import org.irods.jargon.core.service.AbstractJargonService;
 import org.irods.jargon.hive.external.indexer.JenaHiveIndexer;
 import org.irods.jargon.hive.external.utils.HiveException;
 import org.irods.jargon.hive.external.utils.JenaHiveConfiguration;
@@ -28,8 +27,7 @@ import com.hp.hpl.jena.query.ResultSetFormatter;
  * @author Mike Conway - DICE (www.irods.org)
  * 
  */
-public class JenaHiveSPARQLServiceImpl extends AbstractJargonService implements
-		JenaHiveSPARQLService {
+public class JenaHiveSPARQLServiceImpl implements JenaHiveSPARQLService {
 
 	public static final Logger log = LoggerFactory
 			.getLogger(JenaHiveSPARQLServiceImpl.class);
@@ -50,10 +48,8 @@ public class JenaHiveSPARQLServiceImpl extends AbstractJargonService implements
 	 *            to be queried
 	 */
 	public JenaHiveSPARQLServiceImpl(
-			final IRODSAccessObjectFactory irodsAccessObjectFactory,
-			final IRODSAccount irodsAccount,
-			final JenaHiveConfiguration jenaHiveConfiguration) {
-		super(irodsAccessObjectFactory, irodsAccount);
+
+	final JenaHiveConfiguration jenaHiveConfiguration) {
 
 		if (jenaHiveConfiguration == null) {
 			throw new IllegalArgumentException("null jenaHiveConfiguration");
@@ -107,8 +103,7 @@ public class JenaHiveSPARQLServiceImpl extends AbstractJargonService implements
 			log.info("outputting as JSON");
 			ResultSetFormatter.outputAsJSON(bos, resultSet);
 			log.info("json in stream, now output to string");
-			return bos.toString(getIrodsAccessObjectFactory()
-					.getJargonProperties().getEncoding());
+			return bos.toString("UTF-8");
 		} catch (Exception e) {
 			log.error("exception processing query", e);
 			throw new HiveQueryException(e);

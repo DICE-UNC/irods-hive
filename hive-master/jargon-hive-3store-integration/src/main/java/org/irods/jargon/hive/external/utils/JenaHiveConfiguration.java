@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class JenaHiveConfiguration {
 
+	// FIXME: make config just the plain old jdbc url
+
 	/**
 	 * public link format
 	 * http://iren-web.renci.org:8080/idrop-web2/home/link?irodsURI
@@ -43,7 +45,7 @@ public class JenaHiveConfiguration {
 	/**
 	 * Type of Jena model to build
 	 */
-	private JenaModelType jenaModelType = JenaModelType.MEMORY_ONT;
+	private JenaModelType jenaModelType = JenaModelType.DATABASE_ONT;
 
 	/**
 	 * List of vocabulary file paths to load, this is loaded into the triple

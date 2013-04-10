@@ -219,10 +219,8 @@ public class JenaHiveSPARQLServiceImplTest {
 
 	@Test
 	public void testInit() throws Exception {
-		IRODSAccount irodsAccount = testingPropertiesHelper
-				.buildIRODSAccountFromTestProperties(testingProperties);
+
 		JenaHiveSPARQLService sparqlService = new JenaHiveSPARQLServiceImpl(
-				irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount,
 				configuration);
 		sparqlService.init();
 		// no error == success
@@ -231,21 +229,19 @@ public class JenaHiveSPARQLServiceImplTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInitNullConfig() throws Exception {
-		IRODSAccount irodsAccount = testingPropertiesHelper
-				.buildIRODSAccountFromTestProperties(testingProperties);
+
 		new JenaHiveSPARQLServiceImpl(
-				irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount,
-				null);
+
+		null);
 
 	}
 
 	@Test(expected = HiveException.class)
 	public void testInitEmptyConfig() throws Exception {
-		IRODSAccount irodsAccount = testingPropertiesHelper
-				.buildIRODSAccountFromTestProperties(testingProperties);
+
 		JenaHiveSPARQLService sparqlService = new JenaHiveSPARQLServiceImpl(
-				irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount,
-				new JenaHiveConfiguration());
+
+		new JenaHiveConfiguration());
 		sparqlService.init();
 
 	}
@@ -256,10 +252,7 @@ public class JenaHiveSPARQLServiceImplTest {
 		String sparql = LocalFileUtils
 				.getClasspathResourceFileAsString("/sparql/sparql1.txt");
 
-		IRODSAccount irodsAccount = testingPropertiesHelper
-				.buildIRODSAccountFromTestProperties(testingProperties);
 		JenaHiveSPARQLService sparqlService = new JenaHiveSPARQLServiceImpl(
-				irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount,
 				configuration);
 		sparqlService.init();
 		ResultSet result = sparqlService.query(sparql);
@@ -272,10 +265,7 @@ public class JenaHiveSPARQLServiceImplTest {
 
 		String sparql = "I am not sparql";
 
-		IRODSAccount irodsAccount = testingPropertiesHelper
-				.buildIRODSAccountFromTestProperties(testingProperties);
 		JenaHiveSPARQLService sparqlService = new JenaHiveSPARQLServiceImpl(
-				irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount,
 				configuration);
 		sparqlService.init();
 		sparqlService.query(sparql);
@@ -285,11 +275,9 @@ public class JenaHiveSPARQLServiceImplTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testNullQuery() throws Exception {
 
-		IRODSAccount irodsAccount = testingPropertiesHelper
-				.buildIRODSAccountFromTestProperties(testingProperties);
 		JenaHiveSPARQLService sparqlService = new JenaHiveSPARQLServiceImpl(
-				irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount,
-				configuration);
+
+		configuration);
 		sparqlService.init();
 		sparqlService.query(null);
 
@@ -300,10 +288,7 @@ public class JenaHiveSPARQLServiceImplTest {
 		String sparql = LocalFileUtils
 				.getClasspathResourceFileAsString("/sparql/sparql1.txt");
 
-		IRODSAccount irodsAccount = testingPropertiesHelper
-				.buildIRODSAccountFromTestProperties(testingProperties);
 		JenaHiveSPARQLService sparqlService = new JenaHiveSPARQLServiceImpl(
-				irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount,
 				configuration);
 		sparqlService.init();
 		String json = sparqlService.queryAndReturnJSONAsString(sparql);
