@@ -9,9 +9,11 @@
 	<description>Jargon-hive integrates Jargon and iRODS with the HIVE framework - master project</description>
 	<url>https://code.renci.org/gf/project/irodshive/</url>
 	<properties>
+		<java.version>1.6</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jargon.version>3.3.2-SNAPSHOT</jargon.version>
-		<spring.core.version>3.0.5.RELEASE</spring.core.version>
+		<spring.core.version>3.2.2.RELEASE</spring.core.version>
+		<aspectj.version>1.7.2</aspectj.version>
 		<elmo.version>1.5</elmo.version>
 		<lucene.version>2.4.1</lucene.version>
 		<sesame.version>2.2.4</sesame.version>
@@ -502,5 +504,6 @@
   <modules>
     <module>jargon-hive-irods</module>
     <module>jargon-hive-3store-integration</module>
+    <module>hive-query-rest</module>
   </modules>
 </project>
