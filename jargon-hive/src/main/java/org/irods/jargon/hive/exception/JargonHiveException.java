@@ -5,8 +5,9 @@ package org.irods.jargon.hive.exception;
 
 /**
  * Generic exception with HIVE Jargon processing
+ * 
  * @author Mike Conway - DICE (www.irods.org)
- *
+ * 
  */
 public class JargonHiveException extends Exception {
 
@@ -24,14 +25,14 @@ public class JargonHiveException extends Exception {
 	/**
 	 * @param message
 	 */
-	public JargonHiveException(String message) {
+	public JargonHiveException(final String message) {
 		super(message);
 	}
 
 	/**
 	 * @param cause
 	 */
-	public JargonHiveException(Throwable cause) {
+	public JargonHiveException(final Throwable cause) {
 		super(cause);
 	}
 
@@ -39,9 +40,8 @@ public class JargonHiveException extends Exception {
 	 * @param message
 	 * @param cause
 	 */
-	public JargonHiveException(String message, Throwable cause) {
+	public JargonHiveException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	
 }

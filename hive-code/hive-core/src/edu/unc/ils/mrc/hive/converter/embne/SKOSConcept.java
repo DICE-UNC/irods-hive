@@ -1,6 +1,5 @@
 package edu.unc.ils.mrc.hive.converter.embne;
 
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,30 +13,32 @@ public class SKOSConcept {
 	String prefLabel = "";
 	Set<String> altLabels = new HashSet<String>();
 	String scopeNote = "";
-	
-	public void addNarrower(String value) {
+
+	public void addNarrower(final String value) {
 		narrower.add(value);
 	}
-	
-	public void addBroader(String value) {
+
+	public void addBroader(final String value) {
 		broader.add(value);
 	}
-	
-	public void addRelated(String value) {
-		//related.put(descriptorId, "1");
+
+	public void addRelated(final String value) {
+		// related.put(descriptorId, "1");
 		related.add(value);
 	}
-	
-	public void addAltLabel(String term) {
+
+	public void addAltLabel(final String term) {
 		altLabels.add(term);
 	}
-	
+
 	public String getDescriptorId() {
 		return descriptorId;
 	}
-	public void setDescriptorId(String descriptorId) {
+
+	public void setDescriptorId(final String descriptorId) {
 		this.descriptorId = descriptorId;
 	}
+
 	public Set<String> getNarrower() {
 		return narrower;
 	}
@@ -45,7 +46,7 @@ public class SKOSConcept {
 	public Set<String> getBroader() {
 		return broader;
 	}
-	
+
 	public Set<String> getRelated() {
 		return related;
 	}
@@ -53,17 +54,19 @@ public class SKOSConcept {
 	public String getPrefLabel() {
 		return prefLabel;
 	}
-	
+
 	public String getConceptScheme() {
 		return conceptScheme;
 	}
-	
-	public void setPrefLabel(String prefLabel) {
+
+	public void setPrefLabel(final String prefLabel) {
 		this.prefLabel = prefLabel;
 	}
-	public void setConceptScheme(String scheme) {
-		this.conceptScheme = scheme;
+
+	public void setConceptScheme(final String scheme) {
+		conceptScheme = scheme;
 	}
+
 	public Set<String> getAltLabels() {
 		return altLabels;
 	}
@@ -71,9 +74,9 @@ public class SKOSConcept {
 	public String getScopeNote() {
 		return scopeNote;
 	}
-	public void setScopeNote(String scopeNote) {
+
+	public void setScopeNote(final String scopeNote) {
 		this.scopeNote = scopeNote;
 	}
-	
-	
+
 }

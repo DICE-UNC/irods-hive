@@ -53,15 +53,15 @@ import edu.unc.ils.mrc.hive.ir.tagging.dummy.tagger.Termino;
 import edu.unc.ils.mrc.hive.ir.tagging.dummy.tagger.Vocabulario;
 
 public class DummyTagger implements Tagger {
-	
+
 	private String model;
 	private Postagger postagger;
 
-	
-	public DummyTagger(String dirName, String modelName, String stopwordsPath, SKOSScheme schema) {
-		this.model = modelName;
+	public DummyTagger(final String dirName, final String modelName,
+			final String stopwordsPath, final SKOSScheme schema) {
+		model = modelName;
 		try {
-			postagger = new Postagger(this.model);
+			postagger = new Postagger(model);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -86,14 +86,14 @@ public class DummyTagger implements Tagger {
 					Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS));
 			w.addDocument(doc);
 			text = text.trim();
-			
-			Dictionary dic = this.postagger.tagText(text);
+
+			Dictionary dic = postagger.tagText(text);
 
 			w.close();
 
 			IndexSearcher searcher = new IndexSearcher(index);
 			IndexReader reader = searcher.getIndexReader();
-			//System.out.println("Number of Documents: " + reader.maxDoc());
+			// System.out.println("Number of Documents: " + reader.maxDoc());
 			Coleccion collec = new Coleccion();
 			Vocabulario vocabulario = new Vocabulario();
 			for (int n = 0; n <= reader.maxDoc() - 1; n++) {
@@ -120,17 +120,16 @@ public class DummyTagger implements Tagger {
 			Ranking ranking = new Ranking();
 			for (Documento d : collec.getDocumentos()) {
 				for (Termino t : d.getTerminos()) {
-					if (t.getTf() > 0.1
-							&& dic.isAllowed(t.getTermino())
+					if (t.getTf() > 0.1 && dic.isAllowed(t.getTermino())
 							&& t.getTermino().length() > 1) {
 						ranking.addValor(t);
 					}
 				}
-				for(Rankeable term : ranking.getRanking()) {
+				for (Rankeable term : ranking.getRanking()) {
 					Termino te = (Termino) term;
 					keywords.add(te.getTermino());
 				}
-				//ranking = new Ranking();
+				// ranking = new Ranking();
 			}
 			index.close();
 			reader.close();
@@ -148,7 +147,7 @@ public class DummyTagger implements Tagger {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return keywords;
 	}
 
@@ -164,16 +163,17 @@ public class DummyTagger implements Tagger {
 
 	// Not implemented
 	@Override
-	public void extractKeyphrases(int numTerms, int minOccur) {
+	public void extractKeyphrases(final int numTerms, final int minOccur) {
 	}
 
 	// Not implemented
 	@Override
-	public void extractKeyphrasesFromFile(String fileName) {
+	public void extractKeyphrasesFromFile(final String fileName) {
 	}
-	
+
 	// Not implemented
 	@Override
-	public void extractKeyphrasesFromFile(String fileName, int numTerms, int minOccur) {
+	public void extractKeyphrasesFromFile(final String fileName,
+			final int numTerms, final int minOccur) {
 	}
 }

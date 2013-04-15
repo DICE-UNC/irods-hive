@@ -2,7 +2,6 @@ package edu.unc.ils.mrc.hive.ir.lucene.search;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,186 +26,186 @@ import org.apache.lucene.store.FSDirectory;
 
 import edu.unc.ils.mrc.hive.ir.lucene.analysis.AutocompleteAnalyzer;
 
-
 /**
  * Preliminary autocompete implementation based on
- * http://stackoverflow.com/questions/120180/how-to-do-query-auto-completion-suggestions-in-lucene
+ * http://stackoverflow.com/questions
+ * /120180/how-to-do-query-auto-completion-suggestions-in-lucene
  * 
  * @author craig.willis@unc.edu
  */
-public final class Autocomplete 
-{
+public final class Autocomplete {
 
 	/* Lucene index field to store concept ID */
 	private static final String ID_FIELD = "id";
-	
+
 	/* Lucene index field to store the grammed words */
-    private static final String GRAMMED_WORDS_FIELD = "words";
+	private static final String GRAMMED_WORDS_FIELD = "words";
 
-    /* Lucene index field to store the full source word */
-    private static final String SOURCE_WORD_FIELD = "sourceWord";
+	/* Lucene index field to store the full source word */
+	private static final String SOURCE_WORD_FIELD = "sourceWord";
 
-    /* Lucene index field to store the word count */
-    private static final String COUNT_FIELD = "count";
-    
-    /* Lucene index field to store the sort order */
-    private static final String SORT_FIELD = "sort";
+	/* Lucene index field to store the word count */
+	private static final String COUNT_FIELD = "count";
 
-    /* Lucene directory for autocomplete index */
-    private Directory autoCompleteDirectory;
+	/* Lucene index field to store the sort order */
+	private static final String SORT_FIELD = "sort";
 
-    private IndexReader autoCompleteReader;
+	/* Lucene directory for autocomplete index */
+	private Directory autoCompleteDirectory;
 
-    private IndexSearcher autoCompleteSearcher;
+	private IndexReader autoCompleteReader;
 
-    public Autocomplete(String autoCompleteDir) throws IOException {
-    	this.autoCompleteDirectory = FSDirectory.getDirectory(autoCompleteDir,
-    			null);
+	private IndexSearcher autoCompleteSearcher;
 
-    	if (exists(autoCompleteDir))
-    		reOpenReader();
-    }
-    
-    public boolean exists(String autoCompleteDir) {
-    	File dir = new File(autoCompleteDir);
-    	String[] files = dir.list();
-    	if (files != null && files.length > 0)
-    		return true;
-    	else
-    		return false;
+	public Autocomplete(final String autoCompleteDir) throws IOException {
+		autoCompleteDirectory = FSDirectory.getDirectory(autoCompleteDir, null);
 
-    }
+		if (exists(autoCompleteDir)) {
+			reOpenReader();
+		}
+	}
 
-    /**
-     * Returns a list of suggested terms for the specified string
-     * @param str	String to suggest terms for
-     * @param numTerms	Number of terms to return
-     * @return
-     * @throws IOException
-     * @throws ParseException
-     */
-    public List<AutocompleteTerm> suggestTermsFor(String str, int numTerms) throws IOException, ParseException {
- 
-    	str = str.replaceAll(" ", "");
-    	str = str.toLowerCase();
+	public boolean exists(final String autoCompleteDir) {
+		File dir = new File(autoCompleteDir);
+		String[] files = dir.list();
+		if (files != null && files.length > 0) {
+			return true;
+		} else {
+			return false;
+		}
 
-    	Query query = new TermQuery(new Term(GRAMMED_WORDS_FIELD, str));
-    	Sort sort = new Sort(SORT_FIELD, false);
-    	
-    	TopDocs docs = autoCompleteSearcher.search(query, null, numTerms, sort);
-    	List<AutocompleteTerm> suggestions = new ArrayList<AutocompleteTerm>();
-    	for (ScoreDoc doc : docs.scoreDocs) {
-    		String id = autoCompleteReader.document(doc.doc).get(
-    				ID_FIELD);
-    		String label = autoCompleteReader.document(doc.doc).get(
-    				SOURCE_WORD_FIELD);
-    		AutocompleteTerm term = new AutocompleteTerm(id, label);
-    		suggestions.add(term);
-    	}
-    	
-    	return suggestions;
-    }
+	}
 
+	/**
+	 * Returns a list of suggested terms for the specified string
+	 * 
+	 * @param str
+	 *            String to suggest terms for
+	 * @param numTerms
+	 *            Number of terms to return
+	 * @return
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public List<AutocompleteTerm> suggestTermsFor(String str, final int numTerms)
+			throws IOException, ParseException {
 
-    /**
-     * Creates the autocomplete index from a source Lucene index.
-     * @param sourceDirectory
-     * @param fieldToAutocomplete
-     * @throws CorruptIndexException
-     * @throws IOException
-     */
-    public void reIndex(Directory sourceDirectory, String fieldToAutocomplete)
-    		throws CorruptIndexException, IOException {
+		str = str.replaceAll(" ", "");
+		str = str.toLowerCase();
 
-    	IndexReader sourceReader = IndexReader.open(sourceDirectory);
+		Query query = new TermQuery(new Term(GRAMMED_WORDS_FIELD, str));
+		Sort sort = new Sort(SORT_FIELD, false);
 
-    	// use a custom analyzer so we can do EdgeNGramFiltering
-    	IndexWriter writer = new IndexWriter(autoCompleteDirectory,
-    			new AutocompleteAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED);
+		TopDocs docs = autoCompleteSearcher.search(query, null, numTerms, sort);
+		List<AutocompleteTerm> suggestions = new ArrayList<AutocompleteTerm>();
+		for (ScoreDoc doc : docs.scoreDocs) {
+			String id = autoCompleteReader.document(doc.doc).get(ID_FIELD);
+			String label = autoCompleteReader.document(doc.doc).get(
+					SOURCE_WORD_FIELD);
+			AutocompleteTerm term = new AutocompleteTerm(id, label);
+			suggestions.add(term);
+		}
 
-    	writer.setMergeFactor(300);
-    	writer.setMaxBufferedDocs(150);
+		return suggestions;
+	}
 
-    	Map<String, Integer> wordsMap = new TreeMap<String, Integer>();
-    	Map<String, String> idMap = new HashMap<String, String>();
+	/**
+	 * Creates the autocomplete index from a source Lucene index.
+	 * 
+	 * @param sourceDirectory
+	 * @param fieldToAutocomplete
+	 * @throws CorruptIndexException
+	 * @throws IOException
+	 */
+	public void reIndex(final Directory sourceDirectory,
+			final String fieldToAutocomplete) throws CorruptIndexException,
+			IOException {
 
-    	for (int i = 0; i<sourceReader.numDocs(); i++)
-    	{
-    		try
-    		{
-	    		Document d = sourceReader.document(i);
-	    		String[] prefLabels = d.getValues("prefLabel");
-	    		String[] ids = d.getValues("id");
-	    		for (String prefLabel: prefLabels) 
-	    		{
-	    			if (!wordsMap.containsKey(prefLabel)) {
-		    			// use the number of documents this word appears in
-		    			wordsMap.put(prefLabel, sourceReader.docFreq(new Term(
-		    					fieldToAutocomplete, prefLabel)));
-		    			idMap.put(prefLabel, ids[0]);
-		    		}
-	    		}
-    		} catch (Exception e) {
-    			e.printStackTrace();
-    		}
+		IndexReader sourceReader = IndexReader.open(sourceDirectory);
 
-    	} 
-    	
-    	int i = 0;
-    	for (String word : wordsMap.keySet()) 
-    	{
-    		i++;
-    		
-    		// TODO: Need better way strip characters from terms.
-    		String nospaces = word.replaceAll(" ", "");
-    		nospaces = nospaces.replaceAll("\\(", "");
-    		nospaces = nospaces.replaceAll("\\)", "");
-    		nospaces = nospaces.replaceAll("\\[", "");
-    		nospaces = nospaces.replaceAll("\\]", "");
-    		nospaces = nospaces.replaceAll("\\.", "");
-    		nospaces = nospaces.replaceAll("-", "");
-    		nospaces = nospaces.replaceAll(",", "");
-    		nospaces = nospaces.replaceAll(":", "");
-    		nospaces = nospaces.replaceAll("'", "");
-    		
-    		// ok index the word
-    		Document doc = new Document();
-    		doc.add(new Field(ID_FIELD, idMap.get(word), Field.Store.YES, 
-    				Field.Index.NOT_ANALYZED));
-    		doc.add(new Field(SOURCE_WORD_FIELD, word, Field.Store.YES,
-    				Field.Index.NOT_ANALYZED)); // orig term
-    		doc.add(new Field(GRAMMED_WORDS_FIELD, nospaces, Field.Store.YES,
-    				Field.Index.ANALYZED)); // grammed
-    		doc.add(new Field(COUNT_FIELD,
-    				Integer.toString(wordsMap.get(word)), Field.Store.NO,
-    				Field.Index.NOT_ANALYZED)); // count
-    		doc.add(new Field(SORT_FIELD,
-    				Integer.toString(i), Field.Store.NO,
-    				Field.Index.NOT_ANALYZED)); // count
+		// use a custom analyzer so we can do EdgeNGramFiltering
+		IndexWriter writer = new IndexWriter(autoCompleteDirectory,
+				new AutocompleteAnalyzer(), true,
+				IndexWriter.MaxFieldLength.UNLIMITED);
 
-    		writer.addDocument(doc);
-    		
-    	}
-    	writer.commit();
+		writer.setMergeFactor(300);
+		writer.setMaxBufferedDocs(150);
 
-    	sourceReader.close();
+		Map<String, Integer> wordsMap = new TreeMap<String, Integer>();
+		Map<String, String> idMap = new HashMap<String, String>();
 
-    	// close writer
-    	writer.optimize();
-    	writer.close();
+		for (int i = 0; i < sourceReader.numDocs(); i++) {
+			try {
+				Document d = sourceReader.document(i);
+				String[] prefLabels = d.getValues("prefLabel");
+				String[] ids = d.getValues("id");
+				for (String prefLabel : prefLabels) {
+					if (!wordsMap.containsKey(prefLabel)) {
+						// use the number of documents this word appears in
+						wordsMap.put(prefLabel, sourceReader.docFreq(new Term(
+								fieldToAutocomplete, prefLabel)));
+						idMap.put(prefLabel, ids[0]);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-    	// re-open our reader
-    	reOpenReader();
-    }
+		}
 
-    private void reOpenReader() throws CorruptIndexException, IOException {
-    	if (autoCompleteReader == null) {
-    		autoCompleteReader = IndexReader.open(autoCompleteDirectory);
-    	} else {
-    		autoCompleteReader.reopen();
-    	}
+		int i = 0;
+		for (String word : wordsMap.keySet()) {
+			i++;
 
-    	autoCompleteSearcher = new IndexSearcher(autoCompleteReader);
-    }
+			// TODO: Need better way strip characters from terms.
+			String nospaces = word.replaceAll(" ", "");
+			nospaces = nospaces.replaceAll("\\(", "");
+			nospaces = nospaces.replaceAll("\\)", "");
+			nospaces = nospaces.replaceAll("\\[", "");
+			nospaces = nospaces.replaceAll("\\]", "");
+			nospaces = nospaces.replaceAll("\\.", "");
+			nospaces = nospaces.replaceAll("-", "");
+			nospaces = nospaces.replaceAll(",", "");
+			nospaces = nospaces.replaceAll(":", "");
+			nospaces = nospaces.replaceAll("'", "");
+
+			// ok index the word
+			Document doc = new Document();
+			doc.add(new Field(ID_FIELD, idMap.get(word), Field.Store.YES,
+					Field.Index.NOT_ANALYZED));
+			doc.add(new Field(SOURCE_WORD_FIELD, word, Field.Store.YES,
+					Field.Index.NOT_ANALYZED)); // orig term
+			doc.add(new Field(GRAMMED_WORDS_FIELD, nospaces, Field.Store.YES,
+					Field.Index.ANALYZED)); // grammed
+			doc.add(new Field(COUNT_FIELD,
+					Integer.toString(wordsMap.get(word)), Field.Store.NO,
+					Field.Index.NOT_ANALYZED)); // count
+			doc.add(new Field(SORT_FIELD, Integer.toString(i), Field.Store.NO,
+					Field.Index.NOT_ANALYZED)); // count
+
+			writer.addDocument(doc);
+
+		}
+		writer.commit();
+
+		sourceReader.close();
+
+		// close writer
+		writer.optimize();
+		writer.close();
+
+		// re-open our reader
+		reOpenReader();
+	}
+
+	private void reOpenReader() throws CorruptIndexException, IOException {
+		if (autoCompleteReader == null) {
+			autoCompleteReader = IndexReader.open(autoCompleteDirectory);
+		} else {
+			autoCompleteReader.reopen();
+		}
+
+		autoCompleteSearcher = new IndexSearcher(autoCompleteReader);
+	}
 
 }

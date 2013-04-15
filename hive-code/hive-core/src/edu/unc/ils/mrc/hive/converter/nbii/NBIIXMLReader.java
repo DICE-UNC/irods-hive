@@ -1,8 +1,6 @@
 package edu.unc.ils.mrc.hive.converter.nbii;
 
 import java.io.FileNotFoundException;
-
-
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -13,12 +11,10 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-
 /*
  * Problems to read repgen.xml. Not use this class for the moment!!!
  */
-public class NBIIXMLReader extends DefaultHandler
-{
+public class NBIIXMLReader extends DefaultHandler {
 
 	private XMLReader xr;
 	private String currentElement;
@@ -28,19 +24,19 @@ public class NBIIXMLReader extends DefaultHandler
 
 	public NBIIXMLReader() {
 		try {
-			this.xr = XMLReaderFactory.createXMLReader();
-			this.xr.setContentHandler(this);
-			this.xr.setErrorHandler(this);
+			xr = XMLReaderFactory.createXMLReader();
+			xr.setContentHandler(this);
+			xr.setErrorHandler(this);
 		} catch (SAXException e) {
 			System.err.println("Problem with XMLReader inicialization");
 			e.printStackTrace();
 		}
 
-		this.thesaurus = new SKOSThesaurus();
-		this.ok = false;
+		thesaurus = new SKOSThesaurus();
+		ok = false;
 	}
 
-	public Thesaurus readThesaurus(String file) {
+	public Thesaurus readThesaurus(final String file) {
 		FileReader fr;
 		try {
 			fr = new FileReader(file);
@@ -55,10 +51,10 @@ public class NBIIXMLReader extends DefaultHandler
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return this.thesaurus;
+		return thesaurus;
 	}
 
-	public Thesaurus readThesaurus(String[] file) {
+	public Thesaurus readThesaurus(final String[] file) {
 		return null;
 		// TODO
 	}
@@ -74,54 +70,56 @@ public class NBIIXMLReader extends DefaultHandler
 	}
 
 	@Override
-	public void startElement(String uri, String name, String qName,
-			Attributes atts) {
-		this.currentElement = name;
-		if (this.currentElement.equals("DESCRIPTOR")) {
-			this.concept = new SKOSConcept("http://thesaurus.nbii.gov/");
-			this.ok = true;
+	public void startElement(final String uri, final String name,
+			final String qName, final Attributes atts) {
+		currentElement = name;
+		if (currentElement.equals("DESCRIPTOR")) {
+			concept = new SKOSConcept("http://thesaurus.nbii.gov/");
+			ok = true;
 		}
 	}
 
 	@Override
-	public void endElement(String uri, String name, String qName) {
-		if (this.currentElement.equals("UPD") && this.ok) {
-			this.thesaurus.addConcept(this.concept);
-			this.ok = false;
+	public void endElement(final String uri, final String name,
+			final String qName) {
+		if (currentElement.equals("UPD") && ok) {
+			thesaurus.addConcept(concept);
+			ok = false;
 		}
 	}
 
 	@Override
-	public void characters(char[] ch, int start, int end) throws SAXException {
+	public void characters(final char[] ch, final int start, final int end)
+			throws SAXException {
 		String s;
 		s = new String(ch, start, end);
 		s = s.trim();
 		if (currentElement.equals("DESCRIPTOR") && !s.equals("")) {
-			this.concept.setPrefLabel(s);
-			this.concept.setUri(this.concept.getUri() + s);
-			if (this.concept.getUri().contains(" ")) {
-				this.concept.setUri(this.concept.getUri().replaceAll(" ", "-"));
+			concept.setPrefLabel(s);
+			concept.setUri(concept.getUri() + s);
+			if (concept.getUri().contains(" ")) {
+				concept.setUri(concept.getUri().replaceAll(" ", "-"));
 			}
 		}
 		if (currentElement.equals("BT") && !s.equals("")) {
-			this.concept.setBroader(s);
+			concept.setBroader(s);
 		}
 		if (currentElement.equals("UF") && !s.equals("")) {
-			this.concept.setAltLabel(s);
+			concept.setAltLabel(s);
 		}
 		if (currentElement.equals("NT") && !s.equals("")) {
-			this.concept.setNarrower(s);
+			concept.setNarrower(s);
 		}
 		if ((currentElement.equals("SN") || currentElement.equals("SC"))
 				&& !s.equals("")) {
-			this.concept.setScopeNote(s);
+			concept.setScopeNote(s);
 		}
 		if (currentElement.equals("RT") && !s.equals("")) {
-			this.concept.setRelated(s);
+			concept.setRelated(s);
 		}
 	}
 
-	public static void main(String[] args) throws FileNotFoundException,
+	public static void main(final String[] args) throws FileNotFoundException,
 			IOException, SAXException {
 		NBIIXMLReader lector = new NBIIXMLReader();
 		// lector.leer("/home/jose/Desktop/qual2009.xml");

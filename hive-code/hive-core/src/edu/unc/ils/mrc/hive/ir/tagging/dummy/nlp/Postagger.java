@@ -70,16 +70,17 @@ public class Postagger {
 
 	private HmmDecoder decoder;
 
-	public Postagger(String model) throws IOException, ClassNotFoundException {
+	public Postagger(final String model) throws IOException,
+			ClassNotFoundException {
 		System.out.println("Reading model from file=" + model);
 		FileInputStream fileIn = new FileInputStream(model);
 		ObjectInputStream objIn = new ObjectInputStream(fileIn);
 		HiddenMarkovModel hmm = (HiddenMarkovModel) objIn.readObject();
 		Streams.closeInputStream(objIn);
-		this.decoder = new HmmDecoder(hmm);
+		decoder = new HmmDecoder(hmm);
 	}
 
-	public Dictionary tagText(String text) throws ClassNotFoundException,
+	public Dictionary tagText(final String text) throws ClassNotFoundException,
 			IOException {
 		Dictionary dic = new Dictionary();
 		char[] cs = text.toCharArray();

@@ -31,39 +31,37 @@ import java.util.List;
 
 /**
  * @author jose
- *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ * 
+ *         To change the template for this generated type comment go to
+ *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class Ranking {
-	
+
 	private ArrayList<Rankeable> ranking;
-	
-	public Ranking(){
-		this.ranking= new ArrayList<Rankeable>();
+
+	public Ranking() {
+		ranking = new ArrayList<Rankeable>();
 	}
-	
-	public void addValor(Rankeable r){
-		this.ranking.add(r);
+
+	public void addValor(final Rankeable r) {
+		ranking.add(r);
 	}
-	
-	public Rankeable getValor(int i){
-		return this.ranking.get(i);
+
+	public Rankeable getValor(final int i) {
+		return ranking.get(i);
 	}
-	
-	public int size()
-	{
-		return this.size();
+
+	public int size() {
+		return size();
 	}
-	
-	public ArrayList<Rankeable> getRanking(){
-		Collections.sort(this.ranking, new ComparadorRanking());
-		return this.ranking;
+
+	public ArrayList<Rankeable> getRanking() {
+		Collections.sort(ranking, new ComparadorRanking());
+		return ranking;
 	}
-	
-	public List<Rankeable> getTop(int n)
-	{
-		return this.ranking.subList(0, n);
+
+	public List<Rankeable> getTop(final int n) {
+		return ranking.subList(0, n);
 	}
 
 }

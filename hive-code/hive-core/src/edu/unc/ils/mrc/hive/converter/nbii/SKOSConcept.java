@@ -1,11 +1,10 @@
 package edu.unc.ils.mrc.hive.converter.nbii;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
-public class SKOSConcept implements Concept{
-	
+public class SKOSConcept implements Concept {
+
 	private String uri;
 	private String prefLabel;
 	private String scopeNote;
@@ -17,128 +16,128 @@ public class SKOSConcept implements Concept{
 	private List<String> broaderURI;
 	private List<String> related;
 	private List<String> realtedURI;
-	
-	public SKOSConcept(String uri) {
+
+	public SKOSConcept(final String uri) {
 		this.uri = uri;
-		this.narrower = new ArrayList<String>();
-		this.narrowerURI = new ArrayList<String>();
-		this.broader = new ArrayList<String>();
-		this.broaderURI = new ArrayList<String>();
-		this.altLabel = new ArrayList<String>();
-		this.hiddenLabel = new ArrayList<String>();
-		this.related = new ArrayList<String>();
-		this.realtedURI = new ArrayList<String>();
-		this.scopeNote  = "";
+		narrower = new ArrayList<String>();
+		narrowerURI = new ArrayList<String>();
+		broader = new ArrayList<String>();
+		broaderURI = new ArrayList<String>();
+		altLabel = new ArrayList<String>();
+		hiddenLabel = new ArrayList<String>();
+		related = new ArrayList<String>();
+		realtedURI = new ArrayList<String>();
+		scopeNote = "";
 	}
 
 	@Override
-	public void setUri(String uri) {
+	public void setUri(final String uri) {
 		this.uri = uri;
 	}
-	
+
 	@Override
 	public String getUri() {
-		return this.uri;
+		return uri;
 	}
 
 	@Override
 	public String getPrefLabel() {
-		return this.prefLabel;
+		return prefLabel;
 	}
 
 	@Override
-	public void setPrefLabel(String prefLabel) {
+	public void setPrefLabel(final String prefLabel) {
 		this.prefLabel = prefLabel;
 	}
 
 	@Override
 	public String getScopeNote() {
-		return this.scopeNote;
+		return scopeNote;
 	}
 
 	@Override
-	public void setScopeNote(String scopeNote) {
+	public void setScopeNote(final String scopeNote) {
 		this.scopeNote = this.scopeNote.concat(" " + scopeNote);
 	}
 
 	@Override
 	public List<String> getAltLabel() {
-		return this.altLabel;
+		return altLabel;
 	}
 
 	@Override
-	public void setAltLabel(String altLabel) {
+	public void setAltLabel(final String altLabel) {
 		this.altLabel.add(altLabel);
 	}
-	
+
 	@Override
 	public List<String> getHiddenLabel() {
-		return this.hiddenLabel;
+		return hiddenLabel;
 	}
 
 	@Override
-	public void setHiddenLabel(String hiddenLabel) {
+	public void setHiddenLabel(final String hiddenLabel) {
 		this.hiddenLabel.add(hiddenLabel);
 	}
 
 	@Override
 	public List<String> getNarrower() {
-		return this.narrower;
-	}
-	
-	@Override
-	public List<String> getNarrowerURI() {
-		return this.narrowerURI;
+		return narrower;
 	}
 
 	@Override
-	public void setNarrower(String narrower) {
+	public List<String> getNarrowerURI() {
+		return narrowerURI;
+	}
+
+	@Override
+	public void setNarrower(final String narrower) {
 		this.narrower.add(narrower);
 	}
-	
+
 	@Override
-	public void setNarrowerURI(String narrowerURI) {
+	public void setNarrowerURI(final String narrowerURI) {
 		this.narrowerURI.add(narrowerURI);
 	}
 
 	@Override
 	public List<String> getBroader() {
-		return this.broader;
+		return broader;
 	}
-	
+
 	@Override
 	public List<String> getBroaderURI() {
-		return this.broaderURI;
+		return broaderURI;
 	}
 
 	@Override
-	public void setBroader(String broader) {
+	public void setBroader(final String broader) {
 		this.broader.add(broader);
 	}
-	
+
 	@Override
-	public void setBroaderURI(String broaderURI) {
+	public void setBroaderURI(final String broaderURI) {
 		this.broaderURI.add(broaderURI);
-	}
-	
-	@Override
-	public List<String> getRelated() {
-		return this.related;
-	}
-	
-	@Override
-	public List<String> getRelatedURI() {
-		return this.realtedURI;
 	}
 
 	@Override
-	public void setRelated(String related) {
+	public List<String> getRelated() {
+		return related;
+	}
+
+	@Override
+	public List<String> getRelatedURI() {
+		return realtedURI;
+	}
+
+	@Override
+	public void setRelated(final String related) {
 		this.related.add(related);
 	}
-	
+
 	@Override
-	public void setRelatedURI(String relatedURI) {
-		this.realtedURI.add(relatedURI);
+	public void setRelatedURI(final String relatedURI) {
+		realtedURI.add(relatedURI);
 	}
 
 }

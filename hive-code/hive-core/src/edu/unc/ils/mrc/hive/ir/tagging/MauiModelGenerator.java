@@ -25,22 +25,23 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package edu.unc.ils.mrc.hive.ir.tagging;
 
-import org.apache.commons.logging.Log;
+import maui.main.MauiModelBuilder;
+import maui.stemmers.PorterStemmer;
+import maui.stemmers.Stemmer;
 
+import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.perf4j.StopWatch;
 import org.perf4j.log4j.Log4JStopWatch;
 
 import edu.unc.ils.mrc.hive.HiveException;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
-import maui.main.MauiModelBuilder;
-import maui.stemmers.PorterStemmer;
-import maui.stemmers.Stemmer;
 
 public class MauiModelGenerator {
 
-    private static final Log logger = LogFactory.getLog(MauiModelGenerator.class);
-	
+	private static final Log logger = LogFactory
+			.getLog(MauiModelGenerator.class);
+
 	private MauiModelBuilder mm;
 	private String trainDirName;
 	private String modelName;
@@ -49,36 +50,32 @@ public class MauiModelGenerator {
 	private int minPhraseLength;
 	private int minNumOccur;
 	private SKOSScheme scheme;
-/*
-	public void setMaxPhraseLength(int maxPhraseLength) {
-		this.maxPhraseLength = maxPhraseLength;
-		this.km.setMaxPhraseLength(this.maxPhraseLength);
-	}
 
-	public void setMinPhraseLength(int minPhraseLength) {
-		this.minPhraseLength = minPhraseLength;
-		this.km.setMinPhraseLength(this.minPhraseLength);
-	}
+	/*
+	 * public void setMaxPhraseLength(int maxPhraseLength) {
+	 * this.maxPhraseLength = maxPhraseLength;
+	 * this.km.setMaxPhraseLength(this.maxPhraseLength); }
+	 * 
+	 * public void setMinPhraseLength(int minPhraseLength) {
+	 * this.minPhraseLength = minPhraseLength;
+	 * this.km.setMinPhraseLength(this.minPhraseLength); }
+	 * 
+	 * public void setMinNumOccur(int minNumOccur) { this.minNumOccur =
+	 * minNumOccur; km.setMinNumOccur(this.minNumOccur); }
+	 */
+	public MauiModelGenerator(final SKOSScheme schema, final int minOccur) {
 
-	public void setMinNumOccur(int minNumOccur) {
-		this.minNumOccur = minNumOccur;
-		km.setMinNumOccur(this.minNumOccur);
-	}
-*/
-	public MauiModelGenerator(SKOSScheme schema, int minOccur) {
+		scheme = schema;
 
-		this.scheme = schema;
-		
-//		String dirName = schema.getKEAtrainSetDir();
+		// String dirName = schema.getKEAtrainSetDir();
 		String modelPath = schema.getMauiModelPath();
-//		String vocabularyPath = schema.getRdfPath();
+		// String vocabularyPath = schema.getRdfPath();
 		String stopwordsPath = schema.getStopwordsPath();
 		String stemmerClass = schema.getMauiStemmerClass();
-	
-		
-		this.mm = new MauiModelBuilder();
-		this.mm.setInputDirectoryName(schema.getKEAtrainSetDir());
-		this.mm.setStopwords(stopwordsPath);
+
+		mm = new MauiModelBuilder();
+		mm.setInputDirectoryName(schema.getKEAtrainSetDir());
+		mm.setStopwords(stopwordsPath);
 		// A. required arguments (no defaults):
 
 		// 1. Name of the directory -- give the path to your directory with
@@ -86,25 +83,25 @@ public class MauiModelGenerator {
 		// documents should be in txt format with an extention "txt"
 		// keyphrases with the same name as documents, but extension "key"
 		// one keyphrase per line!
-//		this.km.setDirName(dirName);
-//		this.trainDirName = dirName;
+		// this.km.setDirName(dirName);
+		// this.trainDirName = dirName;
 
 		// 2. Name of the model -- give the path to where the model is to be
 		// stored and its name
-		this.mm.setModelName(modelPath);
-//		this.modelName = modelPath;
+		mm.setModelName(modelPath);
+		// this.modelName = modelPath;
 
 		// 3. Name of the vocabulary -- name of the file (without extension)
 		// that is stored in VOCABULARIES
 		// or "none" if no Vocabulary is used (free keyphrase extraction).
-//		mm.setVocabulary(vocabularyPath);
-//		this.vocabulary = vocabularyPath;
+		// mm.setVocabulary(vocabularyPath);
+		// this.vocabulary = vocabularyPath;
 		mm.setVocabularyName(schema.getName());
 
 		// 4. Format of the vocabulary in 3. Leave empty if vocabulary = "none",
 		// use "skos" or "txt" otherwise.
 		mm.setVocabularyFormat("skos");
-		
+
 		mm.setVocabularyDirectory(schema.getH2Path());
 
 		// B. optional arguments if you want to change the defaults
@@ -119,19 +116,18 @@ public class MauiModelGenerator {
 		// if you want to alterate results
 		// (We have obtained better results for Spanish and French with
 		// NoStemmer)
-		
-		try
-		{
+
+		try {
 			Class cls = Class.forName(stemmerClass);
-			Stemmer stemmer = (Stemmer)cls.newInstance();
+			Stemmer stemmer = (Stemmer) cls.newInstance();
 			mm.setStemmer(stemmer);
 		} catch (Exception e) {
 			logger.error("Error instantiating stemmer: " + e);
 			mm.setStemmer(new PorterStemmer());
 		}
-			
+
 		// 8. Stopwords -- adjust if you use a different language than English!
-//		km.setStopwords(new StopwordsEnglish(stopwordsPath));
+		// km.setStopwords(new StopwordsEnglish(stopwordsPath));
 
 		// 9. Maximum length of a keyphrase
 		mm.setMaxPhraseLength(5);
@@ -157,17 +153,17 @@ public class MauiModelGenerator {
 		return modelName;
 	}
 
-	public void createModel(String stopwordsPath) throws HiveException {
-		
+	public void createModel(final String stopwordsPath) throws HiveException {
+
 		try {
 			StopWatch stopWatch = new Log4JStopWatch();
 			logger.info("Create Maui model");
-			mm.buildModel(mm.collectStems()); //,this.scheme,stopwordsPath,this.scheme.getManager());
+			mm.buildModel(mm.collectStems()); // ,this.scheme,stopwordsPath,this.scheme.getManager());
 			mm.saveModel();
 			logger.info("Maui model created");
 			stopWatch.lap(vocabulary + " Maui model create");
 		} catch (Exception e) {
-			throw new HiveException ("Error creating Maui model", e);
+			throw new HiveException("Error creating Maui model", e);
 		}
 	}
 }

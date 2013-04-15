@@ -21,12 +21,12 @@ public class StopwordsEnglish extends Stopwords {
 	private static final long serialVersionUID = 1L;
 
 	/** The hashtable containing the list of stopwords */
-	private Hashtable<String,Double> m_Stopwords = null;
+	private Hashtable<String, Double> m_Stopwords = null;
 
-	public StopwordsEnglish(String stopwordsPath) {
+	public StopwordsEnglish(final String stopwordsPath) {
 
 		if (m_Stopwords == null) {
-			m_Stopwords = new Hashtable<String,Double>();
+			m_Stopwords = new Hashtable<String, Double>();
 			Double dummy = new Double(0);
 			File txt = new File(stopwordsPath);
 			InputStreamReader is;
@@ -48,7 +48,7 @@ public class StopwordsEnglish extends Stopwords {
 	 * Returns true if the given string is a stop word.
 	 */
 	@Override
-	public boolean isStopword(String str) {
+	public boolean isStopword(final String str) {
 
 		return m_Stopwords.containsKey(str.toLowerCase());
 	}

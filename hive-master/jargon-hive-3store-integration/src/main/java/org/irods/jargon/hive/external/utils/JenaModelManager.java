@@ -17,6 +17,7 @@ import com.hp.hpl.jena.sdb.SDBFactory;
 import com.hp.hpl.jena.sdb.Store;
 import com.hp.hpl.jena.sdb.StoreDesc;
 import com.hp.hpl.jena.sdb.store.DatabaseType;
+import com.hp.hpl.jena.sdb.store.FeatureSet;
 import com.hp.hpl.jena.sdb.store.LayoutType;
 import com.hp.hpl.jena.sdb.util.StoreUtils;
 
@@ -55,8 +56,10 @@ public class JenaModelManager {
 		log.info("buildJenaDatabaseModel()");
 		Connection conn = getJdbcConnectionBasedOnHiveConfig(jenaHiveConfiguration);
 		log.info("have connection, creating jena model via sdb");
-		StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash,
-				DatabaseType.Derby);
+		FeatureSet featureSet = new FeatureSet();
+		StoreDesc storeDesc = new com.hp.hpl.jena.sdb.StoreDesc(
+				LayoutType.LayoutTripleNodesHash, DatabaseType.Derby,
+				featureSet);
 		log.info("storeDesc:{}", storeDesc);
 		log.info("sdb connection created..getting store...");
 		store = SDBFactory.connectStore(conn, storeDesc);

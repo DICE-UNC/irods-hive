@@ -10,55 +10,58 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-
-
 /**
  * Handler for ConceptRelationList element
  */
-public class ConceptRelationListHandler extends MeshHandler 
-{
-	private static final Log logger = LogFactory.getLog(ConceptRelationListHandler.class);
-	
+public class ConceptRelationListHandler extends MeshHandler {
+	private static final Log logger = LogFactory
+			.getLog(ConceptRelationListHandler.class);
+
 	List<ConceptRelation> relations = new ArrayList<ConceptRelation>();
 
-	public ConceptRelationListHandler(XMLReader parser, DefaultHandler parent) {
+	public ConceptRelationListHandler(final XMLReader parser,
+			final DefaultHandler parent) {
 		super(parser, parent);
 	}
-	
-    @Override
-	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
-    {
-    	logger.trace("startElement: " + uri + "," + localName + "," + qName + "," + attributes);
-    	
-    	if (qName.equals("ConceptRelation")) {
-        	String relation = attributes.getValue("RelationName");
-        
-    		ConceptRelationHandler handler = new ConceptRelationHandler(parser, this, relation); 	
-    		childHandler = handler;
-    		parser.setContentHandler(handler);
-    	}
-    }
-    
-    @Override
-	public void endElement(String uri, String localName, String qName) throws SAXException
-    {
-    	logger.trace("endElement: " + uri + "," + localName + "," + qName);
-    	
-    	if (qName.equals("ConceptRelation")) {
-    		ConceptRelation relation = ((ConceptRelationHandler)childHandler).getRelation();
-    		relations.add(relation);
-    	}
-    	else if (qName.equals("ConceptRelationList")) {
-    		parser.setContentHandler(parent);
-    	}
-    }    
-    
-    /**
-     * Returns the list of concept relations
-     * @return
-     */
-    public List<ConceptRelation> getRelations() {
-    	return relations;
-    }
-    
+
+	@Override
+	public void startElement(final String uri, final String localName,
+			final String qName, final Attributes attributes)
+			throws SAXException {
+		logger.trace("startElement: " + uri + "," + localName + "," + qName
+				+ "," + attributes);
+
+		if (qName.equals("ConceptRelation")) {
+			String relation = attributes.getValue("RelationName");
+
+			ConceptRelationHandler handler = new ConceptRelationHandler(parser,
+					this, relation);
+			childHandler = handler;
+			parser.setContentHandler(handler);
+		}
+	}
+
+	@Override
+	public void endElement(final String uri, final String localName,
+			final String qName) throws SAXException {
+		logger.trace("endElement: " + uri + "," + localName + "," + qName);
+
+		if (qName.equals("ConceptRelation")) {
+			ConceptRelation relation = ((ConceptRelationHandler) childHandler)
+					.getRelation();
+			relations.add(relation);
+		} else if (qName.equals("ConceptRelationList")) {
+			parser.setContentHandler(parent);
+		}
+	}
+
+	/**
+	 * Returns the list of concept relations
+	 * 
+	 * @return
+	 */
+	public List<ConceptRelation> getRelations() {
+		return relations;
+	}
+
 }

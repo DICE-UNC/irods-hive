@@ -12,7 +12,6 @@ import org.irods.jargon.hive.service.VocabularyService;
 import org.irods.jargon.hive.service.VocabularyServiceImpl;
 
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
-import edu.unc.ils.mrc.hive.api.SKOSSearcher;
 import edu.unc.ils.mrc.hive.api.SKOSServer;
 import edu.unc.ils.mrc.hive.api.impl.elmo.SKOSServerImpl;
 
@@ -75,7 +74,7 @@ public class HiveContainerImpl implements HiveContainer {
 	 * .hive.HiveConfiguration)
 	 */
 	@Override
-	public void setHiveConfiguration(HiveConfiguration hiveConfiguration) {
+	public void setHiveConfiguration(final HiveConfiguration hiveConfiguration) {
 		this.hiveConfiguration = hiveConfiguration;
 	}
 
@@ -130,7 +129,7 @@ public class HiveContainerImpl implements HiveContainer {
 		// //added by Mike
 		// logger.info("schema as tree map:" + schemaMap); //added by Mike
 
-		SKOSSearcher searcher = skosServer.getSKOSSearcher();
+		skosServer.getSKOSSearcher();
 
 		// server.getSKOSSchemas()
 		/**

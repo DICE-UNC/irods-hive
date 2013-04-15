@@ -1,6 +1,5 @@
 package kea.filters;
 
-import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -14,20 +13,20 @@ import kea.stopwords.Stopwords;
 import kea.stopwords.StopwordsEnglish;
 import kea.util.Counter;
 import kea.vocab.Vocabulary;
+import weka.classifiers.Classifier;
+import weka.classifiers.meta.FilteredClassifier;
+import weka.classifiers.meta.RegressionByDiscretization;
 import weka.core.Attribute;
 import weka.core.Capabilities;
+import weka.core.Capabilities.Capability;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.Option;
 import weka.core.OptionHandler;
 import weka.core.Utils;
-import weka.core.Capabilities.Capability;
 import weka.filters.Filter;
 import weka.filters.supervised.attribute.Discretize;
-import weka.classifiers.Classifier;
-import weka.classifiers.meta.FilteredClassifier;
-import weka.classifiers.meta.RegressionByDiscretization;
 
 /**
  * This filter converts the incoming data into data appropriate for keyphrase
@@ -167,7 +166,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	private String m_documentLanguage = "en";
 
 	/** The Vocabulary object */
-	//public VocabularySesame m_Vocabulary;
+	// public VocabularySesame m_Vocabulary;
 
 	/** The Vocabulary name */
 	private String m_vocabulary;// = "agrovoc";
@@ -175,8 +174,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 	/** The Vocabulary format */
 	private String m_vocabularyFormat = "skos";
 
-	public void setStopwords(String stopwordsPath) {
-		this.m_Stopwords = new StopwordsEnglish(stopwordsPath);
+	public void setStopwords(final String stopwordsPath) {
+		m_Stopwords = new StopwordsEnglish(stopwordsPath);
 	}
 
 	/**
@@ -194,8 +193,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @param newM_Vocabulary
 	 *            The new M_Vocabulary value.
 	 */
-	public void setVocabulary(String newM_Vocabulary) {
-		this.m_vocabulary = newM_Vocabulary;
+	public void setVocabulary(final String newM_Vocabulary) {
+		m_vocabulary = newM_Vocabulary;
 	}
 
 	/**
@@ -213,8 +212,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @param newM_VocabularyFormat
 	 *            The new M_VocabularyFormat value.
 	 */
-	public void setVocabularyFormat(String newM_VocabularyFormat) {
-		this.m_vocabularyFormat = newM_VocabularyFormat;
+	public void setVocabularyFormat(final String newM_VocabularyFormat) {
+		m_vocabularyFormat = newM_VocabularyFormat;
 	}
 
 	/**
@@ -232,8 +231,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @param newM_documentLanguage
 	 *            The new M_documentLanguage value.
 	 */
-	public void setDocumentLanguage(String newM_documentLanguage) {
-		this.m_documentLanguage = newM_documentLanguage;
+	public void setDocumentLanguage(final String newM_documentLanguage) {
+		m_documentLanguage = newM_documentLanguage;
 	}
 
 	/** Determines whether check for proper nouns is performed */
@@ -254,8 +253,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @param newM_CheckProperNouns
 	 *            The new M_CheckProperNouns value.
 	 */
-	public void setCheckForProperNouns(boolean newM_CheckProperNouns) {
-		this.m_CheckForProperNouns = newM_CheckProperNouns;
+	public void setCheckForProperNouns(final boolean newM_CheckProperNouns) {
+		m_CheckForProperNouns = newM_CheckProperNouns;
 	}
 
 	/**
@@ -273,8 +272,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @param newM_Stopwords
 	 *            The new M_Stopwords value.
 	 */
-	public void setStopwords(Stopwords newM_Stopwords) {
-		this.m_Stopwords = newM_Stopwords;
+	public void setStopwords(final Stopwords newM_Stopwords) {
+		m_Stopwords = newM_Stopwords;
 	}
 
 	/**
@@ -292,8 +291,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @param newStemmer
 	 *            The new Stemmer value.
 	 */
-	public void setStemmer(Stemmer newStemmer) {
-		this.m_Stemmer = newStemmer;
+	public void setStemmer(final Stemmer newStemmer) {
+		m_Stemmer = newStemmer;
 
 	}
 
@@ -312,7 +311,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @param newMinNumOccur
 	 *            Value to assign to MinNumOccur.
 	 */
-	public void setMinNumOccur(int newMinNumOccur) {
+	public void setMinNumOccur(final int newMinNumOccur) {
 		m_MinNumOccur = newMinNumOccur;
 	}
 
@@ -331,7 +330,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @param newMaxPhraseLength
 	 *            Value to assign to MaxPhraseLength.
 	 */
-	public void setMaxPhraseLength(int newMaxPhraseLength) {
+	public void setMaxPhraseLength(final int newMaxPhraseLength) {
 		m_MaxPhraseLength = newMaxPhraseLength;
 	}
 
@@ -350,7 +349,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @param newMinPhraseLength
 	 *            Value to assign to MinPhraseLength.
 	 */
-	public void setMinPhraseLength(int newMinPhraseLength) {
+	public void setMinPhraseLength(final int newMinPhraseLength) {
 		m_MinPhraseLength = newMinPhraseLength;
 	}
 
@@ -369,7 +368,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @param newnumPhrases
 	 *            Value to assign to numPhrases.
 	 */
-	public void setNumPhrases(int newnumPhrases) {
+	public void setNumPhrases(final int newnumPhrases) {
 		m_numPhrases = newnumPhrases;
 	}
 
@@ -433,7 +432,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @param newDocumentAtt
 	 *            Value to assign to DocumentAtt.
 	 */
-	public void setDocumentAtt(int newDocumentAtt) {
+	public void setDocumentAtt(final int newDocumentAtt) {
 		m_DocumentAtt = newDocumentAtt;
 	}
 
@@ -452,7 +451,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @param newKeyphrasesAtt
 	 *            Value to assign to KeyphrasesAtt.
 	 */
-	public void setKeyphrasesAtt(int newKeyphrasesAtt) {
+	public void setKeyphrasesAtt(final int newKeyphrasesAtt) {
 		m_KeyphrasesAtt = newKeyphrasesAtt;
 	}
 
@@ -471,14 +470,14 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @param newDebug
 	 *            Value to assign to Debug.
 	 */
-	public void setDebug(boolean newDebug) {
+	public void setDebug(final boolean newDebug) {
 		m_Debug = newDebug;
 	}
 
 	/**
 	 * Sets whether keyphrase frequency attribute is used.
 	 */
-	public void setKFused(boolean flag) {
+	public void setKFused(final boolean flag) {
 		m_KFused = flag;
 		if (flag) {
 			m_NumFeatures++;
@@ -523,17 +522,19 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @param disallow
 	 *            the new invert setting
 	 */
-	public void setDisallowInternalPeriods(boolean disallow) {
+	public void setDisallowInternalPeriods(final boolean disallow) {
 		m_DisallowInternalPeriods = disallow;
 	}
 
-	public void loadThesaurus(Stemmer st, Stopwords sw, Vocabulary vocabulary) {
-		System.out.println("Loading " + m_vocabulary + "..............................");
+	public void loadThesaurus(final Stemmer st, final Stopwords sw,
+			final Vocabulary vocabulary) {
+		System.out.println("Loading " + m_vocabulary
+				+ "..............................");
 		Vocabulary m_Vocabulary = vocabulary;
 
 		m_Vocabulary.setStemmer(st);
 		m_Vocabulary.setStopwords(sw);
-		m_Vocabulary.initialize();   
+		m_Vocabulary.initialize();
 		try {
 
 			if (m_DESCRreplace) {
@@ -595,7 +596,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 *                if an option is not supported
 	 */
 	@Override
-	public void setOptions(String[] options) throws Exception {
+	public void setOptions(final String[] options) throws Exception {
 
 		setKFused(Utils.getFlag('K', options));
 		setDebug(Utils.getFlag('D', options));
@@ -727,7 +728,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @return true if the outputFormat may be collected immediately
 	 */
 	@Override
-	public boolean setInputFormat(Instances instanceInfo) throws Exception {
+	public boolean setInputFormat(final Instances instanceInfo)
+			throws Exception {
 
 		if (instanceInfo.classIndex() >= 0) {
 			throw new Exception("Don't know what do to if class index set!");
@@ -792,7 +794,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 *                if the input instance was not of the correct format or if
 	 *                there was a problem with the filtering.
 	 */
-	public boolean input(Instance instance, Vocabulary vocabulary) throws Exception {
+	public boolean input(Instance instance, final Vocabulary vocabulary)
+			throws Exception {
 		if (getInputFormat() == null) {
 			throw new Exception("No input instance format defined");
 		}
@@ -839,8 +842,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @exception Exception
 	 *                if no input structure has been defined
 	 */
-	
-	public boolean batchFinished(Vocabulary vocabulary) throws Exception {
+
+	public boolean batchFinished(final Vocabulary vocabulary) throws Exception {
 
 		if (getInputFormat() == null) {
 			throw new Exception("No input instance format defined");
@@ -859,7 +862,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 	/**
 	 * Builds the global dictionaries.
 	 */
-	public void buildGlobalDictionaries(Vocabulary vocabulary) throws Exception {
+	public void buildGlobalDictionaries(final Vocabulary vocabulary)
+			throws Exception {
 		if (m_Debug) {
 			System.err.println("--- Building global dictionaries");
 		}
@@ -894,7 +898,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 			for (int i = 0; i < getInputFormat().numInstances(); i++) {
 				String str = getInputFormat().instance(i).stringValue(
 						m_KeyphrasesAtt);
-				HashMap hash = getGivenKeyphrases(str, false,vocabulary);
+				HashMap hash = getGivenKeyphrases(str, false, vocabulary);
 				if (hash != null) {
 					Iterator it = hash.keySet().iterator();
 					while (it.hasNext()) {
@@ -921,7 +925,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * Builds the classifier.
 	 */
 	// aly: The main function, where everything important happens
-	private void buildClassifier(Vocabulary vocabulary) throws Exception {
+	private void buildClassifier(final Vocabulary vocabulary) throws Exception {
 		// Generate input format for classifier
 		FastVector atts = new FastVector();
 		for (int i = 0; i < getInputFormat().numAttributes(); i++) {
@@ -960,21 +964,27 @@ public class KEAFilter extends Filter implements OptionHandler {
 
 			// Get the key phrases for the document
 			String keyphrases = current.stringValue(m_KeyphrasesAtt);
-			HashMap hashKeyphrases = getGivenKeyphrases(keyphrases, false,vocabulary);
-			HashMap hashKeysEval = getGivenKeyphrases(keyphrases, true,vocabulary);
+			HashMap hashKeyphrases = getGivenKeyphrases(keyphrases, false,
+					vocabulary);
+			HashMap hashKeysEval = getGivenKeyphrases(keyphrases, true,
+					vocabulary);
 
-            // KEA expects all training documents to include author assigned keyphrases
-            // that match entries in the vocabulary. If no keyphrases are found that
-            // match, classifier construction fails silently below.
-            // Skip this instance if no keyphrases match.
-            if (hashKeysEval == null) {
-                System.err.println("No keyphrases found for author assigned keyphrases");
-                continue;
-            }
+			// KEA expects all training documents to include author assigned
+			// keyphrases
+			// that match entries in the vocabulary. If no keyphrases are found
+			// that
+			// match, classifier construction fails silently below.
+			// Skip this instance if no keyphrases match.
+			if (hashKeysEval == null) {
+				System.err
+						.println("No keyphrases found for author assigned keyphrases");
+				continue;
+			}
 
 			// Get the phrases for the document
 			HashMap hash = new HashMap();
-			int length = getPhrases(hash, current.stringValue(m_DocumentAtt),vocabulary);
+			int length = getPhrases(hash, current.stringValue(m_DocumentAtt),
+					vocabulary);
 			// hash = getComposits(hash);
 
 			// Compute the feature values for each phrase and
@@ -1069,9 +1079,10 @@ public class KEAFilter extends Filter implements OptionHandler {
 	/**
 	 * Conmputes the feature values for a given phrase.
 	 */
-	private double[] featVals(String id, FastVector phraseInfo,
-			boolean training, HashMap hashKeysEval, HashMap hashKeyphrases,
-			int length, HashMap hash, Vocabulary vocabulary) {
+	private double[] featVals(final String id, final FastVector phraseInfo,
+			final boolean training, final HashMap hashKeysEval,
+			final HashMap hashKeyphrases, final int length, final HashMap hash,
+			final Vocabulary vocabulary) {
 
 		// Compute feature values
 		Counter counterLocal = (Counter) phraseInfo.elementAt(1);
@@ -1126,8 +1137,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 
 			double mean = Utils.mean(vals);
 			double summ = 0.0;
-			for (int i = 0; i < vals.length; i++) {
-				double a = vals[i];
+			for (double a : vals) {
 				// System.err.println("Appearence " + i + " is at " + a);
 				summ += (a - mean) * (a - mean);
 			}
@@ -1224,7 +1234,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 	/**
 	 * Sets output format and converts pending input instances.
 	 */
-	private void convertPendingInstances(Vocabulary vocabulary) throws Exception {
+	private void convertPendingInstances(final Vocabulary vocabulary)
+			throws Exception {
 
 		if (m_Debug) {
 			System.err.println("--- Converting pending instances");
@@ -1290,7 +1301,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 	/**
 	 * Converts an instance.
 	 */
-	private FastVector convertInstance(Instance instance, boolean training, Vocabulary vocabulary)
+	private FastVector convertInstance(final Instance instance,
+			final boolean training, final Vocabulary vocabulary)
 			throws Exception {
 
 		FastVector vector = new FastVector();
@@ -1310,7 +1322,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 
 		// Get the phrases for the document
 		HashMap hash = new HashMap();
-		int length = getPhrases(hash, instance.stringValue(m_DocumentAtt),vocabulary);
+		int length = getPhrases(hash, instance.stringValue(m_DocumentAtt),
+				vocabulary);
 		// hash = getComposits(hash);
 
 		/*
@@ -1612,7 +1625,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * Returns a hashtable. Fills the hashtable with the stemmed n-grams
 	 * occuring in the given string (as keys) and the number of times it occurs.
 	 */
-	public HashMap getPhrasesForDictionary(String str, Vocabulary vocabulary) {
+	public HashMap getPhrasesForDictionary(final String str,
+			final Vocabulary vocabulary) {
 
 		String[] buffer = new String[m_MaxPhraseLength];
 		HashMap hash = new HashMap();
@@ -1704,7 +1718,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * 
 	 * Returns the total number of words (!) in the string.
 	 */
-	private int getPhrases(HashMap hash, String str, Vocabulary vocabulary) {
+	private int getPhrases(final HashMap hash, final String str,
+			final Vocabulary vocabulary) {
 
 		// FileOutputStream out = new FileOutputStream("candidates_kea41.txt");
 		// PrintWriter printer = new PrintWriter(new OutputStreamWriter(out));
@@ -1778,7 +1793,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 							// Match against the Vocabulary
 							id = vocabulary.getID(orig);
 						}
-						
+
 						// System.out.println(orig + "\t" + pseudo + " \t " +
 						// id);
 
@@ -1829,8 +1844,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 								// update its values in the old vector
 
 								// Update number of occurrences
-								((Counter) vec.elementAt(1))
-										.increment();
+								((Counter) vec.elementAt(1)).increment();
 
 								if (m_STDEVfeature) {
 
@@ -1869,7 +1883,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	/**
 	 * Splits a string at given character into an array (ALY)
 	 */
-	private static String[] split(String str, String separator) {
+	private static String[] split(final String str, final String separator) {
 
 		ArrayList lst = new ArrayList();
 		String word = "";
@@ -1896,7 +1910,8 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * hashtable. Also stores the original version of the stemmed phrase in the
 	 * hash table.
 	 */
-	private HashMap getGivenKeyphrases(String str, boolean forEval, Vocabulary vocabulary) {
+	private HashMap getGivenKeyphrases(final String str, final boolean forEval,
+			final Vocabulary vocabulary) {
 
 		HashMap hash = new HashMap();
 		// m_Indexers = 1;
@@ -1979,10 +1994,10 @@ public class KEAFilter extends Filter implements OptionHandler {
 			String[] elements = str.split("\\(");
 			str = elements[0];
 		}
-//		if (str.matches(".+?\\'.+?")) {
-//			String[] elements = str.split("\\'");
-//			str = elements[1];
-//		}
+		// if (str.matches(".+?\\'.+?")) {
+		// String[] elements = str.split("\\'");
+		// str = elements[1];
+		// }
 
 		// Remove some non-alphanumeric characters
 
@@ -2020,13 +2035,13 @@ public class KEAFilter extends Filter implements OptionHandler {
 	/**
 	 * Joins an array of strings to a single string.
 	 */
-	private static String join(String[] str) {
+	private static String join(final String[] str) {
 		String result = "";
-		for (int i = 0; i < str.length; i++) {
+		for (String element : str) {
 			if (result != "") {
-				result = result + " " + str[i];
+				result = result + " " + element;
 			} else {
-				result = str[i];
+				result = element;
 			}
 		}
 		return result;
@@ -2035,7 +2050,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	/**
 	 * overloaded swap method: exchange 2 locations in an array of Strings.
 	 */
-	public static void swap(int loc1, int loc2, String[] a) {
+	public static void swap(final int loc1, final int loc2, final String[] a) {
 		String temp = a[loc1];
 		a[loc1] = a[loc2];
 		a[loc2] = temp;
@@ -2045,7 +2060,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * Sorts an array of Strings into alphabetic order
 	 * 
 	 */
-	public static String[] sort(String[] a) {
+	public static String[] sort(final String[] a) {
 
 		// rename firstAt to reflect new role in alphabetic sorting
 		int i, j, firstAt;
@@ -2082,7 +2097,7 @@ public class KEAFilter extends Filter implements OptionHandler {
 	 * @param argv
 	 *            should contain arguments to the filter: use -h for help
 	 */
-	public static void main(String[] argv) {
+	public static void main(final String[] argv) {
 
 		try {
 			if (Utils.getFlag('b', argv)) {

@@ -35,15 +35,17 @@ public class ImporterFactory {
 
 	private static int importer = 1;
 
-	public static void selectImporter(int importer) {
+	public static void selectImporter(final int importer) {
 		ImporterFactory.importer = importer;
 	}
 
-	public static Importer getImporter(SKOSScheme scheme) throws HiveException {
-		if (importer == SKOSIMPORTER)
+	public static Importer getImporter(final SKOSScheme scheme)
+			throws HiveException {
+		if (importer == SKOSIMPORTER) {
 			return new SKOSImporter(scheme);
-		else
+		} else {
 			return null;
+		}
 
 	}
 

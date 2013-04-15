@@ -44,75 +44,73 @@ import edu.unc.ils.mrc.hive.api.SKOSScheme;
 import edu.unc.ils.mrc.hive.api.impl.elmo.SKOSSchemeImpl;
 
 /**
- * This class is used to administer HIVE vocabularies. For the specified vocabulary
- * in SKOS RDF/XML format, this class creates
- *   - SSesame store (NativeStore)
- *   - Lucene index
- *   - H2 tables and indexes
- *   - KEA++ model (based on training set)
- *   - Maui model (based on same training set)
+ * This class is used to administer HIVE vocabularies. For the specified
+ * vocabulary in SKOS RDF/XML format, this class creates - SSesame store
+ * (NativeStore) - Lucene index - H2 tables and indexes - KEA++ model (based on
+ * training set) - Maui model (based on same training set)
  * 
- * This class expects the following:
- *  - SKOS vocabulary file in RDF/XML format
- *  - Valid HIVE vocabulary property file
+ * This class expects the following: - SKOS vocabulary file in RDF/XML format -
+ * Valid HIVE vocabulary property file
  */
 public class AdminVocabularies {
 
-    private static final Log logger = LogFactory.getLog(AdminVocabularies.class);
-	
-    /**
-     * Returns the CLI options
-     * @return
-     */
-    public static Options getOptions()
-    {
-    	Options options = new Options();
-    	Option config = new Option("c", true, "Path to directory that contains hive.properties");
-    	config.setRequired(true);
-    	options.addOption(config);
-    	
-    	Option vocab = new Option("v", true, "Name of the vocabulary to be initialized");
-    	vocab.setRequired(true);
-    	options.addOption(vocab);
-    	
-    	options.addOption("h", false, "Print this help message");
-    	options.addOption("a", false, "Initialize everything");
-    	options.addOption("s", false, "Initialize Sesame");
-    	options.addOption("l", false, "Initialize Lucene");
-    	options.addOption("d", false, "Initialize H2");
-    	options.addOption("k", false, "Initialize H2 (KEA)");
-    	options.addOption("t", false, "Train KEA");
-    	options.addOption("m", false, "Train Maui");
-    	options.addOption("x", false, "Initialize autocomplete index");
-    	options.addOption("mo", true, "Minimum phrase occurrence");
-    	return options;
-    }
-    
+	private static final Log logger = LogFactory
+			.getLog(AdminVocabularies.class);
+
+	/**
+	 * Returns the CLI options
+	 * 
+	 * @return
+	 */
+	public static Options getOptions() {
+		Options options = new Options();
+		Option config = new Option("c", true,
+				"Path to directory that contains hive.properties");
+		config.setRequired(true);
+		options.addOption(config);
+
+		Option vocab = new Option("v", true,
+				"Name of the vocabulary to be initialized");
+		vocab.setRequired(true);
+		options.addOption(vocab);
+
+		options.addOption("h", false, "Print this help message");
+		options.addOption("a", false, "Initialize everything");
+		options.addOption("s", false, "Initialize Sesame");
+		options.addOption("l", false, "Initialize Lucene");
+		options.addOption("d", false, "Initialize H2");
+		options.addOption("k", false, "Initialize H2 (KEA)");
+		options.addOption("t", false, "Train KEA");
+		options.addOption("m", false, "Train Maui");
+		options.addOption("x", false, "Initialize autocomplete index");
+		options.addOption("mo", true, "Minimum phrase occurrence");
+		return options;
+	}
+
 	/**
 	 * This method is a main to run HIVE importers
-	 * @throws ParseException 
-	 */	
-	public static void main(String[] args) throws ParseException 
-	{
+	 * 
+	 * @throws ParseException
+	 */
+	public static void main(final String[] args) throws ParseException {
 
 		// Get the options specified
-		CommandLineParser parser = new BasicParser( );
+		CommandLineParser parser = new BasicParser();
 
 		Options options = getOptions();
-		CommandLine commandLine = parser.parse( options, args );
+		CommandLine commandLine = parser.parse(options, args);
 
-		if (commandLine.hasOption("h")) 
-		{
+		if (commandLine.hasOption("h")) {
 			// Print the help message
 			HelpFormatter formatter = new HelpFormatter();
-			formatter.printHelp( "java edu.unc.ils.mrc.hive.admin.AdminVocabularies", options );
-		}
-		else
-		{
+			formatter.printHelp(
+					"java edu.unc.ils.mrc.hive.admin.AdminVocabularies",
+					options);
+		} else {
 
 			String configpath = commandLine.getOptionValue("c");
 			String vocabularyName = commandLine.getOptionValue("v");
-			
+
 			boolean doAll = commandLine.hasOption("a");
 			boolean doSesame = commandLine.hasOption("s");
 			boolean doLucene = commandLine.hasOption("l");
@@ -121,63 +119,61 @@ public class AdminVocabularies {
 			boolean doTrainKEA = commandLine.hasOption("t");
 			boolean doTrainMaui = commandLine.hasOption("m");
 			boolean doAutocomplete = commandLine.hasOption("x");
-			
+
 			String moStr = commandLine.getOptionValue("mo");
 			int minOccur = 2;
-			if (moStr != null)
+			if (moStr != null) {
 				minOccur = Integer.parseInt(moStr);
-			
-			if (doAll)
-				doSesame = doLucene = doH2 = doKEAH2 = doTrainKEA = doTrainMaui = doAutocomplete =true;
-			
+			}
+
+			if (doAll) {
+				doSesame = doLucene = doH2 = doKEAH2 = doTrainKEA = doTrainMaui = doAutocomplete = true;
+			}
+
 			logger.info("Starting import of vocabulary " + vocabularyName);
-			try
-			{
-				SKOSScheme scheme = new SKOSSchemeImpl(configpath, vocabularyName, true);
-				
-				try
-				{
-					scheme.importConcepts(scheme.getRdfPath(), doSesame, doLucene, doH2, doKEAH2, doAutocomplete);
+			try {
+				SKOSScheme scheme = new SKOSSchemeImpl(configpath,
+						vocabularyName, true);
+
+				try {
+					scheme.importConcepts(scheme.getRdfPath(), doSesame,
+							doLucene, doH2, doKEAH2, doAutocomplete);
 				} catch (Exception e) {
 					logger.error(e);
 				}
-			
-				if (doKEAH2) 
-				{
+
+				if (doKEAH2) {
 					logger.info("Initializing KEA H2 index");
-					try
-					{
+					try {
 						VocabularyH2 keaH2 = new VocabularyH2(scheme, "en");
-						keaH2.initialize();		
+						keaH2.initialize();
 					} catch (Exception e) {
 						logger.error(e);
 					}
-				} 
-				else
+				} else {
 					logger.info("Skipping KEA H2 initialization");
-				
-				if (doTrainKEA) 
-				{
+				}
+
+				if (doTrainKEA) {
 					TaggerTrainer trainer = new TaggerTrainer(scheme);
 					trainer.setMinOccur(minOccur);
 					logger.info("Starting KEA training");
 					trainer.trainKEAAutomaticIndexingModule();
 					logger.info("KEA training complete");
-		 		} 
-				else
+				} else {
 					logger.info("Skipping KEA training");
-				
-				if (doTrainMaui) 
-				{
+				}
+
+				if (doTrainMaui) {
 					TaggerTrainer trainer = new TaggerTrainer(scheme);
 					trainer.setMinOccur(minOccur);
 					logger.info("Starting Maui training");
 					trainer.trainMauiAutomaticIndexingModule();
 					logger.info("Maui training complete");
-		 		} 
-				else
+				} else {
 					logger.info("Skipping Maui training");
-				
+				}
+
 				try {
 					scheme.close();
 				} catch (Exception e) {

@@ -10,11 +10,10 @@ import org.apache.lucene.analysis.TokenStream;
 /**
  * Analyzer used by HIVE ConceptIndexer and ConceptMultiSearcher.
  */
-public class HIVEAnalyzer extends Analyzer
-{
-   @Override
-public final TokenStream tokenStream(String fieldName, Reader reader) 
-   {
-        return new PorterStemFilter(new LowerCaseTokenizer(reader));
-   }
+public class HIVEAnalyzer extends Analyzer {
+	@Override
+	public final TokenStream tokenStream(final String fieldName,
+			final Reader reader) {
+		return new PorterStemFilter(new LowerCaseTokenizer(reader));
+	}
 }

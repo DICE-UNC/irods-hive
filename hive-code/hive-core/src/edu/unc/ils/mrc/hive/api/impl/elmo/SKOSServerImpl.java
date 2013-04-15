@@ -50,94 +50,95 @@ import edu.unc.ils.mrc.hive.api.SKOSServer;
 import edu.unc.ils.mrc.hive.api.SKOSTagger;
 
 public class SKOSServerImpl implements SKOSServer {
-    private static final Log logger = LogFactory.getLog(SKOSServerImpl.class);
+	private static final Log logger = LogFactory.getLog(SKOSServerImpl.class);
 
 	private SKOSSearcher searcher;
-//	private SKOSTagger tagger;
-	
+	// private SKOSTagger tagger;
+
 	private SKOSTagger mauiTagger;
 	private SKOSTagger keaTagger;
 	private SKOSTagger dummyTagger;
-	
+
 	private TreeMap<String, SKOSScheme> schemes;
 
-	public SKOSServerImpl(String configFile) {
+	public SKOSServerImpl(final String configFile) {
 		logger.info("SKOSServerImpl constructor");
-        List<String> vocabularies = new ArrayList<String>();
+		List<String> vocabularies = new ArrayList<String>();
 
-        String taggerAlgorithm = "dummy";
-        String path = "";
-        
-        logger.info("configFile:" + configFile);
-        
-        Configuration config = null;
-        try {
-            config = new PropertiesConfiguration(configFile);
-            taggerAlgorithm = config.getString("hive.tagger", "dummy");
-            path = config.getString("hive.schemePath", "");
-            if (path.isEmpty()) 
-                path = new File(configFile).getParentFile().getAbsolutePath();            
-            vocabularies = config.getList("hive.vocabulary");
-            logger.info("found vocabularies from hive.vocabulary:" + vocabularies);
-                            
-        } catch (ConfigurationException e) {
-            logger.error("Failure initializing SKOS Server", e);
-        }
+		String path = "";
 
-        this.schemes = new TreeMap<String, SKOSScheme>();
+		logger.info("configFile:" + configFile);
 
-        try
-        {
-            for (String voc : vocabularies) {
-            	logger.info("creating SKOSSScheme from vocabulary:" + voc);
-                SKOSScheme schema = new SKOSSchemeImpl(path, voc, false);
-                this.schemes.put(voc, schema);
-            }
-        } catch (HiveException e) {     
-            logger.error("Failure initializing vocabulary", e);
-        }
+		Configuration config = null;
+		try {
+			config = new PropertiesConfiguration(configFile);
+			config.getString("hive.tagger", "dummy");
+			path = config.getString("hive.schemePath", "");
+			if (path.isEmpty()) {
+				path = new File(configFile).getParentFile().getAbsolutePath();
+			}
+			vocabularies = config.getList("hive.vocabulary");
+			logger.info("found vocabularies from hive.vocabulary:"
+					+ vocabularies);
 
-        this.searcher = new SKOSSearcherImpl(this.schemes);
-        
-        this.mauiTagger = new SKOSTaggerImpl(this.schemes, "maui");
-        this.keaTagger = new SKOSTaggerImpl(this.schemes, "kea");
-        this.dummyTagger = new SKOSTaggerImpl(this.schemes, "dummy");
-        this.mauiTagger.setConfig(config);
-        this.keaTagger.setConfig(config);
-        this.dummyTagger.setConfig(config);
-        
-//        this.tagger = new SKOSTaggerImpl(this.schemes, taggerAlgorithm);//kea or dummy
-//        this.tagger.setConfig(config);
+		} catch (ConfigurationException e) {
+			logger.error("Failure initializing SKOS Server", e);
+		}
+
+		schemes = new TreeMap<String, SKOSScheme>();
+
+		try {
+			for (String voc : vocabularies) {
+				logger.info("creating SKOSSScheme from vocabulary:" + voc);
+				SKOSScheme schema = new SKOSSchemeImpl(path, voc, false);
+				schemes.put(voc, schema);
+			}
+		} catch (HiveException e) {
+			logger.error("Failure initializing vocabulary", e);
+		}
+
+		searcher = new SKOSSearcherImpl(schemes);
+
+		mauiTagger = new SKOSTaggerImpl(schemes, "maui");
+		keaTagger = new SKOSTaggerImpl(schemes, "kea");
+		dummyTagger = new SKOSTaggerImpl(schemes, "dummy");
+		mauiTagger.setConfig(config);
+		keaTagger.setConfig(config);
+		dummyTagger.setConfig(config);
+
+		// this.tagger = new SKOSTaggerImpl(this.schemes, taggerAlgorithm);//kea
+		// or dummy
+		// this.tagger.setConfig(config);
 	}
 
 	@Override
-	public SKOSTagger getSKOSTagger(String algorithm) { 
+	public SKOSTagger getSKOSTagger(final String algorithm) {
 		logger.debug("Using " + algorithm + "  tagger");
-		if (algorithm.toLowerCase().equals("maui"))
-			return this.mauiTagger;
-		else if (algorithm.toLowerCase().equals("kea"))
-			return this.keaTagger;
-		else
-			return this.dummyTagger;
+		if (algorithm.toLowerCase().equals("maui")) {
+			return mauiTagger;
+		} else if (algorithm.toLowerCase().equals("kea")) {
+			return keaTagger;
+		} else {
+			return dummyTagger;
+		}
 	}
-/*	
-	public SKOSTagger getSKOSTagger() {
-		return this.tagger;
-	}
-*/
+
+	/*
+	 * public SKOSTagger getSKOSTagger() { return this.tagger; }
+	 */
 	@Override
 	public TreeMap<String, SKOSScheme> getSKOSSchemas() {
-		return this.schemes;
+		return schemes;
 	}
 
 	@Override
 	public SKOSSearcher getSKOSSearcher() {
-		return this.searcher;
+		return searcher;
 	}
 
 	@Override
-	public String getOrigin(QName uri) {
-		Collection<SKOSScheme> values = this.schemes.values();
+	public String getOrigin(final QName uri) {
+		Collection<SKOSScheme> values = schemes.values();
 		try {
 			URI myuri = new URI(uri.getNamespaceURI());
 			for (SKOSScheme s : values) {
@@ -146,7 +147,7 @@ public class SKOSServerImpl implements SKOSServer {
 				}
 			}
 		} catch (URISyntaxException e) {
-		    logger.error(e);
+			logger.error(e);
 		}
 
 		return null;
@@ -155,11 +156,11 @@ public class SKOSServerImpl implements SKOSServer {
 
 	@Override
 	public void close() {
-		this.searcher.close();
+		searcher.close();
 	}
 
-	public static void main(String[] args) throws Exception {
-		
+	public static void main(final String[] args) throws Exception {
+
 		logger.debug("starting SKOSServerImpl");
 		// Levanto el servidor de vocabularios
 		SKOSServer server = new SKOSServerImpl(args[0]);
@@ -236,7 +237,7 @@ public class SKOSServerImpl implements SKOSServer {
 		//
 		// String source = "/home/hive/Desktop/ag086e00.pdf";
 		// source = "http://en.wikipedia.org/wiki/Biology";
-		//		
+		//
 		// List<String> vocabs = new ArrayList<String>();
 		// vocabs.add("nbii");
 		// vocabs.add("lcsh");
@@ -327,12 +328,15 @@ public class SKOSServerImpl implements SKOSServer {
 				.SPARQLSelect(
 						"PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT ?uri ?label WHERE { <http://thesaurus.nbii.gov/nbii#Mud> skos:broader ?uri . ?uri skos:prefLabel ?label}",
 						"nbii");
-		if (solutions1 != null)
+		if (solutions1 != null) {
 			System.out.println("SOLUTIONS 1: " + solutions1.toString());
-		if (solutions2 != null)
+		}
+		if (solutions2 != null) {
 			System.out.println("SOLUTIONS 2: " + solutions2.toString());
-		if (solutions3 != null)
+		}
+		if (solutions3 != null) {
 			System.out.println("SOLUTIONS 3: " + solutions3.toString());
+		}
 
 		// Closing the server
 		server.close();

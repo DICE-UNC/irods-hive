@@ -39,51 +39,51 @@ public class ConceptProxy implements IsSerializable {
 	}
 
 	public ConceptProxy(final String prelabel, final String uri) {
-		this.preLabel = prelabel;
-		this.URI = uri;
+		preLabel = prelabel;
+		URI = uri;
 	}
 
 	public ConceptProxy(final String origin, final String prelabel,
 			final String uri, final boolean isleaf) {
 		this.origin = origin;
-		this.preLabel = prelabel;
-		this.URI = uri;
+		preLabel = prelabel;
+		URI = uri;
 		this.isleaf = isleaf;
 	}
 
 	public ConceptProxy(final String origin, final String prelabel,
 			final String uri) {
 		this.origin = origin;
-		this.preLabel = prelabel;
-		this.URI = uri;
+		preLabel = prelabel;
+		URI = uri;
 	}
 
 	public ConceptProxy(final String origin, final String prelabel,
 			final String uri, final double score) {
 		this.origin = origin;
-		this.preLabel = prelabel;
-		this.URI = uri;
+		preLabel = prelabel;
+		URI = uri;
 		this.score = score;
 	}
 
 	public ConceptProxy(final String origin, final String prelabel,
 			final String uri, final String skosCode) {
 		this.origin = origin;
-		this.preLabel = prelabel;
-		this.URI = uri;
-		this.SKOSCode = skosCode;
+		preLabel = prelabel;
+		URI = uri;
+		SKOSCode = skosCode;
 	}
 
 	public double getScore() {
-		return this.score;
+		return score;
 	}
 
 	public String getSkosCode() {
-		return this.SKOSCode;
+		return SKOSCode;
 	}
 
 	public boolean getIsLeaf() {
-		return this.isleaf;
+		return isleaf;
 	}
 
 	public void setOrigin(final String origin) {
@@ -91,7 +91,7 @@ public class ConceptProxy implements IsSerializable {
 	}
 
 	public String getOrigin() {
-		return this.origin;
+		return origin;
 	}
 
 	public void setPreLabel(final String prelabel) {
@@ -99,7 +99,7 @@ public class ConceptProxy implements IsSerializable {
 	}
 
 	public String getPreLabel() {
-		return this.preLabel;
+		return preLabel;
 	}
 
 	public void setURI(final String uri) {
@@ -111,43 +111,43 @@ public class ConceptProxy implements IsSerializable {
 	}
 
 	public void setNarrower(final Map<String, String> map) {
-		this.narrower = new HashMap<String, String>(map);
+		narrower = new HashMap<String, String>(map);
 	}
 
 	public Map<String, String> getNarrower() {
-		return this.narrower;
+		return narrower;
 	}
 
 	public void setBroader(final Map<String, String> map) {
-		this.broader = new HashMap<String, String>(map);
+		broader = new HashMap<String, String>(map);
 	}
 
 	public Map<String, String> getBroader() {
-		return this.broader;
+		return broader;
 	}
 
 	public void setRelated(final HashMap<String, String> map) {
-		this.related = new HashMap<String, String>(map);
+		related = new HashMap<String, String>(map);
 	}
 
 	public Map<String, String> getRelated() {
-		return this.related;
+		return related;
 	}
 
 	public void setAltLabel(final List<String> altlabel) {
-		this.altLabel = altlabel;
+		altLabel = altlabel;
 	}
 
 	public List<String> getAltLabel() {
-		return this.altLabel;
+		return altLabel;
 	}
 
 	public void setScopeNotes(final List<String> notes) {
-		this.scopeNotes = notes;
+		scopeNotes = notes;
 	}
 
 	public List<String> getScopeNotes() {
-		return this.scopeNotes;
+		return scopeNotes;
 	}
 
 	/**
@@ -174,12 +174,12 @@ public class ConceptProxy implements IsSerializable {
 			final Map<String, String> narrower,
 			final Map<String, String> related, final List<String> scopeNote,
 			final String skosCode) {
-		this.altLabel = altlabel;
+		altLabel = altlabel;
 		this.broader = broader;
 		this.narrower = narrower;
 		this.related = related;
-		this.scopeNotes = scopeNote;
-		this.SKOSCode = skosCode;
+		scopeNotes = scopeNote;
+		SKOSCode = skosCode;
 	}
 
 	public boolean isSelected() {

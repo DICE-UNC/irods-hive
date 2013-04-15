@@ -10,12 +10,11 @@ public class ConceptRelation {
 	String concept1 = null;
 	String concept2 = null;
 
-	public ConceptRelation() 
-	{
+	public ConceptRelation() {
 	}
-	
-	public ConceptRelation(String relation, String concept1, String concept2)
-	{
+
+	public ConceptRelation(final String relation, final String concept1,
+			final String concept2) {
 		this.relation = relation;
 		this.concept1 = concept1;
 		this.concept2 = concept2;
@@ -26,7 +25,7 @@ public class ConceptRelation {
 		return relation;
 	}
 
-	public void setRelation(String relation) {
+	public void setRelation(final String relation) {
 		this.relation = relation;
 	}
 
@@ -34,7 +33,7 @@ public class ConceptRelation {
 		return concept1;
 	}
 
-	public void setConcept1(String concept1) {
+	public void setConcept1(final String concept1) {
 		this.concept1 = concept1;
 	}
 
@@ -42,7 +41,7 @@ public class ConceptRelation {
 		return concept2;
 	}
 
-	public void setConcept2(String concept2) {
+	public void setConcept2(final String concept2) {
 		this.concept2 = concept2;
 	}
 }

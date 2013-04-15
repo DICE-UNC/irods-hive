@@ -9,24 +9,23 @@ public class Term {
 
 	String termValue = null;
 	boolean isPreferred = false;
-	
-	public Term() 
-	{
-		
+
+	public Term() {
+
 	}
-	
-	public Term(String termId, String termValue, boolean isPreferred)
-	{
+
+	public Term(final String termId, final String termValue,
+			final boolean isPreferred) {
 		this.termId = termId;
 		this.termValue = termValue;
 		this.isPreferred = isPreferred;
 	}
-	
+
 	public String getTermId() {
 		return termId;
 	}
 
-	public void setTermId(String termId) {
+	public void setTermId(final String termId) {
 		this.termId = termId;
 	}
 
@@ -34,7 +33,7 @@ public class Term {
 		return termValue;
 	}
 
-	public void setTermValue(String termValue) {
+	public void setTermValue(final String termValue) {
 		this.termValue = termValue;
 	}
 
@@ -42,9 +41,8 @@ public class Term {
 		return isPreferred;
 	}
 
-	public void setPreferred(boolean isPreferred) {
+	public void setPreferred(final boolean isPreferred) {
 		this.isPreferred = isPreferred;
 	}
 
-	
 }

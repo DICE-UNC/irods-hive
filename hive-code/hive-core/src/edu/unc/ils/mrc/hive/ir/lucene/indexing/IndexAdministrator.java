@@ -26,7 +26,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package edu.unc.ils.mrc.hive.ir.lucene.indexing;
 
 import java.io.File;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -48,22 +47,23 @@ import org.apache.lucene.search.IndexSearcher;
 
 public class IndexAdministrator {
 
-    private static final Log logger = LogFactory.getLog(IndexAdministrator.class);
-    
-	public static String getDate(String indexName) {
+	private static final Log logger = LogFactory
+			.getLog(IndexAdministrator.class);
+
+	public static String getDate(final String indexName) {
 		try {
 			Long date = IndexReader.lastModified(indexName);
 			return new Date(date).toString();
 		} catch (CorruptIndexException e) {
 			logger.error(e);
 		} catch (IOException e) {
-		    logger.error(e);
+			logger.error(e);
 		}
 		return null;
 	}
 
-	public static TreeMap<String, QName> getSubAlphaIndex(String startLetter,
-			TreeMap<String, QName> index) {
+	public static TreeMap<String, QName> getSubAlphaIndex(
+			final String startLetter, final TreeMap<String, QName> index) {
 		boolean finded = false;
 		String start = "";
 		String end = "";
@@ -72,21 +72,23 @@ public class IndexAdministrator {
 		Set<String> keys = index.keySet();
 		for (String s : keys) {
 			String sl = s.toLowerCase();
-			if (startLetter.equals("[0-9]") && Character.isDigit(sl.charAt(0)) && !finded) {
+			if (startLetter.equals("[0-9]") && Character.isDigit(sl.charAt(0))
+					&& !finded) {
+				start = s;
+				finded = true;
+			} else if (sl.startsWith(startLetter) && !finded) {
 				start = s;
 				finded = true;
 			}
-			else if (sl.startsWith(startLetter) && !finded) {
-				start = s;
-				finded = true;
-			}
-			if(finded)
+			if (finded) {
 				j++;
-			if (startLetter.equals("[0-9]") && !Character.isDigit(sl.charAt(0)) && finded) {
+			}
+			if (startLetter.equals("[0-9]") && !Character.isDigit(sl.charAt(0))
+					&& finded) {
 				end = ant;
 				break;
-			}
-			else if (!startLetter.equals("[0-9]") && !sl.startsWith(startLetter) && finded) {
+			} else if (!startLetter.equals("[0-9]")
+					&& !sl.startsWith(startLetter) && finded) {
 				end = ant;
 				break;
 			}
@@ -95,12 +97,12 @@ public class IndexAdministrator {
 
 		TreeMap<String, QName> tree = null;
 		if (j > 1) {
-			SortedMap<String, QName> l2 = index.subMap(start, true, end, true);		
-			logger.debug("Result size: " + l2.size());			
+			SortedMap<String, QName> l2 = index.subMap(start, true, end, true);
+			logger.debug("Result size: " + l2.size());
 			return tree = new TreeMap<String, QName>(l2);
 		} else if (j == 1) {
 			tree = new TreeMap<String, QName>();
-			tree.put(start,index.get(start));
+			tree.put(start, index.get(start));
 			logger.debug("Result size: " + tree.size());
 			return tree;
 		}
@@ -109,56 +111,59 @@ public class IndexAdministrator {
 	}
 
 	public static TreeMap<String, QName> getTopConceptIndex(
-			String topConceptFilePath) {
+			final String topConceptFilePath) {
 		File fichero = new File(topConceptFilePath);
 		ObjectInputStream ois;
 		try {
 			ois = new ObjectInputStream(new FileInputStream(fichero));
-			TreeMap<String, QName> l = (TreeMap<String, QName>) ois.readObject();
+			TreeMap<String, QName> l = (TreeMap<String, QName>) ois
+					.readObject();
 			ois.close();
 			logger.debug("Top concept index loaded from " + topConceptFilePath);
 			return l;
 		} catch (FileNotFoundException e) {
-		    logger.error(e);
+			logger.error(e);
 		} catch (IOException e) {
-		    logger.error(e);
+			logger.error(e);
 		} catch (ClassNotFoundException e) {
-            logger.error(e);
+			logger.error(e);
 		}
 		return null;
 	}
 
-	public static TreeMap<String, QName> getAlphaIndex(String alphaFilePath) {
+	public static TreeMap<String, QName> getAlphaIndex(
+			final String alphaFilePath) {
 		File fichero = new File(alphaFilePath);
 		ObjectInputStream ois;
 		try {
 			ois = new ObjectInputStream(new FileInputStream(fichero));
-			TreeMap<String, QName> l = (TreeMap<String, QName>) ois.readObject();
+			TreeMap<String, QName> l = (TreeMap<String, QName>) ois
+					.readObject();
 			ois.close();
 			logger.debug("AlphaIndex loaded from " + alphaFilePath);
 			return l;
 		} catch (FileNotFoundException e) {
-            logger.error(e);
+			logger.error(e);
 		} catch (IOException e) {
-            logger.error(e);
+			logger.error(e);
 		} catch (ClassNotFoundException e) {
-            logger.error(e);
+			logger.error(e);
 		}
 		return null;
 	}
 
-	public static int getNumconcepts(String indexName) {
+	public static int getNumconcepts(final String indexName) {
 		try {
 			return IndexReader.open(indexName).numDocs();
 		} catch (CorruptIndexException e) {
-            logger.error(e);
+			logger.error(e);
 		} catch (IOException e) {
-            logger.error(e);
+			logger.error(e);
 		}
 		return 0;
 	}
 
-	public static int getNumBroader(String indexName) {
+	public static int getNumBroader(final String indexName) {
 		IndexSearcher is;
 		try {
 			is = new IndexSearcher(indexName);
@@ -167,21 +172,22 @@ public class IndexAdministrator {
 			int broader = 0;
 			while (te.next()) {
 				Term currTerm = te.term();
-				if (currTerm.field().equals("broaderURI"))
+				if (currTerm.field().equals("broaderURI")) {
 					broader++;
+				}
 			}
 			te.close();
 			is.close();
 			return broader;
 		} catch (CorruptIndexException e) {
-            logger.error(e);
+			logger.error(e);
 		} catch (IOException e) {
-            logger.error(e);
+			logger.error(e);
 		}
 		return 0;
 	}
 
-	public static int getNumNarrower(String indexName) {
+	public static int getNumNarrower(final String indexName) {
 		IndexSearcher is;
 		try {
 			is = new IndexSearcher(indexName);
@@ -190,21 +196,22 @@ public class IndexAdministrator {
 			int narrower = 0;
 			while (te.next()) {
 				Term currTerm = te.term();
-				if (currTerm.field().equals("narrowerURI"))
+				if (currTerm.field().equals("narrowerURI")) {
 					narrower++;
+				}
 			}
 			te.close();
 			is.close();
 			return narrower;
 		} catch (CorruptIndexException e) {
-            logger.error(e);
+			logger.error(e);
 		} catch (IOException e) {
-            logger.error(e);
+			logger.error(e);
 		}
 		return 0;
 	}
 
-	public static int getNumRelated(String indexName) {
+	public static int getNumRelated(final String indexName) {
 		IndexSearcher is;
 		try {
 			is = new IndexSearcher(indexName);
@@ -213,21 +220,22 @@ public class IndexAdministrator {
 			int related = 0;
 			while (te.next()) {
 				Term currTerm = te.term();
-				if (currTerm.field().equals("relatedURI"))
+				if (currTerm.field().equals("relatedURI")) {
 					related++;
+				}
 			}
 			te.close();
 			is.close();
 			return related;
 		} catch (CorruptIndexException e) {
-            logger.error(e);
+			logger.error(e);
 		} catch (IOException e) {
-            logger.error(e);
+			logger.error(e);
 		}
 		return 0;
 	}
 
-	public static int getNumRelationShips(String indexName) {
+	public static int getNumRelationShips(final String indexName) {
 		IndexSearcher is;
 		try {
 			is = new IndexSearcher(indexName);
@@ -238,26 +246,29 @@ public class IndexAdministrator {
 			int related = 0;
 			while (te.next()) {
 				Term currTerm = te.term();
-				if (currTerm.field().equals("broaderURI"))
+				if (currTerm.field().equals("broaderURI")) {
 					broader++;
-				if (currTerm.field().equals("narrowerURI"))
+				}
+				if (currTerm.field().equals("narrowerURI")) {
 					narrower++;
-				if (currTerm.field().equals("relatedURI"))
+				}
+				if (currTerm.field().equals("relatedURI")) {
 					related++;
+				}
 			}
 			te.close();
 			is.close();
 			return broader + narrower + related;
 		} catch (CorruptIndexException e) {
-            logger.error(e);
+			logger.error(e);
 		} catch (IOException e) {
-            logger.error(e);
+			logger.error(e);
 		}
 		return 0;
 
 	}
 
-	public static void main(String[] args) throws CorruptIndexException,
+	public static void main(final String[] args) throws CorruptIndexException,
 			IOException {
 		String indexName = "/home/hive/hive-data/mesh/meshIndex";
 		int n = IndexAdministrator.getNumRelationShips(indexName);

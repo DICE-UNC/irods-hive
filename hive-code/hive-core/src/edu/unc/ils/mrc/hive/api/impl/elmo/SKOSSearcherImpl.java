@@ -47,6 +47,7 @@ import org.openrdf.query.TupleQuery;
 import org.openrdf.query.TupleQueryResult;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.contextaware.ContextAwareConnection;
+
 import edu.unc.ils.mrc.hive.api.SKOSConcept;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
 import edu.unc.ils.mrc.hive.api.SKOSSearcher;
@@ -59,75 +60,76 @@ import edu.unc.ils.mrc.hive.ir.lucene.search.SearcherFactory;
 
 public class SKOSSearcherImpl implements SKOSSearcher {
 
-    private static final Log logger = LogFactory.getLog(SKOSSearcherImpl.class);
-    
+	private static final Log logger = LogFactory.getLog(SKOSSearcherImpl.class);
+
 	private Map<String, SKOSScheme> vocabularies;
 	private String[] indexes;
-	//private Repository[] repositories;
-	//private SesameManagerFactory[] factories;
+	// private Repository[] repositories;
+	// private SesameManagerFactory[] factories;
 	private SesameManager[] managers;
-	//private NativeStore stores[];
+	// private NativeStore stores[];
 	private File files[];
 	private Searcher searcher;
 
-	public SKOSSearcherImpl(Map<String, SKOSScheme> vocabularies) {
+	public SKOSSearcherImpl(final Map<String, SKOSScheme> vocabularies) {
 		this.vocabularies = vocabularies;
-		//this.repositories = new Repository[this.vocabularies.size()];
-		//this.factories = new SesameManagerFactory[this.vocabularies.size()];
-		this.managers = new SesameManager[this.vocabularies.size()];
-		//this.stores = new NativeStore[this.vocabularies.size()];
-		this.files = new File[this.vocabularies.size()];
-		this.indexes = new String[this.vocabularies.size()];
+		// this.repositories = new Repository[this.vocabularies.size()];
+		// this.factories = new SesameManagerFactory[this.vocabularies.size()];
+		managers = new SesameManager[this.vocabularies.size()];
+		// this.stores = new NativeStore[this.vocabularies.size()];
+		files = new File[this.vocabularies.size()];
+		indexes = new String[this.vocabularies.size()];
 		Set<String> keys = this.vocabularies.keySet();
 		int i = 0;
-		//try {
-			for (String schemeName : keys) {
-				this.files[i] = new File(this.vocabularies.get(schemeName)
-						.getStoreDirectory());
-				logger.debug(this.files[i].getAbsolutePath());
+		// try {
+		for (String schemeName : keys) {
+			files[i] = new File(this.vocabularies.get(schemeName)
+					.getStoreDirectory());
+			logger.debug(files[i].getAbsolutePath());
 
-				this.managers[i] = this.vocabularies.get(schemeName).getManager();
-				this.indexes[i] = this.vocabularies.get(schemeName)
-						.getIndexDirectory();
-				i++;
-			}
-		//} catch (RepositoryException e) {
-		//	logger.error(e);
-		//}
+			managers[i] = this.vocabularies.get(schemeName).getManager();
+			indexes[i] = this.vocabularies.get(schemeName).getIndexDirectory();
+			i++;
+		}
+		// } catch (RepositoryException e) {
+		// logger.error(e);
+		// }
 
 		SearcherFactory
 				.selectSearcher(SearcherFactory.BASICLUCENECONCEPTSEARCHER);
-		this.searcher = SearcherFactory.getSearcher(this.indexes);
+		searcher = SearcherFactory.getSearcher(indexes);
 	}
 
 	@Override
-	public List<SKOSConcept> searchConceptByKeyword(String keyword) {
-	    logger.trace("searchConceptByKeyword " + keyword);
-	    
+	public List<SKOSConcept> searchConceptByKeyword(final String keyword) {
+		logger.trace("searchConceptByKeyword " + keyword);
+
 		// Retrieve a concept from lucene indexes
-		List<SKOSConcept> ranking = searcher.search(keyword, this.managers);
-		return ranking;
-	}
-	
-	@Override
-	public List<SKOSConcept> searchConceptByKeyword(String keyword, boolean brief) {
-	    logger.trace("searchConceptByKeyword " + keyword + ", " + brief);
-	    
-		// Retrieve a concept from lucene indexes
-		List<SKOSConcept> ranking = searcher.search(keyword, this.managers, brief);
+		List<SKOSConcept> ranking = searcher.search(keyword, managers);
 		return ranking;
 	}
 
 	@Override
-	public SKOSConcept searchConceptByURI(String uri, String lp) {
-	    logger.trace("searchConceptByURI " + uri + "," + lp);
-	    
+	public List<SKOSConcept> searchConceptByKeyword(final String keyword,
+			final boolean brief) {
+		logger.trace("searchConceptByKeyword " + keyword + ", " + brief);
+
+		// Retrieve a concept from lucene indexes
+		List<SKOSConcept> ranking = searcher.search(keyword, managers, brief);
+		return ranking;
+	}
+
+	@Override
+	public SKOSConcept searchConceptByURI(final String uri, final String lp) {
+		logger.trace("searchConceptByURI " + uri + "," + lp);
+
 		Concept elmoConcept = null;
 		QName qName = new QName(uri, lp);
-		for (int n = 0; n < managers.length; n++) {
-			elmoConcept = managers[n].find(Concept.class, qName);
+		for (SesameManager manager : managers) {
+			elmoConcept = manager.find(Concept.class, qName);
 			if (elmoConcept != null) {
-				SKOSConcept sconcept = new SKOSConceptImpl(elmoConcept.getQName());
+				SKOSConcept sconcept = new SKOSConceptImpl(
+						elmoConcept.getQName());
 				sconcept.setPrefLabel(elmoConcept.getSkosPrefLabel());
 				Set<String> altSet = elmoConcept.getSkosAltLabels();
 				for (String alt : altSet) {
@@ -135,32 +137,29 @@ public class SKOSSearcherImpl implements SKOSSearcher {
 				}
 				Set<Concept> broaderSet = elmoConcept.getSkosBroaders();
 				for (Concept broader : broaderSet) {
-					try
-					{
-						sconcept.addBroader(broader.getSkosPrefLabel(), broader
-								.getQName());
+					try {
+						sconcept.addBroader(broader.getSkosPrefLabel(),
+								broader.getQName());
 					} catch (Exception e) {
 						logger.warn("Error getting broader concept");
 					}
 				}
 				Set<Concept> narrowerSet = elmoConcept.getSkosNarrowers();
 				for (Concept narrower : narrowerSet) {
-					try
-					{
-						sconcept.addNarrower(narrower.getSkosPrefLabel(), narrower
-								.getQName());
-						
+					try {
+						sconcept.addNarrower(narrower.getSkosPrefLabel(),
+								narrower.getQName());
+
 					} catch (Exception e) {
 						logger.warn("Error getting narrower concept");
 					}
 				}
 				Set<Concept> relatedSet = elmoConcept.getSkosRelated();
 				for (Concept related : relatedSet) {
-					try
-					{
-						sconcept.addRelated(related.getSkosPrefLabel(), related
-							.getQName());
-				
+					try {
+						sconcept.addRelated(related.getSkosPrefLabel(),
+								related.getQName());
+
 					} catch (Exception e) {
 						logger.warn("Error getting related concept");
 					}
@@ -168,7 +167,7 @@ public class SKOSSearcherImpl implements SKOSSearcher {
 
 				Set<Object> scopeNotes = elmoConcept.getSkosScopeNotes();
 				for (Object scopeNote : scopeNotes) {
-					sconcept.addScopeNote((String)scopeNote);
+					sconcept.addScopeNote((String) scopeNote);
 				}
 
 				return sconcept;
@@ -178,16 +177,18 @@ public class SKOSSearcherImpl implements SKOSSearcher {
 	}
 
 	@Override
-	public TreeMap<String,QName> searchChildrenByURI(String uri, String lp) {
-	    logger.trace("searchChildrenByURI " + uri + "," + lp);
-	    
+	public TreeMap<String, QName> searchChildrenByURI(final String uri,
+			final String lp) {
+		logger.trace("searchChildrenByURI " + uri + "," + lp);
+
 		Concept elmoConcept = null;
 		QName qName = new QName(uri, lp);
-		
-		for (int n = 0; n < managers.length; n++) {
-			elmoConcept = managers[n].find(Concept.class, qName);
+
+		for (SesameManager manager : managers) {
+			elmoConcept = manager.find(Concept.class, qName);
 			if (elmoConcept != null) {
-				SKOSConcept sconcept = new SKOSConceptImpl(elmoConcept.getQName());
+				SKOSConcept sconcept = new SKOSConceptImpl(
+						elmoConcept.getQName());
 				sconcept.setPrefLabel(elmoConcept.getSkosPrefLabel());
 				Set<String> altSet = elmoConcept.getSkosAltLabels();
 				for (String alt : altSet) {
@@ -195,23 +196,23 @@ public class SKOSSearcherImpl implements SKOSSearcher {
 				}
 				Set<Concept> broaderSet = elmoConcept.getSkosBroaders();
 				for (Concept broader : broaderSet) {
-					sconcept.addBroader(broader.getSkosPrefLabel(), broader
-							.getQName());
+					sconcept.addBroader(broader.getSkosPrefLabel(),
+							broader.getQName());
 				}
 				Set<Concept> narrowerSet = elmoConcept.getSkosNarrowers();
 				for (Concept narrower : narrowerSet) {
-					sconcept.addNarrower(narrower.getSkosPrefLabel(), narrower
-							.getQName());
+					sconcept.addNarrower(narrower.getSkosPrefLabel(),
+							narrower.getQName());
 				}
 				Set<Concept> relatedSet = elmoConcept.getSkosRelated();
 				for (Concept related : relatedSet) {
-					sconcept.addRelated(related.getSkosPrefLabel(), related
-							.getQName());
+					sconcept.addRelated(related.getSkosPrefLabel(),
+							related.getQName());
 				}
 
 				Set<Object> scopeNotes = elmoConcept.getSkosScopeNotes();
 				for (Object scopeNote : scopeNotes) {
-					sconcept.addScopeNote((String)scopeNote);
+					sconcept.addScopeNote((String) scopeNote);
 				}
 
 				return sconcept.getNarrowers();
@@ -219,26 +220,27 @@ public class SKOSSearcherImpl implements SKOSSearcher {
 		}
 		return null;
 	}
-	
+
 	@Override
-	public List<HashMap> SPARQLSelect(String qs, String vocabulary) {
-	    logger.trace("SPARQLSelect " + qs + "," + vocabulary);
-	    
+	public List<HashMap> SPARQLSelect(final String qs, final String vocabulary) {
+		logger.trace("SPARQLSelect " + qs + "," + vocabulary);
+
 		try {
 			List<String> voc = new ArrayList<String>();
-			voc.addAll(this.vocabularies.keySet());
+			voc.addAll(vocabularies.keySet());
 			int i = voc.indexOf(vocabulary.toLowerCase());
-			//RepositoryConnection con = this.repositories[i].getConnection();
-			ContextAwareConnection con = this.managers[i].getConnection();
+			// RepositoryConnection con = this.repositories[i].getConnection();
+			ContextAwareConnection con = managers[i].getConnection();
 			try {
-				TupleQuery query = con.prepareTupleQuery(org.openrdf.query.QueryLanguage.SPARQL, qs);
+				TupleQuery query = con.prepareTupleQuery(
+						org.openrdf.query.QueryLanguage.SPARQL, qs);
 				TupleQueryResult qres = query.evaluate();
 				List<HashMap> reslist = new ArrayList<HashMap>();
-				while(qres.hasNext()) {
+				while (qres.hasNext()) {
 					BindingSet b = qres.next();
 					Set<String> names = b.getBindingNames();
 					HashMap hm = new HashMap<String, Value>();
-					for(String n : names) {
+					for (String n : names) {
 						hm.put(n, b.getValue(n));
 					}
 					reslist.add(hm);
@@ -250,37 +252,37 @@ public class SKOSSearcherImpl implements SKOSSearcher {
 			} catch (QueryEvaluationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			finally {
+			} finally {
 				con.close();
 			}
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ArrayIndexOutOfBoundsException a) {
-			System.err.println("The name of the vocabulary has not been recognized");
+			System.err
+					.println("The name of the vocabulary has not been recognized");
 		}
-		
+
 		return null;
 	}
 
 	@Override
 	public void close() {
-	    logger.trace("close");
-	    
-		for (int i = 0; i < this.managers.length; i++) {
-			this.managers[i].close();
+		logger.trace("close");
+
+		for (int i = 0; i < managers.length; i++) {
+			managers[i].close();
 			logger.debug("Manager " + i + " closed OK");
-			//this.factories[i].close();
-			//logger.debug("Factory " + i + " closed OK");
-			//try {
-			//	this.repositories[i].shutDown();
-			//	logger.debug("Repository " + i + " closed OK");
-			//} catch (RepositoryException e) {
-			//	logger.error(e);
-			//}
+			// this.factories[i].close();
+			// logger.debug("Factory " + i + " closed OK");
+			// try {
+			// this.repositories[i].shutDown();
+			// logger.debug("Repository " + i + " closed OK");
+			// } catch (RepositoryException e) {
+			// logger.error(e);
+			// }
 		}
-		this.searcher.close();
+		searcher.close();
 		logger.debug("Indexes closed OK");
 	}
 

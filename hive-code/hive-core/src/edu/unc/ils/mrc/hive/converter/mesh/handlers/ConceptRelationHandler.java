@@ -7,58 +7,58 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-
 /**
  * Handler for ConceptRelation element
  */
-public class ConceptRelationHandler extends MeshHandler 
-{
-	private static final Log logger = LogFactory.getLog(ConceptRelationHandler.class);
-	
+public class ConceptRelationHandler extends MeshHandler {
+	private static final Log logger = LogFactory
+			.getLog(ConceptRelationHandler.class);
+
 	ConceptRelation conceptRelation = new ConceptRelation();
-	
+
 	String relation = "";
-	
-	public ConceptRelationHandler(XMLReader parser, DefaultHandler parent, String relation) {
+
+	public ConceptRelationHandler(final XMLReader parser,
+			final DefaultHandler parent, final String relation) {
 		super(parser, parent);
 		conceptRelation.setRelation(relation);
 	}
-	
-    @Override
-	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
-    {
-    	logger.trace("startElement: " + uri + "," + localName + "," + qName + "," + attributes);
-    	
-    	if (qName.equals("Concept1UI")) {
-    		currentValue = "";
-    	}
-    	else if (qName.equals("Concept2UI")) {
-    		currentValue = "";  		
-    	}
-    }
-    
-    
-    @Override
-	public void endElement(String uri, String localName, String qName) throws SAXException
-    {
-    	logger.trace("endElement: " + uri + "," + localName + "," + qName);
-    	
-    	if (qName.equals("Concept1UI")) {
-    		conceptRelation.setConcept1(currentValue); 
-    		currentValue = "";
-    	}
-    	else if (qName.equals("Concept2UI")) {	
-    		conceptRelation.setConcept2(currentValue); 
-    		currentValue = "";
-    		parser.setContentHandler(parent);
-    	}    	
-    }    
-    
-    /**
-     * Returns the parsed concept relation
-     * @return
-     */
-    public ConceptRelation getRelation() {
-    	return conceptRelation;
-    }
+
+	@Override
+	public void startElement(final String uri, final String localName,
+			final String qName, final Attributes attributes)
+			throws SAXException {
+		logger.trace("startElement: " + uri + "," + localName + "," + qName
+				+ "," + attributes);
+
+		if (qName.equals("Concept1UI")) {
+			currentValue = "";
+		} else if (qName.equals("Concept2UI")) {
+			currentValue = "";
+		}
+	}
+
+	@Override
+	public void endElement(final String uri, final String localName,
+			final String qName) throws SAXException {
+		logger.trace("endElement: " + uri + "," + localName + "," + qName);
+
+		if (qName.equals("Concept1UI")) {
+			conceptRelation.setConcept1(currentValue);
+			currentValue = "";
+		} else if (qName.equals("Concept2UI")) {
+			conceptRelation.setConcept2(currentValue);
+			currentValue = "";
+			parser.setContentHandler(parent);
+		}
+	}
+
+	/**
+	 * Returns the parsed concept relation
+	 * 
+	 * @return
+	 */
+	public ConceptRelation getRelation() {
+		return conceptRelation;
+	}
 }

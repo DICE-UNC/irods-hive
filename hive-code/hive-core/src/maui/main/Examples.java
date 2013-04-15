@@ -25,15 +25,14 @@ import java.util.HashSet;
 import org.wikipedia.miner.model.Wikipedia;
 
 /**
- * Demonstrates how to use Maui for three types of topic indexing  <br>
- * 1. Keyphrase extraction - extracting significant phrases from 
- *  the document, also suitable for automatic tagging. <br>
- * 2. Term assignment - indexing documents with terms
- * from a controlled vocabulary in SKOS or text format. <br> 
- * 3. Indexing with Wikipedia - indexing documents with 
- * terms from Wikipedia, also suitable for
- * keyphrase extraction and tagging, or any case where there is no con	trolled
- * vocabulary available, but consistency is required.
+ * Demonstrates how to use Maui for three types of topic indexing <br>
+ * 1. Keyphrase extraction - extracting significant phrases from the document,
+ * also suitable for automatic tagging. <br>
+ * 2. Term assignment - indexing documents with terms from a controlled
+ * vocabulary in SKOS or text format. <br>
+ * 3. Indexing with Wikipedia - indexing documents with terms from Wikipedia,
+ * also suitable for keyphrase extraction and tagging, or any case where there
+ * is no con trolled vocabulary available, but consistency is required.
  * 
  * @author Olena Medelyan (olena@cs.waikato.ac.nz)
  * 
@@ -49,8 +48,9 @@ public class Examples {
 	private String database;
 	private String dataDirectory;
 	private boolean cache = false;
-	
-	public Examples (String server, String database, String dataDirectory, boolean cache) throws Exception  {
+
+	public Examples(final String server, final String database,
+			final String dataDirectory, final boolean cache) throws Exception {
 		this.server = server;
 		this.database = database;
 		this.dataDirectory = dataDirectory;
@@ -58,65 +58,59 @@ public class Examples {
 		loadWikipedia();
 	}
 
-	public Examples ()  {	}
+	public Examples() {
+	}
 
 	private void loadWikipedia() throws Exception {
 		// took out so it would compile - mcc
 		/*
-		wikipedia =  new Wikipedia(server, database, "root", null);
-
-		TextProcessor textProcessor = new CaseFolder();
-
-		File dataDir = new File(dataDirectory);
-		
-		if (cache) {
-			ProgressNotifier progress = new ProgressNotifier(5);
-			// cache tables that will be used extensively
-			TIntHashSet validPageIds = wikipedia.getDatabase().getValidPageIds(
-					dataDir, 2, progress);
-			wikipedia.getDatabase().cachePages(dataDir, validPageIds,
-					progress);
-			wikipedia.getDatabase().cacheAnchors(dataDir, textProcessor,
-					validPageIds, 2, progress);
-			wikipedia.getDatabase().cacheInLinks(dataDir, validPageIds,
-					progress);
-			wikipedia.getDatabase().cacheGenerality(dataDir, validPageIds, progress);
-		} */ 
+		 * wikipedia = new Wikipedia(server, database, "root", null);
+		 * 
+		 * TextProcessor textProcessor = new CaseFolder();
+		 * 
+		 * File dataDir = new File(dataDirectory);
+		 * 
+		 * if (cache) { ProgressNotifier progress = new ProgressNotifier(5); //
+		 * cache tables that will be used extensively TIntHashSet validPageIds =
+		 * wikipedia.getDatabase().getValidPageIds( dataDir, 2, progress);
+		 * wikipedia.getDatabase().cachePages(dataDir, validPageIds, progress);
+		 * wikipedia.getDatabase().cacheAnchors(dataDir, textProcessor,
+		 * validPageIds, 2, progress);
+		 * wikipedia.getDatabase().cacheInLinks(dataDir, validPageIds,
+		 * progress); wikipedia.getDatabase().cacheGenerality(dataDir,
+		 * validPageIds, progress); }
+		 */
 	}
-	
+
 	/**
 	 * Sets general parameters: debugging printout, language specific options
 	 * like stemmer, stopwords.
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
-	private void setGeneralOptions()  {
-	
-		
+	private void setGeneralOptions() {
+
 		modelBuilder.debugMode = true;
 		modelBuilder.wikipedia = wikipedia;
-		
-		/* language specific options
-		Stemmer stemmer = new FrenchStemmer();
-		Stopwords stopwords = new StopwordsFrench();
-		String language = "fr";
-		String encoding = "UTF-8";
-		modelBuilder.stemmer = stemmer;
-		modelBuilder.stopwords = stopwords;
-		modelBuilder.documentLanguage = language;
-		modelBuilder.documentEncoding = encoding;
-		topicExtractor.stemmer = stemmer;
-		topicExtractor.stopwords = stopwords;
-		topicExtractor.documentLanguage = language;
-		*/
-		
-		/* specificity options
-		modelBuilder.minPhraseLength = 1;
-		modelBuilder.maxPhraseLength = 5;
-		*/
-		
+
+		/*
+		 * language specific options Stemmer stemmer = new FrenchStemmer();
+		 * Stopwords stopwords = new StopwordsFrench(); String language = "fr";
+		 * String encoding = "UTF-8"; modelBuilder.stemmer = stemmer;
+		 * modelBuilder.stopwords = stopwords; modelBuilder.documentLanguage =
+		 * language; modelBuilder.documentEncoding = encoding;
+		 * topicExtractor.stemmer = stemmer; topicExtractor.stopwords =
+		 * stopwords; topicExtractor.documentLanguage = language;
+		 */
+
+		/*
+		 * specificity options modelBuilder.minPhraseLength = 1;
+		 * modelBuilder.maxPhraseLength = 5;
+		 */
+
 		topicExtractor.debugMode = true;
-		topicExtractor.topicsPerDocument = 10; 
-//		topicExtractor.wikipedia = wikipedia;
+		topicExtractor.topicsPerDocument = 10;
+		// topicExtractor.wikipedia = wikipedia;
 	}
 
 	/**
@@ -144,7 +138,7 @@ public class Examples {
 		modelBuilder = new MauiModelBuilder();
 		setGeneralOptions();
 		setFeatures();
-		
+
 		// Directories with train & test data
 		String trainDir = "data/automatic_tagging/train";
 		String testDir = "data/automatic_tagging/test";
@@ -155,7 +149,7 @@ public class Examples {
 		// Settings for the model builder
 		modelBuilder.inputDirectoryName = trainDir;
 		modelBuilder.modelName = modelName;
-		
+
 		// change to 1 for short documents
 		modelBuilder.minNumOccur = 2;
 
@@ -167,8 +161,7 @@ public class Examples {
 		// Settings for topic extractor
 		topicExtractor.inputDirectoryName = testDir;
 		topicExtractor.modelName = modelName;
-	
-		
+
 		// Run topic extractor
 		topicExtractor.loadModel();
 		fileNames = topicExtractor.collectStems();
@@ -186,7 +179,7 @@ public class Examples {
 		modelBuilder = new MauiModelBuilder();
 		setGeneralOptions();
 		setFeatures();
-		
+
 		// Directories with train & test data
 		String trainDir = "data/term_assignment/train";
 		String testDir = "data/term_assignment/test";
@@ -204,7 +197,7 @@ public class Examples {
 		modelBuilder.modelName = modelName;
 		modelBuilder.vocabularyFormat = format;
 		modelBuilder.vocabularyName = vocabulary;
-		
+
 		// Run model builder
 		fileNames = modelBuilder.collectStems();
 		modelBuilder.buildModel(fileNames);
@@ -215,17 +208,16 @@ public class Examples {
 		topicExtractor.modelName = modelName;
 		topicExtractor.vocabularyName = vocabulary;
 		topicExtractor.vocabularyFormat = format;
-		
+
 		// Run topic extractor
 		topicExtractor.loadModel();
 		fileNames = topicExtractor.collectStems();
 		topicExtractor.extractKeyphrases(fileNames);
-		
+
 	}
 
 	/**
-	 * Demonstrates how to perform topic indexing
-	 * with Wikipedia.
+	 * Demonstrates how to perform topic indexing with Wikipedia.
 	 * 
 	 * @throws Exception
 	 */
@@ -237,11 +229,9 @@ public class Examples {
 
 		// Directories with train & test data
 		String trainDir = "data/wikipedia_indexing/test";
-		String testDir = "/Users/alyona/Documents/corpora/term_assignment/FAO_780/1doc2";
-
 		// Vocabulary
 		String vocabulary = "wikipedia";
-	
+
 		// name of the file to save the model
 		String modelName = "test";
 		HashSet<String> fileNames;
@@ -250,24 +240,22 @@ public class Examples {
 		modelBuilder.inputDirectoryName = trainDir;
 		modelBuilder.modelName = modelName;
 		modelBuilder.vocabularyName = vocabulary;
-		
+
 		// Run model builder
 		fileNames = modelBuilder.collectStems();
 		modelBuilder.buildModel(fileNames);
 		modelBuilder.saveModel();
 
-//		// Settings for topic extractor
-//		topicExtractor.setDirName(testDir);
-//		topicExtractor.setModelName(modelName);
-//		topicExtractor.setVocabularyName(vocabulary);
-//		
-//		// Run topic extractor
-//		topicExtractor.loadModel();
-//		fileNames = topicExtractor.collectStems();
-//		topicExtractor.extractKeyphrases(fileNames);
+		// // Settings for topic extractor
+		// topicExtractor.setDirName(testDir);
+		// topicExtractor.setModelName(modelName);
+		// topicExtractor.setVocabularyName(vocabulary);
+		//
+		// // Run topic extractor
+		// topicExtractor.loadModel();
+		// fileNames = topicExtractor.collectStems();
+		// topicExtractor.extractKeyphrases(fileNames);
 	}
-
-	
 
 	/**
 	 * Main method for running the three types of topic indexing. Comment out
@@ -276,20 +264,22 @@ public class Examples {
 	 * @param args
 	 * @throws Exception
 	 */
-	public static void main(String[] args) throws Exception {
-		
+	public static void main(final String[] args) throws Exception {
+
 		String mode = args[0];
-		
-		if (!mode.equals("tagging") && !mode.equals("term_assignment") && !mode.equals("indexing_with_wikipedia")) {
-			throw new Exception("Choose one of the three modes: tagging, term_assignment or indexing_with_wikipedia");
+
+		if (!mode.equals("tagging") && !mode.equals("term_assignment")
+				&& !mode.equals("indexing_with_wikipedia")) {
+			throw new Exception(
+					"Choose one of the three modes: tagging, term_assignment or indexing_with_wikipedia");
 		}
-		
+
 		Date todaysDate = new java.util.Date();
 		SimpleDateFormat formatter = new SimpleDateFormat(
 				"EEE, dd-MMM-yyyy HH:mm:ss");
 		String formattedDate1 = formatter.format(todaysDate);
 		Examples exampler;
-		
+
 		if (mode.equals("tagging")) {
 			exampler = new Examples();
 			exampler.testAutomaticTagging();
@@ -302,10 +292,10 @@ public class Examples {
 			String database = "database";
 			String dataDirectory = "path/to/data/directory";
 			boolean cache = false;
-			 exampler = new Examples(server, database, dataDirectory, cache);
-			 exampler.testIndexingWithWikipedia();
+			exampler = new Examples(server, database, dataDirectory, cache);
+			exampler.testIndexingWithWikipedia();
 		}
-		
+
 		todaysDate = new java.util.Date();
 		String formattedDate2 = formatter.format(todaysDate);
 		System.err.print("Run from " + formattedDate1);

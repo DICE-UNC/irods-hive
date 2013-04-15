@@ -6,12 +6,12 @@
    Redistribution and use in source and binary forms, with or without modification, are permitted provided 
    that the following conditions are met:
 
-    * Redistributions of source code must retain the above copyright notice, this list of conditions and 
-    * the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the 
-    * following disclaimer in the documentation and/or other materials provided with the distribution.
-    * Neither the name of the UNC-Chapel Hill or Nescent nor the names of its contributors may be used to endorse or promote 
-    * products derived from this software without specific prior written permission.
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and 
+ * the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the 
+ * following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of the UNC-Chapel Hill or Nescent nor the names of its contributors may be used to endorse or promote 
+ * products derived from this software without specific prior written permission.
 
    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
@@ -35,32 +35,33 @@ import org.openrdf.elmo.sesame.SesameManager;
 import edu.unc.ils.mrc.hive.ir.lucene.search.AutocompleteTerm;
 
 /**
- * This interface represents a Hive vocabulary. A Hive vocabulary is
- * primarily backed by a Sesame repository and one or more underlying 
- * indexes.
+ * This interface represents a Hive vocabulary. A Hive vocabulary is primarily
+ * backed by a Sesame repository and one or more underlying indexes.
  * 
  * @author craig.willis@unc.edu
  */
-public interface HiveVocabulary 
-{
+public interface HiveVocabulary {
 	/**
 	 * Returns the SesameManager for this vocabulary.
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	public SesameManager getManager() throws Exception;
-	
+
 	/**
 	 * Import concepts from the specified path to this Hive vocabulary
+	 * 
 	 * @param path
 	 * @param format
 	 * @throws Exception
 	 */
 	public void importConcepts(String path, String format) throws Exception;
-	
+
 	/**
 	 * Import concepts from the specified path to this Hive vocabulary,
 	 * controlling the indexes that get created.
+	 * 
 	 * @param path
 	 * @param doSesame
 	 * @param doLucene
@@ -70,98 +71,112 @@ public interface HiveVocabulary
 	 * @param format
 	 * @throws Exception
 	 */
-	public void importConcepts(String path, boolean doSesame, boolean doLucene, boolean doH2, 
-			boolean doKEAH2, boolean doAutocomplete, String format) throws Exception;
-	
+	public void importConcepts(String path, boolean doSesame, boolean doLucene,
+			boolean doH2, boolean doKEAH2, boolean doAutocomplete, String format)
+			throws Exception;
+
 	/**
 	 * Import a single concept from the specified path into this Hive vocabulary
+	 * 
 	 * @param qname
 	 * @param path
 	 * @throws Exception
 	 */
 	public void importConcept(QName qname, String path) throws Exception;
-	
+
 	/**
 	 * Add a concept to this vocabulary
+	 * 
 	 * @param concept
 	 * @throws Exception
 	 */
 	public void addConcept(HiveConcept concept) throws Exception;
-	
-	/** 
+
+	/**
 	 * Update a concept in this vocabulary
+	 * 
 	 * @param concept
 	 * @throws Exception
 	 */
 	public void updateConcept(HiveConcept concept) throws Exception;
-	
+
 	/**
 	 * Remove a concept from this vocabulary
+	 * 
 	 * @param qname
 	 * @throws Exception
 	 */
 	public void removeConcept(QName qname) throws Exception;
-	
+
 	/**
 	 * Find a concept by Qname
+	 * 
 	 * @param qname
 	 * @return
 	 * @throws Exception
 	 */
 	public HiveConcept findConcept(QName qname) throws Exception;
-	
+
 	/**
 	 * Find concepts matching a certain pattern
+	 * 
 	 * @param pattern
 	 * @param topOnly
 	 * @return
 	 * @throws Exception
 	 */
-	public List<HiveConcept> findConcepts(String pattern, boolean topOnly) throws Exception;
-	
+	public List<HiveConcept> findConcepts(String pattern, boolean topOnly)
+			throws Exception;
+
 	/**
 	 * Returns the number of concepts in this vocabulary
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	public long getNumConcepts() throws Exception;
-	
-	/** 
+
+	/**
 	 * Returns the number of top concepts in this vocabulary
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	public long getNumTopConcepts() throws Exception;
-	
-	/** 
+
+	/**
 	 * Returns the last update date for this vocabulary
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	public Date getLastUpdateDate() throws Exception;
-	
+
 	/**
 	 * Close this vocabulary and the underlying indexes.
 	 */
 	public void close();
-	
+
 	/**
 	 * Suggest terms given a string
 	 */
-	public List<AutocompleteTerm> suggestTermsFor(String str, int numTerms) throws Exception;
-	
+	public List<AutocompleteTerm> suggestTermsFor(String str, int numTerms)
+			throws Exception;
+
 	/**
-	 * Returns the number of concepts, broader, narrower and related concepts for this vocabulary
+	 * Returns the number of concepts, broader, narrower and related concepts
+	 * for this vocabulary
 	 */
 	public Map<String, Long> getStats() throws Exception;
-	
+
 	/**
 	 * Returns a map of preflabel to QName for all concepts in the vocabulary
+	 * 
 	 * @param topOnly
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<String, QName> findAllConcepts(boolean topOnly) ;
-	
-	public HiveConcept findConceptByName(String name) throws Exception ;
+	public Map<String, QName> findAllConcepts(boolean topOnly);
+
+	public HiveConcept findConceptByName(String name) throws Exception;
 }

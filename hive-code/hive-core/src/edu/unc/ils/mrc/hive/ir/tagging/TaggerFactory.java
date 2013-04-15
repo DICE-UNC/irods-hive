@@ -30,30 +30,30 @@ import org.apache.log4j.Logger;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
 
 public class TaggerFactory {
-	
+
 	private static Logger log = Logger.getLogger(TaggerFactory.class);
 	public static final String DUMMYTAGGER = "dummy";
 	public static final String KEATAGGER = "KEA";
 	public static final String MAUITAGGER = "Maui";
-	
+
 	private static String tagger = "dummy";
 
-	public static void selectTagger(String tagger) {
+	public static void selectTagger(final String tagger) {
 		TaggerFactory.tagger = tagger;
 	}
 
-	public static Tagger getTagger(String dirName, String modelName, String stopwordsPath,
-			SKOSScheme schema) {
-		if (tagger == DUMMYTAGGER)
+	public static Tagger getTagger(final String dirName,
+			final String modelName, final String stopwordsPath,
+			final SKOSScheme schema) {
+		if (tagger == DUMMYTAGGER) {
 			return new DummyTagger(dirName, modelName, stopwordsPath, schema);
-		else if(tagger == KEATAGGER) {
+		} else if (tagger == KEATAGGER) {
 			return new KEATagger(dirName, modelName, stopwordsPath, schema);
-		}
-		else if(tagger == MAUITAGGER) {
+		} else if (tagger == MAUITAGGER) {
 			return new MauiTagger(dirName, modelName, stopwordsPath, schema);
-		}
-		else
+		} else {
 			return null;
+		}
 
 	}
 

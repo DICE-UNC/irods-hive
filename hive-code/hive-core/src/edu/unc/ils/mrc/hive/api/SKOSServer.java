@@ -30,22 +30,28 @@ import java.util.TreeMap;
 import javax.xml.namespace.QName;
 
 /**
- * SKOSServer is the high level classes that we have to instantiate to get up the Vocabulary server:
-* 
-* The method's argument makes reference to the configuration file where the names of the thesauri 
-* to load is written.
-* SKOSServer manages the three basic classes which take the work to implement the HIVE basic functionalities: Concept Search 
-(SKOSSearcher), Vocabularies management (SKOSScheme) and indexing SKOSTagger.
- *
+ * SKOSServer is the high level classes that we have to instantiate to get up
+ * the Vocabulary server:
+ * 
+ * The method's argument makes reference to the configuration file where the
+ * names of the thesauri to load is written. SKOSServer manages the three basic
+ * classes which take the work to implement the HIVE basic functionalities:
+ * Concept Search (SKOSSearcher), Vocabularies management (SKOSScheme) and
+ * indexing SKOSTagger.
+ * 
  */
 
 public interface SKOSServer {
-	
+
 	public TreeMap<String, SKOSScheme> getSKOSSchemas();
+
 	public SKOSSearcher getSKOSSearcher();
-//	public SKOSTagger getSKOSTagger();
+
+	// public SKOSTagger getSKOSTagger();
 	public SKOSTagger getSKOSTagger(String algorithm);
+
 	public String getOrigin(QName uri);
+
 	public void close();
 
 }

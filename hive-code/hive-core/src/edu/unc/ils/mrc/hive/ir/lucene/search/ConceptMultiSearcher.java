@@ -57,37 +57,41 @@ import edu.unc.ils.mrc.hive.ir.lucene.analysis.HIVEAnalyzer;
 
 public class ConceptMultiSearcher implements Searcher {
 
-    private static final Log logger = LogFactory.getLog(ConceptMultiSearcher.class);
-    
+	private static final Log logger = LogFactory
+			.getLog(ConceptMultiSearcher.class);
+
 	private static int NUMBER_RESULTS = 1500;
 
 	private Searchable[] searchers;
 	private MultiSearcher searcher;
 
-	public ConceptMultiSearcher(String[] indexes) {
-		this.searchers = new IndexSearcher[indexes.length];
-		this.initIndex(indexes);
+	public ConceptMultiSearcher(final String[] indexes) {
+		searchers = new IndexSearcher[indexes.length];
+		initIndex(indexes);
 	}
 
 	@Override
-	public List<SKOSConcept> search(String word, SesameManager[] managers, boolean brief) {
-		if (brief)
+	public List<SKOSConcept> search(final String word,
+			final SesameManager[] managers, final boolean brief) {
+		if (brief) {
 			return searchBrief(word);
-		else
+		} else {
 			return search(word, managers);
-		
+		}
+
 	}
-	
+
 	/**
-	 * Searches for the specified word/phrase in Lucene and
-	 * returns brief SKOSConcept records. This method does not lookup 
-	 * the concept in Sesame and compose a full set of relationships.
+	 * Searches for the specified word/phrase in Lucene and returns brief
+	 * SKOSConcept records. This method does not lookup the concept in Sesame
+	 * and compose a full set of relationships.
 	 * 
-	 * @param word 	Word or phrase to search for
-	 * @return  	List of brief SKOSConcept objects
+	 * @param word
+	 *            Word or phrase to search for
+	 * @return List of brief SKOSConcept objects
 	 */
-	protected List<SKOSConcept> searchBrief(String word) {
-	    logger.trace("search " + word);
+	protected List<SKOSConcept> searchBrief(final String word) {
+		logger.trace("search " + word);
 		String[] fields = { "prefLabel", "altLabel" };
 		MultiFieldQueryParser parser = new MultiFieldQueryParser(fields,
 				new HIVEAnalyzer());
@@ -96,14 +100,14 @@ public class ConceptMultiSearcher implements Searcher {
 
 		try {
 			Query query = parser.parse(word);
-			
+
 			TopDocCollector collector = new TopDocCollector(NUMBER_RESULTS);
-			this.searcher.search(query, collector);
+			searcher.search(query, collector);
 			ScoreDoc[] hits = collector.topDocs().scoreDocs;
 			logger.debug("Total number of results: " + hits.length);
-			for (int i = 0; i < hits.length; i++) {
-				
-				int docId = hits[i].doc;
+			for (ScoreDoc hit : hits) {
+
+				int docId = hit.doc;
 				Document doc = searcher.doc(docId);
 				String uri = doc.get("uri");
 				String lp = doc.get("localPart");
@@ -111,29 +115,32 @@ public class ConceptMultiSearcher implements Searcher {
 
 				SKOSConcept concept = new SKOSConceptImpl(new QName(uri, lp));
 				concept.setPrefLabel(prefLabel);
-				
-				// Move exact matches on pref-label to the top of the results list
-				if (prefLabel.equals(word))
+
+				// Move exact matches on pref-label to the top of the results
+				// list
+				if (prefLabel.equals(word)) {
 					skosConceptList.add(0, concept);
-				else	
+				} else {
 					skosConceptList.add(concept);
+				}
 			}
 		} catch (IOException e) {
 			logger.error(e);
 		} catch (ParseException e) {
-		    logger.error(e);
+			logger.error(e);
 		}
-		
+
 		return skosConceptList;
 	}
-	
+
 	/**
-	 * Searches for the specified word/phrase in Lucene and uses the Sesame store
-	 * to compose full SKOSConcept objects including all relations.
+	 * Searches for the specified word/phrase in Lucene and uses the Sesame
+	 * store to compose full SKOSConcept objects including all relations.
 	 */
 	@Override
-	public List<SKOSConcept> search(String word, SesameManager[] managers) {
-	    logger.trace("search " + word);
+	public List<SKOSConcept> search(final String word,
+			final SesameManager[] managers) {
+		logger.trace("search " + word);
 		String[] fields = { "prefLabel", "altLabel" };
 		MultiFieldQueryParser parser = new MultiFieldQueryParser(fields,
 				new HIVEAnalyzer());
@@ -143,20 +150,19 @@ public class ConceptMultiSearcher implements Searcher {
 		try {
 			Query query = parser.parse(word);
 			TopDocCollector collector = new TopDocCollector(NUMBER_RESULTS);
-			this.searcher.search(query, collector);
+			searcher.search(query, collector);
 			ScoreDoc[] hits = collector.topDocs().scoreDocs;
 			logger.debug("Total number of results: " + collector.getTotalHits());
-			for (int i = 0; i < hits.length; i++) {
-				
+			for (ScoreDoc hit : hits) {
+
 				Concept concept;
-				int docId = hits[i].doc;
+				int docId = hit.doc;
 				Document doc = searcher.doc(docId);
 				String uri = doc.get("uri");
 				String lp = doc.get("localPart");
 
-				for (int n = 0; n < managers.length; n++) {
-					concept = managers[n].find(Concept.class,
-							new QName(uri, lp));
+				for (SesameManager manager : managers) {
+					concept = manager.find(Concept.class, new QName(uri, lp));
 					if (concept != null) {
 						// An exact match on prefLabel should always be first.
 						if (concept.getSkosPrefLabel().equalsIgnoreCase(word)) {
@@ -171,7 +177,7 @@ public class ConceptMultiSearcher implements Searcher {
 		} catch (IOException e) {
 			logger.error(e);
 		} catch (ParseException e) {
-		    logger.error(e);
+			logger.error(e);
 		}
 
 		List<SKOSConcept> skosConceptList = new ArrayList<SKOSConcept>();
@@ -185,23 +191,23 @@ public class ConceptMultiSearcher implements Searcher {
 			}
 			Set<Concept> broaderSet = elmoConcept.getSkosBroaders();
 			for (Concept broader : broaderSet) {
-				sconcept.addBroader(broader.getSkosPrefLabel(), broader
-						.getQName());
+				sconcept.addBroader(broader.getSkosPrefLabel(),
+						broader.getQName());
 			}
 			Set<Concept> narrowerSet = elmoConcept.getSkosNarrowers();
 			for (Concept narrower : narrowerSet) {
-				sconcept.addNarrower(narrower.getSkosPrefLabel(), narrower
-						.getQName());
+				sconcept.addNarrower(narrower.getSkosPrefLabel(),
+						narrower.getQName());
 			}
 			Set<Concept> relatedSet = elmoConcept.getSkosRelated();
 			for (Concept related : relatedSet) {
-				sconcept.addRelated(related.getSkosPrefLabel(), related
-						.getQName());
+				sconcept.addRelated(related.getSkosPrefLabel(),
+						related.getQName());
 			}
 
 			Set<Object> scopeNotes = elmoConcept.getSkosScopeNotes();
 			for (Object scopeNote : scopeNotes) {
-				sconcept.addScopeNote((String)scopeNote);
+				sconcept.addScopeNote((String) scopeNote);
 			}
 
 			skosConceptList.add(sconcept);
@@ -210,30 +216,32 @@ public class ConceptMultiSearcher implements Searcher {
 		return skosConceptList;
 	}
 
-	private void initIndex(String[] indexList) {
-	    logger.trace("initIndex");
+	private void initIndex(final String[] indexList) {
+		logger.trace("initIndex");
 		try {
-			for (int i = 0; i < indexList.length; i++)
-				this.searchers[i] = new IndexSearcher(indexList[i]);
-			this.searcher = new MultiSearcher(this.searchers);
+			for (int i = 0; i < indexList.length; i++) {
+				searchers[i] = new IndexSearcher(indexList[i]);
+			}
+			searcher = new MultiSearcher(searchers);
 		} catch (CorruptIndexException e) {
-            logger.error(e);
+			logger.error(e);
 		} catch (IOException e) {
-            logger.error(e);
+			logger.error(e);
 		}
 
 	}
 
 	@Override
 	public void close() {
-	    logger.trace("close");
-	    
+		logger.trace("close");
+
 		try {
-			this.searcher.close();
-			for (Searchable s : this.searchers)
+			searcher.close();
+			for (Searchable s : searchers) {
 				s.close();
+			}
 		} catch (IOException e) {
-            logger.error(e);
+			logger.error(e);
 		}
 	}
 

@@ -1,15 +1,18 @@
 package maui.filters;
 
-import weka.core.*;
-import weka.core.Capabilities.Capability;
-import weka.filters.*;
+import java.util.StringTokenizer;
 
-import java.util.*;
+import weka.core.Capabilities;
+import weka.core.Capabilities.Capability;
+import weka.core.Instance;
+import weka.core.Instances;
+import weka.core.Utils;
+import weka.filters.Filter;
 
 /**
- * Removes all numbers from all the string attributes in the given
- * dataset. Assumes that words are separated by whitespace.
- *
+ * Removes all numbers from all the string attributes in the given dataset.
+ * Assumes that words are separated by whitespace.
+ * 
  * @author Eibe Frank (eibe@cs.waikato.ac.nz)
  * @version 1.0
  */
@@ -19,9 +22,9 @@ public class NumbersFilter extends Filter {
 
 	/**
 	 * Returns a string describing this filter
-	 *
-	 * @return a description of the filter suitable for
-	 * displaying in the explorer/experimenter gui
+	 * 
+	 * @return a description of the filter suitable for displaying in the
+	 *         explorer/experimenter gui
 	 */
 	public String globalInfo() {
 		return "Removes all numbers from all the string attributes in "
@@ -29,18 +32,19 @@ public class NumbersFilter extends Filter {
 	}
 
 	/**
-	 * Signify that this batch of input to the filter is finished. If
-	 * the filter requires all instances prior to filtering, output()
-	 * may now be called to retrieve the filtered instances. Any
-	 * subsequent instances filtered should be filtered based on setting
-	 * obtained from the first batch (unless the inputFormat has been
-	 * re-assigned or new options have been set). This default
-	 * implementation assumes all instance processing occurs during
+	 * Signify that this batch of input to the filter is finished. If the filter
+	 * requires all instances prior to filtering, output() may now be called to
+	 * retrieve the filtered instances. Any subsequent instances filtered should
+	 * be filtered based on setting obtained from the first batch (unless the
+	 * inputFormat has been re-assigned or new options have been set). This
+	 * default implementation assumes all instance processing occurs during
 	 * inputFormat() and input().
-	 *
+	 * 
 	 * @return true if there are instances pending output
-	 * @exception NullPointerException if no input structure has been defined,
-	 * @exception Exception if there was a problem finishing the batch.
+	 * @exception NullPointerException
+	 *                if no input structure has been defined,
+	 * @exception Exception
+	 *                if there was a problem finishing the batch.
 	 */
 	@Override
 	public boolean batchFinished() throws Exception {
@@ -54,14 +58,16 @@ public class NumbersFilter extends Filter {
 
 	/**
 	 * Sets the format of the input instances.
-	 *
-	 * @param instanceInfo an Instances object containing the input
-	 * instance structure (any instances contained in the object are
-	 * ignored - only the structure is required).
-	 * @return true if the outputFormat may be collected immediately 
+	 * 
+	 * @param instanceInfo
+	 *            an Instances object containing the input instance structure
+	 *            (any instances contained in the object are ignored - only the
+	 *            structure is required).
+	 * @return true if the outputFormat may be collected immediately
 	 */
 	@Override
-	public boolean setInputFormat(Instances instanceInfo) throws Exception {
+	public boolean setInputFormat(final Instances instanceInfo)
+			throws Exception {
 
 		super.setInputFormat(instanceInfo);
 		setOutputFormat(instanceInfo);
@@ -70,9 +76,9 @@ public class NumbersFilter extends Filter {
 
 	/**
 	 * Returns the Capabilities of this filter.
-	 *
-	 * @return            the capabilities of this object
-	 * @see               Capabilities
+	 * 
+	 * @return the capabilities of this object
+	 * @see Capabilities
 	 */
 	@Override
 	public Capabilities getCapabilities() {
@@ -90,18 +96,19 @@ public class NumbersFilter extends Filter {
 	}
 
 	/**
-	 * Input an instance for filtering. Ordinarily the instance is processed
-	 * and made available for output immediately. Some filters require all
-	 * instances be read before producing output.
-	 *
-	 * @param instance the input instance
-	 * @return true if the filtered instance may now be
-	 * collected with output().
-	 * @exception Exception if the input instance was not of the correct 
-	 * format or if there was a problem with the filtering.
+	 * Input an instance for filtering. Ordinarily the instance is processed and
+	 * made available for output immediately. Some filters require all instances
+	 * be read before producing output.
+	 * 
+	 * @param instance
+	 *            the input instance
+	 * @return true if the filtered instance may now be collected with output().
+	 * @exception Exception
+	 *                if the input instance was not of the correct format or if
+	 *                there was a problem with the filtering.
 	 */
 	@Override
-	public boolean input(Instance instance) throws Exception {
+	public boolean input(final Instance instance) throws Exception {
 
 		if (getInputFormat() == null) {
 			throw new Exception("No input instance format defined");
@@ -116,10 +123,11 @@ public class NumbersFilter extends Filter {
 
 	/**
 	 * Main method for testing this class.
-	 *
-	 * @param argv should contain arguments to the filter: use -h for help
+	 * 
+	 * @param argv
+	 *            should contain arguments to the filter: use -h for help
 	 */
-	public static void main(String[] argv) {
+	public static void main(final String[] argv) {
 
 		try {
 			if (Utils.getFlag('b', argv)) {
@@ -131,9 +139,8 @@ public class NumbersFilter extends Filter {
 			System.out.println(ex.getMessage());
 		}
 	}
-	
-	
-	private String filterNumbers(String inputString) {
+
+	private String filterNumbers(final String inputString) {
 		StringBuffer resultString = new StringBuffer();
 		StringTokenizer tok = new StringTokenizer(inputString, " \t\n", true);
 		while (tok.hasMoreTokens()) {
@@ -162,11 +169,11 @@ public class NumbersFilter extends Filter {
 		return resultString.toString();
 	}
 
-	/** 
-	 * Converts an instance. A phrase boundary is inserted where
-	 * a number is found.
+	/**
+	 * Converts an instance. A phrase boundary is inserted where a number is
+	 * found.
 	 */
-	private void convertInstance(Instance instance) throws Exception {
+	private void convertInstance(final Instance instance) throws Exception {
 
 		double[] instVals = new double[instance.numAttributes()];
 
@@ -174,7 +181,7 @@ public class NumbersFilter extends Filter {
 			if ((!instance.attribute(i).isString()) || instance.isMissing(i)) {
 				instVals[i] = instance.value(i);
 			} else {
-				
+
 				String str = instance.stringValue(i);
 				// if it is the document string only!
 				if (i == 1) {

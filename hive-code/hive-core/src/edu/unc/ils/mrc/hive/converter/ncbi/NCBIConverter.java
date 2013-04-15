@@ -6,7 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class NCBIConverter {
 
@@ -21,8 +26,8 @@ public class NCBIConverter {
 	public static PrintWriter outputStream = null;
 	public static int selectedDivision = 9;
 
-	public static void main(String[] args) {
-        int count = 0;
+	public static void main(final String[] args) {
+		int count = 0;
 		try {
 			brInput = new BufferedReader(new FileReader(nodesdmp));
 			String line = brInput.readLine();
@@ -33,7 +38,8 @@ public class NCBIConverter {
 				if (nodeFields.length >= 5) {
 					int division = Integer.parseInt(nodeFields[4].trim()); // division
 					if (division == selectedDivision) {
-						int taxid = new Integer(Integer.parseInt(nodeFields[0].trim())); 
+						int taxid = new Integer(Integer.parseInt(nodeFields[0]
+								.trim()));
 						selectedNodes.add(taxid);
 						count++;
 					}
@@ -54,28 +60,30 @@ public class NCBIConverter {
 		try {
 			br2Input = new BufferedReader(new FileReader(nodesdmp));
 			line = br2Input.readLine();
-			//System.out.println(line);
+			// System.out.println(line);
 			while (line != null) {
 				nodeFields = line.split("\\|");
 				if (nodeFields.length >= 5) {
-					int taxid = new Integer(Integer.parseInt(nodeFields[0].trim())); 
-					int parentTaxId = Integer.parseInt(nodeFields[1].trim()); 
+					int taxid = new Integer(Integer.parseInt(nodeFields[0]
+							.trim()));
+					int parentTaxId = Integer.parseInt(nodeFields[1].trim());
 					if (selectedNodes.contains(taxid)) {
-						//System.out.println("selectedNode = " + taxid);
+						// System.out.println("selectedNode = " + taxid);
 						List<Integer> list = new ArrayList<Integer>();
-					    if (selectedNodes.contains(parentTaxId)) {
-					        list.add(parentTaxId);
-					        if (narrower.get(parentTaxId) == null) {
+						if (selectedNodes.contains(parentTaxId)) {
+							list.add(parentTaxId);
+							if (narrower.get(parentTaxId) == null) {
 								List<Integer> ln = new ArrayList<Integer>();
 								ln.add(taxid);
 								narrower.put(parentTaxId, ln);
 							} else {
 								narrower.get(parentTaxId).add(taxid);
 							}
-					    }
-					    else 
-					    	list.add(-1);   //parentTaxId is not a virus (division)
-					    nodes.put(taxid, list); // tax_id
+						} else {
+							list.add(-1); // parentTaxId is not a virus
+											// (division)
+						}
+						nodes.put(taxid, list); // tax_id
 						count++;
 					}
 				}
@@ -145,38 +153,40 @@ public class NCBIConverter {
 				if (nameFields.length == 4) {
 					Integer taxid = new Integer(Integer.parseInt(nameFields[0]
 							.trim()));
-						if (!taxid.equals(prevTaxid)) {
-							if (!prefLabel.equals("") && selectedNodes.contains(prevTaxid)) {
-								formatSKOSoutput(prevTaxid, prefLabel,
-										namesList);
-							}
-							namesList = "";
-							prefLabel = "";
+					if (!taxid.equals(prevTaxid)) {
+						if (!prefLabel.equals("")
+								&& selectedNodes.contains(prevTaxid)) {
+							formatSKOSoutput(prevTaxid, prefLabel, namesList);
 						}
-						nameClass = nameFields[3].trim();
-						if (nameClass.contains("scientific name")) {
-							prefLabel = nameFields[1].trim();
-							prefLabel = prefLabel.replaceAll("<", "(");
-							prefLabel = prefLabel.replaceAll(">", ")");
-							prefLabel = prefLabel.replaceAll("&", "and");
-						} else {
-							if ((!nameClass.contains("authority"))
-									&& (!nameClass.contains("blast name"))) {
-								String aname = nameFields[1].trim();
-								aname = aname.replaceAll("<", "(");
-								aname = aname.replaceAll(">", ")");
-								aname = aname.replaceAll("&", "and");
-								if (aname.length() > 0)
-									namesList = namesList + aname + ",";
-								aname = nameFields[2].trim();
-								aname = aname.replaceAll("<", "(");
-								aname = aname.replaceAll(">", ")");
-								aname = aname.replaceAll("&", "and");
-								if (aname.length() > 0)
-									namesList = namesList + aname + ",";
+						namesList = "";
+						prefLabel = "";
+					}
+					nameClass = nameFields[3].trim();
+					if (nameClass.contains("scientific name")) {
+						prefLabel = nameFields[1].trim();
+						prefLabel = prefLabel.replaceAll("<", "(");
+						prefLabel = prefLabel.replaceAll(">", ")");
+						prefLabel = prefLabel.replaceAll("&", "and");
+					} else {
+						if ((!nameClass.contains("authority"))
+								&& (!nameClass.contains("blast name"))) {
+							String aname = nameFields[1].trim();
+							aname = aname.replaceAll("<", "(");
+							aname = aname.replaceAll(">", ")");
+							aname = aname.replaceAll("&", "and");
+							if (aname.length() > 0) {
+								namesList = namesList + aname + ",";
+							}
+							aname = nameFields[2].trim();
+							aname = aname.replaceAll("<", "(");
+							aname = aname.replaceAll(">", ")");
+							aname = aname.replaceAll("&", "and");
+							if (aname.length() > 0) {
+								namesList = namesList + aname + ",";
 							}
 						}
-				//	}
+					}
+					// }
 					prevTaxid = taxid;
 				}
 				count++;
@@ -190,7 +200,8 @@ public class NCBIConverter {
 		}
 	}
 
-	public static void formatSKOSoutput(Integer taxid, String pref, String alts) {
+	public static void formatSKOSoutput(final Integer taxid, final String pref,
+			final String alts) {
 		StringBuffer rec = new StringBuffer();
 		String tax_id = taxid.toString();
 		rec.append("  <skos:Concept rdf:about=\"http://www.ncbi.nlm.nih.gov/Concept/"
@@ -200,10 +211,11 @@ public class NCBIConverter {
 
 		String[] altLabels = alts.split(",");
 		if (altLabels.length > 0) {
-			for (int i = 0; i < altLabels.length; i++) {
-				if (altLabels[i].length() > 0)
-					rec.append("    <skos:altLabel xml:lang=\"en\">"
-							+ altLabels[i] + "</skos:altLabel>" + "\n");
+			for (String altLabel : altLabels) {
+				if (altLabel.length() > 0) {
+					rec.append("    <skos:altLabel xml:lang=\"en\">" + altLabel
+							+ "</skos:altLabel>" + "\n");
+				}
 			}
 		}
 		List<Integer> ln = nodes.get(taxid);
@@ -211,31 +223,36 @@ public class NCBIConverter {
 			try {
 				int broader = ln.get(0); // .toString();
 				if (selectedNodes.contains(broader)) {
-					if (ln.get(0) < 2)
+					if (ln.get(0) < 2) {
 						System.out.println(taxid + "  " + pref + " broader is "
 								+ ln.get(0));
-					if (broader > 0)
+					}
+					if (broader > 0) {
 						rec.append("    <skos:broader rdf:resource=\"http://www.ncbi.nlm.nih.gov/Concept/"
 								+ broader + "\"/>\n");
-				} else
+					}
+				} else {
 					System.out.println(broader
 							+ " is not a broader virus concept for " + taxid);
+				}
 			} catch (IndexOutOfBoundsException e) {
 				/* do nothing, just skip the broader statement */
 			}
 			if ((ln = narrower.get(taxid)) != null) {
 				Iterator<Integer> itr = ln.iterator();
 				while (itr.hasNext()) {
-					int narrow = itr.next();  //.toString();
+					int narrow = itr.next(); // .toString();
 					if (selectedNodes.contains(narrow)) {
-						if (narrow > 0)
+						if (narrow > 0) {
 							rec.append("    <skos:narrower rdf:resource=\"http://www.ncbi.nlm.nih.gov/Concept/"
 									+ narrow + "\"/>\n");
-					} else
+						}
+					} else {
 						System.out
 								.println(narrow
 										+ " is not a narrow virus concept for "
 										+ taxid);
+					}
 				}
 			}
 			rec.append("  </skos:Concept>");

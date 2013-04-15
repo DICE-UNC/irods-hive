@@ -29,8 +29,10 @@ import edu.unc.ils.mrc.hive.HiveException;
 
 @Deprecated
 public interface Importer {
-	
+
 	public void importThesaurustoDB() throws HiveException;
+
 	public void importThesaurustoInvertedIndex() throws HiveException;
+
 	public void close() throws HiveException;
 }

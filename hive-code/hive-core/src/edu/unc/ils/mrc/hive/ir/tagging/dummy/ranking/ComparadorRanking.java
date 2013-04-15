@@ -24,7 +24,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package edu.unc.ils.mrc.hive.ir.tagging.dummy.ranking;
- 
+
 /**
  * Implementa un comparador en base al peso de un elemento de un vector. Util para reordenar 
  * por similitud.
@@ -32,14 +32,13 @@ package edu.unc.ils.mrc.hive.ir.tagging.dummy.ranking;
 
 import java.util.Comparator;
 
-public class ComparadorRanking implements Comparator<Rankeable>{
-    
+public class ComparadorRanking implements Comparator<Rankeable> {
+
 	@Override
-	public int compare(Rankeable obj1, Rankeable obj2) {
+	public int compare(final Rankeable obj1, final Rankeable obj2) {
 		Rankeable r1 = obj1;
 		Rankeable r2 = obj2;
-		return(r1.getRankingValue().compareTo(r2.getRankingValue())*-1);
+		return (r1.getRankingValue().compareTo(r2.getRankingValue()) * -1);
 	}
-    
-}
 
+}

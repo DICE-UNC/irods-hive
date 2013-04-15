@@ -28,72 +28,74 @@ package edu.unc.ils.mrc.hive.admin;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openrdf.repository.RepositoryException;
+
 import edu.unc.ils.mrc.hive.HiveException;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
-import edu.unc.ils.mrc.hive.ir.tagging.*;
+import edu.unc.ils.mrc.hive.ir.tagging.KEAModelGenerator;
+import edu.unc.ils.mrc.hive.ir.tagging.MauiModelGenerator;
 
 /**
- * This class train the tagger from a SKOS/RDF file and some domain oriented 
+ * This class train the tagger from a SKOS/RDF file and some domain oriented
  * documents which are used like trainning set for KEA algorithm
  */
 
 public class TaggerTrainer {
-	
-    private static final Log logger = LogFactory.getLog(TaggerTrainer.class);
-	
+
+	private static final Log logger = LogFactory.getLog(TaggerTrainer.class);
+
 	private SKOSScheme schema;
 	private int minOccur = 2;
 
-	public TaggerTrainer(SKOSScheme schema) {
+	public TaggerTrainer(final SKOSScheme schema) {
 		this.schema = schema;
 
 	}
-	
-	public void setMinOccur(int minOccur) 
-	{
+
+	public void setMinOccur(final int minOccur) {
 		this.minOccur = minOccur;
 	}
 
 	public void trainKEAAutomaticIndexingModule() throws HiveException {
 		logger.trace("trainKEAAutomaticIndexingModule");
-		KEAModelGenerator generator = new KEAModelGenerator(this.schema, minOccur);
-		generator.createModel(this.schema.getStopwordsPath());
+		KEAModelGenerator generator = new KEAModelGenerator(schema, minOccur);
+		generator.createModel(schema.getStopwordsPath());
 	}
-	
+
 	public void trainMauiAutomaticIndexingModule() throws HiveException {
 		logger.trace("trainMauiAutomaticIndexingModule");
-		MauiModelGenerator generator = new MauiModelGenerator(this.schema, minOccur);
-		generator.createModel(this.schema.getStopwordsPath());
-	}	
+		MauiModelGenerator generator = new MauiModelGenerator(schema, minOccur);
+		generator.createModel(schema.getStopwordsPath());
+	}
 
 	/**
 	 * @param args
 	 * @throws RepositoryException
 	 */
-	public static void main(String[] args) throws RepositoryException {
+	public static void main(final String[] args) throws RepositoryException {
 		// String trainDir = "/home/hive/hive-data/mesh/meshKEA/train";
 		// String modelPath = "/home/hive/hive-data/mesh/meshKEA/mesh";
 		// String vocabularyPath = "/home/hive/hive-data/mesh/mesh2.rdf";
 		// String stopwordsPath =
 		// "/home/hive/hive-data/mesh/meshKEA/data/stopwords/stopwords_en.txt";
-		//		
+		//
 		// String confPath = "/home/hive/workspace/hive-core/conf/";
 		// String vocabularyName = "mesh";
 
-//		String trainDir = "/home/hive/hive-data/nbii/nbiiKEA/train";
-//		String modelPath = "/home/hive/hive-data/nbii/nbiiKEA/nbii";
-//		String vocabularyPath = "/home/hive/hive-data/nbii/nbii3.rdf";
-//		String stopwordsPath = "/home/hive/hive-data/nbii/nbiiKEA/data/stopwords/stopwords_en.txt";
-//
-//		String confPath = "/home/hive/workspace/hive-core/conf/";
-//		String vocabularyName = "nbii";
+		// String trainDir = "/home/hive/hive-data/nbii/nbiiKEA/train";
+		// String modelPath = "/home/hive/hive-data/nbii/nbiiKEA/nbii";
+		// String vocabularyPath = "/home/hive/hive-data/nbii/nbii3.rdf";
+		// String stopwordsPath =
+		// "/home/hive/hive-data/nbii/nbiiKEA/data/stopwords/stopwords_en.txt";
+		//
+		// String confPath = "/home/hive/workspace/hive-core/conf/";
+		// String vocabularyName = "nbii";
 
 		// String trainDir = "/home/hive/hive-data/lcsh/lcshKEA/train";
 		// String modelPath = "/home/hive/hive-data/lcsh/lcshKEA/lcsh";
 		// String vocabularyPath = "/home/hive/hive-data/lcsh/lcsh.rdf";
 		// String stopwordsPath =
 		// "/home/hive/hive-data/lcsh/lcshKEA/data/stopwords/stopwords_en.txt";
-		//		
+		//
 		// String confPath = "/home/hive/workspace/hive-core/conf/";
 		// String vocabularyName = "lcsh";
 
@@ -102,30 +104,30 @@ public class TaggerTrainer {
 		// String vocabularyPath = "/home/hive/hive-data/agrovoc/agrovoc.rdf";
 		// String stopwordsPath =
 		// "/home/hive/hive-data/agrovoc/agrovocKEA/data/stopwords/stopwords_en.txt";
-		//		
+		//
 		// String confPath = "/home/hive/workspace/hive-core/conf/";
 		// String vocabularyName = "agrovoc";
 
-//		SKOSScheme schema = new SKOSSchemeImpl(confPath, vocabularyName);
-//
-//		NativeStore store = new NativeStore(
-//				new File(schema.getStoreDirectory()));
-//		Repository repository = new SailRepository(store);
-//		repository.initialize();
-//		ElmoModule module = new ElmoModule();
-//		SesameManagerFactory factory = new SesameManagerFactory(module,
-//				repository);
-//		SesameManager manager = factory.createElmoManager();
-//
-//		schema.setManager(manager);
-//
-//		KEAModelGenerator generator = new KEAModelGenerator(trainDir,
-//				modelPath, vocabularyPath, stopwordsPath, schema);
-//		generator.createModel(stopwordsPath);
-//		System.out.println("Model created");
-//		manager.close();
-//		factory.close();
-//		repository.shutDown();
+		// SKOSScheme schema = new SKOSSchemeImpl(confPath, vocabularyName);
+		//
+		// NativeStore store = new NativeStore(
+		// new File(schema.getStoreDirectory()));
+		// Repository repository = new SailRepository(store);
+		// repository.initialize();
+		// ElmoModule module = new ElmoModule();
+		// SesameManagerFactory factory = new SesameManagerFactory(module,
+		// repository);
+		// SesameManager manager = factory.createElmoManager();
+		//
+		// schema.setManager(manager);
+		//
+		// KEAModelGenerator generator = new KEAModelGenerator(trainDir,
+		// modelPath, vocabularyPath, stopwordsPath, schema);
+		// generator.createModel(stopwordsPath);
+		// System.out.println("Model created");
+		// manager.close();
+		// factory.close();
+		// repository.shutDown();
 	}
 
 }

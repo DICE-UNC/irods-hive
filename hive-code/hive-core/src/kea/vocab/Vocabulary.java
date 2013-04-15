@@ -7,31 +7,30 @@ import java.util.List;
 import kea.stemmers.Stemmer;
 import kea.stopwords.Stopwords;
 
-public abstract class Vocabulary implements Serializable 
-{
+public abstract class Vocabulary implements Serializable {
 	private static final long serialVersionUID = -7157202718619833534L;
 
 	/** The document language */
 	private String m_language;
-	
+
 	/** The default stemmer to be used */
 	private Stemmer m_Stemmer;
-	
+
 	/** The list of stop words to be used */
 	private Stopwords m_Stopwords;
-	
-	public Vocabulary(String documentLanguage) 
-	{
+
+	public Vocabulary(final String documentLanguage) {
 		m_language = documentLanguage;
 	}
-	
+
 	/**
 	 * Initializes the vocabulary.
 	 */
 	public abstract void initialize();
-	
+
 	/**
 	 * Builds the vocabulary index from SKOS RDF/XML files.
+	 * 
 	 * @throws Exception
 	 */
 	public abstract void buildSKOS() throws Exception;
@@ -39,149 +38,147 @@ public abstract class Vocabulary implements Serializable
 	/**
 	 * Builds the vocabulary index from text files.
 	 */
-	//public abstract void build() throws Exception;
-	
+	// public abstract void build() throws Exception;
+
 	/**
 	 * Builds the vocabulary index with descriptors/non-descriptors relations.
 	 */
 	public abstract void buildUSE() throws Exception;
-	
-	
+
 	/**
 	 * Builds the vocabulary index with semantically related terms.
 	 */
 	public abstract void buildREL() throws Exception;
-	
+
 	/**
 	 * Given a phrase returns its id in the vocabulary.
+	 * 
 	 * @param phrase
 	 * @return id of the phrase in the vocabulary index
 	 */
 	public abstract String getID(String phrase);
-	
+
 	/**
 	 * Given id, gets the original version of vocabulary term.
+	 * 
 	 * @param id
 	 * @return original version of the vocabulary term
 	 */
 	public abstract String getOrig(String id);
-	
+
 	/**
-	 * Given id of a term returns the list with ids of terms related to this term.
+	 * Given id of a term returns the list with ids of terms related to this
+	 * term.
+	 * 
 	 * @param id
 	 * @return a vector with ids related to the input id
 	 */
 	public abstract List<String> getRelated(String id);
-	
-	
+
 	/**
-	 * Given an ID of a term gets the list of all IDs of terms
-	 * that are semantically related to the given term
-	 * with a specific relation
-	 * @param id, relation
+	 * Given an ID of a term gets the list of all IDs of terms that are
+	 * semantically related to the given term with a specific relation
+	 * 
+	 * @param id
+	 *            , relation
 	 * @return a vector with ids related to the input id by a specified relation
 	 */
-	public abstract List<String> getRelated (String id, String relation);
-	
-	public void setStemmer(Stemmer newStemmer) {	
-		this.m_Stemmer = newStemmer;
+	public abstract List<String> getRelated(String id, String relation);
+
+	public void setStemmer(final Stemmer newStemmer) {
+		m_Stemmer = newStemmer;
 	}
-	
+
 	public Stemmer getStemmer() {
 		return m_Stemmer;
 	}
 
-	public void setStopwords(Stopwords newM_Stopwords) {	
-		this.m_Stopwords = newM_Stopwords;
+	public void setStopwords(final Stopwords newM_Stopwords) {
+		m_Stopwords = newM_Stopwords;
 	}
-	
+
 	public String getLanguage() {
 		return m_language;
 	}
-	
-    public String remove (String[] words, int i) {
 
-        String result = "";
-        for (int j = 0; j < words.length; j++) {
-            if ((j != i) && (!m_Stopwords.isStopword(words[j]))) {
-               
-                result = result + words[j];
-               
-                if ((j+1) != words.length) {
-                    result = result + " ";
-                }
-            }
-             
-        }
-        return result;
-    }
-	
-	
-	/** 
-	 * Generates the preudo phrase from a string.
-	 * A pseudo phrase is a version of a phrase
-	 * that only contains non-stopwords,
-	 * which are stemmed and sorted into alphabetical order. 
+	public String remove(final String[] words, final int i) {
+
+		String result = "";
+		for (int j = 0; j < words.length; j++) {
+			if ((j != i) && (!m_Stopwords.isStopword(words[j]))) {
+
+				result = result + words[j];
+
+				if ((j + 1) != words.length) {
+					result = result + " ";
+				}
+			}
+
+		}
+		return result;
+	}
+
+	/**
+	 * Generates the preudo phrase from a string. A pseudo phrase is a version
+	 * of a phrase that only contains non-stopwords, which are stemmed and
+	 * sorted into alphabetical order.
 	 */
 	public String pseudoPhrase(String str) {
-		if (str == null)
+		if (str == null) {
 			return null;
+		}
 		// System.err.print(str + "\t");
 		String[] pseudophrase;
 		String[] words;
 		String str_nostop;
 		String stemmed;
-		
-		
+
 		str = str.toLowerCase();
-		
-		
+
 		// This is often the case with Mesh Terms,
 		// where a term is accompanied by another specifying term
 		// e.g. Monocytes/*immunology/microbiology
 		// we ignore everything after the "/" symbol.
 		if (str.matches(".+?/.+?")) {
-			String[] elements = str.split("/");		
+			String[] elements = str.split("/");
 			str = elements[0];
-		}	
-				
+		}
+
 		// removes scop notes in brackets
 		// should be replaced with a cleaner solution !!
 		if (str.matches(".+?\\(.+?")) {
-			String[] elements = str.split("\\(");		
-			str = elements[0];			
-		}	
-	
+			String[] elements = str.split("\\(");
+			str = elements[0];
+		}
+
 		// Remove some non-alphanumeric characters
-		
+
 		// str = str.replace('/', ' ');
 		str = str.replace('-', ' ');
 		str = str.replace('&', ' ');
-		
 
 		str = str.replaceAll("\\*", "");
-		str = str.replaceAll("\\, "," ");
-		str = str.replaceAll("\\. "," ");
-		str = str.replaceAll("\\:","");
-	
-		
+		str = str.replaceAll("\\, ", " ");
+		str = str.replaceAll("\\. ", " ");
+		str = str.replaceAll("\\:", "");
+
 		str = str.trim();
-		
+
 		// Stem string
 		words = str.split(" ");
 		str_nostop = "";
-		
-		for (int i = 0; i < words.length; i++) {
-			String word = words[i];
+
+		for (String word2 : words) {
+			String word = word2;
 			if (m_Stopwords != null && !m_Stopwords.isStopword(word)) {
-				
+
 				if (word.matches(".+?\\'.+?")) {
 					String[] elements = word.split("\\'");
-					if (elements.length > 1)
+					if (elements.length > 1) {
 						word = elements[1];
-				}	
+					}
+				}
 
-				
 				if (str_nostop.equals("")) {
 					str_nostop = word;
 				} else {
@@ -194,29 +191,29 @@ public abstract class Vocabulary implements Serializable
 		// System.err.println(stemmed + "\t" + str_nostop + "\t"+ str);
 		pseudophrase = stemmed.split(" ");
 		Arrays.sort(pseudophrase);
-		//System.err.println(join(pseudophrase));
+		// System.err.println(join(pseudophrase));
 		return join(pseudophrase);
 	}
-	
-	/** 
+
+	/**
 	 * Joins an array of strings to a single string.
 	 */
-	protected static String join(String[] str) {
+	protected static String join(final String[] str) {
 		String result = "";
-		for(int i = 0; i < str.length; i++) {
+		for (String element : str) {
 			if (result != "") {
-				result = result + " " + str[i];
+				result = result + " " + element;
 			} else {
-				result = str[i];
+				result = element;
 			}
 		}
 		return result;
 	}
-	
+
 	/**
 	 * overloaded swap method: exchange 2 locations in an array of Strings.
 	 */
-	public static void swap(int loc1, int loc2, String[] a) {
+	public static void swap(final int loc1, final int loc2, final String[] a) {
 		String temp = a[loc1];
 		a[loc1] = a[loc2];
 		a[loc2] = temp;
@@ -226,7 +223,7 @@ public abstract class Vocabulary implements Serializable
 	 * Sorts an array of Strings into alphabetic order
 	 * 
 	 */
-	public static String[] sort(String[] a) {
+	public static String[] sort(final String[] a) {
 
 		// rename firstAt to reflect new role in alphabetic sorting
 		int i, j, firstAt;
@@ -256,7 +253,5 @@ public abstract class Vocabulary implements Serializable
 		}
 		return a;
 	} // end method selectionSort
-	
+
 }
-
-

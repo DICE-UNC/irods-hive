@@ -26,9 +26,16 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Vector;
 
-import org.wikipedia.miner.model.Wikipedia;
+import maui.filters.MauiFilter;
+import maui.stemmers.PorterStemmer;
+import maui.stemmers.Stemmer;
+import maui.stopwords.Stopwords;
+import maui.stopwords.StopwordsEnglish;
+import maui.vocab.Vocabulary;
+import maui.vocab.VocabularyH2;
 
 import org.apache.commons.io.FileUtils;
+import org.wikipedia.miner.model.Wikipedia;
 
 import weka.classifiers.Classifier;
 import weka.core.Attribute;
@@ -38,62 +45,72 @@ import weka.core.Instances;
 import weka.core.Option;
 import weka.core.OptionHandler;
 import weka.core.Utils;
-import maui.filters.MauiFilter;
-import maui.stemmers.*;
-import maui.stopwords.*;
-import maui.vocab.Vocabulary;
-import maui.vocab.VocabularyH2;
 
 /**
- * Builds a topic indexing model from the documents in a given
- * directory.  Assumes that the file names for the documents end with
- * ".txt".  Assumes that files containing corresponding
- * author-assigned keyphrases end with ".key". Optionally an encoding
- * for the documents/keyphrases can be defined (e.g. for Chinese
- * text).
- *
- * Valid options are:<p>
- *
- * -l "directory name"<br>
- * Specifies name of directory.<p>
- *
- * -m "model name"<br>
- * Specifies name of model.<p>
- *
- * -e "encoding"<br>
- * Specifies encoding.<p>
+ * Builds a topic indexing model from the documents in a given directory.
+ * Assumes that the file names for the documents end with ".txt". Assumes that
+ * files containing corresponding author-assigned keyphrases end with ".key".
+ * Optionally an encoding for the documents/keyphrases can be defined (e.g. for
+ * Chinese text).
  * 
- *  -w "WikipediaDatabase@WikipediaServer" <br>
- * Specifies wikipedia data.<p>
+ * Valid options are:
+ * <p>
+ * 
+ * -l "directory name"<br>
+ * Specifies name of directory.
+ * <p>
+ * 
+ * -m "model name"<br>
+ * Specifies name of model.
+ * <p>
+ * 
+ * -e "encoding"<br>
+ * Specifies encoding.
+ * <p>
+ * 
+ * -w "WikipediaDatabase@WikipediaServer" <br>
+ * Specifies wikipedia data.
+ * <p>
  * 
  * -v "vocabulary name" <br>
- * Specifies vocabulary name (e.g. agrovoc or none).<p>
+ * Specifies vocabulary name (e.g. agrovoc or none).
+ * <p>
  * 
  * -f "vocabulary format" <br>
- * Specifies vocabulary format (txt or skos).<p>
- *
+ * Specifies vocabulary format (txt or skos).
+ * <p>
+ * 
  * -i "document language" <br>
- * Specifies document language (en, es, de, fr).<p>
- *
+ * Specifies document language (en, es, de, fr).
+ * <p>
+ * 
  * -d<br>
- * Turns debugging mode on.<p>
+ * Turns debugging mode on.
+ * <p>
  * 
  * -x "length"<br>
- * Sets maximum phrase length (default: 3).<p>
- *
+ * Sets maximum phrase length (default: 3).
+ * <p>
+ * 
  * -y "length"<br>
- * Sets minimum phrase length (default: 1).<p>
- *
+ * Sets minimum phrase length (default: 1).
+ * <p>
+ * 
  * -o "number"<br>
- * Sets the minimum number of times a phrase needs to occur (default: 2). <p>
- *
+ * Sets the minimum number of times a phrase needs to occur (default: 2).
+ * <p>
+ * 
  * -s "stopwords class"<br>
- * Sets the name of the class implementing the stop words (default: StopwordsEnglish).<p>
- *
+ * Sets the name of the class implementing the stop words (default:
+ * StopwordsEnglish).
+ * <p>
+ * 
  * -t "stemmer class "<br>
- * Sets stemmer to use (default: PorterStemmer). <p>
- *
- * @author Eibe Frank (eibe@cs.waikato.ac.nz), Olena Medelyan (olena@cs.waikato.ac.nz)
+ * Sets stemmer to use (default: PorterStemmer).
+ * <p>
+ * 
+ * @author Eibe Frank (eibe@cs.waikato.ac.nz), Olena Medelyan
+ *         (olena@cs.waikato.ac.nz)
  * @version 1.0
  */
 public class MauiModelBuilder implements OptionHandler {
@@ -109,7 +126,7 @@ public class MauiModelBuilder implements OptionHandler {
 
 	/** Format of the vocabulary {skos,text} */
 	public String vocabularyFormat = null;
-	
+
 	/** Directory where H2 vocabulary is stored **/
 	public String vocabularyDirectory = null;
 
@@ -130,25 +147,25 @@ public class MauiModelBuilder implements OptionHandler {
 
 	/** Minimum number of occurences of a phrase */
 	public int minNumOccur = 1;
-	
+
 	/** Wikipedia object */
 	public Wikipedia wikipedia = null;
-	
+
 	/** Classifier */
 	private Classifier classifier = null;
-	
-	/** Name of the server with the mysql Wikipedia data */ 
-	private String wikipediaServer = "localhost"; 
-	
+
+	/** Name of the server with the mysql Wikipedia data */
+	private String wikipediaServer = "localhost";
+
 	/** Name of the database with Wikipedia data */
 	private String wikipediaDatabase = "database";
-	
+
 	/** Name of the directory with Wikipedia data in files */
 	private String wikipediaDataDirectory = null;
-	
+
 	/** Should Wikipedia data be cached first? */
 	private boolean cacheWikipediaData = false;
-	
+
 	/** Minimum keyphraseness of a string */
 	private double minKeyphraseness = 0.01;
 
@@ -158,34 +175,42 @@ public class MauiModelBuilder implements OptionHandler {
 	/** Minimum number of the context articles */
 	private int contextSize = 5;
 
-	/** Use basic features  
-	 * TFxIDF & First Occurrence */
+	/**
+	 * Use basic features TFxIDF & First Occurrence
+	 */
 	boolean useBasicFeatures = true;
 
 	/** Use domain keyphraseness feature */
 	boolean useKeyphrasenessFeature = true;
 
-	/** Use frequency features
-	 * TF & IDF additionally */
+	/**
+	 * Use frequency features TF & IDF additionally
+	 */
 	boolean useFrequencyFeatures = true;
 
-	/** Use occurrence position features
-	 * LastOccurrence & Spread */
+	/**
+	 * Use occurrence position features LastOccurrence & Spread
+	 */
 	boolean usePositionsFeatures = true;
 
-	/** Use thesaurus features
-	 * Node degree  */
+	/**
+	 * Use thesaurus features Node degree
+	 */
 	boolean useNodeDegreeFeature = true;
 
 	/** Use length feature */
 	boolean useLengthFeature = true;
 
-	/** Use basic Wikipedia features 
-	 *  Wikipedia keyphraseness & Total Wikipedia keyphraseness */
+	/**
+	 * Use basic Wikipedia features Wikipedia keyphraseness & Total Wikipedia
+	 * keyphraseness
+	 */
 	boolean useBasicWikipediaFeatures = false;
 
-	/** Use all Wikipedia features 
-	 * Inverse Wikipedia frequency & Semantic relatedness*/
+	/**
+	 * Use all Wikipedia features Inverse Wikipedia frequency & Semantic
+	 * relatedness
+	 */
 	boolean useAllWikipediaFeatures = false;
 
 	/** Maui filter object */
@@ -195,25 +220,28 @@ public class MauiModelBuilder implements OptionHandler {
 	Stemmer stemmer = new PorterStemmer();
 
 	/** Llist of stopwords to be used */
-	public  Stopwords stopwords = null;
+	public Stopwords stopwords = null;
 	private Vocabulary vocabulary = null;
-	
-	public void loadThesaurus(Stemmer st, Stopwords sw, String vocabularyDirectory) {
-		if (vocabulary != null)
+
+	public void loadThesaurus(final Stemmer st, final Stopwords sw,
+			final String vocabularyDirectory) {
+		if (vocabulary != null) {
 			return;
+		}
 
 		try {
 
 			if (debugMode) {
 				System.err.println("--- Loading the vocabulary...");
 			}
-			vocabulary = new VocabularyH2(vocabularyName, vocabularyFormat, vocabularyDirectory);
+			vocabulary = new VocabularyH2(vocabularyName, vocabularyFormat,
+					vocabularyDirectory);
 			vocabulary.setStemmer(st);
 			vocabulary.setStopwords(sw);
 			vocabulary.setDebug(debugMode);
 			vocabulary.setLanguage(documentLanguage);
 			vocabulary.initialize();
-			
+
 		} catch (Exception e) {
 			System.err.println("Failed to load thesaurus!");
 			e.printStackTrace();
@@ -221,152 +249,168 @@ public class MauiModelBuilder implements OptionHandler {
 
 	}
 
-	public boolean getDebug()	{
+	public boolean getDebug() {
 		return debugMode;
 	}
-	
-	public void setInputDirectoryName(String trainingDirName) {
-		this.inputDirectoryName = trainingDirName;
+
+	public void setInputDirectoryName(final String trainingDirName) {
+		inputDirectoryName = trainingDirName;
 	}
-	
-	public void setStopwords(String stopwordsPath) {
-		this.stopwords = new StopwordsEnglish(stopwordsPath);
+
+	public void setStopwords(final String stopwordsPath) {
+		stopwords = new StopwordsEnglish(stopwordsPath);
 	}
-	
-    // Set model path and name from voc properties file
-	public void setModelName(String modelName) {
+
+	// Set model path and name from voc properties file
+	public void setModelName(final String modelName) {
 		this.modelName = modelName;
 	}
-	
-	public void setVocabularyName(String vocName) {
-		this.vocabularyName = vocName;
+
+	public void setVocabularyName(final String vocName) {
+		vocabularyName = vocName;
 	}
 
-	public void setVocabularyDirectory(String vocDir) {
-		this.vocabularyDirectory = vocDir;
-	}
-	
-	public void setVocabularyFormat(String vocFormat) {
-		this.vocabularyFormat = vocFormat;
+	public void setVocabularyDirectory(final String vocDir) {
+		vocabularyDirectory = vocDir;
 	}
 
-	public void setDocumentEncoding(String encoding) {
-		this.documentEncoding = encoding;
-	}
-	
-	public void setDocumentLanguage(String lang) {
-		this.documentLanguage = lang;
+	public void setVocabularyFormat(final String vocFormat) {
+		vocabularyFormat = vocFormat;
 	}
 
-	public void setStemmer(Stemmer stem) {
-		this.stemmer = stem;
+	public void setDocumentEncoding(final String encoding) {
+		documentEncoding = encoding;
 	}
-	
-	public void setMaxPhraseLength(int len) {
-		this.maxPhraseLength = len;
+
+	public void setDocumentLanguage(final String lang) {
+		documentLanguage = lang;
 	}
-	
-	public void setMinPhraseLength(int len) {
-		this.minPhraseLength = len;
+
+	public void setStemmer(final Stemmer stem) {
+		stemmer = stem;
 	}
-	
-	public void setMinNumOccur(int occ) {
-		this.minNumOccur = occ;
+
+	public void setMaxPhraseLength(final int len) {
+		maxPhraseLength = len;
 	}
-	
-	public void setBasicFeatures(boolean useBasicFeatures) {
+
+	public void setMinPhraseLength(final int len) {
+		minPhraseLength = len;
+	}
+
+	public void setMinNumOccur(final int occ) {
+		minNumOccur = occ;
+	}
+
+	public void setBasicFeatures(final boolean useBasicFeatures) {
 		this.useBasicFeatures = useBasicFeatures;
 	}
 
-	public void setKeyphrasenessFeature(boolean useKeyphrasenessFeature) {
+	public void setKeyphrasenessFeature(final boolean useKeyphrasenessFeature) {
 		this.useKeyphrasenessFeature = useKeyphrasenessFeature;
 	}
 
-	public void setFrequencyFeatures(boolean useFrequencyFeatures) {
+	public void setFrequencyFeatures(final boolean useFrequencyFeatures) {
 		this.useFrequencyFeatures = useFrequencyFeatures;
 	}
 
-	public void setPositionsFeatures(boolean usePositionsFeatures) {
+	public void setPositionsFeatures(final boolean usePositionsFeatures) {
 		this.usePositionsFeatures = usePositionsFeatures;
 	}
 
-	public void setNodeDegreeFeature(boolean useNodeDegreeFeature) {
+	public void setNodeDegreeFeature(final boolean useNodeDegreeFeature) {
 		this.useNodeDegreeFeature = useNodeDegreeFeature;
 	}
 
-	public void setLengthFeature(boolean useLengthFeature) {
+	public void setLengthFeature(final boolean useLengthFeature) {
 		this.useLengthFeature = useLengthFeature;
 	}
 
-	public void setBasicWikipediaFeatures(boolean useBasicWikipediaFeatures) {
+	public void setBasicWikipediaFeatures(
+			final boolean useBasicWikipediaFeatures) {
 		this.useBasicWikipediaFeatures = useBasicWikipediaFeatures;
 	}
 
-	public void setAllWikipediaFeatures(boolean useAllWikipediaFeatures) {
+	public void setAllWikipediaFeatures(final boolean useAllWikipediaFeatures) {
 		this.useAllWikipediaFeatures = useAllWikipediaFeatures;
 	}
-	
-	public void setContextSize(int contextSize) {
+
+	public void setContextSize(final int contextSize) {
 		this.contextSize = contextSize;
 	}
-	
-	public void setMinSenseProbability(double minSenseProbability) {
+
+	public void setMinSenseProbability(final double minSenseProbability) {
 		this.minSenseProbability = minSenseProbability;
 	}
-	
-	public void setMinKeyphraseness(double minKeyphraseness) {
+
+	public void setMinKeyphraseness(final double minKeyphraseness) {
 		this.minKeyphraseness = minKeyphraseness;
 	}
-	
 
 	/**
 	 * Parses a given list of options controlling the behaviour of this object.
-	 * Valid options are:<p>
-	 *
+	 * Valid options are:
+	 * <p>
+	 * 
 	 * -l "directory name" <br>
-	 * Specifies name of directory.<p>
-	 *
+	 * Specifies name of directory.
+	 * <p>
+	 * 
 	 * -m "model name" <br>
-	 * Specifies name of model.<p>
-	 *
+	 * Specifies name of model.
+	 * <p>
+	 * 
 	 * -v "vocabulary name" <br>
-	 * Specifies vocabulary name.<p>
+	 * Specifies vocabulary name.
+	 * <p>
 	 * 
 	 * -f "vocabulary format" <br>
-	 * Specifies vocabulary format.<p>
-	 *    
+	 * Specifies vocabulary format.
+	 * <p>
+	 * 
 	 * -i "document language" <br>
-	 * Specifies document language.<p>
+	 * Specifies document language.
+	 * <p>
 	 * 
 	 * -e "encoding" <br>
-	 * Specifies encoding.<p>
+	 * Specifies encoding.
+	 * <p>
 	 * 
-	 *  -w "WikipediaDatabase@WikipediaServer" <br>
-	 * Specifies wikipedia data.<p>
+	 * -w "WikipediaDatabase@WikipediaServer" <br>
+	 * Specifies wikipedia data.
+	 * <p>
 	 * 
 	 * -d<br>
-	 * Turns debugging mode on.<p>
-	 *
+	 * Turns debugging mode on.
+	 * <p>
+	 * 
 	 * -x "length"<br>
-	 * Sets maximum phrase length (default: 3).<p>
-	 *
+	 * Sets maximum phrase length (default: 3).
+	 * <p>
+	 * 
 	 * -y "length"<br>
-	 * Sets minimum phrase length (default: 3).<p>
-	 *
+	 * Sets minimum phrase length (default: 3).
+	 * <p>
+	 * 
 	 * -o "number"<br>
-	 * The minimum number of times a phrase needs to occur (default: 2). <p>
-	 *
+	 * The minimum number of times a phrase needs to occur (default: 2).
+	 * <p>
+	 * 
 	 * -s "name of class implementing list of stop words"<br>
-	 * Sets list of stop words to used (default: StopwordsEnglish).<p>
-	 *
+	 * Sets list of stop words to used (default: StopwordsEnglish).
+	 * <p>
+	 * 
 	 * -t "name of class implementing stemmer"<br>
-	 * Sets stemmer to use (default: IteratedLovinsStemmer). <p>
-	 *
-	 * @param options the list of options as an array of strings
-	 * @exception Exception if an option is not supported
+	 * Sets stemmer to use (default: IteratedLovinsStemmer).
+	 * <p>
+	 * 
+	 * @param options
+	 *            the list of options as an array of strings
+	 * @exception Exception
+	 *                if an option is not supported
 	 */
 	@Override
-	public void setOptions(String[] options) throws Exception {
+	public void setOptions(final String[] options) throws Exception {
 
 		String dirName = Utils.getOption('l', options);
 		if (dirName.length() > 0) {
@@ -387,11 +431,12 @@ public class MauiModelBuilder implements OptionHandler {
 		String vocabularyName = Utils.getOption('v', options);
 		if (vocabularyName.length() > 0) {
 			this.vocabularyName = vocabularyName;
-		} 
+		}
 
 		String vocabularyFormat = Utils.getOption('f', options);
 
-		if (!vocabularyName.equals("none") && !vocabularyName.equals("wikipedia")) {
+		if (!vocabularyName.equals("none")
+				&& !vocabularyName.equals("wikipedia")) {
 			if (vocabularyFormat.length() > 0) {
 				if (vocabularyFormat.equals("skos")
 						|| vocabularyFormat.equals("text")) {
@@ -405,47 +450,50 @@ public class MauiModelBuilder implements OptionHandler {
 						"If a controlled vocabulary is used, format of vocabulary required argument (skos or text).");
 			}
 		}
-		
+
 		String encoding = Utils.getOption('e', options);
-		if (encoding.length() > 0) 
-			this.documentEncoding = encoding;
-		
+		if (encoding.length() > 0) {
+			documentEncoding = encoding;
+		}
+
 		String wikipediaConnection = Utils.getOption('w', options);
 		if (wikipediaConnection.length() > 0) {
 			int at = wikipediaConnection.indexOf("@");
-			wikipediaDatabase = wikipediaConnection.substring(0,at);
-			wikipediaServer = wikipediaConnection.substring(at+1);
-		} 
+			wikipediaDatabase = wikipediaConnection.substring(0, at);
+			wikipediaServer = wikipediaConnection.substring(at + 1);
+		}
 
 		String documentLanguage = Utils.getOption('i', options);
-		if (documentLanguage.length() > 0) 
+		if (documentLanguage.length() > 0) {
 			this.documentLanguage = documentLanguage;
-	
+		}
 
 		String maxPhraseLengthString = Utils.getOption('x', options);
-		if (maxPhraseLengthString.length() > 0) 
-			this.maxPhraseLength = Integer.parseInt(maxPhraseLengthString);
-		
+		if (maxPhraseLengthString.length() > 0) {
+			maxPhraseLength = Integer.parseInt(maxPhraseLengthString);
+		}
+
 		String minPhraseLengthString = Utils.getOption('y', options);
-		if (minPhraseLengthString.length() > 0) 
-			this.minPhraseLength = Integer.parseInt(minPhraseLengthString);
-			
+		if (minPhraseLengthString.length() > 0) {
+			minPhraseLength = Integer.parseInt(minPhraseLengthString);
+		}
+
 		String minNumOccurString = Utils.getOption('o', options);
-		if (minNumOccurString.length() > 0) 
-			this.minNumOccur = Integer.parseInt(minNumOccurString);
-		
+		if (minNumOccurString.length() > 0) {
+			minNumOccur = Integer.parseInt(minNumOccurString);
+		}
 
 		String stopwordsString = Utils.getOption('s', options);
 		if (stopwordsString.length() > 0) {
 			stopwordsString = "maui.stopwords.".concat(stopwordsString);
-			this.stopwords = (Stopwords) Class.forName(stopwordsString)
+			stopwords = (Stopwords) Class.forName(stopwordsString)
 					.newInstance();
 		}
 
 		String stemmerString = Utils.getOption('t', options);
 		if (stemmerString.length() > 0) {
 			stemmerString = "maui.stemmers.".concat(stemmerString);
-			this.stemmer = (Stemmer) Class.forName(stemmerString).newInstance();
+			stemmer = (Stemmer) Class.forName(stemmerString).newInstance();
 		}
 		debugMode = Utils.getFlag('d', options);
 		Utils.checkForRemainingOptions(options);
@@ -453,7 +501,7 @@ public class MauiModelBuilder implements OptionHandler {
 
 	/**
 	 * Gets the current option settings.
-	 *
+	 * 
 	 * @return an array of strings suitable for passing to setOptions
 	 */
 	@Override
@@ -463,27 +511,27 @@ public class MauiModelBuilder implements OptionHandler {
 		int current = 0;
 
 		options[current++] = "-l";
-		options[current++] = "" + (this.inputDirectoryName);
+		options[current++] = "" + (inputDirectoryName);
 		options[current++] = "-m";
-		options[current++] = "" + (this.modelName);
+		options[current++] = "" + (modelName);
 		options[current++] = "-v";
-		options[current++] = "" + (this.vocabularyName);
+		options[current++] = "" + (vocabularyName);
 		options[current++] = "-f";
-		options[current++] = "" + (this.vocabularyFormat);
+		options[current++] = "" + (vocabularyFormat);
 		options[current++] = "-e";
-		options[current++] = "" + (this.documentEncoding);
+		options[current++] = "" + (documentEncoding);
 		options[current++] = "-i";
-		options[current++] = "" + (this.documentLanguage);
+		options[current++] = "" + (documentLanguage);
 
-		if (this.debugMode) {
+		if (debugMode) {
 			options[current++] = "-d";
 		}
 		options[current++] = "-x";
-		options[current++] = "" + (this.maxPhraseLength);
+		options[current++] = "" + (maxPhraseLength);
 		options[current++] = "-y";
-		options[current++] = "" + (this.minPhraseLength);
+		options[current++] = "" + (minPhraseLength);
 		options[current++] = "-o";
-		options[current++] = "" + (this.minNumOccur);
+		options[current++] = "" + (minNumOccur);
 		options[current++] = "-s";
 		options[current++] = "" + (stopwords.getClass().getName());
 		options[current++] = "-t";
@@ -497,7 +545,7 @@ public class MauiModelBuilder implements OptionHandler {
 
 	/**
 	 * Returns an enumeration describing the available options.
-	 *
+	 * 
 	 * @return an enumeration of all the available options
 	 */
 	@Override
@@ -519,8 +567,9 @@ public class MauiModelBuilder implements OptionHandler {
 				"i", 1, "-i <document language>"));
 		newVector.addElement(new Option("\tSpecifies encoding.", "e", 1,
 				"-e <encoding>"));
-		newVector.addElement(new Option("\tSpecifies wikipedia database and server.", "w", 1,
-		"-w <wikipediaDatabase@wikipediaServer>"));
+		newVector.addElement(new Option(
+				"\tSpecifies wikipedia database and server.", "w", 1,
+				"-w <wikipediaDatabase@wikipediaServer>"));
 		newVector.addElement(new Option("\tTurns debugging mode on.", "d", 0,
 				"-d"));
 		newVector.addElement(new Option(
@@ -574,7 +623,7 @@ public class MauiModelBuilder implements OptionHandler {
 	/**
 	 * Builds the model from the training data
 	 */
-	public void buildModel(HashSet<String> fileNames) throws Exception {
+	public void buildModel(final HashSet<String> fileNames) throws Exception {
 
 		// Check whether there is actually any data
 		if (fileNames.size() == 0) {
@@ -583,7 +632,7 @@ public class MauiModelBuilder implements OptionHandler {
 		}
 
 		System.err.println("-- Building the model... ");
-		
+
 		FastVector atts = new FastVector(3);
 		atts.addElement(new Attribute("filename", (FastVector) null));
 		atts.addElement(new Attribute("document", (FastVector) null));
@@ -602,22 +651,21 @@ public class MauiModelBuilder implements OptionHandler {
 		mauiFilter.setVocabularyName(vocabularyName);
 		mauiFilter.setVocabularyFormat(vocabularyFormat);
 		mauiFilter.setStopwords(stopwords);
-		
-/*	
-		if (wikipedia != null) {
-			mauiFilter.setWikipedia(wikipedia);
-		} else if (wikipediaServer.equals("localhost") && wikipediaDatabase.equals("database")) {
-			mauiFilter.setWikipedia(wikipedia);		
-		} else {
-			mauiFilter.setWikipedia(wikipediaServer, wikipediaDatabase, cacheWikipediaData, wikipediaDataDirectory);
-		}
-*/		
+
+		/*
+		 * if (wikipedia != null) { mauiFilter.setWikipedia(wikipedia); } else
+		 * if (wikipediaServer.equals("localhost") &&
+		 * wikipediaDatabase.equals("database")) {
+		 * mauiFilter.setWikipedia(wikipedia); } else {
+		 * mauiFilter.setWikipedia(wikipediaServer, wikipediaDatabase,
+		 * cacheWikipediaData, wikipediaDataDirectory); }
+		 */
 		if (classifier != null) {
 			mauiFilter.setClassifier(classifier);
 		}
-		
+
 		mauiFilter.setInputFormat(data);
-		
+
 		// set features configurations
 		mauiFilter.setBasicFeatures(useBasicFeatures);
 		mauiFilter.setKeyphrasenessFeature(useKeyphrasenessFeature);
@@ -625,17 +673,18 @@ public class MauiModelBuilder implements OptionHandler {
 		mauiFilter.setPositionsFeatures(usePositionsFeatures);
 		mauiFilter.setLengthFeature(useLengthFeature);
 		mauiFilter.setThesaurusFeatures(useNodeDegreeFeature);
-//		mauiFilter.setBasicWikipediaFeatures(useBasicWikipediaFeatures);
-//		mauiFilter.setAllWikipediaFeatures(useAllWikipediaFeatures);
+		// mauiFilter.setBasicWikipediaFeatures(useBasicWikipediaFeatures);
+		// mauiFilter.setAllWikipediaFeatures(useAllWikipediaFeatures);
 		mauiFilter.setThesaurusFeatures(useNodeDegreeFeature);
-		
+
 		mauiFilter.setClassifier(classifier);
-		
+
 		mauiFilter.setContextSize(contextSize);
 		mauiFilter.setMinKeyphraseness(minKeyphraseness);
 		mauiFilter.setMinSenseProbability(minSenseProbability);
-		
-		if (!vocabularyName.equals("none") && !vocabularyName.equals("wikipedia") ) {
+
+		if (!vocabularyName.equals("none")
+				&& !vocabularyName.equals("wikipedia")) {
 			loadThesaurus(stemmer, stopwords, vocabularyDirectory);
 			mauiFilter.setVocabulary(vocabulary);
 		}
@@ -657,11 +706,12 @@ public class MauiModelBuilder implements OptionHandler {
 
 				String documentText;
 				if (!documentEncoding.equals("default")) {
-					documentText = FileUtils.readFileToString(documentTextFile, documentEncoding);
+					documentText = FileUtils.readFileToString(documentTextFile,
+							documentEncoding);
 				} else {
 					documentText = FileUtils.readFileToString(documentTextFile);
 				}
-	
+
 				// Adding the text of the document to the instance
 				newInst[1] = data.attribute(1).addStringValue(documentText);
 
@@ -676,11 +726,13 @@ public class MauiModelBuilder implements OptionHandler {
 
 				String documentTopics;
 				if (!documentEncoding.equals("default")) {
-					documentTopics = FileUtils.readFileToString(documentTopicsFile, documentEncoding);
+					documentTopics = FileUtils.readFileToString(
+							documentTopicsFile, documentEncoding);
 				} else {
-					documentTopics = FileUtils.readFileToString(documentTopicsFile);
+					documentTopics = FileUtils
+							.readFileToString(documentTopicsFile);
 				}
-				
+
 				// Adding the topics to the file
 				newInst[2] = data.attribute(2).addStringValue(documentTopics);
 
@@ -704,8 +756,7 @@ public class MauiModelBuilder implements OptionHandler {
 		;
 	}
 
-	
-	/** 
+	/**
 	 * Saves the extraction model to the file.
 	 */
 	public void saveModel() throws Exception {
@@ -719,9 +770,9 @@ public class MauiModelBuilder implements OptionHandler {
 	}
 
 	/**
-	 * The main method.  
+	 * The main method.
 	 */
-	public static void main(String[] ops) {
+	public static void main(final String[] ops) {
 
 		MauiModelBuilder modelBuilder = new MauiModelBuilder();
 
@@ -749,7 +800,7 @@ public class MauiModelBuilder implements OptionHandler {
 			modelBuilder.saveModel();
 
 			System.err.print("Done!");
-			
+
 		} catch (Exception e) {
 
 			// Output information on how to use this class

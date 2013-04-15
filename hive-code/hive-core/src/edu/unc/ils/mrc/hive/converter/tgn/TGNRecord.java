@@ -3,11 +3,10 @@ package edu.unc.ils.mrc.hive.converter.tgn;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TGNRecord
-{
+public class TGNRecord {
 
 	private static final String URI_BASE = "http://tgn.getty.edu/tgn#";
-	
+
 	private String uri;
 	private String subjectID;
 	private String preferredTerm;
@@ -17,23 +16,23 @@ public class TGNRecord
 	private List<String> relatedTerms;
 	private String scopeNote;
 
-	public TGNRecord(String subjectID) {
+	public TGNRecord(final String subjectID) {
 		this.subjectID = subjectID;
-		this.uri = URI_BASE + subjectID;
-		this.altTerm = new ArrayList<String>();
-		this.broderTerms = new ArrayList<String>();
-		this.narrowerTerms = new ArrayList<String>();
-		this.relatedTerms = new ArrayList<String>();
+		uri = URI_BASE + subjectID;
+		altTerm = new ArrayList<String>();
+		broderTerms = new ArrayList<String>();
+		narrowerTerms = new ArrayList<String>();
+		relatedTerms = new ArrayList<String>();
 	}
-	
+
 	public String getURIBASE() {
 		return URI_BASE;
 	}
-	
+
 	public String getSubjectID() {
 		return subjectID;
 	}
-	
+
 	public String getUri() {
 		return uri;
 	}
@@ -42,7 +41,7 @@ public class TGNRecord
 		return preferredTerm;
 	}
 
-	public void setPreferredTerm(String preferredTerm) {
+	public void setPreferredTerm(final String preferredTerm) {
 		this.preferredTerm = preferredTerm.replaceAll("&", "and");
 	}
 
@@ -50,7 +49,7 @@ public class TGNRecord
 		return altTerm;
 	}
 
-	public void setAltTerm(String altTerm) {
+	public void setAltTerm(final String altTerm) {
 		this.altTerm.add(altTerm.replaceAll("&", "and"));
 	}
 
@@ -58,31 +57,31 @@ public class TGNRecord
 		return broderTerms;
 	}
 
-	public void setBroderTerms(String broderTerm) {
-		this.broderTerms.add(URI_BASE + broderTerm);
+	public void setBroderTerms(final String broderTerm) {
+		broderTerms.add(URI_BASE + broderTerm);
 	}
 
 	public List<String> getNarrowerTerms() {
 		return narrowerTerms;
 	}
 
-	public void setNarrowerTerms(String narrowerTerm) {
-		this.narrowerTerms.add(URI_BASE + narrowerTerm);
+	public void setNarrowerTerms(final String narrowerTerm) {
+		narrowerTerms.add(URI_BASE + narrowerTerm);
 	}
 
 	public List<String> getRelatedTerms() {
 		return relatedTerms;
 	}
 
-	public void setRelatedTerms(String relatedTerm) {
-		this.relatedTerms.add(URI_BASE + relatedTerm);
+	public void setRelatedTerms(final String relatedTerm) {
+		relatedTerms.add(URI_BASE + relatedTerm);
 	}
 
 	public String getScopeNote() {
 		return scopeNote;
 	}
 
-	public void setScopeNote(String scopeNote) {
+	public void setScopeNote(final String scopeNote) {
 		this.scopeNote = scopeNote.replaceAll("&", "and");
 	}
 

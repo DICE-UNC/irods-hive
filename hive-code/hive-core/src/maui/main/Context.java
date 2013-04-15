@@ -10,22 +10,19 @@ import java.util.Vector;
 import org.wikipedia.miner.model.Article;
 import org.wikipedia.miner.model.Label.Sense;
 
-
-
 public class Context {
-	
-	HashMap<String, Double> cachedRelatedness = new HashMap<String, Double>() ;
-	
-	Vector<Article> contextArticles ;
+
+	HashMap<String, Double> cachedRelatedness = new HashMap<String, Double>();
+
+	Vector<Article> contextArticles;
 
 	public Context() {
-		contextArticles = new Vector<Article>() ;
-	}
-	
-	public void addSense(Sense sense) {
-		contextArticles.add(sense) ;
+		contextArticles = new Vector<Article>();
 	}
 
+	public void addSense(final Sense sense) {
+		contextArticles.add(sense);
+	}
 
 	@Override
 	public String toString() {
@@ -35,33 +32,31 @@ public class Context {
 		}
 		return result;
 	}
-	
-	
 
-	public double getRelatednessTo(Article art) throws SQLException {
+	public double getRelatednessTo(final Article art) throws SQLException {
 		// commented out to get it to compile - mcc
-		throw new UnsupportedOperationException("had to hack this method out to get it to compile - mcc");
+		throw new UnsupportedOperationException(
+				"had to hack this method out to get it to compile - mcc");
 		/*
-		double relatedness = 0 ;
-
-		for (Article contextArt: contextArticles) 
-			relatedness = relatedness + art.getRelatednessTo(contextArt) ;	
-
-		return relatedness / contextArticles.size() ;
-		*/
+		 * double relatedness = 0 ;
+		 * 
+		 * for (Article contextArt: contextArticles) relatedness = relatedness +
+		 * art.getRelatednessTo(contextArt) ;
+		 * 
+		 * return relatedness / contextArticles.size() ;
+		 */
 	}
-	
-	private boolean isDate(Article art) {
-		SimpleDateFormat sdf = new SimpleDateFormat("MMMM d") ;
-		Date date = null ;
-		
+
+	private boolean isDate(final Article art) {
+		SimpleDateFormat sdf = new SimpleDateFormat("MMMM d");
+		Date date = null;
+
 		try {
-			date = sdf.parse(art.getTitle()) ;
+			date = sdf.parse(art.getTitle());
 		} catch (ParseException e) {
-			return false ;
+			return false;
 		}
 
-		return (date != null) ;		
+		return (date != null);
 	}
 }
-

@@ -13,16 +13,16 @@ public class Taxon {
 	private List<String> synonyms;
 	private String taxonomic_rank;
 
-	public Taxon(String tsn) {
+	public Taxon(final String tsn) {
 		this.tsn = tsn;
-		this.children = new ArrayList<String>();
+		children = new ArrayList<String>();
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -30,7 +30,7 @@ public class Taxon {
 		return longName;
 	}
 
-	public void setLongName(String longName) {
+	public void setLongName(final String longName) {
 		this.longName = longName;
 	}
 
@@ -38,19 +38,19 @@ public class Taxon {
 		return children;
 	}
 
-	public void setChilds(List<String> children) {
+	public void setChilds(final List<String> children) {
 		this.children = children;
 	}
-	
-	public void addchild(String child) {
-		this.children.add(child);
+
+	public void addchild(final String child) {
+		children.add(child);
 	}
 
 	public String getParent() {
 		return parent;
 	}
 
-	public void setParent(String parent) {
+	public void setParent(final String parent) {
 		this.parent = parent;
 	}
 
@@ -58,7 +58,7 @@ public class Taxon {
 		return synonyms;
 	}
 
-	public void setSynonyms(List<String> synonyms) {
+	public void setSynonyms(final List<String> synonyms) {
 		this.synonyms = synonyms;
 	}
 
@@ -66,7 +66,7 @@ public class Taxon {
 		return taxonomic_rank;
 	}
 
-	public void setTaxonomic_rank(String taxonomicRank) {
+	public void setTaxonomic_rank(final String taxonomicRank) {
 		taxonomic_rank = taxonomicRank;
 	}
 
@@ -76,35 +76,30 @@ public class Taxon {
 
 	public String toSKOS() {
 		StringBuffer buffer = new StringBuffer();
-		buffer
-				.append("<rdf:Description rdf:about=\"http://www.itis.gov/itis/");
+		buffer.append("<rdf:Description rdf:about=\"http://www.itis.gov/itis/");
 		buffer.append(tsn);
 		buffer.append("#concept\">\n");
-		buffer
-				.append("\t<rdf:type rdf:resource=\"http://www.w3.org/2004/02/skos/core#Concept\"/>\n");
-		buffer
-				.append("\t<skos:inScheme rdf:resource=\"http://www.itis.gov/itis#conceptScheme\"/>\n");
+		buffer.append("\t<rdf:type rdf:resource=\"http://www.w3.org/2004/02/skos/core#Concept\"/>\n");
+		buffer.append("\t<skos:inScheme rdf:resource=\"http://www.itis.gov/itis#conceptScheme\"/>\n");
 
-		if (this.children != null) {
-			for (String c : this.children) {
-				buffer
-						.append("\t<skos:narrower rdf:resource=\"http://www.itis.gov/itis/");
+		if (children != null) {
+			for (String c : children) {
+				buffer.append("\t<skos:narrower rdf:resource=\"http://www.itis.gov/itis/");
 				buffer.append(c);
 				buffer.append("#concept\"/>\n");
 			}
 		}
-		if (this.parent != null) {
-			buffer
-					.append("\t<skos:broader rdf:resource=\"http://www.itis.gov/itis/");
-			buffer.append(this.parent);
+		if (parent != null) {
+			buffer.append("\t<skos:broader rdf:resource=\"http://www.itis.gov/itis/");
+			buffer.append(parent);
 			buffer.append("#concept\"/>\n");
 		}
 		buffer.append("\t<skos:prefLabel>");
-		buffer.append(this.longName);
+		buffer.append(longName);
 		buffer.append("</skos:prefLabel>\n");
-		
-		if (this.synonyms != null) {
-			for (String alt : synonyms){
+
+		if (synonyms != null) {
+			for (String alt : synonyms) {
 				buffer.append("\t<skos:altLabel>");
 				buffer.append(alt);
 				buffer.append("</skos:altLabel>\n");

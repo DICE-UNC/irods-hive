@@ -32,29 +32,36 @@ import java.util.TreeMap;
 import javax.xml.namespace.QName;
 
 public interface SKOSSearcher {
-	
+
 	/**
-	 * Search for concepts by keyword. Always returns full SKOSConcept
-	 * objects (slower performance).
+	 * Search for concepts by keyword. Always returns full SKOSConcept objects
+	 * (slower performance).
 	 * 
-	 * @param keyword	Word/phrase to search
+	 * @param keyword
+	 *            Word/phrase to search
 	 * @return
 	 */
 	public List<SKOSConcept> searchConceptByKeyword(String keyword);
-	
+
 	/**
-	 * Search for concepts by keyword. Optionally returns brief or full 
+	 * Search for concepts by keyword. Optionally returns brief or full
 	 * SKOSConcept objects (with or without all relationships).
 	 * 
-	 * @param keyword	Word/phrase to search
-	 * @param brief		Whether to return full or brief records
+	 * @param keyword
+	 *            Word/phrase to search
+	 * @param brief
+	 *            Whether to return full or brief records
 	 * @return
 	 */
-	public List<SKOSConcept> searchConceptByKeyword(String keyword, boolean brief);
-	
+	public List<SKOSConcept> searchConceptByKeyword(String keyword,
+			boolean brief);
+
 	public SKOSConcept searchConceptByURI(String uri, String lp);
-	public TreeMap<String,QName> searchChildrenByURI(String uri, String lp);
+
+	public TreeMap<String, QName> searchChildrenByURI(String uri, String lp);
+
 	public List<HashMap> SPARQLSelect(String query, String vocabulary);
+
 	public void close();
 
 }

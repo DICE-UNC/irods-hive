@@ -38,8 +38,8 @@ import edu.unc.ils.mrc.hive.api.SKOSConcept;
 
 public class SKOSConceptImpl implements SKOSConcept {
 
-    private static final Log logger = LogFactory.getLog(SKOSConceptImpl.class);
-            
+	private static final Log logger = LogFactory.getLog(SKOSConceptImpl.class);
+
 	private QName qname;
 	private String prefLabel;
 	private TreeMap<String, QName> broaders;
@@ -53,161 +53,159 @@ public class SKOSConceptImpl implements SKOSConcept {
 
 	private String tree = "";
 
-
-	public SKOSConceptImpl(QName uri) {
-		this.qname = uri;
-		this.broaders = new TreeMap<String, QName>();
-		this.narrowers = new TreeMap<String, QName>();
-		this.relateds = new TreeMap<String, QName>();
-		this.altLabels = new ArrayList<String>();
-		this.schemes = new ArrayList<String>();
-		this.scopeNotes = new ArrayList<String>();
+	public SKOSConceptImpl(final QName uri) {
+		qname = uri;
+		broaders = new TreeMap<String, QName>();
+		narrowers = new TreeMap<String, QName>();
+		relateds = new TreeMap<String, QName>();
+		altLabels = new ArrayList<String>();
+		schemes = new ArrayList<String>();
+		scopeNotes = new ArrayList<String>();
 	}
-	
+
 	@Override
 	public int getNumberOfChildren() {
-		return this.narrowers.size();
+		return narrowers.size();
 	}
 
 	@Override
 	public List<String> getAltLabels() {
-		return this.altLabels;
+		return altLabels;
 	}
 
 	@Override
 	public TreeMap<String, QName> getBroaders() {
-		return this.broaders;
+		return broaders;
 	}
 
 	@Override
 	public TreeMap<String, QName> getNarrowers() {
-		return this.narrowers;
+		return narrowers;
 	}
 
 	@Override
 	public String getPrefLabel() {
-		return this.prefLabel;
+		return prefLabel;
 	}
 
 	@Override
-	public void setPrefLabel(String prefLabel) {
+	public void setPrefLabel(final String prefLabel) {
 		this.prefLabel = prefLabel;
 	}
 
 	@Override
 	public TreeMap<String, QName> getRelated() {
-		return this.relateds;
+		return relateds;
 	}
 
 	@Override
 	public List<String> getSchemes() {
-		return this.schemes;
+		return schemes;
 	}
 
 	@Override
 	public List<String> getScopeNote() {
-		return this.scopeNotes;
+		return scopeNotes;
 	}
 
 	@Override
 	public QName getQName() {
-		return this.qname;
+		return qname;
 	}
 
 	@Override
-	public void addAltLabel(String altLabel) {
-		this.altLabels.add(altLabel);
+	public void addAltLabel(final String altLabel) {
+		altLabels.add(altLabel);
 
 	}
 
 	@Override
-	public void addBroader(String broader, QName uri) {
-		this.broaders.put(broader, uri);
+	public void addBroader(final String broader, final QName uri) {
+		broaders.put(broader, uri);
 	}
 
 	@Override
-	public void addNarrower(String narrower, QName uri) {
-		this.narrowers.put(narrower, uri);
+	public void addNarrower(final String narrower, final QName uri) {
+		narrowers.put(narrower, uri);
 	}
 
 	@Override
-	public void addRelated(String related, QName uri) {
-		this.relateds.put(related, uri);
+	public void addRelated(final String related, final QName uri) {
+		relateds.put(related, uri);
 	}
 
 	@Override
-	public void addScheme(String scheme) {
-		this.schemes.add(scheme);
+	public void addScheme(final String scheme) {
+		schemes.add(scheme);
 	}
 
 	@Override
-	public void addScopeNote(String scopeNote) {
-		this.scopeNotes.add(scopeNote);
+	public void addScopeNote(final String scopeNote) {
+		scopeNotes.add(scopeNote);
 	}
 
 	@Override
-	public String getSKOSFormat()
-	{
-	    logger.trace("getSKOSFormat");
-	    
-	    StringBuffer skos =  new StringBuffer();
-	    
-	    skos.append("<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" " +
-		                     "xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\">" + "\n");
-		
+	public String getSKOSFormat() {
+		logger.trace("getSKOSFormat");
+
+		StringBuffer skos = new StringBuffer();
+
+		skos.append("<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" "
+				+ "xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\">" + "\n");
+
 		skos.append("  <rdf:Description rdf:about=\"");
-		skos.append(this.getQName().getNamespaceURI());
+		skos.append(getQName().getNamespaceURI());
 		skos.append(getQName().getLocalPart());
 		skos.append("\">\n");
-		
+
 		skos.append("    <rdf:type rdf:resource=\"http://www.w3.org/2004/02/skos/core#Concept\"/>\n");
-		
+
 		skos.append("    <skos:prefLabel>");
-		skos.append(this.prefLabel);
+		skos.append(prefLabel);
 		skos.append("</skos:prefLabel>\n");
-		
-		for(String alt : this.altLabels) {
+
+		for (String alt : altLabels) {
 			skos.append("    <skos:altLabel>");
 			skos.append(alt);
 			skos.append("</skos:altLabel>\n");
 		}
-		
-		for(String broader : this.broaders.keySet()){
+
+		for (String broader : broaders.keySet()) {
 			skos.append("    <skos:broader rdf:resource=\"");
-			skos.append(this.broaders.get(broader).getNamespaceURI());
-			skos.append(this.broaders.get(broader).getLocalPart());
+			skos.append(broaders.get(broader).getNamespaceURI());
+			skos.append(broaders.get(broader).getLocalPart());
 			skos.append("\"/>\n");
 		}
-		for(String narrower : this.narrowers.keySet()){
+		for (String narrower : narrowers.keySet()) {
 			skos.append("    <skos:narrower rdf:resource=\"");
-			skos.append(this.narrowers.get(narrower).getNamespaceURI());
-			skos.append(this.narrowers.get(narrower).getLocalPart());
+			skos.append(narrowers.get(narrower).getNamespaceURI());
+			skos.append(narrowers.get(narrower).getLocalPart());
 			skos.append("\"/>\n");
 		}
-		for(String related : this.relateds.keySet()){
+		for (String related : relateds.keySet()) {
 			skos.append("    <skos:related rdf:resource=\"");
-			skos.append(this.relateds.get(related).getNamespaceURI());
-			skos.append(this.relateds.get(related).getLocalPart());
+			skos.append(relateds.get(related).getNamespaceURI());
+			skos.append(relateds.get(related).getLocalPart());
 			skos.append("\"/>\n");
 		}
-		
+
 		skos.append("    <skos:inScheme rdf:resource=\"");
-		skos.append(this.getQName().getNamespaceURI());
+		skos.append(getQName().getNamespaceURI());
 		skos.append("\"/>\n");
-		
-		for(String scopeNote : this.scopeNotes){
+
+		for (String scopeNote : scopeNotes) {
 			skos.append("    <skos:scopeNote>");
 			skos.append(scopeNote);
 			skos.append("</skos:scopeNote>\n");
 		}
 		skos.append("  </rdf:Description>\n");
 		skos.append("</rdf:RDF>");
-		
+
 		return skos.toString();
 	}
 
 	@Override
-	public void setScore(double score) {
+	public void setScore(final double score) {
 		this.score = score;
 	}
 
@@ -215,24 +213,23 @@ public class SKOSConceptImpl implements SKOSConcept {
 	public double getScore() {
 		return score;
 	}
-	
+
 	@Override
 	public boolean isLeaf() {
 		return isLeaf;
 	}
-	
-	public void setIsLeaf(boolean isLeaf) {
+
+	public void setIsLeaf(final boolean isLeaf) {
 		this.isLeaf = isLeaf;
 	}
-	
-	
+
 	@Override
 	public String getTree() {
 		return tree;
 	}
 
 	@Override
-	public void setTree(String tree) {
+	public void setTree(final String tree) {
 		this.tree = tree;
 	}
 

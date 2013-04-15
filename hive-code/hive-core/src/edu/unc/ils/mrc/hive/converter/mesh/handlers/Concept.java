@@ -3,7 +3,6 @@ package edu.unc.ils.mrc.hive.converter.mesh.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Represents a concept as parsed from the MeSH Concept element
  */
@@ -12,28 +11,27 @@ public class Concept {
 	String conceptId = null;
 	String conceptName = null;
 	String descriptorId = null;
-	
+
 	boolean isPreferred = false;
 	String scopeNote = null;
 	List<Term> terms = new ArrayList<Term>();
 	List<ConceptRelation> relations = new ArrayList<ConceptRelation>();
-	
-	public Concept() 
-	{
+
+	public Concept() {
 	}
-	
-	public Concept(String conceptId, String conceptName, boolean isPreferred)
-	{
+
+	public Concept(final String conceptId, final String conceptName,
+			final boolean isPreferred) {
 		this.conceptId = conceptId;
 		this.conceptName = conceptName;
 		this.isPreferred = isPreferred;
 	}
-	
+
 	public String getConceptId() {
 		return conceptId;
 	}
 
-	public void setConceptId(String conceptId) {
+	public void setConceptId(final String conceptId) {
 		this.conceptId = conceptId;
 	}
 
@@ -41,7 +39,7 @@ public class Concept {
 		return conceptName;
 	}
 
-	public void setName(String conceptName) {
+	public void setName(final String conceptName) {
 		this.conceptName = conceptName;
 	}
 
@@ -49,14 +47,14 @@ public class Concept {
 		return isPreferred;
 	}
 
-	public void setPreferred(boolean isPreferred) {
+	public void setPreferred(final boolean isPreferred) {
 		this.isPreferred = isPreferred;
 	}
 
-	public void setTerms(List<Term> terms) {
+	public void setTerms(final List<Term> terms) {
 		this.terms = terms;
 	}
-	
+
 	public List<Term> getTerms() {
 		return terms;
 	}
@@ -65,7 +63,7 @@ public class Concept {
 		return scopeNote;
 	}
 
-	public void setScopeNote(String scopeNote) {
+	public void setScopeNote(final String scopeNote) {
 		this.scopeNote = scopeNote;
 	}
 
@@ -73,7 +71,7 @@ public class Concept {
 		return relations;
 	}
 
-	public void setRelations(List<ConceptRelation> relations) {
+	public void setRelations(final List<ConceptRelation> relations) {
 		this.relations = relations;
 	}
 
@@ -81,7 +79,7 @@ public class Concept {
 		return descriptorId;
 	}
 
-	public void setDescriptorId(String descriptorId) {
+	public void setDescriptorId(final String descriptorId) {
 		this.descriptorId = descriptorId;
 	}
 

@@ -13,7 +13,7 @@ public class DBConnector {
 	 * @param args
 	 * @throws SQLException
 	 */
-	public static void main(String[] args) throws SQLException {
+	public static void main(final String[] args) throws SQLException {
 		// Create a data source and set access data
 		MysqlDataSource dataSource = new MysqlDataSource();
 		dataSource.setUser("root");
@@ -37,9 +37,9 @@ public class DBConnector {
 					+ ", Update date= " + rs.getObject("update_date"));
 		}
 
-		//taxons information (the most important)
-		rs = st.executeQuery("select tsn,unit_name1,unit_name2,unit_name3 from " +
-				"taxonomic_units where tsn=779880");
+		// taxons information (the most important)
+		rs = st.executeQuery("select tsn,unit_name1,unit_name2,unit_name3 from "
+				+ "taxonomic_units where tsn=779880");
 		while (rs.next()) // printing results
 		{
 			System.out.println("TSN " + rs.getObject("tsn") + ", name1= "
@@ -48,31 +48,30 @@ public class DBConnector {
 					+ rs.getObject("unit_name3"));
 			// ", name4= "+rs.getObject("unit_name4"));
 		}
-		
+
 		// Longnames information
 		rs = st.executeQuery("select * from longnames where tsn=779880;");
 		while (rs.next()) // printing results
 		{
-			System.out.println("TSN " + rs.getObject("tsn") + ", completename= "
-					+ rs.getObject("completename"));
+			System.out.println("TSN " + rs.getObject("tsn")
+					+ ", completename= " + rs.getObject("completename"));
 		}
 
-		//Hierarchical information
+		// Hierarchical information
 		rs = st.executeQuery("select * from hierarchy where hierarchy_string like \"%779880\"");
 		while (rs.next()) // printing results
 		{
 			System.out.println("hierarchy_string= "
 					+ rs.getObject("hierarchy_string"));
 		}
-		
+
 		// Taxonomic Rank information
 		rs = st.executeQuery("select * from taxon_unit_types");
 		while (rs.next()) // printing results
 		{
-			System.out.println("rank_name= "
-					+ rs.getObject("rank_name"));
+			System.out.println("rank_name= " + rs.getObject("rank_name"));
 		}
-		
+
 		// Closing database connections
 		rs.close();
 		st.close();

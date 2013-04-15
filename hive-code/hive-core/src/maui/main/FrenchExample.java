@@ -11,35 +11,37 @@ public class FrenchExample {
 
 	/**
 	 * @param args
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public static void main(String[] args) throws Exception {
-		
+	public static void main(final String[] args) throws Exception {
+
 		// location of the data
 		String trainDir = "data/term_assignment/train_fr";
 		String testDir = "data/term_assignment/test_fr";
-		
+
 		// name of the file for storing the model
 		String modelName = "french_model";
-		
+
 		// language specific settings
 		Stemmer stemmer = new FrenchStemmer();
-		Stopwords stopwords = new StopwordsFrench("data/stopwords/stopwords_fr.txt");
+		Stopwords stopwords = new StopwordsFrench(
+				"data/stopwords/stopwords_fr.txt");
 		String language = "fr";
 		String encoding = "UTF-8";
-		
+
 		// vocabulary to use for term assignment
 		String vocabulary = "agrovoc_fr";
 		String format = "skos";
-		
+
 		// how many topics per document to extract
 		int numTopicsToExtract = 8;
-		
+
 		// maui objects
 		MauiModelBuilder modelBuilder = new MauiModelBuilder();
 		MauiTopicExtractor topicExtractor = new MauiTopicExtractor();
-		Wikipedia wikipedia = null; //new Wikipedia("localhost", "enwiki_20090306", "root", null);
-		
+		Wikipedia wikipedia = null; // new Wikipedia("localhost",
+									// "enwiki_20090306", "root", null);
+
 		// Settings for the model builder
 		modelBuilder.inputDirectoryName = trainDir;
 		modelBuilder.modelName = modelName;
@@ -51,7 +53,7 @@ public class FrenchExample {
 		modelBuilder.documentEncoding = encoding;
 		modelBuilder.debugMode = true;
 		modelBuilder.wikipedia = wikipedia;
-		
+
 		// Which features to use?
 		modelBuilder.setBasicFeatures(true);
 		modelBuilder.setKeyphrasenessFeature(true);
@@ -61,11 +63,11 @@ public class FrenchExample {
 		modelBuilder.setNodeDegreeFeature(true);
 		modelBuilder.setBasicWikipediaFeatures(true);
 		modelBuilder.setAllWikipediaFeatures(false);
-		
+
 		// Run model builder
 		modelBuilder.buildModel(modelBuilder.collectStems());
 		modelBuilder.saveModel();
-		
+
 		// Settings for the topic extractor
 		topicExtractor.inputDirectoryName = testDir;
 		topicExtractor.modelName = modelName;
@@ -75,9 +77,9 @@ public class FrenchExample {
 		topicExtractor.stopwords = stopwords;
 		topicExtractor.documentLanguage = language;
 		topicExtractor.debugMode = true;
-		topicExtractor.topicsPerDocument = numTopicsToExtract; 
-//		topicExtractor.wikipedia = wikipedia;
-		
+		topicExtractor.topicsPerDocument = numTopicsToExtract;
+		// topicExtractor.wikipedia = wikipedia;
+
 		// Run topic extractor
 		topicExtractor.loadModel();
 		topicExtractor.extractKeyphrases(topicExtractor.collectStems());

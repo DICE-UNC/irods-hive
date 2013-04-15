@@ -27,10 +27,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package edu.unc.ils.mrc.hive.util;
 
 import java.io.File;
-
-
-
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -52,48 +48,54 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
-
-public class TextManager 
-{
+public class TextManager {
 	private String proxyHost = null;
 	private int proxyPort = -1;
 	private List<String> ignorePrefixes = new ArrayList<String>();
-	
-	
-	public void setProxy(String host, int port) {
-		this.proxyHost = host;
-		this.proxyPort = port;
+
+	public void setProxy(final String host, final int port) {
+		proxyHost = host;
+		proxyPort = port;
 	}
-	
-	public void setIgnorePrefixes(String[] prefixes) {
-		if (prefixes != null)
+
+	public void setIgnorePrefixes(final String[] prefixes) {
+		if (prefixes != null) {
 			ignorePrefixes = Arrays.asList(prefixes);
+		}
 	}
+
 	/**
-	 * Returns a plain-text document representation of a website. 
-	 * @param url		URL to crawl
-	 * @param maxHops	Maximum number of hops
-	 * @param diff		Extract only differences between base page and subsequent pages
-	 * @return			Text representation of website
+	 * Returns a plain-text document representation of a website.
+	 * 
+	 * @param url
+	 *            URL to crawl
+	 * @param maxHops
+	 *            Maximum number of hops
+	 * @param diff
+	 *            Extract only differences between base page and subsequent
+	 *            pages
+	 * @return Text representation of website
 	 * @throws IOException
 	 */
-	public String getPlainText(URL url, int maxHops, boolean diff) throws Exception
-	{
+	public String getPlainText(final URL url, final int maxHops,
+			final boolean diff) throws Exception {
 		SimpleTextCrawler sc = new SimpleTextCrawler();
 		sc.setProxy(proxyHost, proxyPort);
 		sc.setIgnorePrefixes(ignorePrefixes);
 		String text = sc.getText(url, maxHops, diff);
 		return text;
 	}
-	
+
 	/**
 	 * Returns plain-text given a local file path or URL.
-	 * @param inputPath	Local path or URL
+	 * 
+	 * @param inputPath
+	 *            Local path or URL
 	 * @return
 	 */
-	public String getPlainText(String inputPath) {
+	public String getPlainText(final String inputPath) {
 		InputStream is = null;
-		
+
 		String text = "";
 		try {
 			Metadata metadata = new Metadata();
@@ -138,24 +140,25 @@ public class TextManager
 
 		return text;
 	}
-	
-	
+
 	/**
 	 * Returns plain-text representation of a file given an inputstream.
+	 * 
 	 * @param is
 	 * @return
 	 * @throws IOException
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	public String getPlainText(InputStream is) throws IOException, SAXException, TikaException {
+	public String getPlainText(final InputStream is) throws IOException,
+			SAXException, TikaException {
 		Metadata metadata = new Metadata();
 		return parse(is, metadata);
 	}
 
-	
 	/**
 	 * Parses contents of an input stream using Tikka content extractor.
+	 * 
 	 * @param is
 	 * @param metadata
 	 * @return
@@ -163,8 +166,8 @@ public class TextManager
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	protected String parse(InputStream is, Metadata metadata) throws IOException, SAXException, TikaException 
-	{
+	protected String parse(final InputStream is, final Metadata metadata)
+			throws IOException, SAXException, TikaException {
 		ParseContext context = new ParseContext();
 		Parser parser = new AutoDetectParser();
 		context.set(Parser.class, parser);
@@ -172,36 +175,35 @@ public class TextManager
 		parser.parse(is, handler, metadata, context);
 		return handler.toString();
 	}
-	
-	
+
 	/**
 	 * Simple command line to convert a directory of files to text.
+	 * 
 	 * @param args
 	 * @throws IOException
 	 */
-	public static void main(String[] args) throws IOException 
-	{
+	public static void main(final String[] args) throws IOException {
 		if (args.length != 1) {
-			System.err.println("Usage: java " + TextManager.class.getName() + "[path to directory of files]");
+			System.err.println("Usage: java " + TextManager.class.getName()
+					+ "[path to directory of files]");
 		}
-		
+
 		String dir = args[0];
 		File inputDir = new File(dir);
-		if (inputDir.isDirectory())
-		{
+		if (inputDir.isDirectory()) {
 			File[] files = inputDir.listFiles();
-			for (File file: files)
-			{
+			for (File file : files) {
 				TextManager tm = new TextManager();
 				String pdfPath = file.getAbsolutePath();
-				String txtPath = pdfPath.substring(0, pdfPath.lastIndexOf('.')) + ".txt";
+				String txtPath = pdfPath.substring(0, pdfPath.lastIndexOf('.'))
+						+ ".txt";
 				String text = tm.getPlainText(pdfPath);
 				FileWriter txtWriter = new FileWriter(txtPath);
 				txtWriter.write(text);
 				txtWriter.close();
 			}
-		}
-		else 
+		} else {
 			System.err.println("Error: A directory must be specified");
+		}
 	}
 }

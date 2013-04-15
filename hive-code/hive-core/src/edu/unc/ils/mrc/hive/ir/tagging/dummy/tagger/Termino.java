@@ -27,43 +27,44 @@ package edu.unc.ils.mrc.hive.ir.tagging.dummy.tagger;
 
 import edu.unc.ils.mrc.hive.ir.tagging.dummy.ranking.Rankeable;
 
-public class Termino implements Rankeable{
-	
+public class Termino implements Rankeable {
+
 	private static final double K1 = 1.2;
-	
+
 	private String termino;
 	private double probabilidad;
 	private double divergencia;
 	private int frecuencia;
 	private double tf;
 
-	public Termino(String termino, double probabilidad, int frecuencia) {
+	public Termino(final String termino, final double probabilidad,
+			final int frecuencia) {
 		this.termino = termino;
 		this.probabilidad = probabilidad;
 		this.frecuencia = frecuencia;
 	}
-	
+
 	public double getTf() {
 		return tf;
 	}
 
-	public void setTf(double tf) {
+	public void setTf(final double tf) {
 		this.tf = tf / (K1 + tf);
 	}
-	
-	public void setDivergencia(double divergencia) {
+
+	public void setDivergencia(final double divergencia) {
 		this.divergencia = divergencia;
 	}
-	
+
 	public double getDivergencia() {
-		return this.divergencia;
+		return divergencia;
 	}
 
 	public String getTermino() {
 		return termino;
 	}
 
-	public void setTermino(String termino) {
+	public void setTermino(final String termino) {
 		this.termino = termino;
 	}
 
@@ -71,7 +72,7 @@ public class Termino implements Rankeable{
 		return probabilidad;
 	}
 
-	public void setProbabilidad(double probabilidad) {
+	public void setProbabilidad(final double probabilidad) {
 		this.probabilidad = probabilidad;
 	}
 
@@ -79,13 +80,13 @@ public class Termino implements Rankeable{
 		return frecuencia;
 	}
 
-	public void setFrecuencia(int frecuencia) {
+	public void setFrecuencia(final int frecuencia) {
 		this.frecuencia = frecuencia;
 	}
 
 	@Override
 	public Double getRankingValue() {
-		return this.getTf();
+		return getTf();
 	}
 
 }

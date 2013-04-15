@@ -33,29 +33,30 @@ public class Coleccion {
 	private List<Documento> documentos;
 
 	public Coleccion() {
-		this.documentos = new ArrayList<Documento>();
+		documentos = new ArrayList<Documento>();
 	}
 
-	public void addDocumento(Documento doc) {
-		this.documentos.add(doc);
+	public void addDocumento(final Documento doc) {
+		documentos.add(doc);
 	}
 
 	public List<Documento> getDocumentos() {
 		return documentos;
 	}
 
-	//Remove divergence computation and using only freq
-	public void calculaDivergencias(Vocabulario voc) {
+	// Remove divergence computation and using only freq
+	public void calculaDivergencias(final Vocabulario voc) {
 
-		for (Documento doc : this.documentos) {
+		for (Documento doc : documentos) {
 			for (Termino term : doc.getTerminos()) {
 				double kld = term.getProbabilidad()
 						* Math.log((term.getProbabilidad() / voc
 								.getGlobalProbability(term.getTermino())));
-				if(Double.isInfinite(kld))
+				if (Double.isInfinite(kld)) {
 					term.setDivergencia(0.0);
-				else
+				} else {
 					term.setDivergencia(kld);
+				}
 			}
 		}
 

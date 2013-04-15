@@ -16,41 +16,27 @@ import org.wikipedia.miner.util.text.CaseFolder;
 
 public class PrintGraphs {
 
-	public static void computeRelatedness(Collection<Article> topics) {
-		throw new UnsupportedOperationException("took this out for compile bugs...mcc");
+	public static void computeRelatedness(final Collection<Article> topics) {
+		throw new UnsupportedOperationException(
+				"took this out for compile bugs...mcc");
 		/*
-		double relatedness = 0;
-		for (Article a : topics) {
-			for (Article c : topics) {
-				if (!c.equals(a)) {
-					try {
-						relatedness = a.getRelatednessTo(c);
-						if (relatedness > 0) {
-							System.out.println(a.getTitle()
-									+ " and "
-									+ c.getTitle()
-									+ "\t"
-									+ Utils
-											.doubleToString(relatedness * 100,
-													2));
-						}
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-		*/
+		 * double relatedness = 0; for (Article a : topics) { for (Article c :
+		 * topics) { if (!c.equals(a)) { try { relatedness =
+		 * a.getRelatednessTo(c); if (relatedness > 0) {
+		 * System.out.println(a.getTitle() + " and " + c.getTitle() + "\t" +
+		 * Utils .doubleToString(relatedness * 100, 2)); } } catch (SQLException
+		 * e) { e.printStackTrace(); } } } }
+		 */
 	}
 
-	public static void computeGraph(HashMap<Article, Integer> topics,
-			String root, String outputFile) {
+	public static void computeGraph(final HashMap<Article, Integer> topics,
+			final String root, final String outputFile) {
 		FileOutputStream out;
 		PrintWriter printer;
 		try {
-			
+
 			System.out.println("Printing into " + outputFile);
-			
+
 			out = new FileOutputStream(outputFile);
 			printer = new PrintWriter(out);
 
@@ -59,56 +45,38 @@ public class PrintGraphs {
 			printer.print("graph [root=\"" + root
 					+ "\", outputorder=\"depthfirst\"];\n");
 
-			HashSet<String> done = new HashSet<String>();
-			double relatedness = 0;
+			new HashSet<String>();
 			for (Article a : topics.keySet()) {
 				int count = topics.get(a).intValue();
 				if (count < 1) {
 					printer.print("\"" + a.getTitle() + "\" [fontsize=22];\n");
 				} else if (count < 3) {
-					printer
-							.print("\"" + a.getTitle()
-									+ "\" [fontsize = 18];\n");
+					printer.print("\"" + a.getTitle() + "\" [fontsize = 18];\n");
 				} else if (count < 6) {
-					printer
-							.print("\"" + a.getTitle()
-									+ "\" [fontsize = 14];\n");
+					printer.print("\"" + a.getTitle() + "\" [fontsize = 14];\n");
 				} else {
-					printer
-							.print("\"" + a.getTitle()
-									+ "\" [fontsize = 12];\n");
+					printer.print("\"" + a.getTitle() + "\" [fontsize = 12];\n");
 				}
 
 				for (Article c : topics.keySet()) {
 					if (!c.equals(a)) {
 						// took out for compile stuff - mcc
 						/*
-						try {
-							relatedness = a.getRelatednessTo(c);
-							String relation = "\"" + a.getTitle() + "\" -- \""
-									+ c.getTitle();
-							String relation2 = "\"" + c.getTitle() + "\" -- \""
-									+ a.getTitle();
-
-							if (!done.contains(relation2)
-									&& !done.contains(relation)) {
-								done.add(relation2);
-								done.add(relation);
-
-								if (relatedness < 0.2) {
-									printer.print(relation
-											+ "\"[style=invis];\n");
-								} else {
-									printer.print(relation
-											+ "\" [penwidth = \""
-											+ (int) (relatedness * 10 - 0.2)
-											+ "\"];\n");
-								}
-							}
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-						*/
+						 * try { relatedness = a.getRelatednessTo(c); String
+						 * relation = "\"" + a.getTitle() + "\" -- \"" +
+						 * c.getTitle(); String relation2 = "\"" + c.getTitle()
+						 * + "\" -- \"" + a.getTitle();
+						 * 
+						 * if (!done.contains(relation2) &&
+						 * !done.contains(relation)) { done.add(relation2);
+						 * done.add(relation);
+						 * 
+						 * if (relatedness < 0.2) { printer.print(relation +
+						 * "\"[style=invis];\n"); } else {
+						 * printer.print(relation + "\" [penwidth = \"" + (int)
+						 * (relatedness * 10 - 0.2) + "\"];\n"); } } } catch
+						 * (SQLException e) { e.printStackTrace(); }
+						 */
 					}
 				}
 			}
@@ -121,17 +89,17 @@ public class PrintGraphs {
 	}
 
 	/**
-	 * Creates GraphViz files for all key files in a directory 
+	 * Creates GraphViz files for all key files in a directory
 	 * 
 	 * @param args
 	 * @throws Exception
 	 */
-	public static void main(String[] args) throws Exception {
+	public static void main(final String[] args) throws Exception {
 
 		// location of the Wikipedia data - took out for compile - mcc
 		Wikipedia wikipedia = null;
-		//new Wikipedia("localhost", "enwiki_20090306",
-		//		"root", null);
+		// new Wikipedia("localhost", "enwiki_20090306",
+		// "root", null);
 
 		// location of the directory with the keyphrase files
 		String inputDir = "/Users/alyona/Documents/PHD/chapters_txt/";
@@ -165,15 +133,16 @@ public class PrintGraphs {
 						}
 						topics.put(article, new Integer(i));
 					} else {
-						System.out.println("Couldn't find article for " + line + " in " + file);
+						System.out.println("Couldn't find article for " + line
+								+ " in " + file);
 					}
 					i++;
 				}
 				input.close();
-				
+
 				// Just to print out the relatedness information
 				computeRelatedness(topics.keySet());
-				
+
 				// To generate the graph:
 				computeGraph(topics, root, out);
 			}

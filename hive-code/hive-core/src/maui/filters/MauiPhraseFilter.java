@@ -1,10 +1,17 @@
 package maui.filters;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Vector;
 
-import weka.core.*;
-import weka.filters.*;
+import weka.core.Capabilities;
 import weka.core.Capabilities.Capability;
+import weka.core.Instance;
+import weka.core.Instances;
+import weka.core.Option;
+import weka.core.OptionHandler;
+import weka.core.Range;
+import weka.core.Utils;
+import weka.filters.Filter;
 
 /**
  * This filter splits the text in selected string attributes into phrases. The
@@ -20,8 +27,7 @@ import weka.core.Capabilities.Capability;
  * A word is a sequence of letters or digits that contains at least one letter,
  * with the following exceptions:
  * 
- * a) '.', '@', '_', '&', '/' are allowed if surrounded by letters or
- * digits,
+ * a) '.', '@', '_', '&', '/' are allowed if surrounded by letters or digits,
  * 
  * b) '\'' is allowed if preceeded by a letter or digit,
  * 
@@ -122,7 +128,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 *                if an option is not supported
 	 */
 	@Override
-	public void setOptions(String[] options) throws Exception {
+	public void setOptions(final String[] options) throws Exception {
 
 		String list = Utils.getOption('R', options);
 		if (list.length() != 0) {
@@ -175,7 +181,8 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 * @return true if the outputFormat may be collected immediately
 	 */
 	@Override
-	public boolean setInputFormat(Instances instanceInfo) throws Exception {
+	public boolean setInputFormat(final Instances instanceInfo)
+			throws Exception {
 
 		super.setInputFormat(instanceInfo);
 		setOutputFormat(instanceInfo);
@@ -197,7 +204,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 *                there was a problem with the filtering.
 	 */
 	@Override
-	public boolean input(Instance instance) throws Exception {
+	public boolean input(final Instance instance) throws Exception {
 
 		if (getInputFormat() == null) {
 			throw new Exception("No input instance format defined");
@@ -241,7 +248,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 * @param argv
 	 *            should contain arguments to the filter: use -h for help
 	 */
-	public static void main(String[] argv) {
+	public static void main(final String[] argv) {
 
 		try {
 			if (Utils.getFlag('b', argv)) {
@@ -258,7 +265,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 * Converts an instance by removing all non-alphanumeric characters from its
 	 * string attribute values.
 	 */
-	private void convertInstance(Instance instance) throws Exception {
+	private void convertInstance(final Instance instance) throws Exception {
 
 		double[] instVals = new double[instance.numAttributes()];
 
@@ -295,7 +302,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 * @param text
 	 * @return the same text with large tokens separated by \n
 	 */
-	public String tokenize(String text) {
+	public String tokenize(final String text) {
 		StringBuffer result = new StringBuffer();
 		int j = 0;
 		boolean phraseStart = true;
@@ -431,7 +438,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 * @param invert
 	 *            the new invert setting
 	 */
-	public void setInvertSelection(boolean invert) {
+	public void setInvertSelection(final boolean invert) {
 
 		m_SelectCols.setInvert(invert);
 	}
@@ -464,7 +471,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 * @param disallow
 	 *            the new invert setting
 	 */
-	public void setDisallowInternalPeriods(boolean disallow) {
+	public void setDisallowInternalPeriods(final boolean disallow) {
 
 		m_DisallowInternalPeriods = disallow;
 	}
@@ -502,7 +509,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 *            1. <br>
 	 *            eg: first-3,5,6-last
 	 */
-	public void setAttributeIndices(String rangeList) {
+	public void setAttributeIndices(final String rangeList) {
 
 		m_SelectCols.setRanges(rangeList);
 	}
@@ -515,7 +522,7 @@ public class MauiPhraseFilter extends Filter implements OptionHandler {
 	 *            array will typically come from a program, attributes are
 	 *            indexed from 0.
 	 */
-	public void setAttributeIndicesArray(int[] attributes) {
+	public void setAttributeIndicesArray(final int[] attributes) {
 
 		setAttributeIndices(Range.indicesToRangeList(attributes));
 	}

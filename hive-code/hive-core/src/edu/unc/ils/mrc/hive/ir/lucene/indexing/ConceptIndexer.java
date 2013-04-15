@@ -27,7 +27,6 @@ package edu.unc.ils.mrc.hive.ir.lucene.indexing;
 
 import java.io.IOException;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.document.Document;
@@ -35,33 +34,32 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.store.LockObtainFailedException;
-
 import org.openrdf.concepts.skos.core.Concept;
 
 import edu.unc.ils.mrc.hive.ir.lucene.analysis.HIVEAnalyzer;
 
 /**
- * Create or update a Lucene index of SKOS concepts. This class uses a document-oriented
- * approach to represent SKOS concepts in the inverted index, where each concept is 
- * represented as a document with multiple fields. Each field is an element in the SKOS
- * vocabulary (preferred term, broader term, scope notes, etc).
+ * Create or update a Lucene index of SKOS concepts. This class uses a
+ * document-oriented approach to represent SKOS concepts in the inverted index,
+ * where each concept is represented as a document with multiple fields. Each
+ * field is an element in the SKOS vocabulary (preferred term, broader term,
+ * scope notes, etc).
  */
-public class ConceptIndexer implements Indexer 
-{
-    private static final Log logger = LogFactory.getLog(ConceptIndexer.class);
-	
+public class ConceptIndexer implements Indexer {
+	private static final Log logger = LogFactory.getLog(ConceptIndexer.class);
+
 	private IndexWriter writer;
 
 	/**
 	 * Construct a ConceptIndexer in the specified directory.
+	 * 
 	 * @param indexDir
 	 * @param create
 	 */
-	public ConceptIndexer(String indexDir, boolean create) {
+	public ConceptIndexer(final String indexDir, final boolean create) {
 		try {
-			
-			this.writer = new IndexWriter(indexDir,
-					new HIVEAnalyzer(), create,
+
+			writer = new IndexWriter(indexDir, new HIVEAnalyzer(), create,
 					IndexWriter.MaxFieldLength.UNLIMITED);
 		} catch (CorruptIndexException e) {
 			logger.error(e);
@@ -76,42 +74,40 @@ public class ConceptIndexer implements Indexer
 	 * Index the specified Concept
 	 */
 	@Override
-	public void indexConcept(Concept concept) 
-	{
+	public void indexConcept(final Concept concept) {
 		logger.trace("indexConcept " + concept.getQName());
-		
+
 		Document docLucene = new Document();
 
 		String uri = concept.getQName().getNamespaceURI();
-		Field uriL = new Field("uri", uri , Field.Store.YES,
+		Field uriL = new Field("uri", uri, Field.Store.YES,
 				Field.Index.NOT_ANALYZED);
 		docLucene.add(uriL);
-		
-		try
-		{
+
+		try {
 			// Local Part
 			String lp = concept.getQName().getLocalPart();
-			Field lpL = new Field("localPart", lp , Field.Store.YES,
+			Field lpL = new Field("localPart", lp, Field.Store.YES,
 					Field.Index.NOT_ANALYZED);
 			docLucene.add(lpL);
 		} catch (Exception e) {
-			logger.warn("Concept " + concept.getQName() + " missing localPart. Skipping.");
+			logger.warn("Concept " + concept.getQName()
+					+ " missing localPart. Skipping.");
 		}
-		
-		try
-		{
+
+		try {
 			// PrefLabel
 			Field prefLabelL = new Field("prefLabel",
-				concept.getSkosPrefLabel(), Field.Store.YES,
-				Field.Index.ANALYZED);
+					concept.getSkosPrefLabel(), Field.Store.YES,
+					Field.Index.ANALYZED);
 			prefLabelL.setBoost(1.5f);
 			docLucene.add(prefLabelL);
 		} catch (Exception e) {
-			logger.warn("Concept " + concept.getQName() + " missing prefLabel. Skipping.");
+			logger.warn("Concept " + concept.getQName()
+					+ " missing prefLabel. Skipping.");
 		}
 
-		try
-		{
+		try {
 			// altLabels
 			String a = "";
 			for (String s : concept.getSkosAltLabels()) {
@@ -123,110 +119,115 @@ public class ConceptIndexer implements Indexer
 		} catch (Exception e) {
 			logger.warn("Error retrieving altLabel, may not exist in store. Skipping.");
 		}
-		
-		try
-		{
+
+		try {
 			// Scope Notes
 			String a = "";
 			String sc = "";
 			for (Object s : concept.getSkosScopeNotes()) {
 				a = a + " " + s;
 			}
-			Field scopeNoteL = new Field("scopeNote",
-					sc, Field.Store.YES,
+			Field scopeNoteL = new Field("scopeNote", sc, Field.Store.YES,
 					Field.Index.ANALYZED);
 			docLucene.add(scopeNoteL);
 		} catch (Exception e) {
 			logger.warn("Error retrieving scope note, may not exist in store. Skipping.");
 		}
-		
-		try
-		{
+
+		try {
 			// Broader Terms
 			String b = "";
 			for (Concept c : concept.getSkosBroaders()) {
-				if (b.equals(""))
+				if (b.equals("")) {
 					b = c.getSkosPrefLabel();
-				else
+				} else {
 					b = b + "#" + c.getSkosPrefLabel();
+				}
 			}
 			Field broaderL = new Field("broader", b.trim(), Field.Store.YES,
 					Field.Index.ANALYZED);
 			docLucene.add(broaderL);
-	
+
 			// Broader URIs
 			String buri = "";
 			for (Concept c : concept.getSkosBroaders()) {
-				buri = buri + " " + c.getQName().getNamespaceURI() + c.getQName().getLocalPart();
+				buri = buri + " " + c.getQName().getNamespaceURI()
+						+ c.getQName().getLocalPart();
 			}
 			Field broaderURIL = new Field("broaderURI", buri.trim(),
 					Field.Store.YES, Field.Index.NOT_ANALYZED);
 			docLucene.add(broaderURIL);
-			
-		} catch (ClassCastException e) {
-			// If the broader concept does not exist, a ClassCastException is thrown. 
-			// This can prevent the file from being indexed. Warn and continue.			
-			logger.warn("Error retrieving broader concept, may not exist in store. Skipping.");
-		}			
 
-		try
-		{
+		} catch (ClassCastException e) {
+			// If the broader concept does not exist, a ClassCastException is
+			// thrown.
+			// This can prevent the file from being indexed. Warn and continue.
+			logger.warn("Error retrieving broader concept, may not exist in store. Skipping.");
+		}
+
+		try {
 			// Narrower Terms
 			String n = "";
 			for (Concept c : concept.getSkosNarrowers()) {
-				//logger.debug("Narrower: " + c.getQName().getNamespaceURI() + " lp: " + c.getQName().getLocalPart());
-				if (n.equals(""))
+				// logger.debug("Narrower: " + c.getQName().getNamespaceURI() +
+				// " lp: " + c.getQName().getLocalPart());
+				if (n.equals("")) {
 					n = c.getSkosPrefLabel();
-				else
+				} else {
 					n = n + "#" + c;
+				}
 			}
 			Field narrowerL = new Field("narrower", n.trim(), Field.Store.YES,
 					Field.Index.ANALYZED);
 			docLucene.add(narrowerL);
-	
+
 			// Narrower URIs
 			String nuri = "";
 			for (Concept c : concept.getSkosNarrowers()) {
-				nuri = nuri + " " + c.getQName().getNamespaceURI() + c.getQName().getLocalPart();
+				nuri = nuri + " " + c.getQName().getNamespaceURI()
+						+ c.getQName().getLocalPart();
 			}
 			Field narrowerURIL = new Field("narrowerURI", nuri.trim(),
-					Field.Store.YES, Field.Index.NOT_ANALYZED);			
-			docLucene.add(narrowerURIL);			
+					Field.Store.YES, Field.Index.NOT_ANALYZED);
+			docLucene.add(narrowerURIL);
 		} catch (ClassCastException e) {
-			// If the narrower concept does not exist, a ClassCastException is thrown. 
-			// This can prevent the file from being indexed. Warn and continue.			
+			// If the narrower concept does not exist, a ClassCastException is
+			// thrown.
+			// This can prevent the file from being indexed. Warn and continue.
 			logger.warn("Error retrieving narrower concept, may not exist in store. Skipping.");
 		}
 
 		// Related Terms
 		String r = "";
-		try
-		{
+		try {
 			for (Concept c : concept.getSkosRelated()) {
-				if (r.equals(""))
+				if (r.equals("")) {
 					r = c.getSkosPrefLabel();
-				else
+				} else {
 					r = r + "#" + c.getSkosRelated();
+				}
 			}
 			Field relatedL = new Field("related", r.trim(), Field.Store.YES,
-					Field.Index.ANALYZED);			
+					Field.Index.ANALYZED);
 			docLucene.add(relatedL);
-			
+
 			// Related URIs
 			String ruri = "";
 			for (Concept c : concept.getSkosRelated()) {
-				ruri = ruri + " " + c.getQName().getNamespaceURI() + c.getQName().getLocalPart();
+				ruri = ruri + " " + c.getQName().getNamespaceURI()
+						+ c.getQName().getLocalPart();
 			}
 			Field relatedURIL = new Field("relatedURI", ruri.trim(),
 					Field.Store.YES, Field.Index.NOT_ANALYZED);
 			docLucene.add(relatedURIL);
 
 		} catch (ClassCastException e) {
-			// If the related concept does not exist, a ClassCastException is thrown. 
-			// This can prevent the file from being indexed. Warn and continue.			
-			logger.warn("Error retrieving related concept, may not exist in store. Skipping.");			
+			// If the related concept does not exist, a ClassCastException is
+			// thrown.
+			// This can prevent the file from being indexed. Warn and continue.
+			logger.warn("Error retrieving related concept, may not exist in store. Skipping.");
 		}
-		
+
 		// titleField.setBoost(4);
 		// categoryField.setBoost(2);
 
@@ -245,10 +246,10 @@ public class ConceptIndexer implements Indexer
 	 */
 	@Override
 	public void close() {
-	    logger.trace("close");
-	    
+		logger.trace("close");
+
 		try {
-			this.writer.close();
+			writer.close();
 		} catch (CorruptIndexException e) {
 			logger.error(e);
 		} catch (IOException e) {

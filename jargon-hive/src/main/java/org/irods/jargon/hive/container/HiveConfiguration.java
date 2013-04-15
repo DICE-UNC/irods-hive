@@ -5,11 +5,12 @@ package org.irods.jargon.hive.container;
 
 /**
  * Configuration used to start up HIVE services
+ * 
  * @author Mike Conway - DICE
- *
+ * 
  */
 public class HiveConfiguration {
-	
+
 	/**
 	 * Path to hive configuration file (hive.properties)
 	 */
@@ -19,10 +20,10 @@ public class HiveConfiguration {
 		return hiveConfigLocation;
 	}
 
-	public void setHiveConfigLocation(String hiveConfigLocation) {
+	public void setHiveConfigLocation(final String hiveConfigLocation) {
 		this.hiveConfigLocation = hiveConfigLocation;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -31,7 +32,5 @@ public class HiveConfiguration {
 		sb.append(hiveConfigLocation);
 		return sb.toString();
 	}
-	
-	
 
 }

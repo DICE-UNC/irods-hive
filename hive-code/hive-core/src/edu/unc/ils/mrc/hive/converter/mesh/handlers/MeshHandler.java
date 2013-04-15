@@ -7,21 +7,21 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * Superclass for all MeSH element handlers
  */
-public class MeshHandler extends DefaultHandler 
-{
+public class MeshHandler extends DefaultHandler {
 	XMLReader parser = null;
 	DefaultHandler parent = null;
 	DefaultHandler childHandler = null;
-	
+
 	String currentValue = "";
-	
-	public MeshHandler(XMLReader parser, DefaultHandler parent) {
+
+	public MeshHandler(final XMLReader parser, final DefaultHandler parent) {
 		this.parser = parser;
 		this.parent = parent;
 	}
-	
-    @Override
-	public void characters(char[] ch, int start, int length) throws SAXException  {
-    	currentValue += new String(ch, start, length);
-    }
+
+	@Override
+	public void characters(final char[] ch, final int start, final int length)
+			throws SAXException {
+		currentValue += new String(ch, start, length);
+	}
 }

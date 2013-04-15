@@ -38,56 +38,88 @@ import edu.unc.ils.mrc.hive.ir.lucene.search.AutocompleteTerm;
 import edu.unc.ils.mrc.hive2.api.HiveVocabulary;
 
 public interface SKOSScheme {
-	
+
 	public String getName();
+
 	public Date getCreationDate();
+
 	public Date getLastUpdateDate();
-	
+
 	public String getLastDate();
 
 	public long getNumberOfConcepts();
+
 	public long getNumberOfBroader();
+
 	public long getNumberOfNarrower();
+
 	public long getNumberOfRelated();
+
 	public long getNumberOfRelations();
+
 	public String getStoreDirectory();
+
 	public SesameManager getManager();
+
 	public String getIndexDirectory();
+
 	public String getSchemaURI();
-	
+
 	public String getLongName();
-	
+
 	public String getStopwordsPath();
+
 	public String getKEAtrainSetDir();
+
 	public String getKEAtestSetDir();
+
 	public String getKEAModelPath();
+
 	public String getMauiModelPath();
+
 	public String getRdfPath();
+
 	public String getAutoCompletePath();
+
 	public String getH2Path();
 
 	public String getAtomFeedURL();
-	
+
 	public String getLingpipeModel();
-	
-	public TreeMap<String,QName> getSubAlphaIndex(String startLetter);
+
+	public TreeMap<String, QName> getSubAlphaIndex(String startLetter);
+
 	public List<SKOSConcept> getSubTopConceptIndex(String startLetter);
-	
+
 	public Map<String, QName> getAlphaIndex();
+
 	public Map<String, QName> getTopConceptIndex();
-	
-	
+
 	public void importConcepts(String path) throws Exception;
-	public void importConcepts(String path, boolean doSesame, boolean doLucene, boolean doH2, boolean doH2KEA, boolean doAutocomplete) throws Exception;
+
+	public void importConcepts(String path, boolean doSesame, boolean doLucene,
+			boolean doH2, boolean doH2KEA, boolean doAutocomplete)
+			throws Exception;
+
 	public void importConcept(QName qname, String path) throws Exception;
+
 	public void importConcept(String uri) throws Exception;
+
 	public void deleteConcept(String uri) throws Exception;
+
 	public void deleteConcept(QName qname) throws Exception;
+
 	public long getNumberOfTopConcepts() throws Exception;
+
 	public void close() throws Exception;
-	public List<AutocompleteTerm> suggestTermsFor(String str, int numTerms) throws Exception;
+
+	public List<AutocompleteTerm> suggestTermsFor(String str, int numTerms)
+			throws Exception;
+
 	public HiveVocabulary getHiveVocabulary();
+
 	public String getKeaStemmerClass();
+
 	public String getMauiStemmerClass();
-	
+
 }

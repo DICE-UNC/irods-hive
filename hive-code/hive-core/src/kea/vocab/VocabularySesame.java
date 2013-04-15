@@ -1,7 +1,6 @@
 package kea.vocab;
 
 import java.io.BufferedReader;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -10,11 +9,11 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
 
-import org.openrdf.concepts.skos.core.Concept;
-import org.openrdf.elmo.sesame.SesameManager;
-
 import kea.stemmers.Stemmer;
 import kea.stopwords.Stopwords;
+
+import org.openrdf.concepts.skos.core.Concept;
+import org.openrdf.elmo.sesame.SesameManager;
 
 /**
  * Builds an index with the content of the controlled vocabulary. Accepts
@@ -24,12 +23,15 @@ import kea.stopwords.Stopwords;
  * vocabulary_name.rel (with "ID \t RELATED_ID1 RELATED_ID2 ... " per line) See
  * KEA's homepage for more details.
  * 
- * @author Olena Medelyan
- * Modifications by Jose R. Perez-Aguera
+ * @author Olena Medelyan Modifications by Jose R. Perez-Aguera
  */
 
 public class VocabularySesame extends Vocabulary {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7789081591671304946L;
 	/**
 	 * Location of the rdf version of the controlled vocabulary it needs to be
 	 * in the SKOS format!
@@ -99,18 +101,19 @@ public class VocabularySesame extends Vocabulary {
 	 *            The format of the vocabulary (skos or text).
 	 * */
 
-	public VocabularySesame(String vocabularyName, String vocabularyFormat,
-			String documentLanguage, SesameManager manager) {
+	public VocabularySesame(final String vocabularyName,
+			final String vocabularyFormat, final String documentLanguage,
+			final SesameManager manager) {
 		super(documentLanguage);
 		this.manager = manager;
 		if (vocabularyFormat.equals("skos")) {
 			// SKOS = new File(vocabularyDir + "/" + vocabularyName + ".rdf");
-			//SKOS = new File(vocabularyName);
-//			if (!SKOS.exists()) {
-//				System.err.println("File " + vocabularyPath + "/ "
-//						+ vocabularyName + ".rdf does not exist.");
-//				System.exit(1);
-//			}
+			// SKOS = new File(vocabularyName);
+			// if (!SKOS.exists()) {
+			// System.err.println("File " + vocabularyPath + "/ "
+			// + vocabularyName + ".rdf does not exist.");
+			// System.exit(1);
+			// }
 			useSkos = true;
 
 		}
@@ -148,9 +151,9 @@ public class VocabularySesame extends Vocabulary {
 	 *            The new Stemmer value.
 	 */
 	@Override
-	public void setStemmer(Stemmer newStemmer) {
+	public void setStemmer(final Stemmer newStemmer) {
 
-		this.m_Stemmer = newStemmer;
+		m_Stemmer = newStemmer;
 
 	}
 
@@ -161,8 +164,8 @@ public class VocabularySesame extends Vocabulary {
 	 *            The new M_Stopwords value.
 	 */
 	@Override
-	public void setStopwords(Stopwords newM_Stopwords) {
-		this.m_Stopwords = newM_Stopwords;
+	public void setStopwords(final Stopwords newM_Stopwords) {
+		m_Stopwords = newM_Stopwords;
 	}
 
 	/**
@@ -171,7 +174,8 @@ public class VocabularySesame extends Vocabulary {
 	@Override
 	public void buildSKOS() throws Exception {
 
-		System.out.println("-- Building the Vocabulary index from SKOS Sesame Store");
+		System.out
+				.println("-- Building the Vocabulary index from SKOS Sesame Store");
 
 		VocabularyEN = new HashMap();
 		VocabularyENrev = new HashMap();
@@ -190,26 +194,26 @@ public class VocabularySesame extends Vocabulary {
 						+ concept.getQName().getLocalPart();
 
 				// value of the property, e.g. c_4828 has narrower term "c_4829"
-				//String val = concept.getSkosPrefLabel();
+				// String val = concept.getSkosPrefLabel();
 
 				/*
 				 * For prefLabels
 				 */
 				String descriptor = concept.getSkosPrefLabel();
 
-//				if (val.contains("@")) {
-//					String[] val_components = val.split("@");
-//					// System.err.println(val_components[1] + " " +
-//					// m_language);
-//					if (val_components[1].equals(m_language)) {
-//						// System.err.println("Yes");
-//						descriptor = val_components[0];
-//					} else {
-//						continue;
-//					}
-//				} else {
-//					descriptor = val;
-//				}
+				// if (val.contains("@")) {
+				// String[] val_components = val.split("@");
+				// // System.err.println(val_components[1] + " " +
+				// // m_language);
+				// if (val_components[1].equals(m_language)) {
+				// // System.err.println("Yes");
+				// descriptor = val_components[0];
+				// } else {
+				// continue;
+				// }
+				// } else {
+				// descriptor = val;
+				// }
 
 				String avterm = pseudoPhrase(descriptor);
 				if (avterm == null) {
@@ -229,20 +233,20 @@ public class VocabularySesame extends Vocabulary {
 				Set<String> altLabels = concept.getSkosAltLabels();
 				for (String a : altLabels) {
 					non_descriptor = a;
-//					val = a;
-//					if (val.contains("@")) {
-//						String[] val_components = val.split("@");
-//						// System.err.println(val_components[1] + " " +
-//						// m_language);
-//						if (val_components[1].equals(m_language)) {
-//							// System.err.println("Yes");
-//							non_descriptor = val_components[0];
-//						} else {
-//							continue;
-//						}
-//					} else {
-//						non_descriptor = val;
-//					}
+					// val = a;
+					// if (val.contains("@")) {
+					// String[] val_components = val.split("@");
+					// // System.err.println(val_components[1] + " " +
+					// // m_language);
+					// if (val_components[1].equals(m_language)) {
+					// // System.err.println("Yes");
+					// non_descriptor = val_components[0];
+					// } else {
+					// continue;
+					// }
+					// } else {
+					// non_descriptor = val;
+					// }
 
 					// first add the non_descriptor to the index hash
 					// then fill here non-descriptor hash
@@ -319,8 +323,8 @@ public class VocabularySesame extends Vocabulary {
 		}
 	}
 
-	private void addNonDescriptor(int count, String id_descriptor,
-			String non_descriptor) {
+	private void addNonDescriptor(int count, final String id_descriptor,
+			final String non_descriptor) {
 		// id => id_non_descriptor
 		String id_non_descriptor = "d_" + count;
 		count++;
@@ -334,7 +338,7 @@ public class VocabularySesame extends Vocabulary {
 	}
 
 	@Override
-	public String remove(String[] words, int i) {
+	public String remove(final String[] words, final int i) {
 
 		String result = "";
 		for (int j = 0; j < words.length; j++) {
@@ -446,8 +450,8 @@ public class VocabularySesame extends Vocabulary {
 					entry = split(readline, "\t");
 					String[] temp = split(entry[1], " ");
 					Vector rt = new Vector();
-					for (int i = 0; i < temp.length; i++) {
-						rt.add(temp[i]);
+					for (String element : temp) {
+						rt.add(element);
 					}
 					VocabularyREL.put(entry[0], rt);
 				}
@@ -461,9 +465,9 @@ public class VocabularySesame extends Vocabulary {
 	// Might be useful later, when the kind of relation is important
 	// or wether two terms are related or not
 	// public void buildRT() throws Exception {
-	//		
+	//
 	// VocabularyRT = new HashMap();
-	//		
+	//
 	// String[] entry;
 	// String readline;
 	// try {
@@ -473,14 +477,14 @@ public class VocabularySesame extends Vocabulary {
 	// entry = split(readline,"\t");
 	// String pair = entry[0] + "-" + entry[1];
 	// VocabularyRT.put(pair,"1");
-	//				
+	//
 	// }
 	// } catch (Exception e) {
 	// System.err.println("You need to put the .pairs file into KEA directory");
 	// }
-	//		
+	//
 	// }
-	//	
+	//
 
 	/**
 	 * Checks whether a normalized version of a phrase (pseudo phrase) is a
@@ -489,7 +493,7 @@ public class VocabularySesame extends Vocabulary {
 	 * @param phrase
 	 * @return true if phrase is in the vocabulary
 	 */
-	public boolean containsEntry(String phrase) {
+	public boolean containsEntry(final String phrase) {
 		return VocabularyEN.containsKey(phrase);
 	}
 
@@ -500,7 +504,7 @@ public class VocabularySesame extends Vocabulary {
 	 * @return id of the phrase in the vocabulary index
 	 */
 	@Override
-	public String getID(String phrase) {
+	public String getID(final String phrase) {
 		String pseudo = pseudoPhrase(phrase);
 		String id = null;
 		if (pseudo != null) {
@@ -519,7 +523,7 @@ public class VocabularySesame extends Vocabulary {
 	 * @return original version of the vocabulary term
 	 */
 	@Override
-	public String getOrig(String id) {
+	public String getOrig(final String id) {
 		return (String) VocabularyENrev.get(id);
 	}
 
@@ -531,7 +535,7 @@ public class VocabularySesame extends Vocabulary {
 	 *            of the non-descriptor
 	 * @return id of the descriptor
 	 */
-	public String getDescriptor(String id) {
+	public String getDescriptor(final String id) {
 		return (String) VocabularyUSE.get(id);
 	}
 
@@ -543,7 +547,7 @@ public class VocabularySesame extends Vocabulary {
 	 * @return a vector with ids related to the input id
 	 */
 	@Override
-	public Vector getRelated(String id) {
+	public Vector getRelated(final String id) {
 		return (Vector) VocabularyREL.get(id);
 	}
 
@@ -556,7 +560,7 @@ public class VocabularySesame extends Vocabulary {
 	 * @return a vector with ids related to the input id by a specified relation
 	 */
 	@Override
-	public Vector getRelated(String id, String relation) {
+	public Vector getRelated(final String id, final String relation) {
 		Vector related = new Vector();
 		Vector all_related = (Vector) VocabularyREL.get(id);
 		if (all_related != null) {
@@ -587,7 +591,7 @@ public class VocabularySesame extends Vocabulary {
 	 *            , separator
 	 * @return String array with string parts separated by the separator string
 	 */
-	public String[] split(String str, String separator) {
+	public String[] split(final String str, final String separator) {
 
 		ArrayList lst = new ArrayList();
 		String word = "";
@@ -657,14 +661,15 @@ public class VocabularySesame extends Vocabulary {
 		words = str.split(" ");
 		str_nostop = "";
 
-		for (int i = 0; i < words.length; i++) {
-			String word = words[i];
+		for (String word2 : words) {
+			String word = word2;
 			if (!m_Stopwords.isStopword(word)) {
 
 				if (word.matches(".+?\\'.+?")) {
 					String[] elements = word.split("\\'");
-					if (elements.length < 1)
+					if (elements.length < 1) {
 						word = elements[1];
+					}
 				}
 
 				if (str_nostop.equals("")) {
@@ -682,11 +687,10 @@ public class VocabularySesame extends Vocabulary {
 		return join(pseudophrase);
 	}
 
-
 	/**
 	 * overloaded swap method: exchange 2 locations in an array of Strings.
 	 */
-	public static void swap(int loc1, int loc2, String[] a) {
+	public static void swap(final int loc1, final int loc2, final String[] a) {
 		String temp = a[loc1];
 		a[loc1] = a[loc2];
 		a[loc2] = temp;
@@ -696,7 +700,7 @@ public class VocabularySesame extends Vocabulary {
 	 * Sorts an array of Strings into alphabetic order
 	 * 
 	 */
-	public static String[] sort(String[] a) {
+	public static String[] sort(final String[] a) {
 
 		// rename firstAt to reflect new role in alphabetic sorting
 		int i, j, firstAt;

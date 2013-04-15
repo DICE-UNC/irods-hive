@@ -31,44 +31,60 @@ import java.util.List;
 import org.apache.commons.configuration.Configuration;
 
 public interface SKOSTagger {
-	
+
 	/**
-	 * Returns a list of SKOSConcept objects for the specified file
-	 * using the specified vocabularies and SKOSSearcher implementation.
+	 * Returns a list of SKOSConcept objects for the specified file using the
+	 * specified vocabularies and SKOSSearcher implementation.
 	 * 
-	 * @param path			Path to the file
-	 * @param vocabularies	List of vocabularies
-	 * @param searcher		Searcher implementation
-	 * @param maxTerms		Maximum number of terms
-	 * @param minOccur		Minimum number of times a phrase/term must occur
+	 * @param path
+	 *            Path to the file
+	 * @param vocabularies
+	 *            List of vocabularies
+	 * @param searcher
+	 *            Searcher implementation
+	 * @param maxTerms
+	 *            Maximum number of terms
+	 * @param minOccur
+	 *            Minimum number of times a phrase/term must occur
 	 * @return
 	 */
-	public List<SKOSConcept> getTags(String path, List<String> vocabularies, 
+	public List<SKOSConcept> getTags(String path, List<String> vocabularies,
 			SKOSSearcher searcher, int maxTerms, int minOccur);
 
 	/**
-	 * Returns a list of SKOSConcept objects for the specified URL
-	 * using the specified vocabularies and SKOSSearcher implementation. 
-	 * The maximum number of hops indicates the number of levels of links
-	 * to be crawled/traversed when indexing the site.
+	 * Returns a list of SKOSConcept objects for the specified URL using the
+	 * specified vocabularies and SKOSSearcher implementation. The maximum
+	 * number of hops indicates the number of levels of links to be
+	 * crawled/traversed when indexing the site.
 	 * 
-	 * @param url			URL of desired web site
-	 * @param vocabularies  List of vocabularies
-	 * @param searcher		Searcher implementation
-	 * @param maxHops		Maximum number of links to be traversed (hops)
-	 * @param maxTerms		Maximum number of terms
-	 * @param diff			Index only the differences between base page and subsequent pages
-	 * @param minOccur		Minimum number of times a phrase/term must occur
+	 * @param url
+	 *            URL of desired web site
+	 * @param vocabularies
+	 *            List of vocabularies
+	 * @param searcher
+	 *            Searcher implementation
+	 * @param maxHops
+	 *            Maximum number of links to be traversed (hops)
+	 * @param maxTerms
+	 *            Maximum number of terms
+	 * @param diff
+	 *            Index only the differences between base page and subsequent
+	 *            pages
+	 * @param minOccur
+	 *            Minimum number of times a phrase/term must occur
 	 * @return
 	 */
-	public List<SKOSConcept> getTags(URL url, List<String> vocabularies, 
-			SKOSSearcher searcher, int maxHops, int maxTerms, boolean diff, int minOccur);
-	
+	public List<SKOSConcept> getTags(URL url, List<String> vocabularies,
+			SKOSSearcher searcher, int maxHops, int maxTerms, boolean diff,
+			int minOccur);
+
 	public void setConfig(Configuration config);
-	
-	public List<SKOSConcept> getTagsFromText(String text, List<String> vocabularies, 
-			SKOSSearcher searcher,  int maxTerms, int minOccur);
-	
-	public List<ConceptNode> getTagsAsTree(String text, List<String> vocabularies, 
-			SKOSSearcher searcher,  int maxTerms, int minOccur);
+
+	public List<SKOSConcept> getTagsFromText(String text,
+			List<String> vocabularies, SKOSSearcher searcher, int maxTerms,
+			int minOccur);
+
+	public List<ConceptNode> getTagsAsTree(String text,
+			List<String> vocabularies, SKOSSearcher searcher, int maxTerms,
+			int minOccur);
 }

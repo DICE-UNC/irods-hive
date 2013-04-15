@@ -4,21 +4,25 @@ public class AutocompleteTerm {
 
 	protected String id;
 	protected String value;
-	
-	public AutocompleteTerm(String id, String value) {
+
+	public AutocompleteTerm(final String id, final String value) {
 		this.id = id;
 		this.value = value;
 	}
+
 	public String getId() {
 		return id;
 	}
-	public void setId(String id) {
+
+	public void setId(final String id) {
 		this.id = id;
 	}
+
 	public String getValue() {
 		return value;
 	}
-	public void setValue(String value) {
+
+	public void setValue(final String value) {
 		this.value = value;
 	}
 }

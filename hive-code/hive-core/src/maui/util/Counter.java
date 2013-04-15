@@ -1,11 +1,10 @@
 package maui.util;
 
-
-import java.io.*;
+import java.io.Serializable;
 
 /**
  * Class that implements a simple counter.
- *
+ * 
  * @author Eibe Frank (eibe@cs.waikato.ac.nz)
  * @version 1.0
  */
@@ -29,7 +28,7 @@ public class Counter implements Serializable {
 	/**
 	 * Initializes the counter to the given value
 	 */
-	public Counter(int val) {
+	public Counter(final int val) {
 		value = val;
 	}
 
@@ -39,16 +38,17 @@ public class Counter implements Serializable {
 	public void increment() {
 		value++;
 	}
-	
+
 	/**
 	 * Increments the counter by a given value.
 	 */
-	public void increment(int number) {
+	public void increment(final int number) {
 		value += number;
 	}
 
 	/**
 	 * Returns the value.
+	 * 
 	 * @return the value
 	 */
 	public int value() {

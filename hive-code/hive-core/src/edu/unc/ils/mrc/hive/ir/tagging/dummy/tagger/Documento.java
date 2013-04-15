@@ -37,18 +37,19 @@ public class Documento {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
 	public Documento() {
-		this.terminos = new ArrayList<Termino>();
+		terminos = new ArrayList<Termino>();
 	}
-	
-	public void addTerm(String termino, double probabilidad, int frecuencia) {
+
+	public void addTerm(final String termino, final double probabilidad,
+			final int frecuencia) {
 		Termino term = new Termino(termino, probabilidad, frecuencia);
 		term.setTf(frecuencia);
-		this.terminos.add(term);
+		terminos.add(term);
 	}
 
 	public List<Termino> getTerminos() {

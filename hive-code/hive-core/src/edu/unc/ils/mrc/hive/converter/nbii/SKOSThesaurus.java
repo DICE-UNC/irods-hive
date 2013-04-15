@@ -1,7 +1,6 @@
 package edu.unc.ils.mrc.hive.converter.nbii;
 
 import java.io.File;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -13,44 +12,43 @@ public class SKOSThesaurus implements Thesaurus {
 	private HashMap<String, Concept> thesaurus;
 
 	public SKOSThesaurus() {
-		this.thesaurus = new HashMap<String, Concept>();
+		thesaurus = new HashMap<String, Concept>();
 	}
 
 	@Override
 	public Iterator<Concept> getIterator() {
-		return this.thesaurus.values().iterator();
+		return thesaurus.values().iterator();
 	}
 
 	@Override
-	public void addConcept(Concept concept) {
-		this.thesaurus.put(concept.getUri(), concept);
+	public void addConcept(final Concept concept) {
+		thesaurus.put(concept.getUri(), concept);
 	}
 
 	@Override
-	public Concept getConcept(String prefLabel) {
-		return this.thesaurus.get(prefLabel);
+	public Concept getConcept(final String prefLabel) {
+		return thesaurus.get(prefLabel);
 	}
 
 	@Override
 	public int getSize() {
-		return this.thesaurus.size();
+		return thesaurus.size();
 	}
 
 	@Override
-	public void printThesaurus(String fileName) {
+	public void printThesaurus(final String fileName) {
 
 		try {
-			Iterator<String> it = this.thesaurus.keySet().iterator();
+			Iterator<String> it = thesaurus.keySet().iterator();
 			File file = new File(fileName);
 			FileOutputStream fos = new FileOutputStream(file);
 			PrintStream pr = new PrintStream(fos);
 			pr.println("<?xml version='1.0' encoding='UTF-8'?>");
-			pr
-					.println("<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' "
-							+ "xmlns:skos=\'http://www.w3.org/2004/02/skos/core#\' >");
+			pr.println("<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' "
+					+ "xmlns:skos=\'http://www.w3.org/2004/02/skos/core#\' >");
 			while (it.hasNext()) {
 				String s = it.next();
-				Concept c = this.thesaurus.get(s);
+				Concept c = thesaurus.get(s);
 				pr.println("<rdf:Description rdf:about='" + c.getUri() + "'>");
 				pr.println("<rdf:type rdf:resource=\"http://www.w3.org/2004/02/skos/core#Concept\"/>");
 				pr.println("\t<skos:prefLabel>" + c.getPrefLabel()
@@ -65,14 +63,17 @@ public class SKOSThesaurus implements Thesaurus {
 					pr.println("\t<skos:hiddenLabel>" + hiddenLabel
 							+ "</skos:hiddenLabel>");
 				}
-				for(String broaderURI : c.getBroaderURI()) {
-					pr.println("\t<skos:broader rdf:resource='" + broaderURI + "'/>");
+				for (String broaderURI : c.getBroaderURI()) {
+					pr.println("\t<skos:broader rdf:resource='" + broaderURI
+							+ "'/>");
 				}
-				for(String narrowerURI : c.getNarrowerURI()) {
-					pr.println("\t<skos:narrower rdf:resource='" + narrowerURI + "'/>");
+				for (String narrowerURI : c.getNarrowerURI()) {
+					pr.println("\t<skos:narrower rdf:resource='" + narrowerURI
+							+ "'/>");
 				}
-				for(String relatedURI : c.getRelatedURI()) {
-					pr.println("\t<skos:related rdf:resource='" + relatedURI + "'/>");
+				for (String relatedURI : c.getRelatedURI()) {
+					pr.println("\t<skos:related rdf:resource='" + relatedURI
+							+ "'/>");
 				}
 				pr.println("</rdf:Description>");
 			}

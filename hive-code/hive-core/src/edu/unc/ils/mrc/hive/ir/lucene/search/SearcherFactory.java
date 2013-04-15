@@ -25,22 +25,22 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package edu.unc.ils.mrc.hive.ir.lucene.search;
 
-
 public class SearcherFactory {
 
 	public static final int BASICLUCENECONCEPTSEARCHER = 1;
 
 	private static int searcher = 1;
 
-	public static void selectSearcher(int searcher) {
+	public static void selectSearcher(final int searcher) {
 		SearcherFactory.searcher = searcher;
 	}
 
-	public static Searcher getSearcher(String[] indexList) {
-		if (searcher == BASICLUCENECONCEPTSEARCHER)
+	public static Searcher getSearcher(final String[] indexList) {
+		if (searcher == BASICLUCENECONCEPTSEARCHER) {
 			return new ConceptMultiSearcher(indexList);
-		else
+		} else {
 			return null;
+		}
 
 	}
 

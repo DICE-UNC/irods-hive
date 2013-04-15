@@ -19,7 +19,6 @@ package kea.main;
  *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 import java.io.BufferedInputStream;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -33,15 +32,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
-import edu.unc.ils.mrc.hive.api.SKOSScheme;
-
-import weka.core.Attribute;
-import weka.core.FastVector;
-import weka.core.Instance;
-import weka.core.Instances;
-import weka.core.Option;
-import weka.core.OptionHandler;
-import weka.core.Utils;
 import kea.filters.KEAFilter;
 import kea.filters.KEAPhraseFilter;
 import kea.stemmers.SremovalStemmer;
@@ -51,6 +41,14 @@ import kea.stopwords.StopwordsEnglish;
 import kea.util.Counter;
 import kea.vocab.Vocabulary;
 import kea.vocab.VocabularyH2;
+import weka.core.Attribute;
+import weka.core.FastVector;
+import weka.core.Instance;
+import weka.core.Instances;
+import weka.core.Option;
+import weka.core.OptionHandler;
+import weka.core.Utils;
+import edu.unc.ils.mrc.hive.api.SKOSScheme;
 
 /**
  * Extracts keyphrases from the documents in a given directory. Assumes that the
@@ -117,7 +115,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 
 	/** Stopwords path */
 	String m_stopwordsPath;
-	
+
 	/** Name of directory */
 	String m_dirName = null;
 
@@ -150,7 +148,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 
 	/** The list of stop words to be used */
 	private Stopwords m_Stopwords;
-	
+
 	private SKOSScheme m_Scheme;
 
 	/** Also write stemmed phrase and score into .key file. */
@@ -158,32 +156,36 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 
 	/** Build global dictionaries from the test set. */
 	boolean m_buildGlobal = false;
-	
+
 	private SKOSScheme schema;
-	
+
 	private Vocabulary vocabulary;
-	
-	public KEAKeyphraseExtractor(SKOSScheme schema) {
-		this.m_KEAFilter = new KEAFilter();
+
+	public KEAKeyphraseExtractor(final SKOSScheme schema) {
+		m_KEAFilter = new KEAFilter();
 		this.schema = schema;
 		m_vocabularyFormat = "skos";
-	
-		try
-		{
-			String h2path = new File(schema.getRdfPath()).getParentFile().getAbsolutePath();
-			//h2path += File.separator + schema.getName().toLowerCase() + "H2" + File.separator + schema.getName().toLowerCase();
-			this.vocabulary = new VocabularyH2(schema.getName(), h2path, m_documentLanguage, schema.getManager());
+
+		try {
+			String h2path = new File(schema.getRdfPath()).getParentFile()
+					.getAbsolutePath();
+			// h2path += File.separator + schema.getName().toLowerCase() + "H2"
+			// + File.separator + schema.getName().toLowerCase();
+			vocabulary = new VocabularyH2(schema.getName(), h2path,
+					m_documentLanguage, schema.getManager());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//this.vocabulary = new VocabularySesame(m_vocabulary, m_vocabularyFormat,
-				//m_documentLanguage, schema.getManager());
+		// this.vocabulary = new VocabularySesame(m_vocabulary,
+		// m_vocabularyFormat,
+		// m_documentLanguage, schema.getManager());
 	}
-	
+
 	public void loadThesaurus() {
-		System.out.println("SCHEMA LOADED IN KEYPHRASE EXTRACTOR " + schema.getLongName());
-		this.m_KEAFilter.loadThesaurus(m_Stemmer, m_Stopwords,this.vocabulary);
-		this.m_KEAFilter.setVocabulary(schema.getName().toLowerCase());
+		System.out.println("SCHEMA LOADED IN KEYPHRASE EXTRACTOR "
+				+ schema.getLongName());
+		m_KEAFilter.loadThesaurus(m_Stemmer, m_Stopwords, vocabulary);
+		m_KEAFilter.setVocabulary(schema.getName().toLowerCase());
 	}
 
 	/**
@@ -202,7 +204,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	 * @param newAdditionalInfo
 	 *            Value to assign to AdditionalInfo.
 	 */
-	public void setAdditionalInfo(boolean newAdditionalInfo) {
+	public void setAdditionalInfo(final boolean newAdditionalInfo) {
 
 		m_AdditionalInfo = newAdditionalInfo;
 	}
@@ -223,7 +225,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	 * @param newBuildGlobal
 	 *            Value to assign to BuildGlobal.
 	 */
-	public void setBuildGlobal(boolean newBuildGlobal) {
+	public void setBuildGlobal(final boolean newBuildGlobal) {
 
 		m_buildGlobal = newBuildGlobal;
 	}
@@ -254,9 +256,9 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	 * @param newStemmer
 	 *            The new Stemmer value.
 	 */
-	public void setStemmer(Stemmer newStemmer) {
+	public void setStemmer(final Stemmer newStemmer) {
 
-		this.m_Stemmer = newStemmer;
+		m_Stemmer = newStemmer;
 	}
 
 	/**
@@ -268,13 +270,13 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 
 		return m_Stopwords;
 	}
-	
-	public void setMinNumOccur(int newMinNumOccur) {
-		this.m_KEAFilter.setMinNumOccur(newMinNumOccur);
+
+	public void setMinNumOccur(final int newMinNumOccur) {
+		m_KEAFilter.setMinNumOccur(newMinNumOccur);
 	}
-	
-	public void setStopwords(String stopwordsPath) {
-		this.m_Stopwords = new StopwordsEnglish(stopwordsPath);
+
+	public void setStopwords(final String stopwordsPath) {
+		m_Stopwords = new StopwordsEnglish(stopwordsPath);
 	}
 
 	/**
@@ -283,9 +285,9 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	 * @param newStopwords
 	 *            The new Stopwords value.
 	 */
-	public void setStopwords(Stopwords newStopwords) {
+	public void setStopwords(final Stopwords newStopwords) {
 
-		this.m_Stopwords = newStopwords;
+		m_Stopwords = newStopwords;
 	}
 
 	/**
@@ -294,7 +296,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	 * @param newnumPhrases
 	 *            Value to assign to numPhrases.
 	 */
-	public void setNumPhrases(int newnumPhrases) {
+	public void setNumPhrases(final int newnumPhrases) {
 
 		m_numPhrases = newnumPhrases;
 	}
@@ -315,7 +317,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	 * @param newdebug
 	 *            Value to assign to debug.
 	 */
-	public void setDebug(boolean newdebug) {
+	public void setDebug(final boolean newdebug) {
 
 		m_debug = newdebug;
 	}
@@ -336,7 +338,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	 * @param newencoding
 	 *            Value to assign to encoding.
 	 */
-	public void setEncoding(String newencoding) {
+	public void setEncoding(final String newencoding) {
 
 		m_encoding = newencoding;
 	}
@@ -357,7 +359,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	 * @param newvocabulary
 	 *            Value to assign to vocabulary name.
 	 */
-	public void setVocabulary(String newvocabulary) {
+	public void setVocabulary(final String newvocabulary) {
 
 		m_vocabulary = newvocabulary;
 	}
@@ -378,7 +380,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	 * @param newvocabularyFormat
 	 *            Value to assign to vocabularyFormat .
 	 */
-	public void setVocabularyFormat(String newvocabularyFormat) {
+	public void setVocabularyFormat(final String newvocabularyFormat) {
 
 		m_vocabularyFormat = newvocabularyFormat;
 	}
@@ -399,7 +401,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	 * @param newdocumentLanguage
 	 *            Value to assign to document language.
 	 */
-	public void setDocumentLanguage(String newdocumentLanguage) {
+	public void setDocumentLanguage(final String newdocumentLanguage) {
 
 		m_documentLanguage = newdocumentLanguage;
 	}
@@ -420,7 +422,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	 * @param newmodelName
 	 *            Value to assign to modelName.
 	 */
-	public void setModelName(String newmodelName) {
+	public void setModelName(final String newmodelName) {
 
 		m_modelName = newmodelName;
 	}
@@ -441,7 +443,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	 * @param newdirName
 	 *            Value to assign to dirName.
 	 */
-	public void setDirName(String newdirName) {
+	public void setDirName(final String newdirName) {
 
 		m_dirName = newdirName;
 	}
@@ -497,7 +499,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	 *                if an option is not supported
 	 */
 	@Override
-	public void setOptions(String[] options) throws Exception {
+	public void setOptions(final String[] options) throws Exception {
 
 		String dirName = Utils.getOption('l', options);
 		if (dirName.length() > 0) {
@@ -685,9 +687,9 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 		try {
 			File dir = new File(m_dirName);
 			String[] files = dir.list();
-			for (int i = 0; i < files.length; i++) {
-				if (files[i].endsWith(".txt")) {
-					String stem = files[i].substring(0, files[i].length() - 4);
+			for (String file : files) {
+				if (file.endsWith(".txt")) {
+					String stem = file.substring(0, file.length() - 4);
 					if (!stems.containsKey(stem)) {
 						stems.put(stem, new Double(0));
 					}
@@ -702,7 +704,8 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	/**
 	 * Builds the model from the files
 	 */
-	public synchronized void extractKeyphrases(Hashtable stems) throws Exception {
+	public synchronized void extractKeyphrases(final Hashtable stems)
+			throws Exception {
 
 		Vector stats = new Vector();
 
@@ -711,18 +714,19 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 		if (stems.size() == 0) {
 			throw new Exception("Couldn't find any data!");
 		}
-		this.m_KEAFilter.setNumPhrases(m_numPhrases);
-		this.m_KEAFilter.setVocabulary(m_vocabulary);
-		this.m_KEAFilter.setVocabularyFormat(m_vocabularyFormat);
-		this.m_KEAFilter.setDocumentLanguage(getDocumentLanguage());
-		this.m_KEAFilter.setStemmer(m_Stemmer);
-		this.m_KEAFilter.setStopwords(m_Stopwords);
+		m_KEAFilter.setNumPhrases(m_numPhrases);
+		m_KEAFilter.setVocabulary(m_vocabulary);
+		m_KEAFilter.setVocabularyFormat(m_vocabularyFormat);
+		m_KEAFilter.setDocumentLanguage(getDocumentLanguage());
+		m_KEAFilter.setStemmer(m_Stemmer);
+		m_KEAFilter.setStopwords(m_Stopwords);
 
 		if (getVocabulary().equals("none")) {
-			this.m_KEAFilter.m_NODEfeature = false;
+			m_KEAFilter.m_NODEfeature = false;
 		} else {
 			// Know thesaurus is loaded in the constructor
-			//m_KEAFilter.loadThesaurus(m_Stemmer, m_Stopwords, vocabularyDir, manager);
+			// m_KEAFilter.loadThesaurus(m_Stemmer, m_Stopwords, vocabularyDir,
+			// manager);
 		}
 
 		FastVector atts = new FastVector(3);
@@ -731,7 +735,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 		atts.addElement(new Attribute("filename", (String) null));
 		Instances data = new Instances("keyphrase_training_data", atts, 0);
 
-		if (this.m_KEAFilter.m_Dictionary == null) {
+		if (m_KEAFilter.m_Dictionary == null) {
 			buildGlobalDictionaries(stems);
 		}
 
@@ -759,8 +763,8 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 				}
 				is.close();
 
-				newInst[0] = data.attribute(0).addStringValue(
-						txtStr.toString());
+				newInst[0] = data.attribute(0)
+						.addStringValue(txtStr.toString());
 
 			} catch (Exception e) {
 				if (m_debug) {
@@ -788,11 +792,11 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 				while ((c = is.read()) != -1) {
 					keyStr.append((char) c);
 				}
-				
+
 				is.close();
 
-				newInst[1] = data.attribute(1).addStringValue(
-						keyStr.toString());
+				newInst[1] = data.attribute(1)
+						.addStringValue(keyStr.toString());
 			} catch (Exception e) {
 				if (m_debug) {
 					System.err.println("No existing keyphrases for stem " + str
@@ -803,7 +807,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 
 			data.add(new Instance(1.0, newInst));
 
-			this.m_KEAFilter.input(data.instance(0),vocabulary);
+			m_KEAFilter.input(data.instance(0), vocabulary);
 
 			data = data.stringFreeStructure();
 			if (m_debug) {
@@ -813,13 +817,13 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 			Instance inst;
 
 			// Iterating over all extracted keyphrases (inst)
-			while ((inst = this.m_KEAFilter.output()) != null) {
+			while ((inst = m_KEAFilter.output()) != null) {
 
-				int index = (int) inst.value(this.m_KEAFilter.getRankIndex()) - 1;
+				int index = (int) inst.value(m_KEAFilter.getRankIndex()) - 1;
 
 				if (index < m_numPhrases) {
 					topRankedInstances[index] = inst;
-				}							
+				}
 			}
 
 			if (m_debug) {
@@ -852,17 +856,17 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 					}
 					if (printer != null) {
 						printer.print(topRankedInstances[i]
-								.stringValue(this.m_KEAFilter
+								.stringValue(m_KEAFilter
 										.getUnstemmedPhraseIndex()));
 
 						if (m_AdditionalInfo) {
 							printer.print("\t");
 							printer.print(topRankedInstances[i]
-									.stringValue(this.m_KEAFilter
+									.stringValue(m_KEAFilter
 											.getStemmedPhraseIndex()));
 							printer.print("\t");
 							printer.print(Utils.doubleToString(
-									topRankedInstances[i].value(this.m_KEAFilter
+									topRankedInstances[i].value(m_KEAFilter
 											.getProbabilityIndex()), 4));
 						}
 						printer.println();
@@ -900,7 +904,8 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 		// m_KEAFilter.batchFinished();
 	}
 
-	private void buildGlobalDictionaries(Hashtable stems) throws Exception {
+	private void buildGlobalDictionaries(final Hashtable stems)
+			throws Exception {
 
 		System.err
 				.println("--- Building global dictionaries from the test collection.. ");
@@ -908,7 +913,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 		// Build dictionary of n-grams with associated
 		// document frequencies
 
-		this.m_KEAFilter.m_Dictionary = new HashMap();
+		m_KEAFilter.m_Dictionary = new HashMap();
 
 		Enumeration elem = stems.keys();
 
@@ -931,15 +936,15 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 
 			KEAPhraseFilter kpf = new KEAPhraseFilter();
 
-			HashMap hash = this.m_KEAFilter.getPhrasesForDictionary(kpf
-					.tokenize(txtStr.toString()),this.vocabulary);
+			HashMap hash = m_KEAFilter.getPhrasesForDictionary(
+					kpf.tokenize(txtStr.toString()), vocabulary);
 			Iterator it = hash.keySet().iterator();
 			while (it.hasNext()) {
 				String phrase = (String) it.next();
-				Counter counter = (Counter) this.m_KEAFilter.m_Dictionary
+				Counter counter = (Counter) m_KEAFilter.m_Dictionary
 						.get(phrase);
 				if (counter == null) {
-					this.m_KEAFilter.m_Dictionary.put(phrase, new Counter());
+					m_KEAFilter.m_Dictionary.put(phrase, new Counter());
 				} else {
 					counter.increment();
 				}
@@ -954,9 +959,11 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 
 		BufferedInputStream inStream = new BufferedInputStream(
 				new FileInputStream(m_modelName));
-		System.out.println("This is the model that has been loaded -------------->" + m_modelName);
+		System.out
+				.println("This is the model that has been loaded -------------->"
+						+ m_modelName);
 		ObjectInputStream in = new ObjectInputStream(inStream);
-		this.m_KEAFilter = (KEAFilter) in.readObject();
+		m_KEAFilter = (KEAFilter) in.readObject();
 
 		// If TFxIDF values are to be computed from the test corpus
 		if (m_buildGlobal == true) {
@@ -964,7 +971,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 				System.err
 						.println("-- The global dictionaries will be built from this test collection..");
 			}
-			this.m_KEAFilter.m_Dictionary = null;
+			m_KEAFilter.m_Dictionary = null;
 		}
 		in.close();
 	}
@@ -972,7 +979,7 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 	/**
 	 * The main method.
 	 */
-	public static void main(String[] ops) {
+	public static void main(final String[] ops) {
 
 		KEAKeyphraseExtractor kmb = new KEAKeyphraseExtractor(null);
 		try {
@@ -982,8 +989,8 @@ public class KEAKeyphraseExtractor implements OptionHandler {
 
 			// Reading Options, which were set above and output them:
 			String[] optionSettings = kmb.getOptions();
-			for (int i = 0; i < optionSettings.length; i++) {
-				System.err.print(optionSettings[i] + " ");
+			for (String optionSetting : optionSettings) {
+				System.err.print(optionSetting + " ");
 			}
 			System.err.println();
 

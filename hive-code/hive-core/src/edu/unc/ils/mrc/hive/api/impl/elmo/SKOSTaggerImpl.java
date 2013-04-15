@@ -27,8 +27,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package edu.unc.ils.mrc.hive.api.impl.elmo;
 
 import java.io.BufferedReader;
-
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -61,14 +59,12 @@ import edu.unc.ils.mrc.hive.ir.tagging.TaggerFactory;
 import edu.unc.ils.mrc.hive.util.TextManager;
 
 /**
- * This class implements the SKOSTagger interface, supporting 
- * automatic subject term extraction from one or more 
- * thesauri.
+ * This class implements the SKOSTagger interface, supporting automatic subject
+ * term extraction from one or more thesauri.
  */
-public class SKOSTaggerImpl implements SKOSTagger 
-{
-    private static final Log logger = LogFactory.getLog(SKOSTaggerImpl.class);
-	
+public class SKOSTaggerImpl implements SKOSTagger {
+	private static final Log logger = LogFactory.getLog(SKOSTaggerImpl.class);
+
 	private static final int LIMIT = 10;
 
 	private TreeMap<String, Tagger> taggers;
@@ -77,169 +73,182 @@ public class SKOSTaggerImpl implements SKOSTagger
 	private Configuration config;
 
 	/**
-	 * Constructs a tagger based on the specified vocabularies
-	 * and algorithm.
+	 * Constructs a tagger based on the specified vocabularies and algorithm.
 	 * 
-	 * @param vocabularies	Vocabularies to be used for term extraction
-	 * @param algorithm		Algorithm to be used for term extraction
+	 * @param vocabularies
+	 *            Vocabularies to be used for term extraction
+	 * @param algorithm
+	 *            Algorithm to be used for term extraction
 	 */
-	public SKOSTaggerImpl(TreeMap<String, SKOSScheme> vocabularies,
-			String algorithm) 
-	{
+	public SKOSTaggerImpl(final TreeMap<String, SKOSScheme> vocabularies,
+			final String algorithm) {
 		this.algorithm = algorithm;
 		this.vocabularies = vocabularies;
-		this.taggers = new TreeMap<String, Tagger>();
+		taggers = new TreeMap<String, Tagger>();
 		Set<String> set = vocabularies.keySet();
 		Iterator<String> it = set.iterator();
-				
+
 		if (this.algorithm.equals("kea")) {
 			while (it.hasNext()) {
 				String vocName = it.next();
 				SKOSScheme schema = vocabularies.get(vocName);
 				TaggerFactory.selectTagger(TaggerFactory.KEATAGGER);
-				Tagger tagger = TaggerFactory.getTagger(schema
-						.getKEAtestSetDir(), schema.getKEAModelPath(), schema
-						.getStopwordsPath(), schema);
-				this.taggers.put(vocName, tagger);
+				Tagger tagger = TaggerFactory.getTagger(
+						schema.getKEAtestSetDir(), schema.getKEAModelPath(),
+						schema.getStopwordsPath(), schema);
+				taggers.put(vocName, tagger);
 			}
-		} 
-		else if (this.algorithm.equals("maui")) {
+		} else if (this.algorithm.equals("maui")) {
 			while (it.hasNext()) {
 				String vocName = it.next();
 				SKOSScheme schema = vocabularies.get(vocName);
 				TaggerFactory.selectTagger(TaggerFactory.MAUITAGGER);
 				try {
-				Tagger tagger = TaggerFactory.getTagger(schema
-						.getKEAtestSetDir(), schema.getMauiModelPath(), schema
-						.getStopwordsPath(), schema);
-				this.taggers.put(vocName, tagger);
+					Tagger tagger = TaggerFactory.getTagger(
+							schema.getKEAtestSetDir(),
+							schema.getMauiModelPath(),
+							schema.getStopwordsPath(), schema);
+					taggers.put(vocName, tagger);
 				} catch (Exception e) {
 					logger.warn("error creating maui tagger ignored", e);
 				}
 			}
-		}
-		else if (this.algorithm.equals("dummy")) {
+		} else if (this.algorithm.equals("dummy")) {
 			SKOSScheme schema = vocabularies.get(vocabularies.firstKey());
 			TaggerFactory.selectTagger(TaggerFactory.DUMMYTAGGER);
-			Tagger tagger = TaggerFactory.getTagger("", schema
-					.getLingpipeModel(), "", null);
-			this.taggers.put("Dummytagger", tagger);
+			Tagger tagger = TaggerFactory.getTagger("",
+					schema.getLingpipeModel(), "", null);
+			taggers.put("Dummytagger", tagger);
 		} else {
-		    logger.fatal(this.algorithm + " algorithm is not supported");
+			logger.fatal(this.algorithm + " algorithm is not supported");
 		}
-		logger.debug("NUMBER OF TAGGERS: " + this.taggers.size());
-		for (Tagger tag : this.taggers.values()) {
-		    logger.info("Tagger: " + tag.getVocabulary());
+		logger.debug("NUMBER OF TAGGERS: " + taggers.size());
+		for (Tagger tag : taggers.values()) {
+			logger.info("Tagger: " + tag.getVocabulary());
 		}
 	}
 
 	/**
-	 * Returns a list of SKOSConcept objects for the specified URL
-	 * using the specified vocabularies and SKOSSearcher implementation. 
-	 * The maximum number of hops indicates the number of levels of links
-	 * to be crawled/traversed when indexing the site.
+	 * Returns a list of SKOSConcept objects for the specified URL using the
+	 * specified vocabularies and SKOSSearcher implementation. The maximum
+	 * number of hops indicates the number of levels of links to be
+	 * crawled/traversed when indexing the site.
 	 * 
-	 * This method uses the TextManager utility to extract text from the 
-	 * URL.
+	 * This method uses the TextManager utility to extract text from the URL.
 	 * 
-	 * @param url			URL of desired web site
-	 * @param vocabularies  List of vocabularies
-	 * @param searcher		Searcher implementation
-	 * @param maxHops		Maximum number of links to be traversed (hops)
-	 * @param numTerms		Number of terms to be returned
+	 * @param url
+	 *            URL of desired web site
+	 * @param vocabularies
+	 *            List of vocabularies
+	 * @param searcher
+	 *            Searcher implementation
+	 * @param maxHops
+	 *            Maximum number of links to be traversed (hops)
+	 * @param numTerms
+	 *            Number of terms to be returned
 	 * @return
 	 */
 	@Override
-	public List<SKOSConcept> getTags(URL url, List<String> vocabulary, 
-			SKOSSearcher searcher, int maxHops, int numTerms, boolean diff, int minOccur)
-	{
-		try
-		{
+	public List<SKOSConcept> getTags(final URL url,
+			final List<String> vocabulary, final SKOSSearcher searcher,
+			final int maxHops, final int numTerms, final boolean diff,
+			final int minOccur) {
+		try {
 			String proxyHost = config.getString("hive.http.proxyHost", null);
 			int proxyPort = config.getInt("hive.http.proxyPort", -1);
-			String[] ignorePrefixes = config.getStringArray("hive.ignorePrefix");
+			String[] ignorePrefixes = config
+					.getStringArray("hive.ignorePrefix");
 			TextManager tm = new TextManager();
 			tm.setProxy(proxyHost, proxyPort);
 			tm.setIgnorePrefixes(ignorePrefixes);
 			String text = tm.getPlainText(url, maxHops, diff);
-			return getTagsInternal(text, vocabulary, searcher, numTerms, minOccur);
+			return getTagsInternal(text, vocabulary, searcher, numTerms,
+					minOccur);
 		} catch (Exception e) {
 			logger.error(e);
 		}
-		return null; 			
+		return null;
 	}
-	
+
 	/**
-	 * Returns a list of SKOSConcept objects for the specified file
-	 * using the specified vocabularies and SKOSSearcher implementation.
+	 * Returns a list of SKOSConcept objects for the specified file using the
+	 * specified vocabularies and SKOSSearcher implementation.
 	 * 
-	 * @param path			Path to the file
-	 * @param vocabularies	List of vocabularies
-	 * @param searcher		Searcher implementation
-	 * @param numTerms		Number of terms to be returned
+	 * @param path
+	 *            Path to the file
+	 * @param vocabularies
+	 *            List of vocabularies
+	 * @param searcher
+	 *            Searcher implementation
+	 * @param numTerms
+	 *            Number of terms to be returned
 	 * @return
 	 */
 	@Override
-	public List<SKOSConcept> getTags(String filePath, List<String> vocabularies, 
-			SKOSSearcher searcher, int numTerms, int minOccur) 
-	{
+	public List<SKOSConcept> getTags(final String filePath,
+			final List<String> vocabularies, final SKOSSearcher searcher,
+			final int numTerms, final int minOccur) {
 		TextManager tm = new TextManager();
 		String text = tm.getPlainText(filePath);
-				
-		return getTagsInternal(text, vocabularies, searcher, numTerms, minOccur);          
+
+		return getTagsInternal(text, vocabularies, searcher, numTerms, minOccur);
 	}
-	
-	
+
 	@Override
-	public List<SKOSConcept> getTagsFromText(String text,
-			List<String> vocabularies, SKOSSearcher searcher, 
-			int maxTerms, int minOccur) {
+	public List<SKOSConcept> getTagsFromText(final String text,
+			final List<String> vocabularies, final SKOSSearcher searcher,
+			final int maxTerms, final int minOccur) {
 		return getTagsInternal(text, vocabularies, searcher, maxTerms, minOccur);
 	}
-	
+
 	@Override
-	public List<ConceptNode> getTagsAsTree(String text, List<String> vocabularies,
-			SKOSSearcher searcher, int maxTerms, int minOccur) 
-	{
-		List<SKOSConcept> concepts =  getTagsInternal(text, vocabularies, searcher, maxTerms, minOccur);
+	public List<ConceptNode> getTagsAsTree(final String text,
+			final List<String> vocabularies, final SKOSSearcher searcher,
+			final int maxTerms, final int minOccur) {
+		List<SKOSConcept> concepts = getTagsInternal(text, vocabularies,
+				searcher, maxTerms, minOccur);
 		ConceptTreeBuilder tree = new ConceptTreeBuilder();
-		for (SKOSConcept concept: concepts) {
+		for (SKOSConcept concept : concepts) {
 			tree.add(concept, searcher);
 		}
 		return tree.getTree();
-	}	
-	
-	
+	}
+
 	/**
-	 * Returns a list of SKOSConcept objects for the specified text
-	 * using the specified vocabularies and SKOSSearcher implementation.
+	 * Returns a list of SKOSConcept objects for the specified text using the
+	 * specified vocabularies and SKOSSearcher implementation.
 	 * 
-	 * @param text			Full-text of document
-	 * @param vocabularies	List of vocabularies
-	 * @param searcher		Searcher implementation
-	 * @param numTerms		Number of terms to be returned
-	 * @param minOccur		Minimum number of phrase occurrences
+	 * @param text
+	 *            Full-text of document
+	 * @param vocabularies
+	 *            List of vocabularies
+	 * @param searcher
+	 *            Searcher implementation
+	 * @param numTerms
+	 *            Number of terms to be returned
+	 * @param minOccur
+	 *            Minimum number of phrase occurrences
 	 * @return
 	 */
-	private List<SKOSConcept> getTagsInternal(String text, List<String> vocabularies, 
-			SKOSSearcher searcher, int numTerms, int minOccur)
-	{
+	private List<SKOSConcept> getTagsInternal(final String text,
+			final List<String> vocabularies, final SKOSSearcher searcher,
+			final int numTerms, final int minOccur) {
 		StopWatch stopwatch = new Log4JStopWatch();
 
 		List<SKOSConcept> result = new ArrayList<SKOSConcept>();
 		stopwatch.lap("GetPlainText");
-		
-		if (this.algorithm.equals("kea")) 
-		{
-			for (String voc : vocabularies) 
-			{
-				File testDir = new File(this.vocabularies.get(voc).getKEAtestSetDir());
-				
+
+		if (algorithm.equals("kea")) {
+			for (String voc : vocabularies) {
+				File testDir = new File(this.vocabularies.get(voc)
+						.getKEAtestSetDir());
+
 				String fileId = UUID.randomUUID().toString();
-				
+
 				String tempFileName = fileId;
-				File keaInputFile =  new File(testDir + File.separator + tempFileName + ".txt");
-				
+				File keaInputFile = new File(testDir + File.separator
+						+ tempFileName + ".txt");
+
 				logger.debug("Creating " + keaInputFile.getAbsolutePath());
 				FileOutputStream fos;
 				try {
@@ -249,21 +258,24 @@ public class SKOSTaggerImpl implements SKOSTagger
 					pr.close();
 					fos.close();
 				} catch (FileNotFoundException e) {
-				    logger.error(e);
+					logger.error(e);
 				} catch (IOException e) {
-                    logger.error(e);
+					logger.error(e);
 				}
-				Tagger tagger = this.taggers.get(voc);
+				Tagger tagger = taggers.get(voc);
 				String vocabularyName = tagger.getVocabulary();
 				logger.info("Indexing with " + vocabularyName);
 				try {
-					tagger.extractKeyphrasesFromFile(tempFileName, numTerms, minOccur);
+					tagger.extractKeyphrasesFromFile(tempFileName, numTerms,
+							minOccur);
 				} catch (RuntimeException e) {
 					logger.error(e);
 				}
-				
-				File keaOutputFile =  new File(testDir + File.separator + tempFileName + ".key");
-				logger.debug("Reading key file " + keaOutputFile.getAbsolutePath());
+
+				File keaOutputFile = new File(testDir + File.separator
+						+ tempFileName + ".key");
+				logger.debug("Reading key file "
+						+ keaOutputFile.getAbsolutePath());
 				try {
 					FileInputStream fis = new FileInputStream(keaOutputFile);
 					InputStreamReader isr = new InputStreamReader(fis);
@@ -285,27 +297,28 @@ public class SKOSTaggerImpl implements SKOSTagger
 				} catch (FileNotFoundException e) {
 					logger.error("unable to find file", e);
 				} catch (IOException e) {
-				    logger.error("file processing problem", e);
+					logger.error("file processing problem", e);
 				}
-				
-				// If we do not delete these files, they are re-read during subsequent
+
+				// If we do not delete these files, they are re-read during
+				// subsequent
 				// extractKeyphrases and cause performance degradation.
-				logger.debug("Deleting "+ keaInputFile.getAbsolutePath());
-				//keaInputFile.delete();
-				logger.debug("Deleting "+ keaOutputFile.getAbsolutePath());
-				//keaOutputFile.delete();
+				logger.debug("Deleting " + keaInputFile.getAbsolutePath());
+				// keaInputFile.delete();
+				logger.debug("Deleting " + keaOutputFile.getAbsolutePath());
+				// keaOutputFile.delete();
 			}
 
-		} 
-		else if (this.algorithm.equals("maui")) {
+		} else if (algorithm.equals("maui")) {
 
-			for (String voc : vocabularies) 
-			{
-				File testDir = new File(this.vocabularies.get(voc).getKEAtestSetDir());
+			for (String voc : vocabularies) {
+				File testDir = new File(this.vocabularies.get(voc)
+						.getKEAtestSetDir());
 				String fileId = UUID.randomUUID().toString();
 				String tempFileName = fileId;
-				File keaInputFile =  new File(testDir + File.separator + tempFileName + ".txt");
-				
+				File keaInputFile = new File(testDir + File.separator
+						+ tempFileName + ".txt");
+
 				logger.debug("Creating " + keaInputFile.getAbsolutePath());
 				FileOutputStream fos;
 				try {
@@ -315,21 +328,24 @@ public class SKOSTaggerImpl implements SKOSTagger
 					pr.close();
 					fos.close();
 				} catch (FileNotFoundException e) {
-				    logger.error(e);
+					logger.error(e);
 				} catch (IOException e) {
-                    logger.error(e);
+					logger.error(e);
 				}
-				Tagger tagger = this.taggers.get(voc);
+				Tagger tagger = taggers.get(voc);
 				String vocabularyName = tagger.getVocabulary();
 				logger.info("Indexing with " + vocabularyName);
 				try {
-					tagger.extractKeyphrasesFromFile(tempFileName, numTerms, minOccur);
+					tagger.extractKeyphrasesFromFile(tempFileName, numTerms,
+							minOccur);
 				} catch (RuntimeException e) {
 					logger.error(e);
 				}
-				
-				File keaOutputFile =  new File(testDir + File.separator + tempFileName + ".key");
-				logger.debug("Reading key file " + keaOutputFile.getAbsolutePath());
+
+				File keaOutputFile = new File(testDir + File.separator
+						+ tempFileName + ".key");
+				logger.debug("Reading key file "
+						+ keaOutputFile.getAbsolutePath());
 				try {
 					FileInputStream fis = new FileInputStream(keaOutputFile);
 					InputStreamReader isr = new InputStreamReader(fis);
@@ -344,16 +360,15 @@ public class SKOSTaggerImpl implements SKOSTagger
 						concept.setScore(new Double(elements[2]));
 						result.add(concept);
 						line = br.readLine();
-						
+
 						/*
-						List<SKOSConcept> concepts = searcher
-								.searchConceptByKeyword(concept);
-						if (concepts.size() > 0) {
-						    concepts.get(0).setScore(new Double(elements[2]));
-					        result.add(concepts.get(0));
-					        //logger.debug("concept QName = " + concepts.get(0).getQName());
-						}
-				        */
+						 * List<SKOSConcept> concepts = searcher
+						 * .searchConceptByKeyword(concept); if (concepts.size()
+						 * > 0) { concepts.get(0).setScore(new
+						 * Double(elements[2])); result.add(concepts.get(0));
+						 * //logger.debug("concept QName = " +
+						 * concepts.get(0).getQName()); }
+						 */
 					}
 					br.close();
 					isr.close();
@@ -361,19 +376,19 @@ public class SKOSTaggerImpl implements SKOSTagger
 				} catch (FileNotFoundException e) {
 					logger.error("unable to find file", e);
 				} catch (IOException e) {
-				    logger.error("file processing problem", e);
+					logger.error("file processing problem", e);
 				}
-				
-				// If we do not delete these files, they are re-read during subsequent
+
+				// If we do not delete these files, they are re-read during
+				// subsequent
 				// extractKeyphrases and cause performance degradation.
-				logger.debug("Deleting "+ keaInputFile.getAbsolutePath());
-				//keaInputFile.delete();
-				logger.debug("Deleting "+ keaOutputFile.getAbsolutePath());
-				//keaOutputFile.delete();
+				logger.debug("Deleting " + keaInputFile.getAbsolutePath());
+				// keaInputFile.delete();
+				logger.debug("Deleting " + keaOutputFile.getAbsolutePath());
+				// keaOutputFile.delete();
 			}
-		}
-		else if (this.algorithm.equals("dummy")) {
-			Tagger tagger = this.taggers.get("Dummytagger");
+		} else if (algorithm.equals("dummy")) {
+			Tagger tagger = taggers.get("Dummytagger");
 			logger.info("Dummy indexing with " + tagger.getVocabulary());
 			logger.debug("extracting keyphrases");
 			List<String> keywords = tagger.extractKeyphrases(text);
@@ -386,24 +401,25 @@ public class SKOSTaggerImpl implements SKOSTagger
 			for (int i = 0; i < limit; i++) {
 				List<SKOSConcept> concepts = searcher
 						.searchConceptByKeyword(keywords.get(i));
-				if (concepts.size() > 0)
+				if (concepts.size() > 0) {
 					result.add(concepts.get(0));
-				if (concepts.size() > 1)
+				}
+				if (concepts.size() > 1) {
 					result.add(concepts.get(1));
-				if (concepts.size() > 2)
+				}
+				if (concepts.size() > 2) {
 					result.add(concepts.get(2));
+				}
 			}
 			logger.debug("tagging complete");
 		}
 		stopwatch.lap("GetTags");
 
-
 		return result;
 	}
-	
+
 	@Override
-	public void setConfig(Configuration config)
-	{
+	public void setConfig(final Configuration config) {
 		this.config = config;
 	}
 }
