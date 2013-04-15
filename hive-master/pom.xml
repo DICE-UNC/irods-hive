@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.irods.jargon</groupId>
 	<artifactId>jargon-hive-master</artifactId>
@@ -18,6 +19,10 @@
 		<lucene.version>2.4.1</lucene.version>
 		<sesame.version>2.2.4</sesame.version>
 		<hive.version>1.0-SNAPSHOT</hive.version>
+		<jackson.mapper.version>1.5.6</jackson.mapper.version>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.javadoc.reporting.version>2.7</maven.javadoc.reporting.version>
+		<jackson.mapper.version>1.9.12</jackson.mapper.version>
 	</properties>
 	<issueManagement>
 		<system>gForge</system>
@@ -438,8 +443,8 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	<dependencies>
-	</dependencies>
+	<dependencies />
+
 	<build>
 		<plugins>
 			<plugin>
@@ -501,9 +506,9 @@
 			</build>
 		</profile>
 	</profiles>
-  <modules>
-    <module>jargon-hive-irods</module>
-    <module>jargon-hive-3store-integration</module>
-    <module>hive-query-rest</module>
-  </modules>
+	<modules>
+		<module>jargon-hive-irods</module>
+		<module>jargon-hive-3store-integration</module>
+		<module>hive-query-rest</module>
+	</modules>
 </project>
