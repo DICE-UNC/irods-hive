@@ -67,9 +67,7 @@ public class MARCtoSKOSConverter {
 				outputStream.print(record.toString());
 
 			}
-			if (DEBUG) {
-				System.out.println("Record count = " + count);
-			}
+
 			in.close();
 		} catch (Exception e) {
 			System.out.println("Error reading input file");
