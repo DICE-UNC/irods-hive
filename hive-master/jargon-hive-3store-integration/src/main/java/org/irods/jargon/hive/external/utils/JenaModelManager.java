@@ -152,6 +152,21 @@ public class JenaModelManager {
 
 		log.info("getJdbcConnectionBasedOnHiveConfig()");
 		validateDbConfiguration(jenaHiveConfiguration);
+		
+		log.info("attempting to load driver for:{}", jenaHiveConfiguration.getJenaDbDriverClass());
+		
+		 try {
+			Class.forName(jenaHiveConfiguration.getJenaDbDriverClass()).newInstance();
+		} catch (InstantiationException e1) {
+			log.error("instantiation exception with given database driver", e1);
+			throw new HiveIndexerException(e1);
+		} catch (IllegalAccessException e1) {
+			log.error("illegal access exception with given database driver", e1);
+			throw new HiveIndexerException(e1);
+		} catch (ClassNotFoundException e1) {
+			log.error("class not found exception with given database driver", e1);
+			throw new HiveIndexerException(e1);
+		}
 
 		Connection conn = null;
 		Properties connectionProps = new Properties();
