@@ -16,10 +16,6 @@
 		scans specified packages for classes configured as Spring managed beans and 
 		automatically sets up objects annotated with @Controller, @Service etc. -->
 	<context:component-scan base-package="org.irods.jargon.hive.query.rest">
-		<context:exclude-filter expression=".*_Roo_.*"
-			type="regex" />
-		<context:exclude-filter expression="org.springframework.stereotype.Controller"
-			type="annotation" />
 	</context:component-scan>
 	  <!--
         Turn on AspectJ @Configurable support. As a result, any time you
@@ -51,6 +47,7 @@
 			</util:list>
 		</property>
 	</bean>
+	
 	<!-- Converts JSON to POJO and vice versa -->
 	<bean id="jsonMessageConverter"
 		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
@@ -62,7 +59,7 @@
 		<property name="jenaDbUser" value="test" />
 		<property name="jenaDbPassword" value="test" />
 		<property name="jenaDbType" value="Derby" />
-		<property name="jenaDbUri" value="jdbc:derby:C:/temp/irodsscratch/JenaHiveSPARQLServiceImplTest/derbyDir/JenaHiveSPARQLServiceImplTest;create=true" />		
+		<property name="jenaDbUri" value="jdbc:derby:C:/temp/irodsscratch/JenaHiveSPARQLServiceImplTest/derbyDir/JenaHiveSPARQLServiceImplTest;create=false" />		
 	</bean>
 	
 	<bean id="jargonHiveQueryService" class="org.irods.jargon.hive.external.query.JargonHiveQueryServiceImpl">
