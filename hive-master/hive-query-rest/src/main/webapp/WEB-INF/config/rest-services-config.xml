@@ -57,7 +57,7 @@
 		<property name="jenaDbPassword" value="test" />
 		<property name="jenaDbType" value="Derby" />
 		<property name="jenaDbUri"
-			value="jdbc:derby:C:/temp/irodsscratch/JenaHiveSPARQLServiceImplTest/derbyDir/JenaHiveSPARQLServiceImplTest;create=false" />
+			value="jdbc:derby:/users/mikeconway/temp/irodsscratch/JenaHiveSPARQLServiceImplTest/derbyDir/JenaHiveSPARQLServiceImplTest;create=false" />
 	</bean>
 
 	<!-- <bean id="jenaHiveConfiguration" class="org.irods.jargon.hive.external.utils.JenaHiveConfiguration"> 

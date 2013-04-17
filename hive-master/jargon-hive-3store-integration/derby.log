@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-2013-04-16 13:16:52.921 GMT:
- Booting Derby version The Apache Software Foundation - Apache Derby - 10.6.1.0 - (938214): instance a816c00e-013e-12fd-a48d-000069546b70 
-on database directory C:\temp\irodsscratch\JenaHiveSPARQLServiceImplTest\derbyDir\JenaHiveSPARQLServiceImplTest   with class loader sun.misc.Launcher$AppClassLoader@4de8b671
+2013-04-17 21:14:35.956 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.6.1.0 - (938214): instance a816c00e-013e-19d9-5c20-0000043ee6d0 
+on database directory /Users/mikeconway/temp/hivetest/derby   with class loader sun.misc.Launcher$AppClassLoader@42b7141a
 
 Database Class Loader started - derby.database.classpath=''
