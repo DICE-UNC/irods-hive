@@ -43,8 +43,9 @@ public class HiveIndexerRunner {
 		log.info("index()");
 		log.info("irodsAccount:{}", irodsAccount);
 		log.info("jenaHiveConfiguration:{}", jenaHiveConfiguration);
+		JenaHiveIndexer jenaHiveIndexerService;
 		try {
-			JenaHiveIndexer jenaHiveIndexerService = new JenaHiveIndexerServiceImpl(
+			jenaHiveIndexerService = new JenaHiveIndexerServiceImpl(
 					irodsFileSystem.getIRODSAccessObjectFactory(),
 					irodsAccount, jenaHiveConfiguration);
 			jenaHiveIndexerService.execute();
@@ -103,6 +104,7 @@ public class HiveIndexerRunner {
 			jenaHiveConfiguration.setVocabularyRDFFileNames(vocabs);
 			jenaHiveConfiguration
 					.setJenaDbType(JenaHiveConfiguration.JENA_DERBY_DB_TYPE);
+			jenaHiveConfiguration.setAutoCloseJenaModel(true);
 			HiveIndexerRunner runner = new HiveIndexerRunner();
 			runner.setIrodsAccount(irodsAccount);
 			runner.setJenaHiveConfiguration(jenaHiveConfiguration);

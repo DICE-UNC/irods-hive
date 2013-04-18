@@ -49,15 +49,15 @@
 	<bean id="jsonMessageConverter"
 		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
 
-	<bean id="jenaHiveConfiguration"
+		<bean id="jenaHiveConfiguration"
 		class="org.irods.jargon.hive.external.utils.JenaHiveConfiguration">
-		<property name="idropContext" value="http://localhost:8080/idrop-web2" />
+		<property name="idropContext" value="http://centos6.irods.renci.org:8080/idrop-web2" />
 		<property name="jenaDbDriverClass" value="org.apache.derby.jdbc.EmbeddedDriver" />
 		<property name="jenaDbUser" value="test" />
 		<property name="jenaDbPassword" value="test" />
 		<property name="jenaDbType" value="Derby" />
 		<property name="jenaDbUri"
-			value="jdbc:derby:C:/temp/hivetest/derby;create=false" />
+			value="jdbc:derby:/var/hive/derby;create=false" />
 	</bean>
 	
 	<!-- 
@@ -72,24 +72,37 @@
 			value="jdbc:derby:/users/mikeconway/temp/hivetest/derby;create=false" />
 	</bean>
 	
+	<bean id="jenaHiveConfiguration"
+		class="org.irods.jargon.hive.external.utils.JenaHiveConfiguration">
+		<property name="idropContext" value="http://localhost:8080/idrop-web2" />
+		<property name="jenaDbDriverClass" value="org.apache.derby.jdbc.EmbeddedDriver" />
+		<property name="jenaDbUser" value="test" />
+		<property name="jenaDbPassword" value="test" />
+		<property name="jenaDbType" value="Derby" />
+		<property name="jenaDbUri"
+			value="jdbc:derby:C:/temp/hivetest/derby;create=false" />
+			
+			<bean id="jenaHiveConfiguration"
+		class="org.irods.jargon.hive.external.utils.JenaHiveConfiguration">
+		<property name="idropContext" value="http://centos6.irods.renci.org:8080/idrop-web2" />
+		<property name="jenaDbDriverClass" value="org.apache.derby.jdbc.EmbeddedDriver" />
+		<property name="jenaDbUser" value="test" />
+		<property name="jenaDbPassword" value="test" />
+		<property name="jenaDbType" value="Derby" />
+		<property name="jenaDbUri"
+			value="jdbc:derby:/var/hive/derby;create=false" />
+	</bean>
+	
 	 -->
 
-	<!-- <bean id="jenaHiveConfiguration" class="org.irods.jargon.hive.external.utils.JenaHiveConfiguration"> 
-		<property name="idropContext" value="http://localhost:8080/idrop-web2"/> 
-		<property name="jenaDbDriverClass" value="org.apache.derby.jdbc.EmbeddedDriver" 
-		/> <property name="jenaDbUser" value="test" /> <property name="jenaDbPassword" 
-		value="test" /> <property name="jenaDbType" value="Derby" /> <property name="jenaDbUri" 
-		value="jdbc:derby:C:/temp/irodsscratch/JenaHiveSPARQLServiceImplTest/derbyDir/JenaHiveSPARQLServiceImplTest;create=false" 
-		/> </bean> <bean id="jenaHiveConfiguration" class="org.irods.jargon.hive.external.utils.JenaHiveConfiguration"> 
-		<property name="idropContext" value="http://centos6.irods.renci.org:8080/idrop-web2"/> 
-		<property name="jenaDbDriverClass" value="org.apache.derby.jdbc.EmbeddedDriver" 
-		/> <property name="jenaDbUser" value="test" /> <property name="jenaDbPassword" 
-		value="test" /> <property name="jenaDbType" value="Derby" /> <property name="jenaDbUri" 
-		value="jdbc:derby:/var/hive/derbyDir/JenaHiveSPARQLServiceImplTest;create=false" 
-		/> </bean> -->
-
+	
 	<bean id="jargonHiveQueryService"
 		class="org.irods.jargon.hive.external.query.JargonHiveQueryServiceImpl">
+		<constructor-arg name="jenaHiveConfiguration" ref="jenaHiveConfiguration" />
+	</bean>
+	
+	<bean id="jargonHiveSparqlService"
+		class="org.irods.jargon.hive.external.sparql.JenaHiveSPARQLServiceImpl" init-method="init">
 		<constructor-arg name="jenaHiveConfiguration" ref="jenaHiveConfiguration" />
 	</bean>
 

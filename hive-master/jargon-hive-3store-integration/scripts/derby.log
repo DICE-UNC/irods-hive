@@ -1,0 +1,6 @@
+----------------------------------------------------------------
+2013-04-18 14:04:29.273 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.6.1.0 - (938214): instance a816c00e-013e-1d75-f220-000079527a20 
+on database directory C:\temp\hivetest\derby   with class loader sun.misc.Launcher$AppClassLoader@6bad186f
+
+Database Class Loader started - derby.database.classpath=''

@@ -48,8 +48,7 @@ public class JenaHiveSPARQLServiceImpl implements JenaHiveSPARQLService {
 	 *            to be queried
 	 */
 	public JenaHiveSPARQLServiceImpl(
-
-	final JenaHiveConfiguration jenaHiveConfiguration) {
+			final JenaHiveConfiguration jenaHiveConfiguration) {
 
 		if (jenaHiveConfiguration == null) {
 			throw new IllegalArgumentException("null jenaHiveConfiguration");

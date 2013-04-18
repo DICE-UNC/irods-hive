@@ -119,6 +119,8 @@ public class JenaHiveIndexerVisitor extends
 		// load vocabulary files
 		for (String vocabFileName : jenaHiveVisitorConfiguration
 				.getVocabularyRDFFileNames()) {
+
+			log.info("loading vocaublary file:{}", vocabFileName);
 			in = FileManager.get().open(vocabFileName);
 			if (in == null) {
 				throw new IllegalArgumentException("File: " + vocabFileName
