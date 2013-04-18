@@ -57,8 +57,22 @@
 		<property name="jenaDbPassword" value="test" />
 		<property name="jenaDbType" value="Derby" />
 		<property name="jenaDbUri"
+			value="jdbc:derby:C:/temp/hivetest/derby;create=false" />
+	</bean>
+	
+	<!-- 
+	<bean id="jenaHiveConfiguration"
+		class="org.irods.jargon.hive.external.utils.JenaHiveConfiguration">
+		<property name="idropContext" value="http://localhost:8080/idrop-web2" />
+		<property name="jenaDbDriverClass" value="org.apache.derby.jdbc.EmbeddedDriver" />
+		<property name="jenaDbUser" value="test" />
+		<property name="jenaDbPassword" value="test" />
+		<property name="jenaDbType" value="Derby" />
+		<property name="jenaDbUri"
 			value="jdbc:derby:/users/mikeconway/temp/hivetest/derby;create=false" />
 	</bean>
+	
+	 -->
 
 	<!-- <bean id="jenaHiveConfiguration" class="org.irods.jargon.hive.external.utils.JenaHiveConfiguration"> 
 		<property name="idropContext" value="http://localhost:8080/idrop-web2"/> 
