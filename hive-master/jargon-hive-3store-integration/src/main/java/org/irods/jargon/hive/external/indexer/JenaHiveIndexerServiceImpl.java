@@ -63,7 +63,9 @@ public class JenaHiveIndexerServiceImpl extends AbstractJargonService implements
 		log.info("executed, now get the Jena model and return to the caller");
 		Model jenaModel = visitor.getJenaModel();
 		if (jenaHiveConfiguration.isAutoCloseJenaModel()) {
-			log.info("configuration says to autoclose jena model, closing...");
+			log.info("configuration says to autoclose jena model, closing..."); // FIXME:
+																				// double
+																				// close
 			jenaModel.close();
 		}
 		return jenaModel;

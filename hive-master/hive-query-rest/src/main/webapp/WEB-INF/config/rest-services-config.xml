@@ -40,16 +40,13 @@
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="messageConverters">
 			<util:list id="beanList">
-				<ref bean="jsonMessageConverter" />
+			<!-- <ref bean="jsonMessageConverter" />  -->	
 			</util:list>
 		</property>
 	</bean>
 
 	<!-- Converts JSON to POJO and vice versa -->
-	<bean id="jsonMessageConverter"
-		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
-
-		<bean id="jenaHiveConfiguration"
+	<bean id="jenaHiveConfiguration"
 		class="org.irods.jargon.hive.external.utils.JenaHiveConfiguration">
 		<property name="idropContext" value="http://centos6.irods.renci.org:8080/idrop-web2" />
 		<property name="jenaDbDriverClass" value="org.apache.derby.jdbc.EmbeddedDriver" />
@@ -59,6 +56,7 @@
 		<property name="jenaDbUri"
 			value="jdbc:derby:/var/hive/derby;create=false" />
 	</bean>
+	
 	
 	<!-- 
 	<bean id="jenaHiveConfiguration"
@@ -81,6 +79,7 @@
 		<property name="jenaDbType" value="Derby" />
 		<property name="jenaDbUri"
 			value="jdbc:derby:C:/temp/hivetest/derby;create=false" />
+		</bean>
 			
 			<bean id="jenaHiveConfiguration"
 		class="org.irods.jargon.hive.external.utils.JenaHiveConfiguration">

@@ -186,6 +186,7 @@ public class JenaHiveIndexerVisitor extends
 		} else {
 			indiv = jenaModel.createIndividual(irodsURI.toString(), dataOnt);
 		}
+
 		log.info("indiv done create prop");
 		Property absPathProp = jenaModel.getProperty(JenaHiveConfiguration.NS,
 				"absolutePath");
