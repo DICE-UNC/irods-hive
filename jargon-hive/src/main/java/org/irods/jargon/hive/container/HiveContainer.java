@@ -15,6 +15,8 @@ import edu.unc.ils.mrc.hive.api.SKOSServer;
 public interface HiveContainer {
 
 	/**
+	 * Get the path to hive configuration file
+	 * 
 	 * @return the hiveConfiguration
 	 */
 	HiveConfiguration getHiveConfiguration();
@@ -27,7 +29,8 @@ public interface HiveContainer {
 
 	/**
 	 * Method called upon startup to initialize the <code>SKOSServer</code>
-	 * components
+	 * components. Setting the flag "start" to be true If hiveConfiguration is
+	 * not setup or the SKOSServer has been started up, an exception arises
 	 * 
 	 * @throws JargonHiveException
 	 */
@@ -36,16 +39,20 @@ public interface HiveContainer {
 	/**
 	 * Get the <code>SKOSServer</code> that contains the HIVE vocabularies
 	 * 
-	 * @return
+	 * @return an SKOSServer instance
 	 */
 	SKOSServer getSkosServer();
 
+	/**
+	 * Method called to close the SkosServer if it has been started
+	 */
 	public abstract void shutdown();
 
 	/**
-	 * Get an instance of the <code>VocabularyService<code>
+	 * Get an instance of the
+	 * <code>VocabularyService<code> based on HIVE configuration info if SKOSServer has been started
 	 * 
-	 * @return
+	 * @return an instance of VocabularyService
 	 * @throws JargonHiveException
 	 */
 	VocabularyService instanceVocabularyService() throws JargonHiveException;
