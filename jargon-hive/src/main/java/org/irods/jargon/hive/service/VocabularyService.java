@@ -91,6 +91,13 @@ public interface VocabularyService {
 
 	public abstract ConceptProxy getFirstConcept(String vocabulary);
 
+	/**
+	 * @param vocabulary
+	 * @param str
+	 * @param numTerms
+	 * @return
+	 * @throws Exception
+	 */
 	public abstract List<AutocompleteTerm> suggestTermsFor(String vocabulary,
 			String str, int numTerms) throws Exception;
 

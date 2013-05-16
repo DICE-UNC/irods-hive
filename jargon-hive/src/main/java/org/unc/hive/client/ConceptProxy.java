@@ -18,7 +18,7 @@ public class ConceptProxy implements IsSerializable {
 	private String preLabel;
 	private String URI;
 	private String origin;
-	private String SKOSCode;
+	private String skosCode;
 	private Map<String, String> narrower = new HashMap<String, String>();
 	private Map<String, String> broader = new HashMap<String, String>();
 	private Map<String, String> related = new HashMap<String, String>();
@@ -71,7 +71,7 @@ public class ConceptProxy implements IsSerializable {
 		this.origin = origin;
 		preLabel = prelabel;
 		URI = uri;
-		SKOSCode = skosCode;
+		this.skosCode = skosCode;
 	}
 
 	public double getScore() {
@@ -79,7 +79,7 @@ public class ConceptProxy implements IsSerializable {
 	}
 
 	public String getSkosCode() {
-		return SKOSCode;
+		return this.skosCode;
 	}
 
 	public boolean getIsLeaf() {
