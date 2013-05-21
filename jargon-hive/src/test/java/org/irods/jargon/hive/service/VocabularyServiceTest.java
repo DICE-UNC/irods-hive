@@ -24,9 +24,10 @@ public class VocabularyServiceTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		hiveConfiguration
-				.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
+		//hiveConfiguration
+				//.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
 		// hiveConfiguration.setHiveConfigLocation("C:/Users/Koushyar/Documents/hive/irodshive/hive-code/hive-web/war/WEB-INF/conf/hive.properties");
+		hiveConfiguration.setHiveConfigLocation("/Users/zhangle/temp/hive-data/hive.properties");
 
 		hiveContainer.setHiveConfiguration(hiveConfiguration);
 		hiveContainer.init();
