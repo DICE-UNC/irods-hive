@@ -231,6 +231,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 	public ConceptProxy getConceptProxyForTopOfVocabulary(
 			final String vocabulary, String letter, final boolean brief)
 			throws VocabularyNotFoundException {
+
 		logger.info("getConceptProxyForTopOfVocabulary()");
 
 		if (vocabulary == null || vocabulary.isEmpty()) {

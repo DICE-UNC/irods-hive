@@ -179,7 +179,7 @@ public class ConceptProxy implements IsSerializable {
 		this.narrower = narrower;
 		this.related = related;
 		scopeNotes = scopeNote;
-		SKOSCode = skosCode;
+		this.skosCode = skosCode;
 	}
 
 	public boolean isSelected() {
