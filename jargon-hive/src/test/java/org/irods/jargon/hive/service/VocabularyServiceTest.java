@@ -128,6 +128,16 @@ public class VocabularyServiceTest {
 	}
 
 	@Test
+	public void testGetSubTopConceptWithBriefSettoFalse() throws Exception {
+		VocabularyService vocabularyService = new VocabularyServiceImpl(
+				hiveContainer);
+		List<ConceptProxy> fatherList = null;
+		fatherList = vocabularyService.getSubTopConcept("agrovoc", "A", false);
+		TestCase.assertFalse("did not load sub top concept",
+				fatherList.isEmpty());
+	}
+
+	@Test
 	public void testGetConceptProxyForTopOfVocabulary() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
