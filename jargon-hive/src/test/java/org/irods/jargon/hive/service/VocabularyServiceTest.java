@@ -229,7 +229,7 @@ public class VocabularyServiceTest {
 				.getAllVocabularyNames();
 		List<ConceptProxy> cp = vocabularyService.getTags(
 				"/Users/zhangle/temp/hive-data/agrovoc/agrovoc.rdf",
-				openVocabularies, 29000, "kea");
+				openVocabularies, 28174, "kea");
 		TestCase.assertFalse("did not get Tags", cp.isEmpty());
 	}
 
