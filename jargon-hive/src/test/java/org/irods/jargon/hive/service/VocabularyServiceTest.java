@@ -1,5 +1,7 @@
 package org.irods.jargon.hive.service;
 
+import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -24,10 +26,10 @@ public class VocabularyServiceTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		//hiveConfiguration
-				//.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
-		// hiveConfiguration.setHiveConfigLocation("C:/Users/Koushyar/Documents/hive/irodshive/hive-code/hive-web/war/WEB-INF/conf/hive.properties");
-		hiveConfiguration.setHiveConfigLocation("/Users/zhangle/temp/hive-data/hive.properties");
+		// hiveConfiguration
+		// .setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
+		hiveConfiguration
+				.setHiveConfigLocation("/Users/zhangle/temp/hive-data/hive.properties");
 
 		hiveContainer.setHiveConfiguration(hiveConfiguration);
 		hiveContainer.init();
@@ -162,13 +164,20 @@ public class VocabularyServiceTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testGetConceptProxyForTopOfVocabularyNullVocab()
+	public void testGetConceptProxyForTopOfVocabularyNullVocabNullName()
 			throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
 		vocabularyService.getConceptProxyForTopOfVocabulary(null, "", true);
-
 	}
+
+	// @Test(expected = IllegalArgumentException.class)
+	// public void testGetConceptProxyForTopOfVocabularyNullVocabEmptyName()
+	// throws Exception {
+	// VocabularyService vocabularyService = new VocabularyServiceImpl(
+	// hiveContainer);
+	// vocabularyService.getConceptProxyForTopOfVocabulary("", "", true);
+	// }
 
 	// tested
 	@Test
@@ -187,6 +196,53 @@ public class VocabularyServiceTest {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
 		vocabularyService.getLastUpdateDate("agrovoc");
+	}
+
+	@Test
+	public void testGetAllVocabulary() throws Exception {
+		VocabularyService vocabularyService = new VocabularyServiceImpl(
+				hiveContainer);
+		List<List<String>> allVocabs = vocabularyService.getAllVocabularies();
+
+		TestCase.assertFalse(
+				"did not load vocabularies with properties to List",
+				allVocabs.isEmpty());
+		// TestCase.assertTrue("did not load all vocabularies", allVocabs.size()
+		// == vocabularyService.getNumberOfConcept("agrovoc"));
+	}
+
+	@Test
+	public void testGetVocabularyProperties() throws Exception {
+		VocabularyService vocabularyService = new VocabularyServiceImpl(
+				hiveContainer);
+		HashMap<String, HashMap<String, String>> vocabProps = vocabularyService
+				.getVocabularyProperties();
+		TestCase.assertFalse("did not load vocabulary properties",
+				vocabProps.isEmpty());
+	}
+
+	@Test
+	public void testGetTagsFromInput() throws Exception {
+		VocabularyService vocabularyService = new VocabularyServiceImpl(
+				hiveContainer);
+		List<String> openVocabularies = vocabularyService
+				.getAllVocabularyNames();
+		List<ConceptProxy> cp = vocabularyService.getTags(
+				"/Users/zhangle/temp/hive-data/agrovoc/agrovoc.rdf",
+				openVocabularies, 29000, "kea");
+		TestCase.assertFalse("did not get Tags", cp.isEmpty());
+	}
+
+	@Test
+	public void testGetTagsFromURL() throws Exception {
+		VocabularyService vocabularyService = new VocabularyServiceImpl(
+				hiveContainer);
+		List<String> openVocabularies = vocabularyService
+				.getAllVocabularyNames();
+		List<ConceptProxy> cp = vocabularyService.getTags(new URL(
+				"http://www.fao.org/aos/agrovoc#"), openVocabularies, 2, 29000,
+				true, 2, "kea");
+		TestCase.assertFalse("did not get Tags", cp.isEmpty());
 	}
 
 }
