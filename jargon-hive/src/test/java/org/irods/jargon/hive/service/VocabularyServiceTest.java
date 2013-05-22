@@ -13,6 +13,7 @@ import org.irods.jargon.hive.container.HiveContainerImpl;
 import org.irods.jargon.hive.exception.VocabularyNotFoundException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.unc.hive.client.ConceptProxy;
 
@@ -221,7 +222,7 @@ public class VocabularyServiceTest {
 				vocabProps.isEmpty());
 	}
 
-	@Test
+	@Ignore
 	public void testGetTagsFromInput() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
@@ -233,7 +234,7 @@ public class VocabularyServiceTest {
 		TestCase.assertFalse("did not get Tags", cp.isEmpty());
 	}
 
-	@Test
+	@Ignore
 	public void testGetTagsFromURL() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
