@@ -141,6 +141,7 @@ public class AdminVocabularies {
 				} catch (Exception e) {
 					logger.error(e);
 				}
+				
 
 				if (doKEAH2) {
 					logger.info("Initializing KEA H2 index");
@@ -179,6 +180,7 @@ public class AdminVocabularies {
 				} catch (Exception e) {
 					logger.error(e);
 				}
+				
 			} catch (HiveException e) {
 				logger.error("Vocabulary import failed", e);
 			}
