@@ -87,6 +87,7 @@ public class VocabularyServiceTest {
 
 	// tested
 	@Test
+//	@Ignore
 	public void testgetConceptByURI() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
@@ -109,6 +110,7 @@ public class VocabularyServiceTest {
 
 	// tested
 	@Test
+//	@Ignore
 	public void testGetChildConcept() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
@@ -148,7 +150,7 @@ public class VocabularyServiceTest {
 				.getConceptProxyForTopOfVocabulary("agrovoc", "", true);
 		Assert.assertNotNull("null proxy", proxy);
 		Assert.assertTrue("did not set as top level", proxy.isTopLevel());
-		Assert.assertEquals("did not set vocab name", "agrovoc",
+		Assert.assertEquals("did not set vocab name", "uat",
 				proxy.getOrigin());
 		Assert.assertFalse("did not set child (narrower) terms", proxy
 				.getNarrower().isEmpty());
@@ -222,6 +224,7 @@ public class VocabularyServiceTest {
 				vocabProps.isEmpty());
 	}
 
+	//@Test
 	@Ignore
 	public void testGetTagsFromInput() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
@@ -234,6 +237,7 @@ public class VocabularyServiceTest {
 		TestCase.assertFalse("did not get Tags", cp.isEmpty());
 	}
 
+	//@Test
 	@Ignore
 	public void testGetTagsFromURL() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
@@ -241,7 +245,7 @@ public class VocabularyServiceTest {
 		List<String> openVocabularies = vocabularyService
 				.getAllVocabularyNames();
 		List<ConceptProxy> cp = vocabularyService.getTags(new URL(
-				"http://www.fao.org/aos/agrovoc#"), openVocabularies, 2, 29000,
+				"http://en.wikipedia.org/wiki/Rice"), openVocabularies, 2, 200000,
 				true, 2, "kea");
 		TestCase.assertFalse("did not get Tags", cp.isEmpty());
 	}
