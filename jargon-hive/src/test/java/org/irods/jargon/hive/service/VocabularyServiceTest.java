@@ -3,6 +3,7 @@ package org.irods.jargon.hive.service;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -100,12 +101,12 @@ public class VocabularyServiceTest {
 	public void testSearchConcept() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
-		List<ConceptProxy> rankedList = null;
+		Set<ConceptProxy> rankedSet = null;
 		List<String> openVocabularies = vocabularyService
 				.getAllVocabularyNames();
-		rankedList = vocabularyService.searchConcept("ability",
+		rankedSet = vocabularyService.searchConcept("ability",
 				openVocabularies);
-		TestCase.assertFalse("did not find concept", rankedList.isEmpty());
+		TestCase.assertFalse("did not find concept", rankedSet.isEmpty());
 	}
 
 	// tested

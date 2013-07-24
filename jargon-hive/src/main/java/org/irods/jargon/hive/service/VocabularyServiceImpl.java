@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -357,14 +358,16 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 */
 
 	@Override
-	public List<ConceptProxy> searchConcept(final String keyword,
+	public Set<ConceptProxy> searchConcept(final String keyword,
 			final List<String> openedVocabularies) {
 
 		// maintain the rank list
 		SKOSSearcher searcher = getSkosServer().getSKOSSearcher();
 		List<SKOSConcept> result = searcher.searchConceptByKeyword(keyword,
 				true);
-		List<ConceptProxy> rankedlist = new ArrayList<ConceptProxy>();
+		Set<ConceptProxy> rankedset = new HashSet<ConceptProxy>();
+		Map<String, ConceptProxy> resultMap = new HashMap<String, ConceptProxy>();
+		
 		for (String s : openedVocabularies) {
 			System.out.println(s);
 		}
@@ -379,13 +382,18 @@ public class VocabularyServiceImpl implements VocabularyService {
 					String namespace = qname.getNamespaceURI();
 					String localPart = qname.getLocalPart();
 					String uri = namespace + " " + localPart;
+					logger.info("SKOSConcept: preLabel: " + preLabel + "; uri: " + uri + "; QName: " + qname + "; origin: " + origin);
 					ConceptProxy cp = new ConceptProxy(origin, preLabel, uri);
-					rankedlist.add(cp);
+					
+					resultMap.put(uri, cp);
 
 				}
 			}
 		}
-		return rankedlist;
+		
+//		rankedSet.addAll(rankedlist);
+		rankedset.addAll(resultMap.values());
+		return rankedset;
 	}
 
 	/*
