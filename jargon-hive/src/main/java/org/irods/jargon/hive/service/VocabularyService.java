@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.namespace.QName;
 
@@ -62,7 +63,7 @@ public interface VocabularyService {
 	 * 
 	 * */
 
-	public abstract List<ConceptProxy> searchConcept(String keyword,
+	public abstract Set<ConceptProxy> searchConcept(String keyword,
 			List<String> openedVocabularies);
 
 	public abstract ConceptProxy getConceptByURI(String namespaceURI,

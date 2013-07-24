@@ -20,7 +20,7 @@ public class HiveVocabularyEntry {
 	private MetadataDomain metadataDomain;
 
 	/**
-	 * Unique logical name for the iRODS object that this annottation applies
+	 * Unique logical name for the iRODS object that this annotation applies
 	 * to. For colletions and data objects this is this iRODS absoulute path.
 	 */
 	private String domainObjectUniqueName = "";
