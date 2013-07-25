@@ -53,6 +53,18 @@ public class VocabularyServiceTest {
 		SKOSScheme actual = vocabularyService.getVocabularyByName("agrovoc");
 		TestCase.assertNotNull("did not get vocab", actual);
 	}
+	
+	@Test
+	public void testGetUAT() throws Exception {
+		// Assert.assertNotNull("did not start skos server",
+		// hiveContainer.getSkosServer());
+		VocabularyService vocabularyService = new VocabularyServiceImpl(
+				hiveContainer);
+
+		SKOSScheme actual = vocabularyService.getVocabularyByName("uat");
+		TestCase.assertNotNull("did not get vocab", actual);
+	}
+	
 
 	// tested
 	@Test

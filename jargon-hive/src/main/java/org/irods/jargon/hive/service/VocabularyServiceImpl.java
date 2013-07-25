@@ -391,7 +391,6 @@ public class VocabularyServiceImpl implements VocabularyService {
 			}
 		}
 		
-//		rankedSet.addAll(rankedlist);
 		rankedset.addAll(resultMap.values());
 		return rankedset;
 	}

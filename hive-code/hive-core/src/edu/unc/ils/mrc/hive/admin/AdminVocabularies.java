@@ -38,6 +38,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 import edu.unc.ils.mrc.hive.HiveException;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
@@ -56,7 +57,7 @@ public class AdminVocabularies {
 
 	private static final Log logger = LogFactory
 			.getLog(AdminVocabularies.class);
-
+	
 	/**
 	 * Returns the CLI options
 	 * 
