@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Represents an item in the query
  * 
- * @author Le
+ * @author Le Zhang
  *
  */
 public class HiveQueryVocabularyItem implements Serializable {
