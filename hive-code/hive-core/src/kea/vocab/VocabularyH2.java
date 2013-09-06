@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -56,9 +54,6 @@ import edu.unc.ils.mrc.hive2.api.impl.HiveVocabularyImpl;
 public class VocabularyH2 extends Vocabulary {
 	private static final Log logger = LogFactory.getLog(VocabularyH2.class);
 	
-	private static final Logger log = Logger.getLogger(VocabularyH2.class);
-
-
 	private static final long serialVersionUID = 7089304477568443576L;
 
 	private SesameManager manager;
@@ -99,21 +94,17 @@ public class VocabularyH2 extends Vocabulary {
 	public VocabularyH2(final SKOSScheme scheme, final String documentLanguage)
 			throws ClassNotFoundException, SQLException {
 		super(documentLanguage);
-		try {
-			manager = scheme.getManager();
 		
-			name = scheme.getName();
+		// log.info("VocabularyH2()");
+				
+			manager = scheme.getManager();
+					name = scheme.getName();
 			HiveVocabularyImpl hv = (HiveVocabularyImpl) scheme.getHiveVocabulary();
 			if (hv != null) {
 				h2Index = (HiveH2IndexImpl) hv.getH2Index();
 			}
 	
 			setStopwords(new StopwordsEnglish(scheme.getStopwordsPath()));
-		} catch (Exception e) {
-			StringWriter sw = new StringWriter();
-			e.printStackTrace(new PrintWriter(sw));
-			log.error(sw.toString());
-		}
 
 		try {
 			Class cls = Class.forName(scheme.getKeaStemmerClass());
@@ -337,8 +328,6 @@ public class VocabularyH2 extends Vocabulary {
 
 			stopWatch.lap("H2 Created");
 
-		} catch (Exception e) {
-			logger.error(e);
 		} finally {
 			if (con != null) {
 				try {

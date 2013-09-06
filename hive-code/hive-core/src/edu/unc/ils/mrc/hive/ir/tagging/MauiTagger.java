@@ -74,7 +74,7 @@ public class MauiTagger implements Tagger {
 		try {
 			te.loadModel();
 		} catch (Exception e) {
-			log.fatal("Unable to load model for Maui", e);
+			log.fatal("Unable to load model for Maui *", e);
 		}
 
 		te.loadThesaurus(te.getStemmer(), te.getStopwords(), schema.getH2Path());

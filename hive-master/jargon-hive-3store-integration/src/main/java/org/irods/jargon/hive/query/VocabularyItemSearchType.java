@@ -16,4 +16,12 @@ public class VocabularyItemSearchType implements Serializable {
 	
 	private SearchType searchType = SearchType.EXACT;
 
+	public SearchType getSearchType() {
+		return searchType;
+	}
+
+	public void setSearchType(SearchType searchType) {
+		this.searchType = searchType;
+	}
+
 }

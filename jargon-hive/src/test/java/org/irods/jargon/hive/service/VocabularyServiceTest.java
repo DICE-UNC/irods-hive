@@ -28,10 +28,10 @@ public class VocabularyServiceTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		//hiveConfiguration
+				//.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
 		hiveConfiguration
-				.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
-		// hiveConfiguration
-		// .setHiveConfigLocation("/Users/zhangle/temp/hive-data/hive.properties");
+		 .setHiveConfigLocation("/Users/zhangle/temp/hive-data/hive.properties");
 
 		hiveContainer.setHiveConfiguration(hiveConfiguration);
 		hiveContainer.init();
@@ -74,6 +74,15 @@ public class VocabularyServiceTest {
 		ConceptProxy x = vocabularyService.getFirstConcept("agrovoc");
 		TestCase.assertNotNull("did not load first concept", x);
 	}
+	
+	// tested
+	@Test
+	public void testGetFirstConceptForUat() throws Exception {
+		VocabularyService vocabularyService = new VocabularyServiceImpl(
+				hiveContainer);
+		ConceptProxy x = vocabularyService.getFirstConcept("uat");
+		TestCase.assertNotNull("did not load first concept", x);
+	}
 
 	// tested
 	@Test
@@ -99,6 +108,7 @@ public class VocabularyServiceTest {
 	}
 
 	// tested
+	
 	@Test
 //	@Ignore
 	public void testgetConceptByURI() throws Exception {
@@ -140,7 +150,7 @@ public class VocabularyServiceTest {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
 		List<ConceptProxy> fatherList = null;
-		fatherList = vocabularyService.getSubTopConcept("agrovoc", "A", true);
+		fatherList = vocabularyService.getSubTopConcept("uat", "A", true);
 		TestCase.assertFalse("did not load sub top concept",
 				fatherList.isEmpty());
 	}
@@ -150,7 +160,7 @@ public class VocabularyServiceTest {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
 		List<ConceptProxy> fatherList = null;
-		fatherList = vocabularyService.getSubTopConcept("agrovoc", "A", false);
+		fatherList = vocabularyService.getSubTopConcept("uat", "A", false);
 		TestCase.assertFalse("did not load sub top concept",
 				fatherList.isEmpty());
 	}
@@ -160,7 +170,7 @@ public class VocabularyServiceTest {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
 		ConceptProxy proxy = vocabularyService
-				.getConceptProxyForTopOfVocabulary("agrovoc", "", true);
+				.getConceptProxyForTopOfVocabulary("uat", "", true);
 		Assert.assertNotNull("null proxy", proxy);
 		Assert.assertTrue("did not set as top level", proxy.isTopLevel());
 		Assert.assertEquals("did not set vocab name", "uat",
@@ -200,10 +210,10 @@ public class VocabularyServiceTest {
 	public void testGetNumberOfConceptAndRelations() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
-		long x = vocabularyService.getNumberOfConcept("agrovoc");
-		long y = vocabularyService.getNumerOfRelations("agrovoc");
-		System.out.println(x);
-		System.out.println(y);
+		long x = vocabularyService.getNumberOfConcept("uat");
+		long y = vocabularyService.getNumerOfRelations("uat");
+		System.out.println("uat, number of concept: " + x);
+		System.out.println("uat, number of relations: " + y);
 	}
 
 	// tested
@@ -211,7 +221,7 @@ public class VocabularyServiceTest {
 	public void testGetLastUpdate() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
-		vocabularyService.getLastUpdateDate("agrovoc");
+		vocabularyService.getLastUpdateDate("uat");
 	}
 
 	@Test
