@@ -33,6 +33,7 @@ import weka.core.Utils;
 import edu.unc.ils.mrc.hive.HiveException;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
 import edu.unc.ils.mrc.hive.api.impl.elmo.SKOSSchemeImpl;
+import edu.unc.ils.mrc.hive.exception.HiveVocabularyImportException;
 
 /**
  * Builds a keyphrase extraction model from the documents in a given directory.
@@ -768,11 +769,22 @@ public class KEAModelBuilder implements OptionHandler {
 	 */
 	public Hashtable collectStems() throws Exception {
 
+		logger.info("collectStems()");
 		Hashtable stems = new Hashtable();
 
+		logger.info("m_dirName:" + m_dirName);
+		
 		try {
 			File dir = new File(m_dirName);
 			String[] files = dir.list();
+			
+			logger.info("files in dir:" + files);
+			
+			if (files == null) {
+				logger.error("no files under training directory " + m_dirName);
+				throw new HiveVocabularyImportException("no files under training directory found");
+			}
+			
 			for (String file : files) {
 				if (file.endsWith(".key") || file.endsWith(".txt")) {
 					String stem = file.substring(0, file.length() - 4);
@@ -782,6 +794,7 @@ public class KEAModelBuilder implements OptionHandler {
 				}
 			}
 		} catch (Exception e) {
+			logger.error("error opening kea directory", e);
 			throw new Exception("Problem opening directory " + m_dirName);
 		}
 		return stems;
