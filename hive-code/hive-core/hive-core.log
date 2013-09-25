@@ -1,0 +1,10 @@
+7/30|17:48:37 INFO [edu.unc.ils.mrc.hive.admin.AdminVocabularies] - Starting import of vocabulary uat 
+7/30|17:48:37 INFO [edu.unc.ils.mrc.hive.api.impl.elmo.SKOSSchemeImpl] - Loading vocabulary configuration from /Users/zhangle/temp/hive-data/uat.properties 
+7/30|17:49:05 INFO [edu.unc.ils.mrc.hive.admin.AdminVocabularies] - Starting import of vocabulary uat 
+7/30|17:49:05 INFO [edu.unc.ils.mrc.hive.api.impl.elmo.SKOSSchemeImpl] - Loading vocabulary configuration from /Users/zhangle/temp/hive-data/uat.properties 
+7/30|17:49:18 INFO [edu.unc.ils.mrc.hive.admin.AdminVocabularies] - Starting import of vocabulary uat 
+7/30|17:49:18 INFO [edu.unc.ils.mrc.hive.api.impl.elmo.SKOSSchemeImpl] - Loading vocabulary configuration from /Users/zhangle/temp/hive-data/uat.properties 
+7/30|17:51:27 INFO [edu.unc.ils.mrc.hive.admin.AdminVocabularies] - Starting import of vocabulary uat 
+7/30|17:51:27 INFO [edu.unc.ils.mrc.hive.api.impl.elmo.SKOSSchemeImpl] - Loading vocabulary configuration from /Users/zhangle/temp/hive-data/uat.properties 
+7/30|17:52:14 INFO [edu.unc.ils.mrc.hive.admin.AdminVocabularies] - Starting import of vocabulary uat 
+7/30|17:52:14 INFO [edu.unc.ils.mrc.hive.api.impl.elmo.SKOSSchemeImpl] - Loading vocabulary configuration from /Users/zhangle/temp/hive-data/uat.properties 
