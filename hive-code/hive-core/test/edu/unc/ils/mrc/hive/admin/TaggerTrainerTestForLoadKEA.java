@@ -1,6 +1,6 @@
 package edu.unc.ils.mrc.hive.admin;
 
-import static org.junit.Assert.*;
+import java.util.Properties;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -8,11 +8,16 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
+
 /**
  * @author Mike Conway - DICE (www.irods.org)
- *
+ * 
  */
 public class TaggerTrainerTestForLoadKEA {
+
+	private static Properties testingProperties = new Properties();
+	private static HiveTestingPropertiesHelper testingPropertiesHelper = new HiveTestingPropertiesHelper();
 
 	/**
 	 * @throws java.lang.Exception
@@ -43,11 +48,13 @@ public class TaggerTrainerTestForLoadKEA {
 	}
 
 	/**
-	 * Test method for {@link edu.unc.ils.mrc.hive.admin.TaggerTrainer#trainKEAAutomaticIndexingModule()}.
+	 * Test method for
+	 * {@link edu.unc.ils.mrc.hive.admin.TaggerTrainer#trainKEAAutomaticIndexingModule()}
+	 * .
 	 */
 	@Test
 	public void testTrainKEAAutomaticIndexingModule() {
-		fail("Not yet implemented");
+
 	}
 
 }
