@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.unc.ils.mrc.hive.api.SKOSScheme;
+import edu.unc.ils.mrc.hive.api.impl.elmo.SKOSSchemeImpl;
 import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
 
 /**
@@ -53,7 +55,16 @@ public class TaggerTrainerTestForLoadKEA {
 	 * .
 	 */
 	@Test
-	public void testTrainKEAAutomaticIndexingModule() {
+	public void testTrainKEAAutomaticIndexingModule() throws Exception {
+		SKOSScheme schema = new SKOSSchemeImpl();
+
+		// fill in some values from the test properties
+
+		TaggerTrainer trainer = new TaggerTrainer(schema);
+
+		trainer.trainKEAAutomaticIndexingModule();
+
+		// test some stuff to see if it worked
 
 	}
 
