@@ -54,6 +54,12 @@ public class HiveQuery implements Serializable  {
 		this.hiveQueryVocabularyItems = hiveQueryVocabularyItems;
 	}
 	
+	public void addVocabularyItems(HiveQueryVocabularyItem vi) {
+		if(vi != null) {
+			hiveQueryVocabularyItems.add(vi);
+		}
+	}
+	
 	
 	
 	
