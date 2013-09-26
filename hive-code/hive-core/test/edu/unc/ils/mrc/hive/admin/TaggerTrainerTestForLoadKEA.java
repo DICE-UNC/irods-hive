@@ -2,6 +2,8 @@ package edu.unc.ils.mrc.hive.admin;
 
 import java.util.Properties;
 
+import kea.vocab.VocabularyH2;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -26,6 +28,7 @@ public class TaggerTrainerTestForLoadKEA {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		testingProperties = testingPropertiesHelper.getTestProperties();
 	}
 
 	/**
@@ -56,7 +59,15 @@ public class TaggerTrainerTestForLoadKEA {
 	 */
 	@Test
 	public void testTrainKEAAutomaticIndexingModule() throws Exception {
-		SKOSScheme schema = new SKOSSchemeImpl();
+
+		String hivePath = testingProperties
+				.getProperty(HiveTestingPropertiesHelper.TEST_HIVE_PARENT_DIR);
+		SKOSScheme schema = new SKOSSchemeImpl(hivePath, "uat", true);
+
+		schema.importConcepts(schema.getRdfPath(), true, true, true, true, true);
+
+		VocabularyH2 keaH2 = new VocabularyH2(schema, "en");
+		keaH2.initialize();
 
 		// fill in some values from the test properties
 
