@@ -24,9 +24,14 @@ public class HiveQuery implements Serializable  {
 	 */
 	public enum ObjectTypeEnum {DATA_OBJECT_ONLY, COLLECTION_ONLY, BOTH}
 	
-	private ObjectTypeEnum objectTypeConstraint = ObjectTypeEnum.BOTH;
+	private ObjectTypeEnum objectTypeConstraint;
 	
-	private List<HiveQueryVocabularyItem> hiveQueryVocabularyItems = new ArrayList<HiveQueryVocabularyItem>();
+	private List<HiveQueryVocabularyItem> hiveQueryVocabularyItems;
+	
+	public HiveQuery(){
+		hiveQueryVocabularyItems = new ArrayList<HiveQueryVocabularyItem>();
+		objectTypeConstraint = ObjectTypeEnum.BOTH;
+	}
 
 	public String getIrodsParentCollectionAbsolutePath() {
 		return irodsParentCollectionAbsolutePath;

@@ -26,6 +26,16 @@ public class HiveQueryVocabularyItem implements Serializable {
 	
 	private List<VocabularyItemSearchType> searchTypes = new ArrayList<VocabularyItemSearchType>();
 	
+//	public HiveQueryVocabularyItem(String vocabName, String termUri, String preLabel) {
+//		this.vocabularyName = vocabName;
+//		this.vocaublaryTermURI = termUri;
+//		this.preferredLabel = preLabel;
+//	}
+	
+	public HiveQueryVocabularyItem() {
+		
+	}
+	
 	public String getVocabularyName() {
 		return vocabularyName;
 	}
