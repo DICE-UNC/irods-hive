@@ -16,7 +16,7 @@ import java.util.List;
 public class HiveQueryVocabularyItem implements Serializable {
 	
 	private String vocabularyName = "";
-	private String vocaublaryTermURI = "";
+	private String vocabularyTermURI = "";
 	private String preferredLabel = "";
 	
 	
@@ -44,12 +44,12 @@ public class HiveQueryVocabularyItem implements Serializable {
 		this.vocabularyName = vocabularyName;
 	}
 
-	public String getVocaublaryTermURI() {
-		return vocaublaryTermURI;
+	public String getVocabularyTermURI() {
+		return vocabularyTermURI;
 	}
 
-	public void setVocaublaryTermURI(String vocaublaryTermURI) {
-		this.vocaublaryTermURI = vocaublaryTermURI;
+	public void setVocabularyTermURI(String vocabularyTermURI) {
+		this.vocabularyTermURI = vocabularyTermURI;
 	}
 
 	public String getPreferredLabel() {
