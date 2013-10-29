@@ -262,7 +262,7 @@ public class VocabularyServiceTest {
 				hiveContainer);
 		List<String> openVocabularies = vocabularyService
 				.getAllVocabularyNames();
-		List<ConceptProxy> cp = vocabularyService.getTags(
+		List<ConceptProxy> cp = vocabularyService.getTagsBasedOnFilePath(
 				"/Users/zhangle/temp/hive-data/agrovoc/agrovoc.rdf",
 				openVocabularies, 28174, "kea");
 		TestCase.assertFalse("did not get Tags", cp.isEmpty());

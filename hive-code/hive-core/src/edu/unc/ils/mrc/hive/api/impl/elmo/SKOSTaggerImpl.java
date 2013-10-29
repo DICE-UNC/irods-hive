@@ -170,19 +170,11 @@ public class SKOSTaggerImpl implements SKOSTagger {
 		return null;
 	}
 
-	/**
-	 * Returns a list of SKOSConcept objects for the specified file using the
-	 * specified vocabularies and SKOSSearcher implementation.
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @param path
-	 *            Path to the file
-	 * @param vocabularies
-	 *            List of vocabularies
-	 * @param searcher
-	 *            Searcher implementation
-	 * @param numTerms
-	 *            Number of terms to be returned
-	 * @return
+	 * @see edu.unc.ils.mrc.hive.api.SKOSTagger#getTags(java.lang.String,
+	 * java.util.List, edu.unc.ils.mrc.hive.api.SKOSSearcher, int, int)
 	 */
 	@Override
 	public List<SKOSConcept> getTags(final String filePath,
@@ -194,6 +186,13 @@ public class SKOSTaggerImpl implements SKOSTagger {
 		return getTagsInternal(text, vocabularies, searcher, numTerms, minOccur);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.unc.ils.mrc.hive.api.SKOSTagger#getTagsFromText(java.lang.String,
+	 * java.util.List, edu.unc.ils.mrc.hive.api.SKOSSearcher, int, int)
+	 */
 	@Override
 	public List<SKOSConcept> getTagsFromText(final String text,
 			final List<String> vocabularies, final SKOSSearcher searcher,
@@ -201,6 +200,12 @@ public class SKOSTaggerImpl implements SKOSTagger {
 		return getTagsInternal(text, vocabularies, searcher, maxTerms, minOccur);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.unc.ils.mrc.hive.api.SKOSTagger#getTagsAsTree(java.lang.String,
+	 * java.util.List, edu.unc.ils.mrc.hive.api.SKOSSearcher, int, int)
+	 */
 	@Override
 	public List<ConceptNode> getTagsAsTree(final String text,
 			final List<String> vocabularies, final SKOSSearcher searcher,

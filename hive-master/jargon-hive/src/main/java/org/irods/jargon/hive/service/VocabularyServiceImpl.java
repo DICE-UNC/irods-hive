@@ -366,7 +366,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 				true);
 		Set<ConceptProxy> rankedset = new HashSet<ConceptProxy>();
 		Map<String, ConceptProxy> resultMap = new HashMap<String, ConceptProxy>();
-		
+
 		for (String s : openedVocabularies) {
 			System.out.println(s);
 		}
@@ -381,15 +381,17 @@ public class VocabularyServiceImpl implements VocabularyService {
 					String namespace = qname.getNamespaceURI();
 					String localPart = qname.getLocalPart();
 					String uri = namespace + " " + localPart;
-					logger.info("SKOSConcept: preLabel: " + preLabel + "; uri: " + uri + "; QName: " + qname + "; origin: " + origin);
+					logger.info("SKOSConcept: preLabel: " + preLabel
+							+ "; uri: " + uri + "; QName: " + qname
+							+ "; origin: " + origin);
 					ConceptProxy cp = new ConceptProxy(origin, preLabel, uri);
-					
+
 					resultMap.put(uri, cp);
 
 				}
 			}
 		}
-		
+
 		rankedset.addAll(resultMap.values());
 		return rankedset;
 	}
@@ -459,17 +461,17 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.irods.jargon.hive.service.VocabularyService#getTags(java.lang.String,
-	 * java.util.List, int, java.lang.String)
+	 * org.irods.jargon.hive.service.VocabularyService#getTagsBasedOnFilePath
+	 * (java.lang.String, java.util.List, int, java.lang.String)
 	 */
 	@Override
-	public List<ConceptProxy> getTags(final String input,
-			final List<String> openedVocabularies, final int numTerms,
-			final String algorithm) {
-		logger.debug("getTags for " + input);
+	public List<ConceptProxy> getTagsBasedOnFilePath(
+			final String sourceFilePath, final List<String> openedVocabularies,
+			final int numTerms, final String algorithm) {
+		logger.debug("getTags for " + sourceFilePath);
 
 		SKOSTagger tagger = getSkosServer().getSKOSTagger(algorithm);
-		List<SKOSConcept> candidates = tagger.getTags(input,
+		List<SKOSConcept> candidates = tagger.getTags(sourceFilePath,
 				openedVocabularies, getSKOSSearcher(), numTerms,
 				DEFAULT_MIN_OCCUR);
 		List<ConceptProxy> result = new ArrayList<ConceptProxy>();
@@ -493,11 +495,11 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.irods.jargon.hive.service.VocabularyService#getTags(java.lang.String,
-	 * java.util.List, int, int, java.lang.String)
+	 * org.irods.jargon.hive.service.VocabularyService#getTagsBasedOnFilePath
+	 * (java.lang.String, java.util.List, int, int, java.lang.String)
 	 */
 	@Override
-	public List<ConceptProxy> getTags(final String input,
+	public List<ConceptProxy> getTagsBasedOnFilePath(final String input,
 			final List<String> openedVocabularies, final int numTerms,
 			final int minPhraseOccur, final String algorithm) {
 		SKOSTagger tagger = getSkosServer().getSKOSTagger(algorithm);

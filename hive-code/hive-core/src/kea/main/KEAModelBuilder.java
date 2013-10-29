@@ -773,18 +773,19 @@ public class KEAModelBuilder implements OptionHandler {
 		Hashtable stems = new Hashtable();
 
 		logger.info("m_dirName:" + m_dirName);
-		
+
 		try {
 			File dir = new File(m_dirName);
 			String[] files = dir.list();
-			
+
 			logger.info("files in dir:" + files);
-			
+
 			if (files == null) {
 				logger.error("no files under training directory " + m_dirName);
-				throw new HiveVocabularyImportException("no files under training directory found");
+				throw new HiveVocabularyImportException(
+						"no files under training directory found");
 			}
-			
+
 			for (String file : files) {
 				if (file.endsWith(".key") || file.endsWith(".txt")) {
 					String stem = file.substring(0, file.length() - 4);
