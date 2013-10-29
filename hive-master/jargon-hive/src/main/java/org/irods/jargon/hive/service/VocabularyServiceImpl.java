@@ -39,7 +39,6 @@ import edu.unc.ils.mrc.hive.ir.lucene.search.AutocompleteTerm;
 public class VocabularyServiceImpl implements VocabularyService {
 	private static final Log logger = LogFactory
 			.getLog(VocabularyServiceImpl.class); // jpb
-	private static VocabularyService instance = null;
 	private HiveContainer hiveContainer = null;
 
 	private final int DEFAULT_MIN_OCCUR = 2;

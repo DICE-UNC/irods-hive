@@ -3,6 +3,7 @@ package org.irods.jargon.hive.service;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import junit.framework.Assert;
@@ -12,6 +13,7 @@ import org.irods.jargon.hive.container.HiveConfiguration;
 import org.irods.jargon.hive.container.HiveContainer;
 import org.irods.jargon.hive.container.HiveContainerImpl;
 import org.irods.jargon.hive.exception.VocabularyNotFoundException;
+import org.irods.jargon.hive.testing.HiveConfigurationTestUtilities;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -20,19 +22,24 @@ import org.unc.hive.client.ConceptProxy;
 
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
 import edu.unc.ils.mrc.hive.ir.lucene.search.AutocompleteTerm;
+import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
 
 public class VocabularyServiceTest {
 
-	static final HiveConfiguration hiveConfiguration = new HiveConfiguration();
-	static final HiveContainer hiveContainer = new HiveContainerImpl();
+
+	@SuppressWarnings("unused")
+	private static  HiveConfiguration hiveConfiguration;
+	private static  HiveContainer hiveContainer = new HiveContainerImpl();
+
+	private static Properties testingProperties = new Properties();
+	private static HiveTestingPropertiesHelper testingPropertiesHelper = new HiveTestingPropertiesHelper();
+
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		//hiveConfiguration
-				//.setHiveConfigLocation("/Users/mikeconway/temp/hive-data/hive.properties");
-		hiveConfiguration
-		 .setHiveConfigLocation("/Users/zhangle/temp/hive-data/hive.properties");
+		testingProperties = testingPropertiesHelper.getTestProperties();
 
+		hiveConfiguration = new HiveConfigurationTestUtilities(testingProperties).buildHiveConfiguration();
 		hiveContainer.setHiveConfiguration(hiveConfiguration);
 		hiveContainer.init();
 	}
@@ -41,6 +48,7 @@ public class VocabularyServiceTest {
 	public static void tearDownAfterClass() throws Exception {
 		hiveContainer.shutdown();
 	}
+
 
 	// tested
 	@Test
