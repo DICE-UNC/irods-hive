@@ -1,19 +1,20 @@
-package edu.unc.ils.mrc.hive.admin;
-
+package edu.unc.ils.mrc.hive.admin;    
+  
 import java.util.Properties;
 
 import kea.vocab.VocabularyH2;
 
 import org.junit.After;
-import org.junit.AfterClass;
+import org.junit.AfterClass; 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import edu.unc.ils.mrc.hive.admin.TaggerTrainer;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
 import edu.unc.ils.mrc.hive.api.impl.elmo.SKOSSchemeImpl;
 import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
-
+ 
 /**
  * @author Mike Conway - DICE (www.irods.org)
  * 
@@ -74,9 +75,9 @@ public class TaggerTrainerTestForLoadKEA {
 		TaggerTrainer trainer = new TaggerTrainer(schema);
 
 		trainer.trainKEAAutomaticIndexingModule();
-
 		// test some stuff to see if it worked
 
 	}
 
 }
+
