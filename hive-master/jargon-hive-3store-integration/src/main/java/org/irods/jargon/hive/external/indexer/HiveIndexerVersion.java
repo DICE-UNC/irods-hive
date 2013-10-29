@@ -1,5 +1,5 @@
 package org.irods.jargon.hive.external.indexer;
 public final class HiveIndexerVersion {
  public static String VERSION="1.0-SNAPSHOT";
- public static String BUILD_TIME="20131004-1620";
+ public static String BUILD_TIME="20131022-2330";
 }
