@@ -115,8 +115,8 @@ public class HiveContainerImpl implements HiveContainer {
 	}
 
 	/**
-	 * Method called to startup an SkosServer by providing HIVE configuration path.
-	 * Printing out the SKOS schemas of HIVE vocabularies
+	 * Method called to startup an SkosServer by providing HIVE configuration
+	 * path. Printing out the SKOS schemas of HIVE vocabularies
 	 * 
 	 * @throws JargonHiveException
 	 */

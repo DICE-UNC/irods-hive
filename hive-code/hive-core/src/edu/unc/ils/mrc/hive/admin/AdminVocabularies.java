@@ -38,7 +38,6 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Logger;
 
 import edu.unc.ils.mrc.hive.HiveException;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
@@ -57,7 +56,7 @@ public class AdminVocabularies {
 
 	private static final Log logger = LogFactory
 			.getLog(AdminVocabularies.class);
-	
+
 	/**
 	 * Returns the CLI options
 	 * 
@@ -142,7 +141,6 @@ public class AdminVocabularies {
 				} catch (Exception e) {
 					logger.error(e);
 				}
-				
 
 				if (doKEAH2) {
 					logger.info("Initializing KEA H2 index");
@@ -181,7 +179,7 @@ public class AdminVocabularies {
 				} catch (Exception e) {
 					logger.error(e);
 				}
-				
+
 			} catch (HiveException e) {
 				logger.error("Vocabulary import failed", e);
 			}

@@ -79,7 +79,7 @@ public class ConceptProxy implements IsSerializable {
 	}
 
 	public String getSkosCode() {
-		return this.skosCode;
+		return skosCode;
 	}
 
 	public boolean getIsLeaf() {

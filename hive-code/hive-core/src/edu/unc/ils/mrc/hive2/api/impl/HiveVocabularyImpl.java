@@ -168,7 +168,6 @@ public class HiveVocabularyImpl implements HiveVocabulary {
 			ElmoModule module = new ElmoModule();
 			factory = new SesameManagerFactory(module, repository);
 			manager = factory.createElmoManager();
-			
 
 			// Initialized the H2 and Lucene indexes
 			h2Index = new HiveH2IndexImpl(h2Path, name);
@@ -473,8 +472,7 @@ public class HiveVocabularyImpl implements HiveVocabulary {
 		if (doSesame) {
 			logger.info("Importing " + path + " to Sesame store");
 			ContextAwareConnection conn = manager.getConnection();
-					conn.add(
-					new InputStreamReader(new FileInputStream(path), "UTF-8"),
+			conn.add(new InputStreamReader(new FileInputStream(path), "UTF-8"),
 					"", rdfformat);
 
 			manager.flush();

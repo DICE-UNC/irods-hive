@@ -1,4 +1,3 @@
-
 /**
  * Generic HIVE exception hierarchy
  * @author Mike Conway - DICE (www.irods.org)
