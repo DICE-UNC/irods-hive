@@ -30,6 +30,21 @@ public class TaggerTrainerTestForLoadKEA {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		testingProperties = testingPropertiesHelper.getTestProperties();
+		String hivePath = testingProperties
+				.getProperty(HiveTestingPropertiesHelper.TEST_HIVE_PARENT_DIR);
+		SKOSScheme schema = new SKOSSchemeImpl(hivePath, "uat", true);
+
+		schema.importConcepts(schema.getRdfPath(), true, true, true, true, true);
+
+		VocabularyH2 keaH2 = new VocabularyH2(schema, "en");
+		keaH2.initialize();
+
+		// fill in some values from the test properties
+
+		TaggerTrainer trainer = new TaggerTrainer(schema);
+
+		trainer.trainKEAAutomaticIndexingModule();
+		schema.close();
 	}
 
 	/**
@@ -59,7 +74,7 @@ public class TaggerTrainerTestForLoadKEA {
 	 * .
 	 */
 	@Test
-	public void testTrainKEAAutomaticIndexingModule() throws Exception {
+	public void testTagWithKEA() throws Exception {
 
 		String hivePath = testingProperties
 				.getProperty(HiveTestingPropertiesHelper.TEST_HIVE_PARENT_DIR);

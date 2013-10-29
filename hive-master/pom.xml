@@ -512,6 +512,7 @@
 		</profile>
 	</profiles>
 	<modules>
+		<module>jargon-hive</module>
 		<module>jargon-hive-irods</module>
 		<module>jargon-hive-3store-integration</module>
 		<module>hive-query-rest</module>
