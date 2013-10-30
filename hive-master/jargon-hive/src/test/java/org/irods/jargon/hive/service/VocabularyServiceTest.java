@@ -26,20 +26,18 @@ import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
 
 public class VocabularyServiceTest {
 
-
-	@SuppressWarnings("unused")
-	private static  HiveConfiguration hiveConfiguration;
-	private static  HiveContainer hiveContainer = new HiveContainerImpl();
+	private static HiveConfiguration hiveConfiguration;
+	private static HiveContainer hiveContainer = new HiveContainerImpl();
 
 	private static Properties testingProperties = new Properties();
 	private static HiveTestingPropertiesHelper testingPropertiesHelper = new HiveTestingPropertiesHelper();
-
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		testingProperties = testingPropertiesHelper.getTestProperties();
 
-		hiveConfiguration = new HiveConfigurationTestUtilities(testingProperties).buildHiveConfiguration();
+		hiveConfiguration = new HiveConfigurationTestUtilities(
+				testingProperties).buildHiveConfiguration();
 		hiveContainer.setHiveConfiguration(hiveConfiguration);
 		hiveContainer.init();
 	}
@@ -49,32 +47,26 @@ public class VocabularyServiceTest {
 		hiveContainer.shutdown();
 	}
 
-
-	// tested
 	@Test
 	public void testGetAgrovoc() throws Exception {
-		// Assert.assertNotNull("did not start skos server",
-		// hiveContainer.getSkosServer());
+
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
 
 		SKOSScheme actual = vocabularyService.getVocabularyByName("agrovoc");
 		TestCase.assertNotNull("did not get vocab", actual);
 	}
-	
+
 	@Test
 	public void testGetUAT() throws Exception {
-		// Assert.assertNotNull("did not start skos server",
-		// hiveContainer.getSkosServer());
+
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
 
 		SKOSScheme actual = vocabularyService.getVocabularyByName("uat");
 		TestCase.assertNotNull("did not get vocab", actual);
 	}
-	
 
-	// tested
 	@Test
 	public void testGetFirstConcept() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
@@ -82,8 +74,7 @@ public class VocabularyServiceTest {
 		ConceptProxy x = vocabularyService.getFirstConcept("agrovoc");
 		TestCase.assertNotNull("did not load first concept", x);
 	}
-	
-	// tested
+
 	@Test
 	public void testGetFirstConceptForUat() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
@@ -92,7 +83,6 @@ public class VocabularyServiceTest {
 		TestCase.assertNotNull("did not load first concept", x);
 	}
 
-	// tested
 	@Test
 	public void testSuggestTermsFor() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
@@ -102,11 +92,9 @@ public class VocabularyServiceTest {
 		TestCase.assertFalse("did not find suggested terms", x == null);
 	}
 
-	// tested
 	@Test
 	public void testListVocabularyNames() throws Exception {
-		// Assert.assertNotNull("did not start skos server",
-		// hiveContainer.getSkosServer());
+
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
 
@@ -115,10 +103,7 @@ public class VocabularyServiceTest {
 				allVocabNames.isEmpty());
 	}
 
-	// tested
-	
 	@Test
-//	@Ignore
 	public void testgetConceptByURI() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
@@ -134,14 +119,12 @@ public class VocabularyServiceTest {
 		Set<ConceptProxy> rankedSet = null;
 		List<String> openVocabularies = vocabularyService
 				.getAllVocabularyNames();
-		rankedSet = vocabularyService.searchConcept("ability",
-				openVocabularies);
+		rankedSet = vocabularyService
+				.searchConcept("ability", openVocabularies);
 		TestCase.assertFalse("did not find concept", rankedSet.isEmpty());
 	}
 
-	// tested
 	@Test
-//	@Ignore
 	public void testGetChildConcept() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
@@ -152,7 +135,6 @@ public class VocabularyServiceTest {
 				ChildrenList.isEmpty());
 	}
 
-	// tested
 	@Test
 	public void testGetSubTopConcept() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
@@ -181,8 +163,7 @@ public class VocabularyServiceTest {
 				.getConceptProxyForTopOfVocabulary("uat", "", true);
 		Assert.assertNotNull("null proxy", proxy);
 		Assert.assertTrue("did not set as top level", proxy.isTopLevel());
-		Assert.assertEquals("did not set vocab name", "uat",
-				proxy.getOrigin());
+		Assert.assertEquals("did not set vocab name", "uat", proxy.getOrigin());
 		Assert.assertFalse("did not set child (narrower) terms", proxy
 				.getNarrower().isEmpty());
 	}
@@ -205,15 +186,6 @@ public class VocabularyServiceTest {
 		vocabularyService.getConceptProxyForTopOfVocabulary(null, "", true);
 	}
 
-	// @Test(expected = IllegalArgumentException.class)
-	// public void testGetConceptProxyForTopOfVocabularyNullVocabEmptyName()
-	// throws Exception {
-	// VocabularyService vocabularyService = new VocabularyServiceImpl(
-	// hiveContainer);
-	// vocabularyService.getConceptProxyForTopOfVocabulary("", "", true);
-	// }
-
-	// tested
 	@Test
 	public void testGetNumberOfConceptAndRelations() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
@@ -224,7 +196,6 @@ public class VocabularyServiceTest {
 		System.out.println("uat, number of relations: " + y);
 	}
 
-	// tested
 	@Test
 	public void testGetLastUpdate() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
@@ -241,8 +212,7 @@ public class VocabularyServiceTest {
 		TestCase.assertFalse(
 				"did not load vocabularies with properties to List",
 				allVocabs.isEmpty());
-		// TestCase.assertTrue("did not load all vocabularies", allVocabs.size()
-		// == vocabularyService.getNumberOfConcept("agrovoc"));
+
 	}
 
 	@Test
@@ -255,7 +225,7 @@ public class VocabularyServiceTest {
 				vocabProps.isEmpty());
 	}
 
-	//@Test
+	// @Test
 	@Ignore
 	public void testGetTagsFromInput() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
@@ -268,7 +238,7 @@ public class VocabularyServiceTest {
 		TestCase.assertFalse("did not get Tags", cp.isEmpty());
 	}
 
-	//@Test
+	// @Test
 	@Ignore
 	public void testGetTagsFromURL() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
@@ -276,8 +246,8 @@ public class VocabularyServiceTest {
 		List<String> openVocabularies = vocabularyService
 				.getAllVocabularyNames();
 		List<ConceptProxy> cp = vocabularyService.getTags(new URL(
-				"http://en.wikipedia.org/wiki/Rice"), openVocabularies, 2, 200000,
-				true, 2, "kea");
+				"http://en.wikipedia.org/wiki/Rice"), openVocabularies, 2,
+				200000, true, 2, "kea");
 		TestCase.assertFalse("did not get Tags", cp.isEmpty());
 	}
 

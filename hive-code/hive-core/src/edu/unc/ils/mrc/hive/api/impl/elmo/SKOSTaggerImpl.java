@@ -65,8 +65,6 @@ import edu.unc.ils.mrc.hive.util.TextManager;
 public class SKOSTaggerImpl implements SKOSTagger {
 	private static final Log logger = LogFactory.getLog(SKOSTaggerImpl.class);
 
-	private static final int LIMIT = 10;
-
 	private TreeMap<String, Tagger> taggers;
 	private TreeMap<String, SKOSScheme> vocabularies;
 	private String algorithm;
