@@ -28,7 +28,6 @@ import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
  */
 public class VocabularyServiceKEATest {
 
-	@SuppressWarnings("unused")
 	private static HiveConfiguration hiveConfiguration;
 	private static HiveContainer hiveContainer = new HiveContainerImpl();
 
@@ -54,10 +53,10 @@ public class VocabularyServiceKEATest {
 	public void testGetTagsViaKEAAgainstAgrovoc() throws Exception {
 
 		File testFile = LocalFileUtils
-				.getClasspathResourceAsFile("/testdocs/bostid_b02moe.txt");
+				.getClasspathResourceAsFile("/testdocs/winrock_wi10ce.txt");
 
 		if (testFile == null) {
-			Assert.fail("unable to find UAT doc");
+			Assert.fail("unable to find agrovoc doc");
 		}
 
 		List<String> openedVocabularies = new ArrayList<String>();

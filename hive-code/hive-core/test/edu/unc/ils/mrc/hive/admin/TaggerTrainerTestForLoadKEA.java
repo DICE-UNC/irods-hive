@@ -1,20 +1,19 @@
-package edu.unc.ils.mrc.hive.admin;    
-  
+package edu.unc.ils.mrc.hive.admin;
+
 import java.util.Properties;
 
 import kea.vocab.VocabularyH2;
 
 import org.junit.After;
-import org.junit.AfterClass; 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.unc.ils.mrc.hive.admin.TaggerTrainer;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
 import edu.unc.ils.mrc.hive.api.impl.elmo.SKOSSchemeImpl;
 import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
- 
+
 /**
  * @author Mike Conway - DICE (www.irods.org)
  * 
@@ -30,7 +29,7 @@ public class TaggerTrainerTestForLoadKEA {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		testingProperties = testingPropertiesHelper.getTestProperties();
-		
+
 	}
 
 	/**
@@ -77,12 +76,28 @@ public class TaggerTrainerTestForLoadKEA {
 
 		trainer.trainKEAAutomaticIndexingModule();
 		// test some stuff to see if it worked
-		
-		
-		
-		
+
+	}
+
+	@Test
+	public void testTagAgrovocWithKEA() throws Exception {
+
+		String hivePath = testingProperties
+				.getProperty(HiveTestingPropertiesHelper.TEST_HIVE_PARENT_DIR);
+		SKOSScheme schema = new SKOSSchemeImpl(hivePath, "agrovoc", true);
+
+		schema.importConcepts(schema.getRdfPath(), true, true, true, true, true);
+
+		VocabularyH2 keaH2 = new VocabularyH2(schema, "en");
+		keaH2.initialize();
+
+		// fill in some values from the test properties
+
+		TaggerTrainer trainer = new TaggerTrainer(schema);
+
+		trainer.trainKEAAutomaticIndexingModule();
+		// test some stuff to see if it worked
 
 	}
 
 }
-
