@@ -32,15 +32,18 @@ import maui.stemmers.PorterStemmer;
 import maui.stemmers.Stemmer;
 import maui.stopwords.StopwordsEnglish;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.perf4j.StopWatch;
 import org.perf4j.log4j.Log4JStopWatch;
 
+import edu.unc.ils.mrc.hive.admin.AdminVocabularies;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
 
 public class MauiTagger implements Tagger {
 
-	private static Logger log = Logger.getLogger(MauiTagger.class);
+	private static final Log logger = LogFactory
+			.getLog(AdminVocabularies.class);
 	private MauiTopicExtractor te;
 	private String vocabulary;
 	private static final int DEFAULT_NUM_PHRASES = 10;
@@ -74,7 +77,7 @@ public class MauiTagger implements Tagger {
 		try {
 			te.loadModel();
 		} catch (Exception e) {
-			log.fatal("Unable to load model for Maui *", e);
+			logger.fatal("Unable to load model for Maui *", e);
 		}
 
 		te.loadThesaurus(te.getStemmer(), te.getStopwords(), schema.getH2Path());

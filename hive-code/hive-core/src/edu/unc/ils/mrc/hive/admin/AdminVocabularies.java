@@ -36,8 +36,8 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import edu.unc.ils.mrc.hive.HiveException;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
@@ -54,8 +54,8 @@ import edu.unc.ils.mrc.hive.api.impl.elmo.SKOSSchemeImpl;
  */
 public class AdminVocabularies {
 
-	private static final Log logger = LogFactory
-			.getLog(AdminVocabularies.class);
+	public static final Logger logger = LoggerFactory
+			.getLogger(AdminVocabularies.class);
 
 	/**
 	 * Returns the CLI options
@@ -139,7 +139,8 @@ public class AdminVocabularies {
 					scheme.importConcepts(scheme.getRdfPath(), doSesame,
 							doLucene, doH2, doKEAH2, doAutocomplete);
 				} catch (Exception e) {
-					logger.error(e);
+					logger.error("error importing", e);
+
 				}
 
 				if (doKEAH2) {
@@ -148,7 +149,7 @@ public class AdminVocabularies {
 						VocabularyH2 keaH2 = new VocabularyH2(scheme, "en");
 						keaH2.initialize();
 					} catch (Exception e) {
-						logger.error(e);
+						logger.error("error initializing kea", e);
 					}
 				} else {
 					logger.info("Skipping KEA H2 initialization");
@@ -177,7 +178,7 @@ public class AdminVocabularies {
 				try {
 					scheme.close();
 				} catch (Exception e) {
-					logger.error(e);
+					logger.error("error closing schema", e);
 				}
 
 			} catch (HiveException e) {

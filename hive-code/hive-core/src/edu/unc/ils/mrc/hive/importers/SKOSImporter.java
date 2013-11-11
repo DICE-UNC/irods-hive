@@ -34,7 +34,8 @@ import java.util.TreeMap;
 
 import javax.xml.namespace.QName;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openrdf.concepts.skos.core.Concept;
 import org.openrdf.elmo.ElmoModule;
 import org.openrdf.elmo.sesame.SesameManager;
@@ -49,6 +50,7 @@ import org.perf4j.StopWatch;
 import org.perf4j.log4j.Log4JStopWatch;
 
 import edu.unc.ils.mrc.hive.HiveException;
+import edu.unc.ils.mrc.hive.admin.AdminVocabularies;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
 import edu.unc.ils.mrc.hive.ir.lucene.indexing.ConceptIndexer;
 import edu.unc.ils.mrc.hive.ir.lucene.indexing.Indexer;
@@ -61,7 +63,9 @@ import edu.unc.ils.mrc.hive.ir.lucene.indexing.Indexer;
  */
 @Deprecated
 public class SKOSImporter implements Importer {
-	private static final Logger logger = Logger.getLogger(SKOSImporter.class);
+
+	private static final Log logger = LogFactory
+			.getLog(AdminVocabularies.class);
 
 	/* Vocabulary name */
 	private String vocabularyName;
