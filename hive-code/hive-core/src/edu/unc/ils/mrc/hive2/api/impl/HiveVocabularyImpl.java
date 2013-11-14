@@ -160,20 +160,28 @@ public class HiveVocabularyImpl implements HiveVocabulary {
 		/* Initialize Sesame store */
 		// String indexes = "spoc,posc,ospc";
 		String indexes = "spoc,ospc";
+
+		logger.info("init()...create new sailRepository...");
 		store = new NativeStore(new File(sesamePath), indexes);
 		repository = new SailRepository(store);
 
 		try {
+			logger.info("initializing sail repository...");
 			repository.initialize();
 			ElmoModule module = new ElmoModule();
 			factory = new SesameManagerFactory(module, repository);
+
+			logger.info("...creating elmoManager....");
 			manager = factory.createElmoManager();
 
 			// Initialized the H2 and Lucene indexes
+			logger.info("initialize new h2Index...");
 			h2Index = new HiveH2IndexImpl(h2Path, name);
+			logger.info("initialize new lucene index...");
 			luceneIndex = new HiveLuceneIndexImpl(lucenePath, name);
+			logger.info("initialize autocomplete");
 			autocomplete = new Autocomplete(autocompletePath);
-
+			logger.info("autocomplete initialized");
 		} catch (RepositoryException e) {
 			logger.error(e);
 		} catch (ClassNotFoundException e) {
@@ -182,6 +190,8 @@ public class HiveVocabularyImpl implements HiveVocabulary {
 			logger.error(e);
 		} catch (IOException e) {
 			logger.error(e);
+		} catch (Exception e) {
+			logger.error("unanticipated exception in init", e);
 		}
 	}
 
@@ -837,6 +847,7 @@ public class HiveVocabularyImpl implements HiveVocabulary {
 
 	@Override
 	public Map<String, Long> getStats() throws Exception {
+		logger.info("getStats()");
 		return ((HiveH2IndexImpl) h2Index).getStats();
 	}
 
