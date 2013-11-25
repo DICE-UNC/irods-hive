@@ -84,7 +84,7 @@ public class TaggerTrainerTestForLoadKEA {
 
 		String hivePath = testingProperties
 				.getProperty(HiveTestingPropertiesHelper.TEST_HIVE_PARENT_DIR);
-		SKOSScheme schema = new SKOSSchemeImpl(hivePath, "agrovoc", true);
+		SKOSScheme schema = new SKOSSchemeImpl(hivePath, "uat", true);
 
 		schema.importConcepts(schema.getRdfPath(), true, true, true, true, true);
 

@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.Hashtable;
 
+import org.apache.jena.atlas.logging.Log;
+
 /**
  * Class that can test whether a given string is a stop word. Lowercases all
  * words before the test.
@@ -28,10 +30,10 @@ public class StopwordsEnglish extends Stopwords {
 		if (m_Stopwords == null) {
 			m_Stopwords = new Hashtable<String, Double>();
 			Double dummy = new Double(0);
-			File txt = new File(stopwordsPath);
 			InputStreamReader is;
 			String sw = null;
 			try {
+				File txt = new File(stopwordsPath);
 				is = new InputStreamReader(new FileInputStream(txt), "UTF-8");
 				BufferedReader br = new BufferedReader(is);
 				while ((sw = br.readLine()) != null) {

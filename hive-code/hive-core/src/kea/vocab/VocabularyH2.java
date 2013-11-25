@@ -102,8 +102,14 @@ public class VocabularyH2 extends Vocabulary {
 		if (hv != null) {
 			h2Index = (HiveH2IndexImpl) hv.getH2Index();
 		}
-
-		setStopwords(new StopwordsEnglish(scheme.getStopwordsPath()));
+		
+		try {
+			
+			setStopwords(new StopwordsEnglish(scheme.getStopwordsPath()));
+		
+		} catch(Exception e) {
+			logger.warn("Cannot find stopword file: " + e);
+		}
 
 		try {
 			Class cls = Class.forName(scheme.getKeaStemmerClass());
