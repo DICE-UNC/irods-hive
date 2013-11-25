@@ -106,7 +106,7 @@ public class HiveH2IndexImpl implements HiveIndex {
 	 * @throws SQLException
 	 */
 	protected void init() throws ClassNotFoundException, SQLException {
-		logger.trace("init()");
+		logger.info("init()");
 
 		// Initialize an H2 connection pool
 		String uri = "jdbc:h2:" + h2path;
@@ -132,7 +132,7 @@ public class HiveH2IndexImpl implements HiveIndex {
 	}
 
 	public boolean exists() {
-
+		logger.info("exists()");
 		if (!new File(h2db).exists()) {
 			return false;
 		} else {
@@ -258,12 +258,14 @@ public class HiveH2IndexImpl implements HiveIndex {
 	 * @throws SQLException
 	 */
 	public Map<String, Long> getStats() throws Exception {
-		logger.trace("getStats()");
+		logger.info("getStats()");
 
 		Map<String, Long> stats = new HashMap<String, Long>();
 		Connection con = null;
 		Statement s = null;
 		try {
+
+			logger.info("getting number concepts");
 			long numConcepts = getNumConcepts();
 
 			con = getConnection();
@@ -280,6 +282,9 @@ public class HiveH2IndexImpl implements HiveIndex {
 				stats.put("narrower", numNarrower);
 				stats.put("related", numRelated);
 			}
+
+			logger.info("queried and processed stats");
+
 		} finally {
 			try {
 				if (con != null) {
@@ -302,7 +307,7 @@ public class HiveH2IndexImpl implements HiveIndex {
 	 * @throws SQLException
 	 */
 	public Date getCreated() throws SQLException {
-		logger.trace("getCreated()");
+		logger.info("getCreated()");
 
 		Connection con = null;
 		Statement s = null;
@@ -314,6 +319,7 @@ public class HiveH2IndexImpl implements HiveIndex {
 			if (rs.next()) {
 				created = new Date(rs.getTimestamp(1).getTime());
 			}
+
 		} finally {
 			try {
 				if (con != null) {

@@ -4,6 +4,7 @@ public final class HiveIndexerVersion {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
  public static String BUILD_TIME="20131022-2330";
 =======
  public static String BUILD_TIME="20131029-0913";
@@ -14,4 +15,7 @@ public final class HiveIndexerVersion {
 =======
  public static String BUILD_TIME="20131030-1532";
 >>>>>>> 5c3b9df147b9ca5ca296233256ea53a33e9772a6
+=======
+ public static String BUILD_TIME="20131111-1523";
+>>>>>>> 162d491bb95568d641bf8d363d3bf3b7feaaa1ab
 }

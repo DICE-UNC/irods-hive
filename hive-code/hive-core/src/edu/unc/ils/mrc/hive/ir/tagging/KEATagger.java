@@ -33,15 +33,18 @@ import kea.stemmers.PorterStemmer;
 import kea.stemmers.Stemmer;
 import kea.stopwords.StopwordsEnglish;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.perf4j.StopWatch;
 import org.perf4j.log4j.Log4JStopWatch;
 
+import edu.unc.ils.mrc.hive.admin.AdminVocabularies;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
 
 public class KEATagger implements Tagger {
 
-	private static Logger log = Logger.getLogger(KEATagger.class);
+	private static final Log logger = LogFactory
+			.getLog(AdminVocabularies.class);
 	private KEAKeyphraseExtractor ke;
 	private String vocabulary;
 	private static final int DEFAULT_NUM_PHRASES = 10;
@@ -115,7 +118,7 @@ public class KEATagger implements Tagger {
 			ke.loadModel();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			log.fatal("unable to load KEA", e);
+			logger.fatal("unable to load KEA", e);
 		}
 
 		ke.loadThesaurus();

@@ -99,13 +99,12 @@ public class SKOSServerImpl implements SKOSServer {
 
 		searcher = new SKOSSearcherImpl(schemes);
 
-		mauiTagger = new SKOSTaggerImpl(schemes, "maui");
-		keaTagger = new SKOSTaggerImpl(schemes, "kea");
-		dummyTagger = new SKOSTaggerImpl(schemes, "dummy");
-		mauiTagger.setConfig(config);
-		keaTagger.setConfig(config);
-		dummyTagger.setConfig(config);
-
+		/*
+		 * mauiTagger = new SKOSTaggerImpl(schemes, "maui"); keaTagger = new
+		 * SKOSTaggerImpl(schemes, "kea"); dummyTagger = new
+		 * SKOSTaggerImpl(schemes, "dummy"); mauiTagger.setConfig(config);
+		 * keaTagger.setConfig(config); dummyTagger.setConfig(config);
+		 */
 		// this.tagger = new SKOSTaggerImpl(this.schemes, taggerAlgorithm);//kea
 		// or dummy
 		// this.tagger.setConfig(config);

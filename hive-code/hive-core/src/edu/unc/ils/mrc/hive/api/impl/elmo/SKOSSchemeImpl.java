@@ -143,6 +143,7 @@ public class SKOSSchemeImpl implements SKOSScheme {
 		if (!firstTime) {
 
 			try {
+				logger.info("getting stats...");
 				Map<String, Long> stats = hiveVocab.getStats();
 				date = hiveVocab.getLastUpdateDate().toString();
 				numberOfBroaders = stats.get("broader");
@@ -152,7 +153,9 @@ public class SKOSSchemeImpl implements SKOSScheme {
 				numberOfRelations = numberOfBroaders + numberOfNarrowers
 						+ numberOfRelated;
 			} catch (Exception e) {
-				logger.error(e);
+				logger.error(
+						"exception occurred in constructor processing, not first time",
+						e);
 			}
 
 		}

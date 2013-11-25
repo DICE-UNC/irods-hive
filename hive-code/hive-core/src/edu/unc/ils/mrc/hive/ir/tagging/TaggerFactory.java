@@ -25,13 +25,10 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package edu.unc.ils.mrc.hive.ir.tagging;
 
-import org.apache.log4j.Logger;
-
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
 
 public class TaggerFactory {
 
-	private static Logger log = Logger.getLogger(TaggerFactory.class);
 	public static final String DUMMYTAGGER = "dummy";
 	public static final String KEATAGGER = "KEA";
 	public static final String MAUITAGGER = "Maui";
