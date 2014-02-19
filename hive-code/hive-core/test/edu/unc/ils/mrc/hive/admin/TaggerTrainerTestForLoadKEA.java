@@ -2,8 +2,6 @@ package edu.unc.ils.mrc.hive.admin;
 
 import java.util.Properties;
 
-import kea.vocab.VocabularyH2;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -67,16 +65,6 @@ public class TaggerTrainerTestForLoadKEA {
 
 		schema.importConcepts(schema.getRdfPath(), true, true, true, true, true);
 
-		VocabularyH2 keaH2 = new VocabularyH2(schema, "en");
-		keaH2.initialize();
-
-		// fill in some values from the test properties
-
-		TaggerTrainer trainer = new TaggerTrainer(schema);
-
-		trainer.trainKEAAutomaticIndexingModule();
-		// test some stuff to see if it worked
-
 	}
 
 	@Test
@@ -88,16 +76,6 @@ public class TaggerTrainerTestForLoadKEA {
 
 		schema.importConcepts(schema.getRdfPath(), true, true, true, true, true);
 
-		VocabularyH2 keaH2 = new VocabularyH2(schema, "en");
-		keaH2.initialize();
-
-		// fill in some values from the test properties
-
-		TaggerTrainer trainer = new TaggerTrainer(schema);
-
-		trainer.trainKEAAutomaticIndexingModule();
-		// test some stuff to see if it worked
-
 	}
 
 	@Test
@@ -108,16 +86,6 @@ public class TaggerTrainerTestForLoadKEA {
 		SKOSScheme schema = new SKOSSchemeImpl(hivePath, "lcsh", true);
 
 		schema.importConcepts(schema.getRdfPath(), true, true, true, true, true);
-
-		VocabularyH2 keaH2 = new VocabularyH2(schema, "en");
-		keaH2.initialize();
-
-		// fill in some values from the test properties
-
-		// TaggerTrainer trainer = new TaggerTrainer(schema);
-
-		// trainer.trainKEAAutomaticIndexingModule();
-		// test some stuff to see if it worked
 
 	}
 
