@@ -251,4 +251,12 @@ public class VocabularyServiceTest {
 		TestCase.assertFalse("did not get Tags", cp.isEmpty());
 	}
 
+	@Test
+	public void testGetFirstConceptLcsh() throws Exception {
+		VocabularyService vocabularyService = new VocabularyServiceImpl(
+				hiveContainer);
+		ConceptProxy x = vocabularyService.getFirstConcept("lcsh");
+		TestCase.assertNotNull("did not load first concept", x);
+	}
+
 }

@@ -27,8 +27,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package edu.unc.ils.mrc.hive.admin;
 
-import kea.vocab.VocabularyH2;
-
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -143,28 +141,20 @@ public class AdminVocabularies {
 
 				}
 
-				if (doKEAH2) {
-					logger.info("Initializing KEA H2 index");
-					try {
-						VocabularyH2 keaH2 = new VocabularyH2(scheme, "en");
-						keaH2.initialize();
-					} catch (Exception e) {
-						logger.error("error initializing kea", e);
-					}
-				} else {
-					logger.info("Skipping KEA H2 initialization");
-				}
-
-				if (doTrainKEA) {
-					TaggerTrainer trainer = new TaggerTrainer(scheme);
-					trainer.setMinOccur(minOccur);
-					logger.info("Starting KEA training");
-					trainer.trainKEAAutomaticIndexingModule();
-					logger.info("KEA training complete");
-				} else {
-					logger.info("Skipping KEA training");
-				}
-
+				/*
+				 * if (doKEAH2) { logger.info("Initializing KEA H2 index"); try
+				 * { VocabularyH2 keaH2 = new VocabularyH2(scheme, "en");
+				 * keaH2.initialize(); } catch (Exception e) {
+				 * logger.error("error initializing kea", e); } } else {
+				 * logger.info("Skipping KEA H2 initialization"); }
+				 * 
+				 * if (doTrainKEA) { TaggerTrainer trainer = new
+				 * TaggerTrainer(scheme); trainer.setMinOccur(minOccur);
+				 * logger.info("Starting KEA training");
+				 * trainer.trainKEAAutomaticIndexingModule();
+				 * logger.info("KEA training complete"); } else {
+				 * logger.info("Skipping KEA training"); }
+				 */
 				if (doTrainMaui) {
 					TaggerTrainer trainer = new TaggerTrainer(scheme);
 					trainer.setMinOccur(minOccur);

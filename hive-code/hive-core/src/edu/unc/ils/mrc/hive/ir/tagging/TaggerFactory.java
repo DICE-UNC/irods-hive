@@ -44,8 +44,8 @@ public class TaggerFactory {
 			final SKOSScheme schema) {
 		if (tagger == DUMMYTAGGER) {
 			return new DummyTagger(dirName, modelName, stopwordsPath, schema);
-		} else if (tagger == KEATAGGER) {
-			return new KEATagger(dirName, modelName, stopwordsPath, schema);
+			// } else if (tagger == KEATAGGER) {
+			// return new KEATagger(dirName, modelName, stopwordsPath, schema);
 		} else if (tagger == MAUITAGGER) {
 			return new MauiTagger(dirName, modelName, stopwordsPath, schema);
 		} else {

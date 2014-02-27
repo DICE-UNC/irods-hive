@@ -31,7 +31,6 @@ import org.openrdf.repository.RepositoryException;
 
 import edu.unc.ils.mrc.hive.HiveException;
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
-import edu.unc.ils.mrc.hive.ir.tagging.KEAModelGenerator;
 import edu.unc.ils.mrc.hive.ir.tagging.MauiModelGenerator;
 
 /**
@@ -53,12 +52,6 @@ public class TaggerTrainer {
 
 	public void setMinOccur(final int minOccur) {
 		this.minOccur = minOccur;
-	}
-
-	public void trainKEAAutomaticIndexingModule() throws HiveException {
-		logger.trace("trainKEAAutomaticIndexingModule");
-		KEAModelGenerator generator = new KEAModelGenerator(schema, minOccur);
-		generator.createModel(schema.getStopwordsPath());
 	}
 
 	public void trainMauiAutomaticIndexingModule() throws HiveException {

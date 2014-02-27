@@ -35,7 +35,6 @@ import maui.vocab.Vocabulary;
 import maui.vocab.VocabularyH2;
 
 import org.apache.commons.io.FileUtils;
-import org.wikipedia.miner.model.Wikipedia;
 
 import weka.classifiers.Classifier;
 import weka.core.Attribute;
@@ -147,9 +146,6 @@ public class MauiModelBuilder implements OptionHandler {
 
 	/** Minimum number of occurences of a phrase */
 	public int minNumOccur = 1;
-
-	/** Wikipedia object */
-	public Wikipedia wikipedia = null;
 
 	/** Classifier */
 	private Classifier classifier = null;
