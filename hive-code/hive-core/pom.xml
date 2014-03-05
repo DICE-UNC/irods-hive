@@ -7,7 +7,7 @@
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<description>HIVE Core libraries updated for use with Jargon and iRODS</description>
-	<url>https://code.renci.org/gf/project/irodshive/</url>
+	<url>https://github.com/DICE-UNC/irods-hive</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jargon.version>3.3.3-SNAPSHOT</jargon.version>
@@ -18,12 +18,12 @@
 		<aduna.version>2.3</aduna.version>
 	</properties>
 	<issueManagement>
-		<system>gForge</system>
-		<url>https://code.renci.org/gf/project/irodshive/tracker/</url>
+		<system>GitHub</system>
+		<url>https://github.com/DICE-UNC/irods-hive/issues</url>
 	</issueManagement>
 	<scm>
-		<connection>scm:git:ssh://developername@code.renci.org/gitroot/irodshive</connection>
-		<developerConnection>scm:git:ssh://${user.name}@code.renci.org/gitroot/irodshive</developerConnection>
+		<connection>scm:git:https://github.com/DICE-UNC/irods-hive.git</connection>
+		<developerConnection>scm:git:https://github.com/DICE-UNC/irods-hive.git</developerConnection>
 	</scm>
 	<organization>
 		<name>DICE</name>
@@ -52,6 +52,19 @@
 			</releases>
 			<snapshots>
 				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>warn</checksumPolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>dice.repository</id>
+			<name>dice.repository</name>
+			<url>https://raw.github.com/DICE-UNC/DICE-Maven/master/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
 				<updatePolicy>always</updatePolicy>
 				<checksumPolicy>warn</checksumPolicy>
 			</snapshots>
@@ -116,20 +129,15 @@
 	</repositories>
 	<distributionManagement>
 		<repository>
-			<id>renci.repository</id>
-			<name>renci.repository</name>
-			<url>https://ci-dev.renci.org/nexus/content/repositories/release</url>
+			<id>internal.repo</id>
+			<name>internal.repo</name>
+			<url>file://${git.repo.root}/releases</url>
 		</repository>
 		<snapshotRepository>
-			<id>renci.snapshots</id>
-			<name>renci.snapshots</name>
-			<url>https://ci-dev.renci.org/nexus/content/repositories/snapshots</url>
+			<id>internal.repo.snapshot</id>
+			<name>internal.repo.snapshot</name>
+			<url>file://${git.repo.root}/snapshots</url>
 		</snapshotRepository>
-		<site>
-			<id>renci.site</id>
-			<name>renci.site</name>
-			<url>file:///${user.dir}/sites/irodshive</url>
-		</site>
 	</distributionManagement>
 	<reporting>
 		<plugins>
