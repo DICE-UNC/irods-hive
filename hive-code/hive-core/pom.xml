@@ -512,6 +512,7 @@
 								<echo file="${basedir}/test/hive.testing.properties" append="true">
 								    test.hive.source.dir=${test.hive.source.dir}
 									test.hive.parent.dir=${test.hive.parent.dir}
+									test.hive.scratch.dir=${test.hive.scratch.dir}
 								</echo>
 							</tasks>
 						</configuration>

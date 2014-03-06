@@ -1,4 +1,4 @@
-/**
+/*
  * 
  */
 package edu.unc.ils.mrc.hive.testframework;
@@ -47,24 +47,9 @@ public class HiveTestInstanceSetup {
 	public void init() throws JargonException, TestingUtilsException {
 		log.info("init()");
 
-		testingProperties = testingPropertiesHelper.getTestProperties();
-		log.info("see if the source hive stuff is there");
-
-		hiveSourceRoot = new File(
-				testingProperties
-						.getProperty(HiveTestingPropertiesHelper.TEST_HIVE_SOURCE_DIR));
-
 		if (!hiveSourceRoot.exists()) {
 			throw new IllegalStateException("cannot find hive source root");
 		}
-
-		log.info("source root:{}", hiveSourceRoot);
-
-		hiveTargetRoot = new File(
-				testingProperties
-						.getProperty(HiveTestingPropertiesHelper.TEST_HIVE_PARENT_DIR));
-
-		log.info("target root:{}", hiveTargetRoot);
 
 		if (hiveTargetRoot.exists()) {
 			log.info("target root exists...delete it all");
@@ -86,6 +71,25 @@ public class HiveTestInstanceSetup {
 		provisionVocabProperties("agrovoc");
 		provisionVocabProperties("uat");
 		provisionVocabProperties("mesh");
+
+	}
+
+	private void initializeSourceAndTargetRoots() throws TestingUtilsException {
+
+		testingProperties = testingPropertiesHelper.getTestProperties();
+		log.info("see if the source hive stuff is there");
+
+		hiveSourceRoot = new File(
+				testingProperties
+						.getProperty(HiveTestingPropertiesHelper.TEST_HIVE_SOURCE_DIR));
+
+		log.info("source root:{}", hiveSourceRoot);
+
+		hiveTargetRoot = new File(
+				testingProperties
+						.getProperty(HiveTestingPropertiesHelper.TEST_HIVE_PARENT_DIR));
+
+		log.info("target root:{}", hiveTargetRoot);
 
 	}
 
@@ -157,9 +161,19 @@ public class HiveTestInstanceSetup {
 
 		} catch (Exception e) {
 			throw new JargonRuntimeException("unable to copy hive props");
-
 		}
+	}
 
+	/**
+	 * Look to see if the configured testing dir where a set of generic vocabs
+	 * was loaded configured? This can be used to tell whether they need to be
+	 * initialized by calling init();
+	 * 
+	 * @return
+	 */
+	public boolean isFunctionalTestingDirConfigured() {
+		log.info("isFunctionalTestingDirConfigured");
+		return hiveTargetRoot.exists();
 	}
 
 	private void copyHiveProperties() {
@@ -178,12 +192,17 @@ public class HiveTestInstanceSetup {
 		log.info("copied");
 	}
 
-	public HiveTestInstanceSetup() {
-
+	public HiveTestInstanceSetup() throws TestingUtilsException {
+		initializeSourceAndTargetRoots();
 	}
 
 	public static void main(final String args[]) {
-		HiveTestInstanceSetup setup = new HiveTestInstanceSetup();
+		HiveTestInstanceSetup setup;
+		try {
+			setup = new HiveTestInstanceSetup();
+		} catch (TestingUtilsException e) {
+			throw new JargonRuntimeException("unable to set up test dir", e);
+		}
 		try {
 			setup.init();
 		} catch (JargonException e) {
