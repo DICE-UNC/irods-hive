@@ -29,11 +29,19 @@ public class HiveException extends Exception {
 
 	private static final long serialVersionUID = 8823460264789284521L;
 
-	public HiveException(final String message) {
-		super(message);
+	public HiveException(final Exception e) {
+		super(e);
 	}
 
 	public HiveException(final String message, final Throwable cause) {
 		super(message, cause);
+	}
+
+	public HiveException(String arg0) {
+		super(arg0);
+	}
+
+	public HiveException(Throwable arg0) {
+		super(arg0);
 	}
 }

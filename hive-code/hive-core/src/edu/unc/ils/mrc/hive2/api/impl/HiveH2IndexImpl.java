@@ -51,6 +51,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.pool.ObjectPool;
 import org.apache.commons.pool.impl.GenericObjectPool;
 
+import edu.unc.ils.mrc.hive.HiveException;
 import edu.unc.ils.mrc.hive2.api.HiveConcept;
 import edu.unc.ils.mrc.hive2.api.HiveIndex;
 
@@ -85,16 +86,17 @@ public class HiveH2IndexImpl implements HiveIndex {
 	 *            Vocabulary name
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
+	 * @throws HiveException
 	 */
 	public HiveH2IndexImpl(final String h2path, final String name)
-			throws ClassNotFoundException, SQLException {
+			throws ClassNotFoundException, SQLException, HiveException {
 		this.name = name;
 
 		// Construct H2 index paths
 		// this.h2path = basePath + File.separator + "h2" + File.separator +
 		// name;
-		this.h2path = h2path + File.separator + name.toLowerCase();
-		h2db = h2path + File.separator + name.toLowerCase() + ".h2.db";
+		this.h2path = h2path + "/" + name.toLowerCase();
+		h2db = h2path + "/" + name.toLowerCase() + ".h2.db";
 
 		init();
 	}
@@ -104,8 +106,10 @@ public class HiveH2IndexImpl implements HiveIndex {
 	 * 
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
+	 * @throws HiveException
 	 */
-	protected void init() throws ClassNotFoundException, SQLException {
+	protected void init() throws ClassNotFoundException, SQLException,
+			HiveException {
 		logger.info("init()");
 
 		// Initialize an H2 connection pool
@@ -127,7 +131,12 @@ public class HiveH2IndexImpl implements HiveIndex {
 
 		// If the H2 store doesn't exist, create it.
 		if (!exists()) {
-			createIndex();
+			try {
+				createIndex();
+			} catch (Exception e) {
+				logger.error("exception loading H2 index", e);
+				throw new HiveException("unable to load h2 index", e);
+			}
 		}
 	}
 
@@ -164,9 +173,11 @@ public class HiveH2IndexImpl implements HiveIndex {
 
 	/**
 	 * Create the H2 database structure
+	 * 
+	 * @throws HiveException
 	 */
 	@Override
-	public void createIndex() throws SQLException {
+	public void createIndex() throws SQLException, HiveException {
 		logger.trace("createIndex()" + h2path);
 
 		Connection con = null;
@@ -178,8 +189,12 @@ public class HiveH2IndexImpl implements HiveIndex {
 
 			// Create vocabulary settings
 
+			logger.info("creating settings table...");
+
 			s.execute("CREATE TABLE settings (" + " name varchar(100),"
 					+ " last_update timestamp," + " created timestamp)");
+
+			logger.info("creating concept table...");
 
 			// Create concept table
 			s.execute("CREATE TABLE concept (" + " id int identity, "
@@ -190,15 +205,22 @@ public class HiveH2IndexImpl implements HiveIndex {
 					+ " num_narrower int, " + " num_broader int, "
 					+ " num_related int)");
 
+			logger.info("creating indexes...");
+
 			s.execute("CREATE INDEX idx_alpha_1 on concept (uri, local_part)");
 			s.execute("CREATE INDEX idx_alpha_2 on concept (pref_label_lower)");
 
+			logger.info("adding current time to settings");
 			Timestamp now = new Timestamp(System.currentTimeMillis());
 			ps = con.prepareStatement("insert into settings values (?,?,?)");
 			ps.setString(1, name);
 			ps.setTimestamp(2, now);
 			ps.setTimestamp(3, now);
 			ps.execute();
+			logger.info("done...");
+		} catch (Exception e) {
+			logger.error("exception creating h2 index structure", e);
+			throw new HiveException("exception creating H2 index", e);
 
 		} finally {
 			try {
@@ -782,17 +804,4 @@ public class HiveH2IndexImpl implements HiveIndex {
 		}
 	}
 
-	public static void main(final String[] args) {
-		try {
-			HiveH2IndexImpl h2 = new HiveH2IndexImpl(
-					"/usr/local/hive/hive-data/lcsh/lcshH2", "lcsh");
-			h2.createIndex();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }

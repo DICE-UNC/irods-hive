@@ -3,6 +3,8 @@
  */
 package edu.unc.ils.mrc.hive.exception;
 
+import edu.unc.ils.mrc.hive.HiveException;
+
 /**
  * Generic exception importing vocabularies into HIVE
  * 
@@ -12,9 +14,6 @@ package edu.unc.ils.mrc.hive.exception;
 public class HiveVocabularyImportException extends HiveException {
 
 	private static final long serialVersionUID = -5201011855128541296L;
-
-	public HiveVocabularyImportException() {
-	}
 
 	/**
 	 * @param arg0

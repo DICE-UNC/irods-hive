@@ -156,6 +156,7 @@ public class SKOSSchemeImpl implements SKOSScheme {
 				logger.error(
 						"exception occurred in constructor processing, not first time",
 						e);
+				throw new HiveException("error constructing skosScheme", e);
 			}
 
 		}

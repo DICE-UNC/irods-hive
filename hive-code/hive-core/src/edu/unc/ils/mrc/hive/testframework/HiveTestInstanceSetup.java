@@ -68,7 +68,12 @@ public class HiveTestInstanceSetup {
 
 		if (hiveTargetRoot.exists()) {
 			log.info("target root exists...delete it all");
-			hiveTargetRoot.delete();
+			try {
+				FileUtils.deleteDirectory(hiveTargetRoot);
+			} catch (IOException e) {
+				throw new JargonRuntimeException("unable to delete target dir");
+
+			}
 		}
 
 		log.info("mkdirs for target root...");
@@ -80,7 +85,6 @@ public class HiveTestInstanceSetup {
 
 		provisionVocabProperties("agrovoc");
 		provisionVocabProperties("uat");
-		provisionVocabProperties("lcsh");
 		provisionVocabProperties("mesh");
 
 	}
@@ -93,8 +97,6 @@ public class HiveTestInstanceSetup {
 
 		log.info("copy the props over to the target dir");
 
-		File sourceVocabProps = new File(hiveSourceRoot, vocabName
-				+ ".properties");
 		File targetVocabProps = new File(hiveTargetRoot, vocabName
 				+ ".properties");
 
@@ -145,7 +147,7 @@ public class HiveTestInstanceSetup {
 					testingProperties
 							.getProperty(HiveTestingPropertiesHelper.TEST_HIVE_PARENT_DIR),
 					vocabName, true);
-			schema.importConcepts(schema.getRdfPath(), true, true, false, true,
+			schema.importConcepts(schema.getRdfPath(), true, true, true, false,
 					true);
 
 			log.info("imported");

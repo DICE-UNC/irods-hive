@@ -65,6 +65,8 @@ import org.openrdf.rio.RDFFormat;
 import org.openrdf.sail.memory.MemoryStore;
 import org.openrdf.sail.nativerdf.NativeStore;
 
+import edu.unc.ils.mrc.hive.HiveException;
+import edu.unc.ils.mrc.hive.exception.HiveVocabularyImportException;
 import edu.unc.ils.mrc.hive.ir.lucene.search.Autocomplete;
 import edu.unc.ils.mrc.hive.ir.lucene.search.AutocompleteTerm;
 import edu.unc.ils.mrc.hive2.api.HiveConcept;
@@ -123,8 +125,10 @@ public class HiveVocabularyImpl implements HiveVocabulary {
 	 *            Base path for vocabulary
 	 * @param name
 	 *            Name of vocabulary
+	 * @throws HiveException
 	 */
-	protected HiveVocabularyImpl(final String basePath, final String name) {
+	protected HiveVocabularyImpl(final String basePath, final String name)
+			throws HiveException {
 		this.name = name;
 		sesamePath = basePath + File.separator + "sesame";
 		String h2Path = basePath + File.separator + "h2";
@@ -141,10 +145,11 @@ public class HiveVocabularyImpl implements HiveVocabulary {
 	 *            Base path for vocabulary
 	 * @param name
 	 *            Name of vocabulary
+	 * @throws HiveException
 	 */
 	protected HiveVocabularyImpl(final String name, final String lucenePath,
 			final String sesamePath, final String h2Path,
-			final String autocompletePath) {
+			final String autocompletePath) throws HiveException {
 		this.name = name;
 		;
 		this.sesamePath = sesamePath;
@@ -154,9 +159,11 @@ public class HiveVocabularyImpl implements HiveVocabulary {
 
 	/**
 	 * Initialize the Hive indexes
+	 * 
+	 * @throws HiveException
 	 */
 	private void init(final String h2Path, final String lucenePath,
-			final String autocompletePath) {
+			final String autocompletePath) throws HiveException {
 		/* Initialize Sesame store */
 		// String indexes = "spoc,posc,ospc";
 		String indexes = "spoc,ospc";
@@ -183,20 +190,26 @@ public class HiveVocabularyImpl implements HiveVocabulary {
 			autocomplete = new Autocomplete(autocompletePath);
 			logger.info("autocomplete initialized");
 		} catch (RepositoryException e) {
-			logger.error(e);
+			logger.error("error initializing vocabulary", e);
+			throw new HiveException(e);
 		} catch (ClassNotFoundException e) {
-			logger.error(e);
+			logger.error("error initializing vocabulary", e);
+			throw new HiveException(e);
 		} catch (SQLException e) {
-			logger.error(e);
+			logger.error("error initializing vocabulary", e);
+			throw new HiveException(e);
 		} catch (IOException e) {
-			logger.error(e);
+			logger.error("error initializing vocabulary", e);
+			throw new HiveException(e);
 		} catch (Exception e) {
-			logger.error("unanticipated exception in init", e);
+			logger.error("error initializing vocabulary", e);
+			throw new HiveException(e);
+
 		}
 	}
 
 	public static HiveVocabularyImpl getInstance(final String basePath,
-			final String name) {
+			final String name) throws HiveException {
 		HiveVocabularyImpl instance = instances.get(name);
 		if (instance == null) {
 			instance = new HiveVocabularyImpl(basePath, name);
@@ -207,7 +220,8 @@ public class HiveVocabularyImpl implements HiveVocabulary {
 
 	public static HiveVocabularyImpl getInstance(final String name,
 			final String lucenePath, final String sesamePath,
-			final String h2Path, final String autocompletePath) {
+			final String h2Path, final String autocompletePath)
+			throws HiveException {
 		HiveVocabularyImpl instance = instances.get(name);
 		if (instance == null) {
 			instance = new HiveVocabularyImpl(name, lucenePath, sesamePath,
@@ -465,7 +479,24 @@ public class HiveVocabularyImpl implements HiveVocabulary {
 	public void importConcepts(final String path, final boolean doSesame,
 			final boolean doLucene, final boolean doH2, final boolean doKEAH2,
 			final boolean doAutocomplete, final String format) throws Exception {
-		logger.info("importConcepts " + path);
+
+		if (path == null || path.isEmpty()) {
+			throw new IllegalArgumentException("null or empty path");
+		}
+
+		logger.info("importConcepts()");
+		logger.info("path:" + path);
+		logger.info("doSesame:" + doSesame);
+		logger.info("doLucene:" + doLucene);
+		logger.info("doH2:" + doH2);
+		logger.info("doKEAH2:" + doKEAH2);
+		logger.info("doAutocomplete:" + doAutocomplete);
+
+		if (format == null || format.isEmpty()) {
+			throw new IllegalArgumentException("null format");
+		}
+
+		logger.info("format:" + format);
 
 		RDFFormat rdfformat = RDFFormat.RDFXML;
 		if (format.equals("rdfxml")) {
@@ -476,38 +507,43 @@ public class HiveVocabularyImpl implements HiveVocabulary {
 			rdfformat = RDFFormat.NTRIPLES;
 		} else if (format.equals("turtle")) {
 			rdfformat = RDFFormat.TURTLE;
+		} else {
+			throw new IllegalArgumentException("format is unknown");
 		}
 
 		// Import RDF/XML directly to Sesame
 		if (doSesame) {
-			logger.info("Importing " + path + " to Sesame store");
-			ContextAwareConnection conn = manager.getConnection();
-			conn.add(new InputStreamReader(new FileInputStream(path), "UTF-8"),
-					"", rdfformat);
+			try {
+				logger.info("Importing " + path + " to Sesame store");
+				ContextAwareConnection conn = manager.getConnection();
+				conn.add(new InputStreamReader(new FileInputStream(path),
+						"UTF-8"), "", rdfformat);
 
-			manager.flush();
-			logger.info("Import to Sesame store complete");
+				manager.flush();
+				logger.info("Import to Sesame store complete");
+			} catch (Exception e) {
+				logger.error("exception importing to sesame", e);
+				throw new HiveVocabularyImportException(
+						"exception importing vocab to Sesame", e);
+			}
 		} else {
 			logger.info("Skipping Sesame import");
 		}
 
 		// Import concepts from Sesame into the Lucene and H2 indexes
 		if (doLucene) {
-			luceneIndex.startTransaction();
-		}
-		if (doH2) {
-			h2Index.startTransaction();
-		}
-
-		// For each Concept in Sesame, add to H2 and Lucene indexes
-		if (doLucene) {
 			logger.info("Initializing Lucene index");
+
+			luceneIndex.startTransaction();
+
 		} else {
 			logger.info("Skipping Lucene initialization");
 		}
 
 		if (doH2) {
 			logger.info("Initializing H2 index");
+
+			h2Index.startTransaction();
 		} else {
 			logger.info("Skipping H2 initialization");
 		}
@@ -532,6 +568,9 @@ public class HiveVocabularyImpl implements HiveVocabulary {
 					} catch (Exception e) {
 						logger.error("Error adding " + concept.getQName());
 						logger.error(e);
+						throw new HiveVocabularyImportException(
+								"exception importing vocab, adding to lucene and h2",
+								e);
 					}
 
 				} else {
@@ -542,20 +581,37 @@ public class HiveVocabularyImpl implements HiveVocabulary {
 		}
 
 		if (doLucene) {
-			luceneIndex.commit();
+			try {
+				luceneIndex.commit();
+				luceneIndex.close();
+			} catch (Exception e) {
+				logger.error("error in commit of luceneIndex", e);
+				throw new HiveVocabularyImportException(
+						"error in commit of luceneIndex", e);
+			}
 		}
 		if (doH2) {
-			h2Index.commit();
+			try {
+				h2Index.commit();
+			} catch (Exception e) {
+				logger.error("error in commit of h2Index", e);
+				throw new HiveVocabularyImportException(
+						"error in commit of h2Index", e);
+			}
 		}
-
-		luceneIndex.close();
 
 		if (doAutocomplete) {
 			logger.info("Initializing autocomplete index");
 
-			autocomplete.reIndex(
-					FSDirectory.getDirectory(luceneIndex.getPath(), null),
-					"prefLabel");
+			try {
+				autocomplete.reIndex(
+						FSDirectory.getDirectory(luceneIndex.getPath(), null),
+						"prefLabel");
+			} catch (Exception e) {
+				logger.error("error in commit of autocomplete", e);
+				throw new HiveVocabularyImportException(
+						"error in commit of autocomplete", e);
+			}
 
 			logger.info("Autocomplete index initialization complete");
 		} else {

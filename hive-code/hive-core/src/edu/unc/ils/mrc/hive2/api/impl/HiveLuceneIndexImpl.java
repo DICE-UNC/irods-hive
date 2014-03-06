@@ -47,6 +47,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.LockObtainFailedException;
 
+import edu.unc.ils.mrc.hive.HiveException;
 import edu.unc.ils.mrc.hive.ir.lucene.analysis.HIVEAnalyzer;
 import edu.unc.ils.mrc.hive2.api.HiveConcept;
 import edu.unc.ils.mrc.hive2.api.HiveIndex;
@@ -87,14 +88,31 @@ public class HiveLuceneIndexImpl implements HiveIndex {
 	 *            Base path for Lucene index for this vocabulary
 	 * @param name
 	 *            Vocabulary name
+	 * @throws HiveException
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	public HiveLuceneIndexImpl(final String lucenePath, final String name) {
+	public HiveLuceneIndexImpl(final String lucenePath, final String name)
+			throws HiveException {
+
+		logger.info("HiveLuceneIndexImpl()");
+		if (lucenePath == null || lucenePath.isEmpty()) {
+			throw new IllegalArgumentException("null or empty lucenePath");
+		}
+
+		if (name == null || name.isEmpty()) {
+			throw new IllegalArgumentException("null or empty name");
+		}
+
+		logger.info("lucenePath:" + lucenePath);
+		logger.info("name:" + name);
+
 		this.name = name;
 		// Base path for Lucene index
 		// this.lucenePath = basePath + File.separator + "lucene";
 		this.lucenePath = lucenePath;
+
+		logger.info("calling init()");
 
 		init();
 	}
@@ -102,10 +120,12 @@ public class HiveLuceneIndexImpl implements HiveIndex {
 	/**
 	 * Initialize the Lucene index
 	 * 
+	 * @throws HiveException
+	 * 
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	private void init() {
+	private void init() throws HiveException {
 		logger.debug("init()");
 		try {
 			boolean create = false;
@@ -135,9 +155,14 @@ public class HiveLuceneIndexImpl implements HiveIndex {
 			} while (retry);
 
 		} catch (CorruptIndexException e) {
-			logger.error(e);
+			logger.error("corrupt index creating lucene index", e);
+			throw new HiveException(
+					"got lucene corrupt index error creating hive lucene index",
+					e);
 		} catch (IOException e) {
-			logger.error(e);
+			logger.error("io exception during lucene index create", e);
+			throw new HiveException(
+					"got io exception creating hive lucene index", e);
 		}
 	}
 
@@ -155,9 +180,11 @@ public class HiveLuceneIndexImpl implements HiveIndex {
 
 	/**
 	 * Adds the specified concept to the Lucene index
+	 * 
+	 * @throws HiveException
 	 */
 	@Override
-	public void addConcept(final HiveConcept concept) {
+	public void addConcept(final HiveConcept concept) throws HiveException {
 		logger.debug("addConcept(): " + concept.getQName());
 
 		Document document = new Document();
@@ -170,8 +197,10 @@ public class HiveLuceneIndexImpl implements HiveIndex {
 
 			} catch (IOException e) {
 				logger.error(e);
+				throw new HiveException("error adding concept", e);
 			} catch (ParseException e) {
 				logger.error(e);
+				throw new HiveException("parse exception adding concept", e);
 			}
 		}
 
@@ -229,8 +258,15 @@ public class HiveLuceneIndexImpl implements HiveIndex {
 			}
 		} catch (CorruptIndexException e) {
 			logger.error(e);
+			logger.error("corrupt index creating lucene index", e);
+			throw new HiveException(
+					"got lucene corrupt index error creating hive lucene index",
+					e);
 		} catch (IOException e) {
 			logger.error(e);
+			logger.error("io exception creating lucene index", e);
+			throw new HiveException("io exception creating hive lucene index",
+					e);
 		}
 	}
 
