@@ -14,10 +14,8 @@ import org.irods.jargon.testutils.TestingUtilsException;
  */
 public class HiveTestingPropertiesHelper {
 
-	public static final String UAT_VOCAB_DIRECTORY = "test.vocab.uat.directory";
-	public static final String UAT_VOCAB_UAT_RDF = "test.vocab.uat.rdf";
-	public static final String UAT_VOCAB_UAT_TRAINING_DIR = "test.vocab.uat.training.directory";
 	public static final String TEST_HIVE_PARENT_DIR = "test.hive.parent.dir";
+	public static final String TEST_HIVE_SOURCE_DIR = "test.hive.source.dir";
 
 	/**
 	 * 
@@ -34,7 +32,7 @@ public class HiveTestingPropertiesHelper {
 	 */
 	public Properties getTestProperties() throws TestingUtilsException {
 		ClassLoader loader = this.getClass().getClassLoader();
-		InputStream in = loader.getResourceAsStream("testing.properties");
+		InputStream in = loader.getResourceAsStream("hive.testing.properties");
 		Properties properties = new Properties();
 
 		try {

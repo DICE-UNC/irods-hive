@@ -240,7 +240,7 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-			<dependency>
+		<dependency>
 			<groupId>commons-cli</groupId>
 			<artifactId>commons-cli</artifactId>
 			<version>1.2</version>
@@ -252,7 +252,7 @@
 			<version>1.4</version>
 			<scope>compile</scope>
 		</dependency>
-			<dependency>
+		<dependency>
 			<groupId>commons-configuration</groupId>
 			<artifactId>commons-configuration</artifactId>
 			<version>1.6</version>
@@ -264,51 +264,21 @@
 			</exclusions>
 		</dependency>
 		<!-- HIVE dependencies available on maven -->
-		<!-- 
-	
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>3.2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>1.3.1</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.5</version>
-			<scope>compile</scope>
-		</dependency>
-		
-	
-		
-		 -->
-		<!-- 
-		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.2</version>
-			<scope>compile</scope>
-		</dependency>
-		 -->
-		
+		<!-- <dependency> <groupId>commons-collections</groupId> <artifactId>commons-collections</artifactId> 
+			<version>3.2.1</version> </dependency> <dependency> <groupId>commons-io</groupId> 
+			<artifactId>commons-io</artifactId> <version>1.3.1</version> <scope>compile</scope> 
+			</dependency> <dependency> <groupId>commons-lang</groupId> <artifactId>commons-lang</artifactId> 
+			<version>2.5</version> <scope>compile</scope> </dependency> -->
+		<!-- <dependency> <groupId>commons-fileupload</groupId> <artifactId>commons-fileupload</artifactId> 
+			<version>1.2</version> <scope>compile</scope> </dependency> -->
+
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-	 <!-- 
-		<dependency>
-			<groupId>commons-pool</groupId>
-			<artifactId>commons-pool</artifactId>
-			<version>1.5.5</version>
-			<scope>compile</scope>
-		</dependency>
-		 -->
+		<!-- <dependency> <groupId>commons-pool</groupId> <artifactId>commons-pool</artifactId> 
+			<version>1.5.5</version> <scope>compile</scope> </dependency> -->
 		<dependency>
 			<groupId>com.googlecode.java-diff-utils</groupId>
 			<artifactId>diffutils</artifactId>
@@ -389,7 +359,8 @@
 			<version>1.3.150</version>
 			<scope>compile</scope>
 		</dependency>
-		<!-- mvn install:install-file -Dfile=lingpipe-3.8.2.jar -DgroupId=com.aliasi -DartifactId=lingpipe -Dversion=3.8.2 -Dpackaging=jar -->
+		<!-- mvn install:install-file -Dfile=lingpipe-3.8.2.jar -DgroupId=com.aliasi 
+			-DartifactId=lingpipe -Dversion=3.8.2 -Dpackaging=jar -->
 		<dependency>
 			<groupId>com.aliasi</groupId>
 			<artifactId>lingpipe</artifactId>
@@ -401,45 +372,16 @@
 			<artifactId>icu4j</artifactId>
 			<version>3.4.4</version>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>3.7.1.GA</version>
-		</dependency>
-		 -->
-		<!--  
-		<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>apache-jena-libs</artifactId>
-			<type>pom</type>
-			<version>2.10.0</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>log4j</artifactId>
-					<groupId>log4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jcl-over-slf4j</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>slf4j-log4j12</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		-->
-		<!-- 
-		<dependency>
-			<groupId>com.hp.hpl.jena</groupId>
-			<artifactId>jena</artifactId>
-			<version>2.5.4</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>javassist</groupId> <artifactId>javassist</artifactId> 
+			<version>3.7.1.GA</version> </dependency> -->
+		<!-- <dependency> <groupId>org.apache.jena</groupId> <artifactId>apache-jena-libs</artifactId> 
+			<type>pom</type> <version>2.10.0</version> <exclusions> <exclusion> <artifactId>slf4j-api</artifactId> 
+			<groupId>org.slf4j</groupId> </exclusion> <exclusion> <artifactId>log4j</artifactId> 
+			<groupId>log4j</groupId> </exclusion> <exclusion> <artifactId>jcl-over-slf4j</artifactId> 
+			<groupId>org.slf4j</groupId> </exclusion> <exclusion> <artifactId>slf4j-log4j12</artifactId> 
+			<groupId>org.slf4j</groupId> </exclusion> </exclusions> </dependency> -->
+		<!-- <dependency> <groupId>com.hp.hpl.jena</groupId> <artifactId>jena</artifactId> 
+			<version>2.5.4</version> </dependency> -->
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-analyzers</artifactId>
@@ -455,78 +397,43 @@
 			<artifactId>lucene-spellchecker</artifactId>
 			<version>${lucene.version}</version>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>marc4j</groupId>
-			<artifactId>marc4j</artifactId>
-			<version>2.3.1</version>
-		</dependency>
-		 -->
-		<!-- mvn install:install-file -Dfile=maui12.jar -DgroupId=maui -DartifactId=maui -Dversion=1.2 -Dpackaging=jar -->
+		<!-- <dependency> <groupId>marc4j</groupId> <artifactId>marc4j</artifactId> 
+			<version>2.3.1</version> </dependency> -->
+		<!-- mvn install:install-file -Dfile=maui12.jar -DgroupId=maui -DartifactId=maui 
+			-Dversion=1.2 -Dpackaging=jar -->
 		<dependency>
 			<groupId>maui</groupId>
 			<artifactId>maui</artifactId>
 			<version>1.2</version>
 		</dependency>
-		
-		 <!--  
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.18</version>
-		</dependency>
-		
-		 -->
+
+		<!-- <dependency> <groupId>mysql</groupId> <artifactId>mysql-connector-java</artifactId> 
+			<version>5.1.18</version> </dependency> -->
 		<dependency>
 			<groupId>org.perf4j</groupId>
 			<artifactId>perf4j</artifactId>
 			<version>0.9.13</version>
 		</dependency>
-		
-		<!--  
-		<dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>persistence-api</artifactId>
-			<version>1.0.2</version>
-			<scope>provided</scope>
-		</dependency>
-		-->
-		<!--
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-			<version>2.0.1</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		  -->
-		<!-- 
-		<dependency>
-			<groupId>net.sf.trove4j</groupId>
-			<artifactId>trove4j</artifactId>
-			<version>3.0.3</version>
-		</dependency>
-		 -->
-		 
+
+		<!-- <dependency> <groupId>javax.persistence</groupId> <artifactId>persistence-api</artifactId> 
+			<version>1.0.2</version> <scope>provided</scope> </dependency> -->
+		<!-- <dependency> <groupId>org.quartz-scheduler</groupId> <artifactId>quartz</artifactId> 
+			<version>2.0.1</version> <exclusions> <exclusion> <artifactId>slf4j-api</artifactId> 
+			<groupId>org.slf4j</groupId> </exclusion> </exclusions> </dependency> -->
+		<!-- <dependency> <groupId>net.sf.trove4j</groupId> <artifactId>trove4j</artifactId> 
+			<version>3.0.3</version> </dependency> -->
+
 		<dependency>
 			<groupId>nz.ac.waikato.cms.weka</groupId>
 			<artifactId>weka-stable</artifactId>
 			<version>3.6.8</version>
 		</dependency>
-		
-		<!-- mvn install:install-file -Dfile=wikipedia-miner-1.2.0.jar -DgroupId=wikipedia -DartifactId=wikipedia-miner -Dversion=1.2.0 -Dpackaging=jar -->
-		
-		<!--  
-		<dependency>
-			<groupId>wikipedia</groupId>
-			<artifactId>wikipedia-miner</artifactId>
-			<version>1.2.0</version>
-		</dependency>
-		-->
+
+		<!-- mvn install:install-file -Dfile=wikipedia-miner-1.2.0.jar -DgroupId=wikipedia 
+			-DartifactId=wikipedia-miner -Dversion=1.2.0 -Dpackaging=jar -->
+
+		<!-- <dependency> <groupId>wikipedia</groupId> <artifactId>wikipedia-miner</artifactId> 
+			<version>1.2.0</version> </dependency> -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
@@ -543,7 +450,7 @@
 			<artifactId>poi</artifactId>
 			<version>3.7</version>
 		</dependency>
-		<!-- see about getting rid of, see Candidate, which uses anchor  -->
+		<!-- see about getting rid of, see Candidate, which uses anchor -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
@@ -575,17 +482,23 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.5.0</version>
-	</dependency>
-	<dependency>
-		<groupId>info.aduna.commons</groupId>
-		<artifactId>aduna-commons-lang</artifactId>
-		<version>${aduna.version}</version>
-	</dependency>
-	</dependencies> 
+		</dependency>
+		<dependency>
+			<groupId>info.aduna.commons</groupId>
+			<artifactId>aduna-commons-lang</artifactId>
+			<version>${aduna.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.7</version>
+		</dependency>
+
+	</dependencies>
 	<build>
 		<sourceDirectory>${basedir}/src</sourceDirectory>
 		<plugins>
-		  
+
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
@@ -594,12 +507,10 @@
 						<phase>validate</phase>
 						<configuration>
 							<tasks>
-								<delete file="${basedir}/test/testing.properties" />
-								<touch file="${basedir}/test/testing.properties" mkdirs="true" />
-								<echo file="${basedir}/test/testing.properties" append="true">
-									test.vocab.uat.directory=${test.vocab.uat.directory}
-									test.vocab.uat.rdf=${test.vocab.uat.rdf}
-									test.vocab.uat.training.directory=${test.vocab.uat.training.directory}
+								<delete file="${basedir}/test/hive.testing.properties" />
+								<touch file="${basedir}/test/hive.testing.properties" mkdirs="true" />
+								<echo file="${basedir}/test/hive.testing.properties" append="true">
+								    test.hive.source.dir=${test.hive.source.dir}
 									test.hive.parent.dir=${test.hive.parent.dir}
 								</echo>
 							</tasks>
@@ -650,8 +561,8 @@
 					<resume>false</resume>
 				</configuration>
 			</plugin>
-			
-				<plugin>
+
+			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
 					<descriptorRefs>
@@ -668,11 +579,12 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -696,7 +608,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore/>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
