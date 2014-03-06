@@ -23,6 +23,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.javadoc.reporting.version>2.7</maven.javadoc.reporting.version>
 		<jackson.mapper.version>1.9.12</jackson.mapper.version>
+		<sl4j.version>1.6.6</sl4j.version>
 	</properties>
 	<issueManagement>
 		<system>GitHub</system>
