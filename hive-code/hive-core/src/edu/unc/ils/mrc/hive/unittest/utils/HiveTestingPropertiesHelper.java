@@ -1,5 +1,6 @@
 package edu.unc.ils.mrc.hive.unittest.utils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -35,6 +36,30 @@ public class HiveTestingPropertiesHelper {
 	 * 
 	 */
 	public HiveTestingPropertiesHelper() {
+	}
+
+	public boolean checkTestHiveFuntionalSetup() throws TestingUtilsException {
+		Properties hiveTestingProperties = getTestProperties();
+		String hiveFunctionalSetupDir = hiveTestingProperties
+				.getProperty(TEST_HIVE_PARENT_DIR);
+
+		if (hiveFunctionalSetupDir == null || hiveFunctionalSetupDir.isEmpty()) {
+			throw new TestingUtilsException(
+					"no property set for test.hive.parent.dir");
+		}
+
+		File parentDirFile = new File(hiveFunctionalSetupDir);
+
+		if (!parentDirFile.exists()) {
+			return false;
+		}
+
+		if (!parentDirFile.isDirectory()) {
+			return false;
+		}
+
+		return true;
+
 	}
 
 	/**
