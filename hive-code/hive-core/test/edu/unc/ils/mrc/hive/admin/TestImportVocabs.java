@@ -1,6 +1,11 @@
 package edu.unc.ils.mrc.hive.admin;
 
+import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
+import java.util.TreeMap;
+
+import junit.framework.Assert;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -9,7 +14,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.unc.ils.mrc.hive.api.SKOSScheme;
+import edu.unc.ils.mrc.hive.api.SKOSServer;
 import edu.unc.ils.mrc.hive.api.impl.elmo.SKOSSchemeImpl;
+import edu.unc.ils.mrc.hive.api.impl.elmo.SKOSServerImpl;
 import edu.unc.ils.mrc.hive.testframework.HiveScratchAreaCreator;
 import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
 
@@ -74,7 +81,42 @@ public class TestImportVocabs {
 		schema.importConcepts(schema.getRdfPath(), true, true, true, false,
 				true);
 
-		// right now looks for success
+		SKOSServer skosServer = new SKOSServerImpl(parentOfTest
+				+ "/hive.properties");
+
+		Assert.assertNotNull("null skosServer", skosServer);
+
+		skosServer.getSKOSSearcher();
+
+		TreeMap<String, SKOSScheme> vocabularies = skosServer.getSKOSSchemas();
+		Set<String> keys = vocabularies.keySet();
+		Iterator<String> it = keys.iterator();
+		boolean gotVocab = false;
+		long nbrConcepts = 0;
+		while (it.hasNext()) {
+			SKOSScheme voc = vocabularies.get(it.next());
+			if (voc.getName().equals("mesh")) {
+				gotVocab = true;
+			}
+			System.out.println("NAME: " + voc.getName());
+			System.out.println("\t LONG NAME: " + voc.getLongName());
+			System.out.println("\t NUMBER OF CONCEPTS: "
+					+ voc.getNumberOfConcepts());
+
+			nbrConcepts = voc.getNumberOfConcepts();
+
+			System.out.println("\t NUMBER OF RELATIONS: "
+					+ voc.getNumberOfRelations());
+			System.out.println("\t DATE: " + voc.getLastDate());
+			System.out.println();
+			System.out.println("\t SIZE: " + voc.getSubAlphaIndex("a").size());
+			System.out.println();
+
+		}
+
+		skosServer.close();
+		Assert.assertTrue("did not find just loaded vocab", gotVocab);
+		Assert.assertTrue("did not find any concepts", nbrConcepts > 0);
 
 	}
 
@@ -93,7 +135,46 @@ public class TestImportVocabs {
 		schema.importConcepts(schema.getRdfPath(), true, true, true, false,
 				true);
 
-		// right now looks for success
+		SKOSServer skosServer = new SKOSServerImpl(parentOfTest
+				+ "/hive.properties");
+
+		Assert.assertNotNull("null skosServer", skosServer);
+
+		skosServer.getSKOSSearcher();
+
+		/**
+		 * Statistics test
+		 */
+
+		TreeMap<String, SKOSScheme> vocabularies = skosServer.getSKOSSchemas();
+		Set<String> keys = vocabularies.keySet();
+		Iterator<String> it = keys.iterator();
+		boolean gotVocab = false;
+		long nbrConcepts = 0;
+		while (it.hasNext()) {
+			SKOSScheme voc = vocabularies.get(it.next());
+			if (voc.getName().equals("AGROVOC")) {
+				gotVocab = true;
+			}
+			System.out.println("NAME: " + voc.getName());
+			System.out.println("\t LONG NAME: " + voc.getLongName());
+			System.out.println("\t NUMBER OF CONCEPTS: "
+					+ voc.getNumberOfConcepts());
+
+			nbrConcepts = voc.getNumberOfConcepts();
+
+			System.out.println("\t NUMBER OF RELATIONS: "
+					+ voc.getNumberOfRelations());
+			System.out.println("\t DATE: " + voc.getLastDate());
+			System.out.println();
+			System.out.println("\t SIZE: " + voc.getSubAlphaIndex("a").size());
+			System.out.println();
+
+		}
+
+		skosServer.close();
+		Assert.assertTrue("did not find just loaded vocab", gotVocab);
+		Assert.assertTrue("did not find any concepts", nbrConcepts > 0);
 
 	}
 
@@ -117,31 +198,48 @@ public class TestImportVocabs {
 		schema.importConcepts(schema.getRdfPath(), true, true, true, false,
 				true);
 
-		// right now looks for success
+		SKOSServer skosServer = new SKOSServerImpl(parentOfTest
+				+ "/hive.properties");
+
+		Assert.assertNotNull("null skosServer", skosServer);
+
+		skosServer.getSKOSSearcher();
+
+		/**
+		 * Statistics test
+		 */
+
+		TreeMap<String, SKOSScheme> vocabularies = skosServer.getSKOSSchemas();
+		Set<String> keys = vocabularies.keySet();
+		Iterator<String> it = keys.iterator();
+		boolean gotVocab = false;
+		long nbrConcepts = 0;
+		while (it.hasNext()) {
+			SKOSScheme voc = vocabularies.get(it.next());
+			if (voc.getName().equals("uat")) {
+				gotVocab = true;
+			}
+			System.out.println("NAME: " + voc.getName());
+			System.out.println("\t LONG NAME: " + voc.getLongName());
+			System.out.println("\t NUMBER OF CONCEPTS: "
+					+ voc.getNumberOfConcepts());
+
+			nbrConcepts = voc.getNumberOfConcepts();
+
+			System.out.println("\t NUMBER OF RELATIONS: "
+					+ voc.getNumberOfRelations());
+			System.out.println("\t DATE: " + voc.getLastDate());
+			System.out.println();
+			System.out.println("\t SIZE: " + voc.getSubAlphaIndex("a").size());
+			System.out.println();
+			// System.out.println("\t TOP CONCEPTS: " +
+			// voc.getNumberOfTopConcepts());
+		}
+
+		skosServer.close();
+		Assert.assertTrue("did not find just loaded vocab", gotVocab);
+		Assert.assertTrue("did not find any concepts", nbrConcepts > 0);
 
 	}
-	/*
-	 * @Test public void testLoadMesh() throws Exception {
-	 * 
-	 * String hivePath = testingProperties
-	 * .getProperty(HiveTestingPropertiesHelper.TEST_HIVE_PARENT_DIR);
-	 * SKOSScheme schema = new SKOSSchemeImpl(hivePath, "mesh", true);
-	 * 
-	 * schema.importConcepts(schema.getRdfPath(), true, true, true, false,
-	 * true);
-	 * 
-	 * }
-	 * 
-	 * @Test public void testLoadAgrovoc() throws Exception {
-	 * 
-	 * String hivePath = testingProperties
-	 * .getProperty(HiveTestingPropertiesHelper.TEST_HIVE_PARENT_DIR);
-	 * SKOSScheme schema = new SKOSSchemeImpl(hivePath, "agrovoc", true);
-	 * 
-	 * schema.importConcepts(schema.getRdfPath(), true, true, true, false,
-	 * true);
-	 * 
-	 * }
-	 */
 
 }
