@@ -184,7 +184,7 @@ public class HiveH2IndexImplTest {
 		h2.addConcept(concept);
 		List<HiveConcept> actual = h2.findConceptsByName(
 				concept.getPrefLabel(), false);
-		Assert.assertEquals("did not find the one concept", 1, actual.size());
+		Assert.assertTrue("did not find the  concept", actual.size() > 0);
 
 	}
 
