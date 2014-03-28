@@ -194,8 +194,8 @@ public class HiveH2IndexImplTest {
 				.getSKOSSchemas().get("mesh").getHiveVocabulary();
 		HiveH2IndexImpl h2 = (HiveH2IndexImpl) hiveVocabulary.getH2Index();
 
-		Map<String, QName> actual = h2.findAllConcepts(true);
-		Assert.assertFalse("did not find concepts", actual.size() > 0);
+		Map<String, QName> actual = h2.findAllConcepts(false);
+		Assert.assertFalse("did not find concepts", actual.size() == 0);
 	}
 
 }
