@@ -146,17 +146,14 @@
 		<profile>
 			<id>hive</id>
 			<properties>
-				<test.vocab.uat.directory>/Users/mikeconway/temp/uat</test.vocab.uat.directory>
-				<test.vocab.uat.rdf>uat.rdf</test.vocab.uat.rdf>
-				<test.vocab.uat.training.directory>/Users/mikeconway/temp/uat/uatKEA</test.vocab.uat.training.directory>
-				<test.hive.parent.dir>/Users/mikeconway/temp/hive-data</test.hive.parent.dir>
+			    <test.hive.source.dir>C:/Users/Mike/Documents/workspace-hive-git/irods-hive/hive-code/hive-core/test-data-template</test.hive.source.dir>
+				<test.hive.parent.dir>C:/temp/test-hive2</test.hive.parent.dir>
+				<test.hive.scratch.dir>C:/temp/test-hive-scratch</test.hive.scratch.dir>
 			</properties>
 		</profile>
-
 	</profiles>
 
 	<activeProfiles>
-		
 		<activeProfile>hive</activeProfile>
 	</activeProfiles>
 
