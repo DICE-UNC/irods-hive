@@ -89,7 +89,7 @@
 		<repository>
 			<id>aduna-opensource.releases</id>
 			<name>Aduna Open Source - Maven releases</name>
-			<url>http://repo.aduna-software.org/maven2/releases</url>
+			<url>http://maven.ontotext.com/content/repositories/aduna/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -98,7 +98,7 @@
 				<updatePolicy>always</updatePolicy>
 				<checksumPolicy>warn</checksumPolicy>
 			</snapshots>
-		</repository>
+		</repository> 
 		<repository>
 			<id>lingpipe.repository</id>
 			<name>lingpipe.repository</name>
@@ -359,8 +359,7 @@
 			<version>1.3.150</version>
 			<scope>compile</scope>
 		</dependency>
-		<!-- mvn install:install-file -Dfile=lingpipe-3.8.2.jar -DgroupId=com.aliasi 
-			-DartifactId=lingpipe -Dversion=3.8.2 -Dpackaging=jar -->
+		<!-- mvn install:install-file -Dfile=lingpipe-3.8.2.jar -DgroupId=com.aliasi  -DartifactId=lingpipe -Dversion=3.8.2 -Dpackaging=jar -->
 		<dependency>
 			<groupId>com.aliasi</groupId>
 			<artifactId>lingpipe</artifactId>
