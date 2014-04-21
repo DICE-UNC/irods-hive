@@ -28,7 +28,7 @@ public class HiveLuceneIndexImplTest {
 
 	/**
 	 * @throws java.lang.Exception
-	 */
+	 */ 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		testingProperties = testingPropertiesHelper.getTestProperties();
