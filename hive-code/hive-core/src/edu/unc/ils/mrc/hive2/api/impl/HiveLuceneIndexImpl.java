@@ -279,8 +279,7 @@ public class HiveLuceneIndexImpl implements HiveIndex {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	private Document findDocument(final QName qname) throws IOException,
-			ParseException {
+	Document findDocument(final QName qname) throws IOException, ParseException {
 		logger.debug("findDocument(): " + qname);
 
 		IndexSearcher searcher = new IndexSearcher(lucenePath);

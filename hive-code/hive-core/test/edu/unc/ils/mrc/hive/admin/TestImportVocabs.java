@@ -29,6 +29,7 @@ public class TestImportVocabs {
 	private static Properties testingProperties = new Properties();
 	private static HiveTestingPropertiesHelper testingPropertiesHelper = new HiveTestingPropertiesHelper();
 	private static HiveScratchAreaCreator hiveScratchAreaCreator = null;
+	private static SKOSServer skosServer;
 
 	/**
 	 * @throws java.lang.Exception
@@ -50,6 +51,7 @@ public class TestImportVocabs {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		skosServer.close();
 	}
 
 	/**
@@ -81,8 +83,7 @@ public class TestImportVocabs {
 		schema.importConcepts(schema.getRdfPath(), true, true, true, false,
 				true);
 
-		SKOSServer skosServer = new SKOSServerImpl(parentOfTest
-				+ "/hive.properties");
+		skosServer = new SKOSServerImpl(parentOfTest + "/hive.properties");
 
 		Assert.assertNotNull("null skosServer", skosServer);
 
@@ -135,8 +136,7 @@ public class TestImportVocabs {
 		schema.importConcepts(schema.getRdfPath(), true, true, true, false,
 				true);
 
-		SKOSServer skosServer = new SKOSServerImpl(parentOfTest
-				+ "/hive.properties");
+		skosServer = new SKOSServerImpl(parentOfTest + "/hive.properties");
 
 		Assert.assertNotNull("null skosServer", skosServer);
 
@@ -198,8 +198,7 @@ public class TestImportVocabs {
 		schema.importConcepts(schema.getRdfPath(), true, true, true, false,
 				true);
 
-		SKOSServer skosServer = new SKOSServerImpl(parentOfTest
-				+ "/hive.properties");
+		skosServer = new SKOSServerImpl(parentOfTest + "/hive.properties");
 
 		Assert.assertNotNull("null skosServer", skosServer);
 

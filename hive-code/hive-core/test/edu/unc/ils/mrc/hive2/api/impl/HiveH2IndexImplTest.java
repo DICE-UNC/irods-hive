@@ -65,7 +65,9 @@ public class HiveH2IndexImplTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		skosServer.close();
+		if (skosServer != null) {
+			skosServer.close();
+		}
 	}
 
 	/**

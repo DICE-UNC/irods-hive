@@ -159,6 +159,43 @@ public class HiveScratchAreaCreator {
 	}
 
 	/**
+	 * Give a test subdir under the configured scratch directory and it will
+	 * create a scratch directory with that name and return the full path
+	 * 
+	 * @param testSubdir
+	 * @throws TestingUtilsException
+	 */
+	public String clearAndInitializeScratchArea(final String testSubdir)
+			throws TestingUtilsException {
+
+		log.info("clearAndInitializeScratchAreaWithTestVocab()");
+
+		if (testSubdir == null || testSubdir.isEmpty()) {
+			throw new IllegalArgumentException("null or empty testSubdir");
+		}
+
+		log.info("testSubdir:" + testSubdir);
+
+		String scratchSubdir = testingProperties
+				.getProperty(HiveTestingPropertiesHelper.TEST_HIVE_SCRATCH_DIR);
+
+		if (scratchSubdir == null || scratchSubdir.isEmpty()) {
+			throw new TestingUtilsException(
+					"null or empty scratch dir, check if property is set for test.hive.scratch.dir");
+		}
+
+		File scratchParent = new File(scratchSubdir);
+		scratchParent.delete();
+		scratchParent.mkdirs();
+
+		File scratchChild = new File(scratchParent, testSubdir);
+		scratchChild.mkdirs();
+
+		return scratchChild.getAbsolutePath();
+
+	}
+
+	/**
 	 * Given a vocabulary that exists in the configured source, and a target dir
 	 * (a relative subdir under scratch), provision the vocabulary file and hive
 	 * properties

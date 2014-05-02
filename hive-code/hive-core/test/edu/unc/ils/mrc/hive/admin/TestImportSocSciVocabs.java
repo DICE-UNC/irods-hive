@@ -25,7 +25,6 @@ public class TestImportSocSciVocabs {
 	private static Properties testingProperties = new Properties();
 	private static HiveTestingPropertiesHelper testingPropertiesHelper = new HiveTestingPropertiesHelper();
 	private static HiveScratchAreaCreator hiveScratchAreaCreator = null;
-	static SKOSServer skosServer = null;
 
 	/**
 	 * @throws java.lang.Exception
@@ -42,6 +41,7 @@ public class TestImportSocSciVocabs {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+
 	}
 
 	/**

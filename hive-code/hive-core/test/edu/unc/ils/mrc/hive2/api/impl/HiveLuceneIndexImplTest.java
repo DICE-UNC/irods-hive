@@ -1,7 +1,5 @@
 package edu.unc.ils.mrc.hive2.api.impl;
 
-import static org.junit.Assert.fail;
-
 import java.util.Properties;
 
 import junit.framework.Assert;
@@ -28,7 +26,7 @@ public class HiveLuceneIndexImplTest {
 
 	/**
 	 * @throws java.lang.Exception
-	 */ 
+	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		testingProperties = testingPropertiesHelper.getTestProperties();
@@ -79,32 +77,8 @@ public class HiveLuceneIndexImplTest {
 	}
 
 	@Test
-	public void testAddConcept() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testClose() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testCreateIndex() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testUpdateConcept() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testRemoveConcept() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	public void testGetNumConcepts() throws Exception {
+
 		HiveVocabularyImpl hiveVocabulary = (HiveVocabularyImpl) skosServer
 				.getSKOSSchemas().get("uat").getHiveVocabulary();
 
@@ -112,11 +86,6 @@ public class HiveLuceneIndexImplTest {
 				.getLuceneIndex();
 		long nbrConcepts = actual.getNumConcepts();
 		Assert.assertTrue("didnt find any concepts bro", nbrConcepts > 0);
-	}
-
-	@Test
-	public void testGetPath() {
-		fail("Not yet implemented");
 	}
 
 }
