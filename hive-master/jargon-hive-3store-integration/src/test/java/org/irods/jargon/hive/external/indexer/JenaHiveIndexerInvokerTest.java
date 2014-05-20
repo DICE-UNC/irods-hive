@@ -46,7 +46,7 @@ public class JenaHiveIndexerInvokerTest {
 
 		List<MetaDataAndDomainData> collectionMetadata = new ArrayList<MetaDataAndDomainData>();
 		MetaDataAndDomainData collectionMetadataValue = MetaDataAndDomainData
-				.instance(MetadataDomain.COLLECTION, "1", "/a/collection",
+				.instance(MetadataDomain.COLLECTION, "1", "/a/collection", 0,
 						"http://www.fao.org/aos/agrovoc#c_49830", "blah",
 						"blah");
 		collectionMetadataValue.setCount(1);
@@ -60,7 +60,7 @@ public class JenaHiveIndexerInvokerTest {
 
 		List<MetaDataAndDomainData> dataObjectMetadata = new ArrayList<MetaDataAndDomainData>();
 		MetaDataAndDomainData dataObjectMetadataValue = MetaDataAndDomainData
-				.instance(MetadataDomain.DATA, "1", "/a/collection",
+				.instance(MetadataDomain.DATA, "1", "/a/collection", 0,
 						"http://www.fao.org/aos/agrovoc#c_49830", "blah",
 						"blah");
 		dataObjectMetadataValue.setCount(1);
@@ -100,7 +100,7 @@ public class JenaHiveIndexerInvokerTest {
 
 		List<MetaDataAndDomainData> collectionMetadata = new ArrayList<MetaDataAndDomainData>();
 		MetaDataAndDomainData collectionMetadataValue = MetaDataAndDomainData
-				.instance(MetadataDomain.COLLECTION, "1", "/a/collection",
+				.instance(MetadataDomain.COLLECTION, "1", "/a/collection", 0,
 						"http://www.fao.org/aos/agrovoc#c_49830", "blah",
 						"blah");
 		collectionMetadataValue.setCount(1);
@@ -114,7 +114,7 @@ public class JenaHiveIndexerInvokerTest {
 
 		collectionMetadata = new ArrayList<MetaDataAndDomainData>();
 		collectionMetadataValue = MetaDataAndDomainData.instance(
-				MetadataDomain.COLLECTION, "1", "/a/collection",
+				MetadataDomain.COLLECTION, "1", "/a/collection", 0,
 				"http://www.fao.org/aos/agrovoc#c_49830", "blah", "blah");
 		collectionMetadataValue.setCount(2);
 		collectionMetadataValue.setLastResult(true);
@@ -124,7 +124,7 @@ public class JenaHiveIndexerInvokerTest {
 
 		List<MetaDataAndDomainData> dataObjectMetadata = new ArrayList<MetaDataAndDomainData>();
 		MetaDataAndDomainData dataObjectMetadataValue = MetaDataAndDomainData
-				.instance(MetadataDomain.DATA, "1", "/a/collection",
+				.instance(MetadataDomain.DATA, "1", "/a/collection", 0,
 						"http://www.fao.org/aos/agrovoc#c_49830", "blah",
 						"blah");
 		dataObjectMetadataValue.setCount(1);
@@ -164,7 +164,7 @@ public class JenaHiveIndexerInvokerTest {
 
 		List<MetaDataAndDomainData> collectionMetadata = new ArrayList<MetaDataAndDomainData>();
 		MetaDataAndDomainData collectionMetadataValue = MetaDataAndDomainData
-				.instance(MetadataDomain.COLLECTION, "1", "/a/collection",
+				.instance(MetadataDomain.COLLECTION, "1", "/a/collection", 0,
 						"http://www.fao.org/aos/agrovoc#c_49830", "blah",
 						"blah");
 		collectionMetadataValue.setCount(1);
@@ -178,7 +178,7 @@ public class JenaHiveIndexerInvokerTest {
 
 		collectionMetadata = new ArrayList<MetaDataAndDomainData>();
 		collectionMetadataValue = MetaDataAndDomainData.instance(
-				MetadataDomain.COLLECTION, "1", "/a/collection",
+				MetadataDomain.COLLECTION, "1", "/a/collection", 0,
 				"http://www.fao.org/aos/agrovoc#c_49830", "blah", "blah");
 		collectionMetadataValue.setCount(2);
 		collectionMetadataValue.setLastResult(true);
@@ -188,7 +188,7 @@ public class JenaHiveIndexerInvokerTest {
 
 		List<MetaDataAndDomainData> dataObjectMetadata = new ArrayList<MetaDataAndDomainData>();
 		MetaDataAndDomainData dataObjectMetadataValue = MetaDataAndDomainData
-				.instance(MetadataDomain.DATA, "1", "/a/collection",
+				.instance(MetadataDomain.DATA, "1", "/a/collection", 0,
 						"http://www.fao.org/aos/agrovoc#c_49830", "blah",
 						"blah");
 		dataObjectMetadataValue.setCount(1);
@@ -201,7 +201,7 @@ public class JenaHiveIndexerInvokerTest {
 
 		dataObjectMetadata = new ArrayList<MetaDataAndDomainData>();
 		dataObjectMetadataValue = MetaDataAndDomainData.instance(
-				MetadataDomain.DATA, "1", "/a/collection",
+				MetadataDomain.DATA, "1", "/a/collection", 0,
 				"http://www.fao.org/aos/agrovoc#c_49830", "blah", "blah");
 		dataObjectMetadataValue.setCount(2);
 		dataObjectMetadataValue.setLastResult(false);
@@ -212,7 +212,7 @@ public class JenaHiveIndexerInvokerTest {
 
 		dataObjectMetadata = new ArrayList<MetaDataAndDomainData>();
 		dataObjectMetadataValue = MetaDataAndDomainData.instance(
-				MetadataDomain.DATA, "1", "/a/collection",
+				MetadataDomain.DATA, "1", "/a/collection", 0,
 				"http://www.fao.org/aos/agrovoc#c_49830", "blah", "blah");
 		dataObjectMetadataValue.setCount(3);
 		dataObjectMetadataValue.setLastResult(true);
@@ -250,7 +250,7 @@ public class JenaHiveIndexerInvokerTest {
 
 		List<MetaDataAndDomainData> collectionMetadata = new ArrayList<MetaDataAndDomainData>();
 		MetaDataAndDomainData collectionMetadataValue = MetaDataAndDomainData
-				.instance(MetadataDomain.COLLECTION, "1", "/a/collection",
+				.instance(MetadataDomain.COLLECTION, "1", "/a/collection", 0,
 						"http://www.fao.org/aos/agrovoc#c_49830", "blah",
 						"blah");
 		collectionMetadataValue.setCount(1);
@@ -305,7 +305,7 @@ public class JenaHiveIndexerInvokerTest {
 
 		List<MetaDataAndDomainData> dataObjectMetadata = new ArrayList<MetaDataAndDomainData>();
 		MetaDataAndDomainData dataObjectMetadataValue = MetaDataAndDomainData
-				.instance(MetadataDomain.DATA, "1", "/a/collection",
+				.instance(MetadataDomain.DATA, "1", "/a/collection", 0,
 						"http://www.fao.org/aos/agrovoc#c_49830", "blah",
 						"blah");
 		dataObjectMetadataValue.setCount(1);

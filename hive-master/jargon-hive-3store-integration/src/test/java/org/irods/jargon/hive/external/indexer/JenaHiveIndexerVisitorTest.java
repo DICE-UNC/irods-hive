@@ -129,7 +129,7 @@ public class JenaHiveIndexerVisitorTest {
 				configuration);
 
 		MetaDataAndDomainData metadata = MetaDataAndDomainData.instance(
-				MetadataDomain.COLLECTION, "1", testCollection,
+				MetadataDomain.COLLECTION, "1", testCollection, 0,
 				"http://www.fao.org/aos/agrovoc#c_49830", "blah", "blah");
 
 		VisitorDesiredAction action = visitor.invoke(metadata, invoker);
@@ -178,7 +178,7 @@ public class JenaHiveIndexerVisitorTest {
 				configuration);
 
 		MetaDataAndDomainData metadata = MetaDataAndDomainData.instance(
-				MetadataDomain.COLLECTION, "1", testCollection,
+				MetadataDomain.COLLECTION, "1", testCollection, 0,
 				"http://www.fao.org/aos/agrovoc#c_49830", "blah", "blah");
 
 		visitor.invoke(metadata, null);
