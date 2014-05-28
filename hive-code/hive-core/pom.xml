@@ -10,12 +10,14 @@
 	<url>https://github.com/DICE-UNC/irods-hive</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jargon.version>3.3.3-SNAPSHOT</jargon.version>
+		<jargon.version>3.3.6-SNAPSHOT</jargon.version>
 		<spring.core.version>3.0.5.RELEASE</spring.core.version>
 		<elmo.version>1.5</elmo.version>
 		<lucene.version>2.4.1</lucene.version>
 		<sesame.version>2.2.4</sesame.version>
 		<aduna.version>2.3</aduna.version>
+		<sl4j.version>1.5.11</sl4j.version>
+		<log4j.version>1.2.16</log4j.version>
 	</properties>
 	<issueManagement>
 		<system>GitHub</system>
@@ -111,7 +113,7 @@
 				<updatePolicy>always</updatePolicy>
 				<checksumPolicy>warn</checksumPolicy>
 			</snapshots>
-		</repository> 
+		</repository>
 		<repository>
 			<id>lingpipe.repository</id>
 			<name>lingpipe.repository</name>
@@ -222,17 +224,17 @@
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				<version>1.5.0</version>
+				<version>${sl4j.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>
-				<version>1.2.13</version>
+				<version>${log4j.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-jdk14</artifactId>
-				<version>1.5.0</version>
+			<artifactId>slf4j-log4j12</artifactId>
+				<version>${sl4j.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.mockito</groupId>
@@ -372,7 +374,8 @@
 			<version>1.3.150</version>
 			<scope>compile</scope>
 		</dependency>
-		<!-- mvn install:install-file -Dfile=lingpipe-3.8.2.jar -DgroupId=com.aliasi  -DartifactId=lingpipe -Dversion=3.8.2 -Dpackaging=jar -->
+		<!-- mvn install:install-file -Dfile=lingpipe-3.8.2.jar -DgroupId=com.aliasi 
+			-DartifactId=lingpipe -Dversion=3.8.2 -Dpackaging=jar -->
 		<dependency>
 			<groupId>com.aliasi</groupId>
 			<artifactId>lingpipe</artifactId>
@@ -489,13 +492,10 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-						<version>1.5.10</version>
-			
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.10</version>
 		</dependency>
 		<dependency>
 			<groupId>info.aduna.commons</groupId>
@@ -507,7 +507,6 @@
 			<artifactId>velocity</artifactId>
 			<version>1.7</version>
 		</dependency>
-
 	</dependencies>
 	<build>
 		<sourceDirectory>${basedir}/src</sourceDirectory>
@@ -522,9 +521,11 @@
 						<configuration>
 							<tasks>
 								<delete file="${basedir}/test/hive.testing.properties" />
-								<touch file="${basedir}/test/hive.testing.properties" mkdirs="true" />
-								<echo file="${basedir}/test/hive.testing.properties" append="true">
-								    test.hive.source.dir=${test.hive.source.dir}
+								<touch file="${basedir}/test/hive.testing.properties"
+									mkdirs="true" />
+								<echo file="${basedir}/test/hive.testing.properties"
+									append="true">
+									test.hive.source.dir=${test.hive.source.dir}
 									test.hive.parent.dir=${test.hive.parent.dir}
 									test.hive.scratch.dir=${test.hive.scratch.dir}
 								</echo>

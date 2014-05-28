@@ -33,7 +33,8 @@ public class RestVocabularyService {
 	 */
 	private VocabularyService vocabularyService;
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	public static final Logger log = LoggerFactory
+			.getLogger(RestVocabularyService.class);
 
 	public VocabularyService getVocabularyService() {
 		return vocabularyService;

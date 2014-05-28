@@ -1,11 +1,18 @@
 package org.irods.jargon.hive.rest.vocabservice;
 
-import static org.junit.Assert.fail;
-
+import java.util.List;
 import java.util.Properties;
 
+import junit.framework.Assert;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.util.EntityUtils;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.irods.jargon.hive.rest.auth.DefaultHttpClientAndContext;
+import org.irods.jargon.hive.rest.auth.RestAuthUtils;
 import org.irods.jargon.hive.rest.vocabservice.utils.RestTestingProperties;
-import org.irods.jargon.testutils.TestingPropertiesHelper;
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.plugins.server.tjws.TJWSEmbeddedJaxrsServer;
 import org.jboss.resteasy.plugins.spring.SpringBeanProcessor;
@@ -27,6 +34,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 
 import edu.unc.ils.mrc.hive.testframework.HiveScratchAreaCreator;
+import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:jargon-beans.xml",
@@ -36,14 +44,10 @@ import edu.unc.ils.mrc.hive.testframework.HiveScratchAreaCreator;
 public class RestVocabularyServiceTest implements ApplicationContextAware {
 
 	private static HiveScratchAreaCreator hiveScratchAreaCreator = null;
-
 	private static TJWSEmbeddedJaxrsServer server;
-
 	private static ApplicationContext applicationContext;
-
 	private static Properties testingProperties = new Properties();
-	private static TestingPropertiesHelper testingPropertiesHelper = new TestingPropertiesHelper();
-
+	private static HiveTestingPropertiesHelper testingPropertiesHelper = new HiveTestingPropertiesHelper();
 	public static final String IRODS_TEST_SUBDIR_PATH = "RestVocabularyServiceTest";
 
 	@Override
@@ -54,9 +58,13 @@ public class RestVocabularyServiceTest implements ApplicationContextAware {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		TestingPropertiesHelper testingPropertiesLoader = new TestingPropertiesHelper();
-		testingProperties = testingPropertiesLoader.getTestProperties();
+		testingProperties = testingPropertiesHelper.getTestProperties();
 		hiveScratchAreaCreator = new HiveScratchAreaCreator(testingProperties);
+
+		if (testingPropertiesHelper.checkTestHiveFuntionalSetup() == false) {
+			throw new Exception(
+					"test hive not set up, run HiveTestInstanceSetup");
+		}
 	}
 
 	@AfterClass
@@ -93,9 +101,43 @@ public class RestVocabularyServiceTest implements ApplicationContextAware {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
-	public void testGetVocabularies() {
-		fail("Not yet implemented");
+	public void testGetVocabularies() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		sb.append("http://localhost:");
+		sb.append(testingPropertiesHelper.getPropertyValueAsInt(
+				testingProperties, RestTestingProperties.REST_PORT_PROPERTY));
+		sb.append("/vocabulary/");
+
+		DefaultHttpClientAndContext clientAndContext = RestAuthUtils
+				.httpClientSetup(testingProperties);
+		try {
+
+			HttpGet httpget = new HttpGet(sb.toString());
+			httpget.addHeader("accept", "application/json");
+
+			HttpResponse response = clientAndContext.getHttpClient().execute(
+					httpget, clientAndContext.getHttpContext());
+			HttpEntity entity = response.getEntity();
+			Assert.assertEquals(200, response.getStatusLine().getStatusCode());
+			Assert.assertNotNull(entity);
+			String entityData = EntityUtils.toString(entity);
+			EntityUtils.consume(entity);
+			System.out.println("JSON>>>");
+			System.out.println(entityData);
+			ObjectMapper objectMapper = new ObjectMapper();
+			List<String> actual = objectMapper
+					.readValue(entityData, List.class);
+
+			Assert.assertNotNull("no list of vocabs returned", actual);
+
+		} finally {
+			// When HttpClient instance is no longer needed,
+			// shut down the connection manager to ensure
+			// immediate deallocation of all system resources
+			clientAndContext.getHttpClient().getConnectionManager().shutdown();
+		}
 	}
 
 }

@@ -23,7 +23,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.javadoc.reporting.version>2.7</maven.javadoc.reporting.version>
 		<jackson.mapper.version>1.9.12</jackson.mapper.version>
-		<sl4j.version>1.6.6</sl4j.version>
+		<sl4j.version>1.5.11</sl4j.version>
+		<log4j.version>1.2.16</log4j.version>
 	</properties>
 	<issueManagement>
 		<system>GitHub</system>
@@ -431,11 +432,6 @@
 				<version>3.6.8</version>
 			</dependency>
 			<dependency>
-				<groupId>wikipedia</groupId>
-				<artifactId>wikipedia-miner</artifactId>
-				<version>1.2.0</version>
-			</dependency>
-			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>
 				<version>4.1.1</version>
@@ -454,6 +450,21 @@
 				<groupId>org.apache.derby</groupId>
 				<artifactId>derby</artifactId>
 				<version>10.6.1.0</version>
+			</dependency>
+				<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${sl4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${sl4j.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -525,5 +536,6 @@
 		<module>jargon-hive-irods</module>
 		<module>jargon-hive-3store-integration</module>
 		<module>hive-query-rest</module>
+		<module>hive-voccabservice-rest</module>
 	</modules>
 </project>

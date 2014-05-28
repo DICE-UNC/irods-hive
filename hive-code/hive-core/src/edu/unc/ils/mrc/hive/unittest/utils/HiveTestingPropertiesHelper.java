@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.irods.jargon.testutils.TestingPropertiesHelper;
 import org.irods.jargon.testutils.TestingUtilsException;
 
 /**
@@ -88,6 +89,48 @@ public class HiveTestingPropertiesHelper {
 		}
 
 		return properties;
+	}
+
+	/**
+	 * Return the given property (by key) as an int
+	 * 
+	 * @param testingProperties
+	 * @param key
+	 * @return
+	 * @throws TestingUtilsException
+	 */
+	public int getPropertyValueAsInt(final Properties testingProperties,
+			final String key) throws TestingUtilsException {
+		String propVal = (String) testingProperties.get(key);
+
+		if (propVal == null || propVal.length() == 0) {
+			throw new TestingUtilsException(
+					"missing or invalid value in testing.properties");
+		}
+
+		int retVal = 0;
+
+		try {
+			retVal = Integer.parseInt(propVal);
+		} catch (NumberFormatException nfe) {
+			throw new TestingUtilsException(
+					"port is in valid format to convert to int:" + propVal, nfe);
+		}
+
+		return retVal;
+	}
+
+	/**
+	 * Get the standard iRODS test server port from the testing properties
+	 * 
+	 * @param testingProperties
+	 * @return
+	 * @throws TestingUtilsException
+	 */
+	public int getPortAsInt(final Properties testingProperties)
+			throws TestingUtilsException {
+		return getPropertyValueAsInt(testingProperties,
+				TestingPropertiesHelper.IRODS_PORT_KEY);
 	}
 
 }

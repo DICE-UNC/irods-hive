@@ -283,10 +283,10 @@
 		</dependency>
 		<!-- mvn install:install-file -Dfile=../hive-code/hive-core/lib/wikipedia-miner-1.2.0.jar 
 			-DgroupId=wikipedia -DartifactId=wikipedia-miner -Dversion=1.2.0 -Dpackaging=jar -->
-		<dependency>
+		<!--   <dependency>
 			<groupId>wikipedia</groupId>
 			<artifactId>wikipedia-miner</artifactId>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>

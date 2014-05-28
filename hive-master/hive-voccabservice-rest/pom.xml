@@ -1,19 +1,21 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.irods.jargon</groupId>
-    <artifactId>jargon-hive-master</artifactId>
-    <version>1.0-SNAPSHOT</version>
-  </parent>
-  <artifactId>hive-voccabservice-rest</artifactId>
-  <name>hive-voccabservice-rest</name>
-  <url>http://maven.apache.org</url>
-  <properties>
-    <resteasy.version>3.0.6.Final</resteasy.version>
-  </properties>
- <dependencyManagement>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.irods.jargon</groupId>
+		<artifactId>jargon-hive-master</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>hive-voccabservice-rest</artifactId>
+		<packaging>war</packaging>
+	<name>hive-voccabservice-rest</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<resteasy.version>3.0.6.Final</resteasy.version>
+	</properties>
+	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.jboss.resteasy</groupId>
@@ -58,21 +60,6 @@
 				<artifactId>junit</artifactId>
 				<version>4.8.2</version>
 				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>1.5.10</version>
-			</dependency>
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>1.2.16</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>1.5.10</version>
 			</dependency>
 			<dependency>
 				<groupId>org.mockito</groupId>
@@ -133,11 +120,52 @@
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
-	    	<dependency>
-				<groupId>org.irods.jargon</groupId>
-				<artifactId>jargon-hive</artifactId>
-				<version>${project.version}</version>
-			</dependency>
+	<dependency>
+			<groupId>org.irods.jargon</groupId>
+			<artifactId>hive-core</artifactId>
+			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jcl104-over-slf4j</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.irods.jargon</groupId>
+			<artifactId>jargon-hive</artifactId>
+			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jcl104-over-slf4j</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
@@ -178,6 +206,20 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- JAXB support -->
 		<dependency>
@@ -193,23 +235,25 @@
 		<dependency>
 			<groupId>org.irods.jargon</groupId>
 			<artifactId>jargon-core</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -260,6 +304,18 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -274,14 +330,17 @@
 						<configuration>
 							<tasks>
 								<property name="src.dir" value="${project.build.sourceDirectory}" />
-								<property name="package.dir" value="org/irods/jargon/hive/rest/vocabservice/utils" />
-								<property name="package.name" value="org.irods.jargon.hive.rest.vocabservice.utils" />
+								<property name="package.dir"
+									value="org/irods/jargon/hive/rest/vocabservice/utils" />
+								<property name="package.name"
+									value="org.irods.jargon.hive.rest.vocabservice.utils" />
 								<property name="buildtime" value="${maven.build.timestamp}" />
 
 								<echo file="${src.dir}/${package.dir}/VocabServiceRestVersion.java"
 									message="package ${package.name};${line.separator}" />
 								<echo file="${src.dir}/${package.dir}/VocabServiceRestVersion.java"
-									append="true" message="public final class VocabServiceRestVersion {${line.separator}" />
+									append="true"
+									message="public final class VocabServiceRestVersion {${line.separator}" />
 								<echo file="${src.dir}/${package.dir}/VocabServiceRestVersion.java"
 									append="true"
 									message=" public static String VERSION=&quot;${pom.version}&quot;;${line.separator}" />
@@ -299,12 +358,12 @@
 						<phase>validate</phase>
 						<configuration>
 							<tasks>
-								<delete file="${basedir}/src/test/resources/testing.properties" />
-								<touch file="${basedir}/src/test/resources/testing.properties"
+								<delete file="${basedir}/src/test/resources/hive.testing.properties" />
+								<touch file="${basedir}/src/test/resources/hive.testing.properties"
 									mkdirs="true" />
-								<echo file="${basedir}/src/test/resources/testing.properties"
+								<echo file="${basedir}/src/test/resources/hive.testing.properties"
 									append="true">
-								   	test.hive.source.dir=${test.hive.source.dir}
+									test.hive.source.dir=${test.hive.source.dir}
 									test.hive.parent.dir=${test.hive.parent.dir}
 									test.hive.scratch.dir=${test.hive.scratch.dir}
 									test.rest.port=${test.rest.port}
