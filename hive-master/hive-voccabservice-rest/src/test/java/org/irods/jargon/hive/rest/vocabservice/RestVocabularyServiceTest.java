@@ -131,6 +131,7 @@ public class RestVocabularyServiceTest implements ApplicationContextAware {
 					.readValue(entityData, List.class);
 
 			Assert.assertNotNull("no list of vocabs returned", actual);
+			Assert.assertFalse("vocab list is empty", actual.isEmpty());
 
 		} finally {
 			// When HttpClient instance is no longer needed,
