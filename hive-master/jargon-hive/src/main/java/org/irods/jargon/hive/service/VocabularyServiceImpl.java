@@ -1,8 +1,6 @@
 package org.irods.jargon.hive.service;
 
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.irods.jargon.hive.container.HiveContainer;
 import org.irods.jargon.hive.exception.VocabularyNotFoundException;
+import org.irods.jargon.hive.service.domain.VocabularyInfo;
 import org.unc.hive.client.ConceptProxy;
 
 import edu.unc.ils.mrc.hive.api.ConceptNode;
@@ -120,29 +119,28 @@ public class VocabularyServiceImpl implements VocabularyService {
 	 * @see org.irods.jargon.hive.service.VocabularyService#getAllVocabularies()
 	 */
 	@Override
-	public List<List<String>> getAllVocabularies() {
+	public List<VocabularyInfo> getAllVocabularies() {
 		logger.info("getAllVocabularies()");
 		TreeMap<String, SKOSScheme> vocabularyMap = getSkosServer()
 				.getSKOSSchemas();
 		logger.info("vocabMap from skosServer}" + vocabularyMap);
-		List<List<String>> vocabularyList = new ArrayList<List<String>>();
+		List<VocabularyInfo> vocabularyList = new ArrayList<VocabularyInfo>();
 		Set<String> vnames = vocabularyMap.keySet();
 		Iterator<String> it = vnames.iterator();
 		logger.info("getting ready to iterate through vocabularies...");
+		VocabularyInfo vocabularyInfo = null;
 		while (it.hasNext()) {
 			logger.info("vocab:" + it);
 			SKOSScheme vocabulary = vocabularyMap.get(it.next());
-
-			List<String> vocabularyInfo = new ArrayList<String>();
-			vocabularyInfo.add(vocabulary.getName());
-			vocabularyInfo.add(Long.toString(vocabulary.getNumberOfConcepts()));
+			vocabularyInfo = new VocabularyInfo();
+			vocabularyInfo.setVocabularyName(vocabulary.getName());
 			vocabularyInfo
-					.add(Long.toString(vocabulary.getNumberOfRelations()));
-			Date lastUpdate = vocabulary.getLastUpdateDate();
-			DateFormat df = new SimpleDateFormat("MMM d, yyyy");
-			String date = df.format(lastUpdate);
-			vocabularyInfo.add(date);
+					.setNumberOfConcepts(vocabulary.getNumberOfConcepts());
+			vocabularyInfo.setNumberOfRelations(vocabulary
+					.getNumberOfRelations());
+			vocabularyInfo.setLastUpdated(vocabulary.getLastUpdateDate());
 			vocabularyList.add(vocabularyInfo);
+
 		}
 		return vocabularyList;
 	}

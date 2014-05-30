@@ -1,6 +1,5 @@
 package org.irods.jargon.hive.service;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -13,10 +12,10 @@ import org.irods.jargon.hive.container.HiveConfiguration;
 import org.irods.jargon.hive.container.HiveContainer;
 import org.irods.jargon.hive.container.HiveContainerImpl;
 import org.irods.jargon.hive.exception.VocabularyNotFoundException;
+import org.irods.jargon.hive.service.domain.VocabularyInfo;
 import org.irods.jargon.hive.testing.HiveConfigurationTestUtilities;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.unc.hive.client.ConceptProxy;
 
@@ -207,7 +206,7 @@ public class VocabularyServiceTest {
 	public void testGetAllVocabulary() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
-		List<List<String>> allVocabs = vocabularyService.getAllVocabularies();
+		List<VocabularyInfo> allVocabs = vocabularyService.getAllVocabularies();
 
 		TestCase.assertFalse(
 				"did not load vocabularies with properties to List",
@@ -225,37 +224,11 @@ public class VocabularyServiceTest {
 				vocabProps.isEmpty());
 	}
 
-	// @Test
-	@Ignore
-	public void testGetTagsFromInput() throws Exception {
-		VocabularyService vocabularyService = new VocabularyServiceImpl(
-				hiveContainer);
-		List<String> openVocabularies = vocabularyService
-				.getAllVocabularyNames();
-		List<ConceptProxy> cp = vocabularyService.getTagsBasedOnFilePath(
-				"/Users/zhangle/temp/hive-data/agrovoc/agrovoc.rdf",
-				openVocabularies, 28174, "kea");
-		TestCase.assertFalse("did not get Tags", cp.isEmpty());
-	}
-
-	// @Test
-	@Ignore
-	public void testGetTagsFromURL() throws Exception {
-		VocabularyService vocabularyService = new VocabularyServiceImpl(
-				hiveContainer);
-		List<String> openVocabularies = vocabularyService
-				.getAllVocabularyNames();
-		List<ConceptProxy> cp = vocabularyService.getTags(new URL(
-				"http://en.wikipedia.org/wiki/Rice"), openVocabularies, 2,
-				200000, true, 2, "kea");
-		TestCase.assertFalse("did not get Tags", cp.isEmpty());
-	}
-
 	@Test
-	public void testGetFirstConceptLcsh() throws Exception {
+	public void testGetFirstConceptMesh() throws Exception {
 		VocabularyService vocabularyService = new VocabularyServiceImpl(
 				hiveContainer);
-		ConceptProxy x = vocabularyService.getFirstConcept("lcsh");
+		ConceptProxy x = vocabularyService.getFirstConcept("mesh");
 		TestCase.assertNotNull("did not load first concept", x);
 	}
 

@@ -11,6 +11,7 @@ import javax.xml.namespace.QName;
 
 import org.irods.jargon.hive.container.HiveContainer;
 import org.irods.jargon.hive.exception.VocabularyNotFoundException;
+import org.irods.jargon.hive.service.domain.VocabularyInfo;
 import org.unc.hive.client.ConceptProxy;
 
 import edu.unc.ils.mrc.hive.api.ConceptNode;
@@ -29,7 +30,13 @@ public interface VocabularyService {
 
 	Date getLastUpdateDate(String vocabularyName);
 
-	List<List<String>> getAllVocabularies();
+	/**
+	 * Get a set of basic vocabulary info about a vocabulary, including number
+	 * of concepts, number of relations
+	 * 
+	 * @return <code>List</code> of {@link VocabularyInfo} with basic vocab info
+	 */
+	List<VocabularyInfo> getAllVocabularies();
 
 	/**
 	 * Return a vocabulary (as a <code>SKOSScheme</code>) based on the name
@@ -43,10 +50,29 @@ public interface VocabularyService {
 	SKOSScheme getVocabularyByName(String vocabularyName)
 			throws VocabularyNotFoundException;
 
+	/**
+	 * Get a list of all vocabulary names loaded in the HIVE
+	 * 
+	 * @return <code>List<String></code> with all of the vocabularies
+	 */
 	List<String> getAllVocabularyNames();
 
 	HashMap<String, HashMap<String, String>> getVocabularyProperties();
 
+	/**
+	 * Get the top level concepts (with no parents) for the given vocabulary
+	 * 
+	 * @param vocabulary
+	 *            <code>String</code> with the vocabulary names
+	 * @param letter
+	 *            <code>String</code> that is optionally blank, with the letter
+	 *            to start with
+	 * @param brief
+	 *            <code>boolean</code> that TODO: what is the function of brief?
+	 * @return <code>List</code> of {@link ConceptProxy} representing the top
+	 *         vocabularies
+	 * @throws VocabularyNotFoundException
+	 */
 	List<ConceptProxy> getSubTopConcept(String vocabulary, String letter,
 			boolean brief) throws VocabularyNotFoundException;
 
