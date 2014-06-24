@@ -353,13 +353,15 @@
 			</exclusions>
 		</dependency>
 		
-		<!--   mvn install:install-file -Dfile=elmo-dc-1.5.jar -DgroupId=org.openrdf.elmo -DartifactId=elmo-dc -Dversion=1.5 -Dpackaging=jar  -->
+		<!--   mvn install:install-file -Dfile=elmo-dc-1.5.jar -DgroupId=org.openrdf.elmo 
+			-DartifactId=elmo-dc -Dversion=1.5 -Dpackaging=jar  -->
 		<dependency>
 			<groupId>org.openrdf.elmo</groupId>
 			<artifactId>elmo-dc</artifactId>
 			<version>${elmo.version}</version>
 		</dependency>
-		<!--   mvn install:install-file -Dfile=elmo-foaf-1.5.jar -DgroupId=org.openrdf.elmo -DartifactId=elmo-foaf -Dversion=1.5 -Dpackaging=jar  -->
+		<!--   mvn install:install-file -Dfile=elmo-foaf-1.5.jar -DgroupId=org.openrdf.elmo 
+			-DartifactId=elmo-foaf -Dversion=1.5 -Dpackaging=jar  -->
 		<dependency>
 			<groupId>org.openrdf.elmo</groupId>
 			<artifactId>elmo-foaf</artifactId>
@@ -372,7 +374,8 @@
 			<version>${elmo.version}</version>
 			<scope>compile</scope>
 		</dependency>
-			<!--   mvn install:install-file -Dfile=elmo-skos-1.5.jar -DgroupId=org.openrdf.elmo -DartifactId=elmo-skos -Dversion=1.5 -Dpackaging=jar  -->
+			<!--   mvn install:install-file -Dfile=elmo-skos-1.5.jar -DgroupId=org.openrdf.elmo 
+			-DartifactId=elmo-skos -Dversion=1.5 -Dpackaging=jar  -->
 		<dependency>
 			<groupId>org.openrdf.elmo</groupId>
 			<artifactId>elmo-skos</artifactId>
