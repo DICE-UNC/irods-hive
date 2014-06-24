@@ -141,6 +141,13 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
+		<repository>
+			<id>old elmo</id>
+			<url>http://build.mygrid.org.uk/maven/old/repository</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
 	</repositories>
 	<distributionManagement>
 		<repository>
