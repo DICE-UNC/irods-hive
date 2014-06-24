@@ -404,9 +404,29 @@ public class VocabularyServiceImpl implements VocabularyService {
 	@Override
 	public ConceptProxy getConceptByURI(final String namespaceURI,
 			final String localPart) {
+
+		logger.info("getConceptByURI()");
+
+		if (namespaceURI == null || namespaceURI.isEmpty()) {
+			throw new IllegalArgumentException("Null or empty namespaceURI");
+		}
+
+		if (localPart == null || localPart.isEmpty()) {
+			throw new IllegalArgumentException("Null or empty localPart");
+		}
+
+		logger.info("namespaceURI:" + namespaceURI);
+		logger.info("localPart:" + localPart);
+
 		SKOSSearcher searcher = getSkosServer().getSKOSSearcher();
 		SKOSConcept concept = searcher.searchConceptByURI(namespaceURI,
 				localPart);
+
+		if (concept == null) {
+			logger.info("no concept found, returning null");
+			return null;
+		}
+
 		String preLabel = concept.getPrefLabel();
 		QName q = concept.getQName();
 		String origin = getSkosServer().getOrigin(q);
