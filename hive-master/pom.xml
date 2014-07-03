@@ -79,8 +79,8 @@
 			</snapshots>
 		</repository>
 		<repository>
-			<id>dice.repository</id>
-			<name>dice.repository</name>
+			<id>dice.repository.snaps</id>
+			<name>dice.repository.snaps</name>
 			<url>https://raw.github.com/DICE-UNC/DICE-Maven/master/snapshots</url>
 			<releases>
 				<enabled>true</enabled>
