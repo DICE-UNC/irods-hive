@@ -79,6 +79,19 @@
 			</snapshots>
 		</repository>
 		<repository>
+			<id>dice.repository</id>
+			<name>dice.repository</name>
+			<url>https://raw.github.com/DICE-UNC/DICE-Maven/master/snapshots</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>warn</checksumPolicy>
+			</snapshots>
+		</repository>
+		<repository>
 			<id>renci.repository</id>
 			<name>renci.repository</name>
 			<url>http://ci-dev.renci.org/nexus/content/repositories/public</url>
