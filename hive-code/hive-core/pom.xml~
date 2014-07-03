@@ -10,7 +10,7 @@
 	<url>https://github.com/DICE-UNC/irods-hive</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jargon.version>4.0.2-SNAPSHOT</jargon.version>
+		<jargon.version>3.3.6-SNAPSHOT</jargon.version>
 		<spring.core.version>3.0.5.RELEASE</spring.core.version>
 		<elmo.version>1.5</elmo.version>
 		<lucene.version>2.4.1</lucene.version>
@@ -353,13 +353,15 @@
 			</exclusions>
 		</dependency>
 		
-		<!--   mvn install:install-file -Dfile=elmo-dc-1.5.jar -DgroupId=org.openrdf.elmo -DartifactId=elmo-dc -Dversion=1.5 -Dpackaging=jar  -->
+		<!--   mvn install:install-file -Dfile=elmo-dc-1.5.jar -DgroupId=org.openrdf.elmo 
+			-DartifactId=elmo-dc -Dversion=1.5 -Dpackaging=jar  -->
 		<dependency>
 			<groupId>org.openrdf.elmo</groupId>
 			<artifactId>elmo-dc</artifactId>
 			<version>${elmo.version}</version>
 		</dependency>
-		<!--   mvn install:install-file -Dfile=elmo-foaf-1.5.jar -DgroupId=org.openrdf.elmo -DartifactId=elmo-foaf -Dversion=1.5 -Dpackaging=jar  -->
+		<!--   mvn install:install-file -Dfile=elmo-foaf-1.5.jar -DgroupId=org.openrdf.elmo 
+			-DartifactId=elmo-foaf -Dversion=1.5 -Dpackaging=jar  -->
 		<dependency>
 			<groupId>org.openrdf.elmo</groupId>
 			<artifactId>elmo-foaf</artifactId>
@@ -372,7 +374,8 @@
 			<version>${elmo.version}</version>
 			<scope>compile</scope>
 		</dependency>
-			<!--   mvn install:install-file -Dfile=elmo-skos-1.5.jar -DgroupId=org.openrdf.elmo -DartifactId=elmo-skos -Dversion=1.5 -Dpackaging=jar  -->
+			<!--   mvn install:install-file -Dfile=elmo-skos-1.5.jar -DgroupId=org.openrdf.elmo 
+			-DartifactId=elmo-skos -Dversion=1.5 -Dpackaging=jar  -->
 		<dependency>
 			<groupId>org.openrdf.elmo</groupId>
 			<artifactId>elmo-skos</artifactId>

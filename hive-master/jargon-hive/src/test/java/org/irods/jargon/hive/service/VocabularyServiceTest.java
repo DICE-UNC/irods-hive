@@ -57,6 +57,20 @@ public class VocabularyServiceTest {
 	}
 
 	@Test
+	public void testGetOriginFromUATReference() throws Exception {
+
+		VocabularyService vocabularyService = new VocabularyServiceImpl(
+				hiveContainer);
+
+		ConceptProxy conceptProxy = vocabularyService.getConceptByURI(
+				"http://purl.org/astronomy/uat", "T854");
+
+		TestCase.assertNotNull("did not get concept", conceptProxy);
+		TestCase.assertEquals("did not get origin", "uat",
+				conceptProxy.getOrigin());
+	}
+
+	@Test
 	public void testGetUAT() throws Exception {
 
 		VocabularyService vocabularyService = new VocabularyServiceImpl(

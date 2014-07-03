@@ -91,6 +91,14 @@ public interface VocabularyService {
 	Set<ConceptProxy> searchConcept(String keyword,
 			List<String> openedVocabularies);
 
+	/**
+	 * Get the HIVE concept for the given URI. Note that this method will return
+	 * null if no such concept exists
+	 * 
+	 * @param namespaceURI
+	 * @param localPart
+	 * @return
+	 */
 	ConceptProxy getConceptByURI(String namespaceURI, String localPart);
 
 	/**
