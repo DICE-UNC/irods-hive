@@ -9,7 +9,7 @@
  
 	<!--  indicates location of the hive.properties used for the service -->
 	<beans:bean id="hiveConfiguration" class="org.irods.jargon.hive.container.HiveConfiguration">
-	    <beans:property name="hiveConfigLocation" value="c:/temp/test-hive2/hive.properties"/>  
+	    <beans:property name="hiveConfigLocation" value="/Users/mikeconway/test-hive2/hive.properties"/>  
 	</beans:bean>
 	
 	<beans:bean id="hiveContainer" class="org.irods.jargon.hive.container.HiveContainerImpl" init-method="init" destroy-method="shutdown">
