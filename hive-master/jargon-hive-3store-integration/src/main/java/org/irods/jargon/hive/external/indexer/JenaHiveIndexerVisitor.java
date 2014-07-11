@@ -33,7 +33,6 @@ public class JenaHiveIndexerVisitor extends
 		AbstractIRODSVisitor<MetaDataAndDomainData> {
 
 	private JenaHiveConfiguration jenaHiveVisitorConfiguration = null;
-	private final JenaModelManager jenaModelManager = null;
 	private OntModel jenaModel;
 	public static final String MODEL_KEY = "model";
 	private final OntClass collOnt = null;
@@ -210,10 +209,7 @@ public class JenaHiveIndexerVisitor extends
 	 */
 	@Override
 	public void complete() throws JargonException {
-		log.info("complete()");
-		if (jenaModelManager != null) {
-			jenaModelManager.close();
-		}
+		
 	}
 
 	public JenaHiveConfiguration getJenaHiveVisitorConfiguration() {
