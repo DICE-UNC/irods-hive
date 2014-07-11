@@ -366,6 +366,14 @@
 			<version>${elmo.version}</version>
 			<scope>compile</scope>
 		</dependency>
+		<!--   mvn install:install-file -Dfile=elmo-owl-1.5.jar -DgroupId=org.openrdf.elmo -DartifactId=elmo-owl -Dversion=1.5 -Dpackaging=jar  -->
+		<dependency>
+			<groupId>org.openrdf.elmo</groupId>
+			<artifactId>elmo-owl</artifactId>
+			<version>${elmo.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<!--   mvn install:install-file -Dfile=elmo-rdfs-1.5.jar -DgroupId=org.openrdf.elmo -DartifactId=elmo-rdfs -Dversion=1.5 -Dpackaging=jar  -->
 		<dependency>
 			<groupId>org.openrdf.elmo</groupId>
 			<artifactId>elmo-rdfs</artifactId>
@@ -379,6 +387,16 @@
 			<version>${elmo.version}</version>
 			<scope>compile</scope>
 		</dependency>
+		
+		
+		
+		<!--  other elmo artifacts if needed -->
+		<!--   mvn install:install-file -Dfile=elmo-api-1.5.jar -DgroupId=org.openrdf.elmo -DartifactId=elmo-api -Dversion=1.5 -Dpackaging=jar  -->
+				<!--   mvn install:install-file -Dfile=elmo-core-1.5.jar -DgroupId=org.openrdf.elmo -DartifactId=elmo-core -Dversion=1.5 -Dpackaging=jar  -->
+		
+		
+		
+		
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>

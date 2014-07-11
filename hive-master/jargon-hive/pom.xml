@@ -246,10 +246,11 @@
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-spellchecker</artifactId>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>marc4j</groupId>
 			<artifactId>marc4j</artifactId>
-		</dependency>
+		</dependency>  -->
 		<!-- mvn install:install-file -Dfile=../hive-code/hive-core/lib/maui12.jar 
 			-DgroupId=maui -DartifactId=maui -Dversion=1.2 -Dpackaging=jar -->
 		<dependency>
