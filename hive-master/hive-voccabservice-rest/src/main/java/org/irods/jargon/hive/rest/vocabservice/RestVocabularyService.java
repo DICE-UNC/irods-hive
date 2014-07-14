@@ -42,7 +42,7 @@ public class RestVocabularyService {
 	}
 
 	@Autowired
-	public void setVocabularyService(VocabularyService vocabularyService) {
+	public void setVocabularyService(final VocabularyService vocabularyService) {
 		this.vocabularyService = vocabularyService;
 	}
 
@@ -58,6 +58,43 @@ public class RestVocabularyService {
 	public List<VocabularyInfo> getVocabularies() throws JargonHiveException {
 		log.info("getVocabularies()");
 		return vocabularyService.getAllVocabularies();
+
+	}
+
+	// localhost:8080/vocabservice/vocabulary/agrovoc
+
+	/**
+	 * create a method that gives vocabularyInfo for a specific vocabulary
+	 * 
+	 * 1) set up the annotations so that it responds to a GET to
+	 * /vocablary/vocabnamehere
+	 * 
+	 * 
+	 * 2) call vocabularyService (SKOSScheme getVocabularyByName(String
+	 * vocabularyName) throws VocabularyNotFoundException;)
+	 * 
+	 * 
+	 * 3) build a VocabularyInfo from the data in SkosScheme
+	 * 
+	 * 4) write a unit test for this
+	 * 
+	 * 
+	 * 
+	 * @param vocabularyName
+	 * @return
+	 * @throws JargonHiveException
+	 */
+
+	@GET
+	// @Path something - what's the mapping for a variable in the path? Check
+	// here
+	// http://docs.jboss.org/resteasy/docs/3.0.7.Final/userguide/html_single/index.html#_PathParam
+	public VocabularyInfo getVocabulary(final String vocabularyName) // @PathParam?
+			throws JargonHiveException {
+
+		// get the skosscheme from vocab service
+		// create VocabularyInfo object from data in skosscheme and return
+		return null;
 
 	}
 
