@@ -8,10 +8,10 @@
 *.log
 
 
-**/target/**
-**/dist/**
-**/bin/**
-**/classes/**
+**/target/
+**/dist/
+**/bin/
+**/classes/
 
 .classpath
 .project

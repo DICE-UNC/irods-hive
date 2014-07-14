@@ -109,7 +109,7 @@ public class RestVocabularyServiceTest implements ApplicationContextAware {
 		sb.append("http://localhost:");
 		sb.append(testingPropertiesHelper.getPropertyValueAsInt(
 				testingProperties, RestTestingProperties.REST_PORT_PROPERTY));
-		sb.append("/vocabulary/");
+		sb.append("/vocabulary");
 
 		DefaultHttpClientAndContext clientAndContext = RestAuthUtils
 				.httpClientSetup(testingProperties);

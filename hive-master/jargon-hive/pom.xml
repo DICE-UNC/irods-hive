@@ -311,9 +311,9 @@
 						<phase>validate</phase>
 						<configuration>
 							<tasks>
-							<delete file="${basedir}/src/test/resources/testing.properties" />
-								<touch file="${basedir}/src/test/resources/testing.properties" mkdirs="true" />
-								<echo file="${basedir}/src/test/resources/testing.properties" append="true">
+							<delete file="${basedir}/src/test/resources/hive.testing.properties" />
+								<touch file="${basedir}/src/test/resources/hive.testing.properties" mkdirs="true" />
+								<echo file="${basedir}/src/test/resources/hive.testing.properties" append="true">
 									test.vocab.uat.directory=${test.vocab.uat.directory}
 									test.vocab.uat.rdf=${test.vocab.uat.rdf}
 									test.vocab.uat.training.directory=${test.vocab.uat.training.directory}
