@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import junit.framework.Assert;
+
 import org.irods.jargon.core.connection.IRODSAccount;
 import org.irods.jargon.core.pub.IRODSFileSystem;
 import org.irods.jargon.core.pub.io.IRODSFile;
@@ -24,6 +26,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.query.ResultSet;
 
 import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
 
@@ -35,11 +38,11 @@ public class IrodsJenaModelUpdaterTest {
 	public static final String IRODS_TEST_SUBDIR_PATH = "IrodsJenaModelUpdaterTest";
 	private static org.irods.jargon.testutils.IRODSTestSetupUtilities irodsTestSetupUtilities = null;
 	private static IRODSFileSystem irodsFileSystem = null;
-	private static HiveTestingPropertiesHelper hiveTestingPropertiesHelper;
+	private static HiveTestingPropertiesHelper hiveTestingPropertiesHelper; 
 	private static File jenaVocabFile = null;
 	private static File ontFile = null;
 	private static JenaHiveConfiguration jenaHiveConfiguration;
-
+ 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		hiveTestingPropertiesHelper = new HiveTestingPropertiesHelper();
@@ -104,6 +107,7 @@ public class IrodsJenaModelUpdaterTest {
 	@Test
 	public void testAddIrodsTermToDataObject() throws Exception {
 		String fileName = "testAddIrodsTermToDataObject.txt";
+		String vocabTerm =  "http://purl.org/astronomy/uat#T351";
 		IRODSAccount irodsAccount = testingPropertiesHelper
 				.buildIRODSAccountFromTestProperties(testingProperties);
 		DataTypeResolutionService dataTypeResolutionService = new DataTypeResolutionServiceImpl();
@@ -119,12 +123,20 @@ public class IrodsJenaModelUpdaterTest {
 
 		IRODSFile irodsFile = irodsFileSystem.getIRODSAccessObjectFactory()
 				.getIRODSFileFactory(irodsAccount).instanceIRODSFile(absPath);
+		irodsFile.createNewFile();
 
 		// create an in memory ont
 		HiveTripleStoreInitializer hiveTripleStoreInitializer = new HiveTripleStoreInitializerImpl(
 				jenaHiveConfiguration);
 		OntModel ontModel = hiveTripleStoreInitializer.initialize();
-		String val = ontModel.toString();
-
+		
+		IrodsJenaModelUpdater irodsJenaModelUpdater = new IrodsJenaModelUpdater(irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount, ontModel, jenaHiveConfiguration);
+		irodsJenaModelUpdater.addIrodsTerm(absPath, vocabTerm);
+		
+		// now sparql query the term
+		IrodsJenaModelQuery irodsJenaModelQuery = new IrodsJenaModelQueryImpl(ontModel);
+		ResultSet queryResult = irodsJenaModelQuery.queryAllOnVocabularyTerm(vocabTerm);
+		Assert.assertNotNull("null result set from query", queryResult);
+		
 	}
 }

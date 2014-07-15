@@ -117,7 +117,7 @@ public class JargonHiveQueryServiceImpl implements JargonHiveQueryService {
 			log.info("built query:{}", query);
 			String json = jenaHiveSPARQLService
 					.queryAndReturnJSONAsString(query);
-			log.info("json data to reutnr:{}", json);
+			log.info("json data to return:{}", json);
 			return json;
 		} catch (HiveTemplateException e) {
 			throw new HiveQueryException(
