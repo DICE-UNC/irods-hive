@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+	<profiles>
+		<profile>
+			<id>indexer</id>
+			<properties>
+				<indexer.irodsRdfPath>C:/Users/Mike/Documents/workspace-indexing/irods-hive/hive-master/jargon-hive-3store-integration/src/main/resources/irodsSchema.xml</indexer.irodsRdfPath>
+				<indexer.jena.db.driver.class>org.apache.derby.jdbc.EmbeddedDriver</indexer.jena.db.driver.class>
+				<indexer.jena.db.password>index</indexer.jena.db.password>
+				<indexer.jena.db.uri>jdbc:derby:C:/temp/hive-indexer-test/derby;create=true</indexer.jena.db.uri>
+				<indexer.jena.db.user>index</indexer.jena.db.user>
+				<indexer.jena.db.type>Derby</indexer.jena.db.type>
+				<indexer.idrop.context>http://localhost:8080/idrop-web2/</indexer.idrop.context>
+				<indexer.jena.db.uri.prefix>jdbc:derby:</indexer.jena.db.uri.prefix>
+				<indexer.jena.db.uri.suffix>;create=true</indexer.jena.db.uri.suffix>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>hive</id>
+			<properties>
+				<test.hive.source.dir>C:/Users/Mike/Documents/workspace-hive-git/irods-hive/hive-code/hive-core/test-data-template
+				</test.hive.source.dir>
+				<test.hive.parent.dir>C:/temp/test-hive-indexer
+				</test.hive.parent.dir>
+				<test.hive.scratch.dir>C:/temp/test-hive-scratch-indexer
+				</test.hive.scratch.dir>
+				<test.rest.port>8888</test.rest.port>
+			</properties>
+		</profile>
+
+	</profiles>
+
+	<activeProfiles>
+		<activeProfile>indexer</activeProfile>
+		<activeProfile>hive</activeProfile>
+	</activeProfiles>
+</settings>

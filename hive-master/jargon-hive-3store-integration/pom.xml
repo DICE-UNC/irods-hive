@@ -150,6 +150,15 @@
 									test.option.gsi.dn=${test.option.gsi.dn}
 									test.option.gsi.user=${test.option.gsi.user}
 									test.option.gsi.file=${test.option.gsi.file}
+									indexer.irodsRdfPath=${indexer.irodsRdfPath}
+									indexer.jena.db.driver.class=${indexer.jena.db.driver.class}
+									indexer.jena.db.password=${indexer.jena.db.password}
+									indexer.jena.db.user=${indexer.jena.db.user}
+									indexer.jena.db.uri=${indexer.jena.db.uri}
+									indexer.jena.db.uri.prefix=${indexer.jena.db.uri.prefix}
+									indexer.jena.db.uri.suffix=${indexer.jena.db.uri.suffix}
+									indexer.jena.db.type=${indexer.jena.db.type}
+									indexer.idrop.context=${indexer.idrop.context}
 								</echo>
 							</tasks>
 						</configuration>

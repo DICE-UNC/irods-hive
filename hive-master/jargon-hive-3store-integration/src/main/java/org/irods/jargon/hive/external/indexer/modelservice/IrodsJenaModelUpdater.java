@@ -26,21 +26,21 @@ import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.shared.Lock;
 
 /**
  * Maintains a Jena representation of iRODS data, including HIVE vocabularies
  * 
  * @author Mike Conway - DICE
- *
- *
+ * 
+ * 
  */
 public class IrodsJenaModelUpdater extends AbstractJargonService {
 
 	private final OntModel ontModel;
 	public static final String MODEL_KEY = "model";
 	public static final String NS = "http://www.irods.org/ontologies/2013/2/iRODS.owl#";
-	private DataProfileService dataProfileService;
+	private final DataProfileService dataProfileService;
 	private final JenaHiveConfiguration jenaHiveConfiguration;
 	private OntClass dataOnt;
 	private OntClass collOnt;
@@ -68,19 +68,20 @@ public class IrodsJenaModelUpdater extends AbstractJargonService {
 		this.jenaHiveConfiguration = jenaHiveConfiguration;
 
 		this.ontModel = ontModel;
-		
+
 		log.info("creating data profile service components..");
 		DataTypeResolutionService dataTypeResolutionService = new DataTypeResolutionServiceImpl(
 				irodsAccessObjectFactory, irodsAccount);
 		dataProfileService = new DataProfileServiceImpl(
 				irodsAccessObjectFactory, irodsAccount,
 				dataTypeResolutionService);
-		log.info("adding resources for data object");
-		Resource r = ontModel.getResource(NS + "DataObject");
-		dataOnt = r.as(OntClass.class);
-		log.info("adding resources for collection");
-		r = ontModel.getResource(NS + "Collection");
-		collOnt = r.as(OntClass.class);
+		/*
+		 * log.info("adding resources for data object"); Resource r =
+		 * ontModel.getResource(NS + "DataObject"); dataOnt =
+		 * r.as(OntClass.class); log.info("adding resources for collection"); r
+		 * = ontModel.getResource(NS + "Collection"); collOnt =
+		 * r.as(OntClass.class);
+		 */
 		log.info("done...");
 
 	}
@@ -134,67 +135,81 @@ public class IrodsJenaModelUpdater extends AbstractJargonService {
 				.buildURIForAnAccountWithNoUserInformationIncluded(
 						getIrodsAccount(), collection.getAbsolutePath());
 		log.info("URI:{}", irodsURI);
-		Individual indiv = ontModel.createIndividual(irodsURI.toString(),
-				collOnt);
-		ontModel.createIndividual(irodsURI.toString(), collOnt);
-		log.info("indiv done create prop");
-		Property absPathProp = ontModel.getProperty(JenaHiveConfiguration.NS,
-				"absolutePath");
-		indiv.addProperty(absPathProp, collection.getAbsolutePath());
-		Property conceptProp = ontModel.getProperty(JenaHiveConfiguration.NS,
-				"correspondingConcept");
-		com.hp.hpl.jena.rdf.model.Resource concept = ontModel
-				.createResource(vocabularyUri);
-		indiv.addProperty(conceptProp, concept);
+
+		ontModel.enterCriticalSection(Lock.WRITE);
+		try {
+
+			Individual indiv = ontModel.createIndividual(irodsURI.toString(),
+					collOnt);
+			ontModel.createIndividual(irodsURI.toString(), collOnt);
+			log.info("indiv done create prop");
+			Property absPathProp = ontModel.getProperty(
+					JenaHiveConfiguration.NS, "absolutePath");
+			indiv.addProperty(absPathProp, collection.getAbsolutePath());
+			Property conceptProp = ontModel.getProperty(
+					JenaHiveConfiguration.NS, "correspondingConcept");
+			com.hp.hpl.jena.rdf.model.Resource concept = ontModel
+					.createResource(vocabularyUri);
+			indiv.addProperty(conceptProp, concept);
+		} finally {
+			ontModel.leaveCriticalSection();
+		}
 
 	}
 
 	private void addDataObject(final DataProfile<DataObject> dataProfile,
 			final String vocabularyUri) throws JargonException {
-		DataObject dataObject = dataProfile.getDomainObject();
-		URI irodsURI = IRODSUriUtils
-				.buildURIForAnAccountWithNoUserInformationIncluded(
-						getIrodsAccount(), dataObject.getAbsolutePath());
-		log.info("URI:{}", irodsURI);
-		Individual indiv = ontModel.createIndividual(irodsURI.toString(),
-				dataOnt);
-		log.info("indiv done create prop");
-		Property absPathProp = ontModel.getProperty(JenaHiveConfiguration.NS,
-				"absolutePath");
-		indiv.addProperty(absPathProp, dataObject.getAbsolutePath());
-		Property conceptProp = ontModel.getProperty(JenaHiveConfiguration.NS,
-				"correspondingConcept");
-		com.hp.hpl.jena.rdf.model.Resource concept = ontModel
-				.createResource(vocabularyUri);
-		indiv.addProperty(conceptProp, concept);
-
-		/*
-		 * if idrop context, add some links
-		 */
-
-		if (!jenaHiveConfiguration.getIdropContext().isEmpty()) {
-			log.info("generating idrop links");
-			StringBuilder publicLink = new StringBuilder();
-			publicLink.append(jenaHiveConfiguration.getIdropContext());
-			publicLink.append("/home/link?irodsURI=");
-			publicLink.append(IRODSUriUtils
+		ontModel.enterCriticalSection(Lock.WRITE);
+		try {
+			DataObject dataObject = dataProfile.getDomainObject();
+			URI irodsURI = IRODSUriUtils
 					.buildURIForAnAccountWithNoUserInformationIncluded(
-							getIrodsAccount(), dataObject.getAbsolutePath()));
-			Property publicLinkProp = ontModel.getProperty(
-					JenaHiveConfiguration.NS, "hasWebInformationLink");
-			concept = ontModel.createResource(publicLink.toString());
-			indiv.addProperty(publicLinkProp, concept);
+							getIrodsAccount(), dataObject.getAbsolutePath());
+			log.info("URI:{}", irodsURI);
+			Individual indiv = ontModel.createIndividual(irodsURI.toString(),
+					dataOnt);
+			log.info("indiv done create prop");
+			Property absPathProp = ontModel.getProperty(
+					JenaHiveConfiguration.NS, "absolutePath");
+			indiv.addProperty(absPathProp, dataObject.getAbsolutePath());
+			Property conceptProp = ontModel.getProperty(
+					JenaHiveConfiguration.NS, "correspondingConcept");
+			com.hp.hpl.jena.rdf.model.Resource concept = ontModel
+					.createResource(vocabularyUri);
+			indiv.addProperty(conceptProp, concept);
 
-			log.info("adding download link");
-			StringBuilder downloadLink = new StringBuilder();
-			downloadLink.append(jenaHiveConfiguration.getIdropContext());
-			downloadLink.append("/file/download");
-			downloadLink.append(vocabularyUri);
-			Property downlaodProp = ontModel.getProperty(
-					JenaHiveConfiguration.NS, "hasDownloadLocation");
-			concept = ontModel.createResource(downloadLink.toString());
-			indiv.addProperty(downlaodProp, concept);
+			/*
+			 * if idrop context, add some links
+			 */
 
+			if (!jenaHiveConfiguration.getIdropContext().isEmpty()) {
+				log.info("generating idrop links");
+				StringBuilder publicLink = new StringBuilder();
+				publicLink.append(jenaHiveConfiguration.getIdropContext());
+				publicLink.append("/home/link?irodsURI=");
+				publicLink
+						.append(IRODSUriUtils
+								.buildURIForAnAccountWithNoUserInformationIncluded(
+										getIrodsAccount(),
+										dataObject.getAbsolutePath()));
+				Property publicLinkProp = ontModel.getProperty(
+						JenaHiveConfiguration.NS, "hasWebInformationLink");
+				concept = ontModel.createResource(publicLink.toString());
+				indiv.addProperty(publicLinkProp, concept);
+
+				log.info("adding download link");
+				StringBuilder downloadLink = new StringBuilder();
+				downloadLink.append(jenaHiveConfiguration.getIdropContext());
+				downloadLink.append("/file/download");
+				downloadLink.append(vocabularyUri);
+				Property downlaodProp = ontModel.getProperty(
+						JenaHiveConfiguration.NS, "hasDownloadLocation");
+				concept = ontModel.createResource(downloadLink.toString());
+				indiv.addProperty(downlaodProp, concept);
+
+			}
+		} finally {
+			ontModel.leaveCriticalSection();
 		}
 
 	}

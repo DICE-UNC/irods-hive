@@ -20,13 +20,16 @@ import org.irods.jargon.hive.external.indexer.HiveTripleStoreInitializerImpl;
 import org.irods.jargon.hive.external.indexer.JenaHiveIndexerVisitorTest;
 import org.irods.jargon.hive.external.utils.JenaHiveConfiguration;
 import org.irods.jargon.hive.external.utils.JenaHiveConfiguration.JenaModelType;
+import org.irods.jargon.hive.external.utils.test.Jargon3StoreTestingHelper;
 import org.irods.jargon.testutils.TestingPropertiesHelper;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.shared.Lock;
 
 import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
 
@@ -38,17 +41,19 @@ public class IrodsJenaModelUpdaterTest {
 	public static final String IRODS_TEST_SUBDIR_PATH = "IrodsJenaModelUpdaterTest";
 	private static org.irods.jargon.testutils.IRODSTestSetupUtilities irodsTestSetupUtilities = null;
 	private static IRODSFileSystem irodsFileSystem = null;
-	private static HiveTestingPropertiesHelper hiveTestingPropertiesHelper; 
+	private static HiveTestingPropertiesHelper hiveTestingPropertiesHelper;
 	private static File jenaVocabFile = null;
 	private static File ontFile = null;
 	private static JenaHiveConfiguration jenaHiveConfiguration;
- 
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		hiveTestingPropertiesHelper = new HiveTestingPropertiesHelper();
 		testingProperties = testingPropertiesHelper.getTestProperties();
 		scratchFileUtils = new org.irods.jargon.testutils.filemanip.ScratchFileUtils(
 				testingProperties);
+		scratchFileUtils
+				.clearAndReinitializeScratchDirectory(IRODS_TEST_SUBDIR_PATH);
 		irodsTestSetupUtilities = new org.irods.jargon.testutils.IRODSTestSetupUtilities();
 		irodsTestSetupUtilities.initializeIrodsScratchDirectory();
 		irodsTestSetupUtilities
@@ -58,10 +63,10 @@ public class IrodsJenaModelUpdaterTest {
 		// initialize a testing model in a test subdir
 
 		ClassLoader loader = JenaHiveIndexerVisitorTest.class.getClassLoader();
-		URL resc = loader.getResource("agrovoc.rdf");
+		URL resc = loader.getResource("uat.rdf");
 
 		if (resc == null) {
-			throw new Exception("unable to load agrovoc");
+			throw new Exception("unable to load uat");
 		}
 
 		String vocabFileName = resc.getFile();
@@ -94,8 +99,20 @@ public class IrodsJenaModelUpdaterTest {
 		jenaHiveConfiguration
 				.setIdropContext("http://localhost:8080/idrop-web/");
 		jenaHiveConfiguration.setIrodsRDFFileName(ontFileName);
-		jenaHiveConfiguration.setJenaModelType(JenaModelType.MEMORY_ONT);
+		jenaHiveConfiguration.setJenaModelType(JenaModelType.DATABASE_ONT);
 		jenaHiveConfiguration.setVocabularyRDFFileNames(vocabFileNames);
+		jenaHiveConfiguration
+				.setJenaDbDriverClass(testingProperties
+						.getProperty(Jargon3StoreTestingHelper.INDEXER_DB_DRIVER_CLASS));
+		jenaHiveConfiguration.setJenaDbPassword(testingProperties
+				.getProperty(Jargon3StoreTestingHelper.INDEXER_DB_PASSWORD));
+		jenaHiveConfiguration.setJenaDbType(testingProperties
+				.getProperty(Jargon3StoreTestingHelper.INDEXER_DB_TYPE));
+		jenaHiveConfiguration.setJenaDbUri(Jargon3StoreTestingHelper
+				.buildJdbcUriFromProperties(testingProperties,
+						IRODS_TEST_SUBDIR_PATH + "/database/"));
+		jenaHiveConfiguration.setJenaDbUser(testingProperties
+				.getProperty(Jargon3StoreTestingHelper.INDEXER_DB_USER));
 
 	}
 
@@ -105,9 +122,9 @@ public class IrodsJenaModelUpdaterTest {
 	}
 
 	@Test
-	public void testAddIrodsTermToDataObject() throws Exception {
-		String fileName = "testAddIrodsTermToDataObject.txt";
-		String vocabTerm =  "http://purl.org/astronomy/uat#T351";
+	public void testAddIrodsTermToDataObjectThenQuery() throws Exception {
+		String fileName = "testAddIrodsTermToDataObjectThenQuery.txt";
+		String vocabTerm = "http://purl.org/astronomy/uat#T351";
 		IRODSAccount irodsAccount = testingPropertiesHelper
 				.buildIRODSAccountFromTestProperties(testingProperties);
 		DataTypeResolutionService dataTypeResolutionService = new DataTypeResolutionServiceImpl();
@@ -129,14 +146,37 @@ public class IrodsJenaModelUpdaterTest {
 		HiveTripleStoreInitializer hiveTripleStoreInitializer = new HiveTripleStoreInitializerImpl(
 				jenaHiveConfiguration);
 		OntModel ontModel = hiveTripleStoreInitializer.initialize();
-		
-		IrodsJenaModelUpdater irodsJenaModelUpdater = new IrodsJenaModelUpdater(irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount, ontModel, jenaHiveConfiguration);
+
+		IrodsJenaModelUpdater irodsJenaModelUpdater = new IrodsJenaModelUpdater(
+				irodsFileSystem.getIRODSAccessObjectFactory(), irodsAccount,
+				ontModel, jenaHiveConfiguration);
 		irodsJenaModelUpdater.addIrodsTerm(absPath, vocabTerm);
-		
+
 		// now sparql query the term
-		IrodsJenaModelQuery irodsJenaModelQuery = new IrodsJenaModelQueryImpl(ontModel);
-		ResultSet queryResult = irodsJenaModelQuery.queryAllOnVocabularyTerm(vocabTerm);
+		IrodsJenaModelQuery irodsJenaModelQuery = new IrodsJenaModelQueryImpl(
+				ontModel);
+		ResultSet queryResult = irodsJenaModelQuery
+				.queryAllOnVocabularyTerm(vocabTerm);
 		Assert.assertNotNull("null result set from query", queryResult);
-		
+		boolean foundit = false;
+
+		try {
+
+			ontModel.enterCriticalSection(Lock.READ);
+
+			if (!queryResult.hasNext()) {
+				Assert.fail("empty results");
+			}
+
+			while (queryResult.hasNext()) {
+				QuerySolution nextSolution = queryResult.next();
+				foundit = true;
+			}
+		} finally {
+			ontModel.leaveCriticalSection();
+		}
+
+		Assert.assertTrue("didn't find any result", foundit);
+
 	}
 }
