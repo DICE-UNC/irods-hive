@@ -68,15 +68,20 @@ public class IrodsJenaModelUpdater extends AbstractJargonService {
 		this.jenaHiveConfiguration = jenaHiveConfiguration;
 
 		this.ontModel = ontModel;
+		
+		log.info("creating data profile service components..");
 		DataTypeResolutionService dataTypeResolutionService = new DataTypeResolutionServiceImpl(
 				irodsAccessObjectFactory, irodsAccount);
 		dataProfileService = new DataProfileServiceImpl(
 				irodsAccessObjectFactory, irodsAccount,
 				dataTypeResolutionService);
+		log.info("adding resources for data object");
 		Resource r = ontModel.getResource(NS + "DataObject");
 		dataOnt = r.as(OntClass.class);
+		log.info("adding resources for collection");
 		r = ontModel.getResource(NS + "Collection");
 		collOnt = r.as(OntClass.class);
+		log.info("done...");
 
 	}
 
