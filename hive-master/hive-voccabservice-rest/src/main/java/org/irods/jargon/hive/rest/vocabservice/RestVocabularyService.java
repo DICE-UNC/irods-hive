@@ -8,6 +8,7 @@ import java.util.List;
 import javax.inject.Named;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.irods.jargon.hive.exception.JargonHiveException;
@@ -18,6 +19,8 @@ import org.jboss.resteasy.annotations.providers.jaxb.json.XmlNsMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import edu.unc.ils.mrc.hive.api.SKOSScheme;
 
 /**
  * REST wrapper for vocabulary service allowing query of HIVE terms and
@@ -60,7 +63,7 @@ public class RestVocabularyService {
 		return vocabularyService.getAllVocabularies();
 
 	}
-
+	
 	// localhost:8080/vocabservice/vocabulary/agrovoc
 
 	/**
@@ -89,13 +92,28 @@ public class RestVocabularyService {
 	// @Path something - what's the mapping for a variable in the path? Check
 	// here
 	// http://docs.jboss.org/resteasy/docs/3.0.7.Final/userguide/html_single/index.html#_PathParam
-	public VocabularyInfo getVocabulary(final String vocabularyName) // @PathParam?
+	@Path("/{vocabularyName}")
+	public VocabularyInfo getVocabulary(@PathParam("vocabularyName") final String vocabularyName) // @PathParam?
 			throws JargonHiveException {
 
 		// get the skosscheme from vocab service
 		// create VocabularyInfo object from data in skosscheme and return
-		return null;
+		
+		SKOSScheme vocabularySKOSS  = vocabularyService.getVocabularyByName(vocabularyName);
+		VocabularyInfo vocabularyInfo = new VocabularyInfo();
+		
+		vocabularyInfo.setVocabularyName(vocabularySKOSS.getName());
+		vocabularyInfo.setNumberOfConcepts(vocabularySKOSS.getNumberOfConcepts());
+		vocabularyInfo.setNumberOfRelations(vocabularySKOSS.getNumberOfRelations());
+		vocabularyInfo.setLastUpdated(vocabularySKOSS.getLastUpdateDate());
+		
+		return vocabularyInfo; 
 
 	}
+
+	
+	
+
+
 
 }

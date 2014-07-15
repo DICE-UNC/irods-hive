@@ -141,5 +141,45 @@ public class RestVocabularyServiceTest implements ApplicationContextAware {
 			clientAndContext.getHttpClient().getConnectionManager().shutdown();
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetVocabularyNames() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		sb.append("http://localhost:");
+		sb.append(testingPropertiesHelper.getPropertyValueAsInt(
+				testingProperties, RestTestingProperties.REST_PORT_PROPERTY));
+		sb.append("/vocabulary/uat");
+
+		DefaultHttpClientAndContext clientAndContext = RestAuthUtils
+				.httpClientSetup(testingProperties);
+		try {
+
+			HttpGet httpget = new HttpGet(sb.toString());
+			httpget.addHeader("accept", "application/json");
+
+			HttpResponse response = clientAndContext.getHttpClient().execute(
+					httpget, clientAndContext.getHttpContext());
+			HttpEntity entity = response.getEntity();
+			Assert.assertEquals(200, response.getStatusLine().getStatusCode());
+			Assert.assertNotNull(entity);
+			String entityData = EntityUtils.toString(entity);
+			EntityUtils.consume(entity);
+			System.out.println("JSON>>>");
+			System.out.println(entityData);
+			ObjectMapper objectMapper = new ObjectMapper();
+			VocabularyInfo actual = objectMapper.readValue(entityData,
+					VocabularyInfo.class);
+
+			Assert.assertNotNull("no list of vocabs returned", actual);
+		//	Assert.assertFalse("vocab list is empty", actual.isEmpty());
+
+		} finally {
+			// When HttpClient instance is no longer needed,
+			// shut down the connection manager to ensure
+			// immediate deallocation of all system resources
+			clientAndContext.getHttpClient().getConnectionManager().shutdown();
+		}
+	}
 
 }
