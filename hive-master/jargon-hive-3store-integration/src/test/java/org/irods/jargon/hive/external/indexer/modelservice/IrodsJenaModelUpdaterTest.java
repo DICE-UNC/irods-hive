@@ -17,10 +17,9 @@ import org.irods.jargon.dataprofile.DataTypeResolutionService;
 import org.irods.jargon.dataprofile.DataTypeResolutionServiceImpl;
 import org.irods.jargon.hive.external.indexer.HiveTripleStoreInitializer;
 import org.irods.jargon.hive.external.indexer.HiveTripleStoreInitializerImpl;
-import org.irods.jargon.hive.external.indexer.JenaHiveIndexerVisitorTest;
+import org.irods.jargon.hive.external.utils.JargonHiveConfigurationHelper;
 import org.irods.jargon.hive.external.utils.JenaHiveConfiguration;
 import org.irods.jargon.hive.external.utils.JenaHiveConfiguration.JenaModelType;
-import org.irods.jargon.hive.external.utils.test.Jargon3StoreTestingHelper;
 import org.irods.jargon.testutils.TestingPropertiesHelper;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -62,7 +61,7 @@ public class IrodsJenaModelUpdaterTest {
 
 		// initialize a testing model in a test subdir
 
-		ClassLoader loader = JenaHiveIndexerVisitorTest.class.getClassLoader();
+		ClassLoader loader = IrodsJenaModelUpdaterTest.class.getClassLoader();
 		URL resc = loader.getResource("uat.rdf");
 
 		if (resc == null) {
@@ -103,16 +102,17 @@ public class IrodsJenaModelUpdaterTest {
 		jenaHiveConfiguration.setVocabularyRDFFileNames(vocabFileNames);
 		jenaHiveConfiguration
 				.setJenaDbDriverClass(testingProperties
-						.getProperty(Jargon3StoreTestingHelper.INDEXER_DB_DRIVER_CLASS));
-		jenaHiveConfiguration.setJenaDbPassword(testingProperties
-				.getProperty(Jargon3StoreTestingHelper.INDEXER_DB_PASSWORD));
+						.getProperty(JargonHiveConfigurationHelper.INDEXER_DB_DRIVER_CLASS));
+		jenaHiveConfiguration
+				.setJenaDbPassword(testingProperties
+						.getProperty(JargonHiveConfigurationHelper.INDEXER_DB_PASSWORD));
 		jenaHiveConfiguration.setJenaDbType(testingProperties
-				.getProperty(Jargon3StoreTestingHelper.INDEXER_DB_TYPE));
-		jenaHiveConfiguration.setJenaDbUri(Jargon3StoreTestingHelper
+				.getProperty(JargonHiveConfigurationHelper.INDEXER_DB_TYPE));
+		jenaHiveConfiguration.setJenaDbUri(JargonHiveConfigurationHelper
 				.buildJdbcUriFromProperties(testingProperties,
 						IRODS_TEST_SUBDIR_PATH + "/database/"));
 		jenaHiveConfiguration.setJenaDbUser(testingProperties
-				.getProperty(Jargon3StoreTestingHelper.INDEXER_DB_USER));
+				.getProperty(JargonHiveConfigurationHelper.INDEXER_DB_USER));
 
 	}
 

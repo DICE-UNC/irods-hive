@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.irods.jargon.hive.external.utils.test;
+package org.irods.jargon.hive.external.utils;
 
 import java.util.Properties;
 
@@ -12,7 +12,7 @@ import org.irods.jargon.testutils.TestingPropertiesHelper;
  * 
  * @author Mike Conway - DICE
  */
-public class Jargon3StoreTestingHelper {
+public class JargonHiveConfigurationHelper {
 
 	public static final String INDEXER_RDF_PATH = "indexer.irodsRdfPath";
 	public static final String INDEXER_DB_DRIVER_CLASS = "indexer.jena.db.driver.class";
