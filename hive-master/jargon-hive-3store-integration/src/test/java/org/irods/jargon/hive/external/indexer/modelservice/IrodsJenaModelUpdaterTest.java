@@ -32,6 +32,7 @@ import com.hp.hpl.jena.shared.Lock;
 
 import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
 
+
 public class IrodsJenaModelUpdaterTest {
 
 	private static Properties testingProperties = new Properties();
