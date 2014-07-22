@@ -21,6 +21,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.unc.hive.client.ConceptProxy;
 
+import com.sun.org.apache.xerces.internal.util.URI;
+import com.sun.org.apache.xerces.internal.util.URI.MalformedURIException;
+
 /**
  * REST interface for interacting with concepts
  * 
@@ -80,5 +83,26 @@ public class RestConceptService {
 		}
 		log.info("vocabulary:{}", vocabulary);
 		return vocabularyService.getSubTopConcept(vocabulary, letter, true);
+	}
+	
+	@GET
+	@Path("{vocabulary}/top")
+	@Produces({ "application/xml", "application/json" })
+	@Mapped(namespaceMap = { @XmlNsMap(namespace = "http://irods.org/hive", jsonName = "hive-vocabulary-service-rest") })
+	public ConceptProxy findConceptByUri (
+			@QueryParam("uri") final String uri,
+			@PathParam("vocabulary") final String vocabulary)
+			throws JargonHiveException, MalformedURIException {
+		log.info("getConcepts()");
+
+		if (vocabulary == null || vocabulary.isEmpty()) {
+			throw new IllegalArgumentException("null vocabulary");
+		}
+		log.info("vocabulary:{}", vocabulary);
+		URI uriString = new URI(uri);
+		String namespaceURI = uriString.getScheme() + uriString.getHost() + uriString.getPath();
+		String localPart = uriString.getFragment();
+		
+		return vocabularyService.getConceptByURI(namespaceURI, localPart);
 	}
 }

@@ -15,10 +15,10 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  */
 public class ConceptProxy implements IsSerializable {
 	private boolean topLevel = false;
-	private String preLabel;
-	private String URI;
-	private String origin;
-	private String skosCode;
+	private String preLabel = "";
+	private String URI = "";
+	private String origin = "";
+	private String skosCode = "";
 	private Map<String, String> narrower = new HashMap<String, String>();
 	private Map<String, String> broader = new HashMap<String, String>();
 	private Map<String, String> related = new HashMap<String, String>();
