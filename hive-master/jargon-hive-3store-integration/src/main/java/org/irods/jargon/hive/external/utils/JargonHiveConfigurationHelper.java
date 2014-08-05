@@ -3,6 +3,8 @@
  */
 package org.irods.jargon.hive.external.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.irods.jargon.core.connection.IRODSAccount;
@@ -114,6 +116,33 @@ public class JargonHiveConfigurationHelper {
 		sb.append(properties.get(INDEXER_DB_URI_SUFFIX));
 		return sb.toString();
 
+	}
+	
+	/**
+	 * Load the properties that specify iRODS and Jena connection parameters 
+	 * as expected by this class.
+	 * @param propertyFileName <code>String</code> with the property file name
+	 * @return <code>Properties</code> class with the expected values
+	 * @throws HiveIndexerException
+	 */
+	public static Properties loadProperties(final String propertyFileName) throws HiveIndexerException {
+		ClassLoader loader = JargonHiveConfigurationHelper.class.getClassLoader();
+		InputStream in = loader.getResourceAsStream(propertyFileName);
+		Properties properties = new Properties();
+
+		try {
+			properties.load(in);
+		} catch (IOException ioe) {
+			throw new HiveIndexerException("error loading properties",
+					ioe);
+		} finally {
+			try {
+				in.close();
+			} catch (Exception e) {
+				// ignore
+			}
+		}
+		return properties;
 	}
 
 }

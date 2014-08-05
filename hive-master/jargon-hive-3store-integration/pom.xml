@@ -99,10 +99,10 @@
 						<phase>validate</phase>
 						<configuration>
 							<tasks>
-								<delete file="${basedir}/src/test/resources/testing.properties" />
-								<touch file="${basedir}/src/test/resources/testing.properties"
+								<delete file="${basedir}/src/test/resources/hive.testing.properties" />
+								<touch file="${basedir}/src/test/resources/hive.testing.properties"
 									mkdirs="true" />
-								<echo file="${basedir}/src/test/resources/testing.properties"
+								<echo file="${basedir}/src/test/resources/hive.testing.properties"
 									append="true">
 									test.confirm=${jargon.test.confirm}
 									test.data.directory=${jargon.test.data.directory}
