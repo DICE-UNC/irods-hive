@@ -218,8 +218,8 @@ public class RestConceptServiceTest implements ApplicationContextAware {
 			System.out.println("JSON>>>");
 			System.out.println(entityData);
 			ObjectMapper objectMapper = new ObjectMapper();
-			ConceptProxy actual = objectMapper.readValue(entityData,
-					ConceptProxy.class);
+			Concept actual = objectMapper.readValue(entityData,
+					Concept.class);
 
 	//		Assert.assertFalse("no njson returned", entityData.isEmpty());
 			Assert.assertNotNull("no list of concepts returned", actual);

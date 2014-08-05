@@ -103,7 +103,7 @@ public class RestConceptService {
 	@Path("{vocabulary}/top")
 	@Produces({ "application/xml", "application/json" })
 	@Mapped(namespaceMap = { @XmlNsMap(namespace = "http://irods.org/hive", jsonName = "hive-vocabulary-service-rest") })
-	public ConceptProxy findConceptByUri (
+	public Concept findConceptByUri (
 			@QueryParam("uri") final String uri,
 			@PathParam("vocabulary") final String vocabulary)
 			throws JargonHiveException, MalformedURIException {
@@ -117,7 +117,19 @@ public class RestConceptService {
 		String namespaceURI = uriString.getScheme() +"://" + uriString.getHost() + uriString.getPath();
 		String localPart = "#" + uriString.getFragment();
 		
-		return vocabularyService.getConceptByURI(namespaceURI, localPart);
+		ConceptProxy concept = vocabularyService.getConceptByURI(namespaceURI, localPart);
+		Concept result = new Concept();
+		
+		result.setBroader(findConceptBroaderByUri(uri, vocabulary));
+		result.setNarrower(findConceptNarrowerByUri(uri, vocabulary));
+		result.setRelated(findConceptRelatedByUri(uri, vocabulary));
+		result.setAltLabel(concept.getAltLabel());
+		result.setLabel(concept.getPreLabel());
+		result.setUri(concept.getURI());
+		result.setVocabName(vocabulary);
+		
+		return result;
+		
 	}
 
 	@GET
