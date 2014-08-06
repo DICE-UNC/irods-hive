@@ -2,8 +2,19 @@ package org.irods.jargon.hive.rest.vocabservice;
 
 import static org.junit.Assert.fail;
 
+import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
+import junit.framework.Assert;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.util.EntityUtils;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.irods.jargon.hive.rest.auth.DefaultHttpClientAndContext;
+import org.irods.jargon.hive.rest.auth.RestAuthUtils;
 import org.irods.jargon.hive.rest.vocabservice.utils.RestTestingProperties;
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.plugins.server.tjws.TJWSEmbeddedJaxrsServer;
@@ -24,6 +35,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.unc.hive.client.ConceptProxy;
 
 import edu.unc.ils.mrc.hive.testframework.HiveScratchAreaCreator;
 import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
@@ -94,9 +106,47 @@ public class RestVocabularySearchServiceTest implements ApplicationContextAware 
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testSearchConceptByTermAndVocabs() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		sb.append("http://localhost:");
+		sb.append(testingPropertiesHelper.getPropertyValueAsInt(
+				testingProperties, RestTestingProperties.REST_PORT_PROPERTY));
+		sb.append("/search");
+		sb.append("?searchTerm=stars&vocabs=uat,agrovoc");
+		
+		DefaultHttpClientAndContext clientAndContext = RestAuthUtils
+				.httpClientSetup(testingProperties);
+		
+		try {
+
+			HttpGet httpget = new HttpGet(sb.toString());
+			httpget.addHeader("accept", "application/json");
+
+			HttpResponse response = clientAndContext.getHttpClient().execute(
+					httpget, clientAndContext.getHttpContext());
+			HttpEntity entity = response.getEntity();
+			Assert.assertEquals(200, response.getStatusLine().getStatusCode());
+			Assert.assertNotNull(entity);
+			String entityData = EntityUtils.toString(entity);
+			EntityUtils.consume(entity);
+			System.out.println("JSON>>>");
+			System.out.println(entityData);
+			ObjectMapper objectMapper = new ObjectMapper();
+			Set<ConceptProxy> actual = objectMapper.readValue(entityData,
+					Set.class);
+
+
+			Assert.assertNotNull("no list of concepts returned", actual);
+			Assert.assertFalse("concept list is empty", actual.isEmpty());
+
+		} finally {
+			// When HttpClient instance is no longer needed,
+			// shut down the connection manager to ensure
+			// immediate deallocation of all system resources
+			clientAndContext.getHttpClient().getConnectionManager().shutdown();
+		}
 	}
 
 }
