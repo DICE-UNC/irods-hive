@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  * Service for searching for vocabulary terms
  * 
  * @author Mike Conway - DICE (www.irods.org)
- *
+ * 
  */
 @Named
 @Path("/search")
@@ -42,5 +42,26 @@ public class RestVocabularySearchService {
 	public void setVocabularyService(final VocabularyService vocabularyService) {
 		this.vocabularyService = vocabularyService;
 	}
+
+	/*
+	 * this will be a GET under /search with 2 parametsrs,
+	 * ?searchTerm=xxxxx&vocabs=uat,agrovoc,blah
+	 * 
+	 * Add a method take param = search term (like giant or star in uat) this is
+	 * actually the label that was indexed in lucene take param = vocabs like
+	 * uat,agrovoc
+	 * 
+	 * look at String.split() in Java API
+	 * 
+	 * call vocab service with
+	 * 
+	 * 
+	 * Set<ConceptProxy> searchConcept(String keyword, List<String>
+	 * openedVocabularies);
+	 * 
+	 * 
+	 * key word is search term openedVocabularies is the vocabas that are turned
+	 * from vocab,vocab to a list<String>
+	 */
 
 }
