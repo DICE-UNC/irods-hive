@@ -15,6 +15,7 @@ import org.jboss.resteasy.annotations.providers.jaxb.json.Mapped;
 import org.jboss.resteasy.annotations.providers.jaxb.json.XmlNsMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.unc.hive.client.ConceptProxy;
 
 /**
@@ -35,7 +36,6 @@ public class RestVocabularySearchService {
 	public static final Logger log = LoggerFactory
 			.getLogger(RestVocabularySearchService.class);
 
-
 	/**
 	 * @return the vocabularyService
 	 */
@@ -47,6 +47,7 @@ public class RestVocabularySearchService {
 	 * @param vocabularyService
 	 *            the vocabularyService to set
 	 */
+	@Autowired
 	public void setVocabularyService(final VocabularyService vocabularyService) {
 		this.vocabularyService = vocabularyService;
 	}
@@ -77,22 +78,21 @@ public class RestVocabularySearchService {
 	public Set<ConceptProxy> searchConceptByTermAndVocabs(
 			@QueryParam("searchTerm") final String searchTerm,
 			@QueryParam("vocabs") final String vocabs) {
-	//	log.info("getVocabularySearch()");
-		
+		// log.info("getVocabularySearch()");
+
 		String keyword = searchTerm;
 		String[] temp = vocabs.split(",");
-		
+
 		List<String> vocab = new ArrayList<String>();
 		for (String s : temp) {
 			vocab.add(s);
 		}
-//		System.out.println(vocab);
-		Set<ConceptProxy> result = vocabularyService.searchConcept(keyword, vocab);
+		// System.out.println(vocab);
+		Set<ConceptProxy> result = vocabularyService.searchConcept(keyword,
+				vocab);
 
-		
-		return  result;
+		return result;
 
 	}
-	
 
 }
