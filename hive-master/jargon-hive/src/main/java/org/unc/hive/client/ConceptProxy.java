@@ -13,19 +13,19 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * @author Mike Conway - DICE (www.irods.org)
  * 
  */
-public class ConceptProxy implements IsSerializable {
+public class ConceptProxy  {
 	private boolean topLevel = false;
-	private String preLabel;
-	private String URI;
-	private String origin;
-	private String skosCode;
+	private String preLabel = "";
+	private String URI = "";
+	private String origin = "";
+	private String skosCode = "";
 	private Map<String, String> narrower = new HashMap<String, String>();
 	private Map<String, String> broader = new HashMap<String, String>();
 	private Map<String, String> related = new HashMap<String, String>();
 	private List<String> altLabel = new ArrayList<String>();
 	private List<String> scopeNotes = new ArrayList<String>();
 	private boolean isleaf = false;
-	private double score;
+	private double score = 0d;
 	/**
 	 * allows specification that this concept is 'selected' in the current
 	 * context. e.g. this concept has been applied to a resource, such as an

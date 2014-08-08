@@ -3,13 +3,19 @@
  */
 package org.irods.jargon.hive.rest.vocabservice;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Named;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 import org.irods.jargon.hive.exception.JargonHiveException;
 import org.irods.jargon.hive.service.VocabularyService;
@@ -43,25 +49,27 @@ public class RestConceptService {
 	}
 
 	@Autowired
-	public void setVocabularyService(VocabularyService vocabularyService) {
+	public void setVocabularyService(final VocabularyService vocabularyService) {
 		this.vocabularyService = vocabularyService;
 	}
 
-	/**
-	 * respond to a get request and return a list of concepts
+	/*
+	 * vocaulary/broader?uri=blah get vocab and get the broader, retrun a
+	 * List<ConceptListEntry> of the broader terms *vocaulary/narrower?uri=blah
+	 * get vocab and get the broader, retrun a List<ConceptListEntry> of the
+	 * narrower terms
 	 * 
-	 * @return <code>List<String></code> with vocabulary names in the HIVE
-	 * @throws JargonHiveException
-	 *             TODO: just returning top concepts now, add start letter
-	 *             first, then worry about navigating based on term? or add
-	 *             broader/narrower/etc?
+	 * *vocaulary/related?uri=blah get vocab and get the broader, retrun a
+	 * List<ConceptListEntry> of the related terms
 	 */
+
 	@GET
 	@Path("{vocabulary}/top")
 	@Produces({ "application/xml", "application/json" })
 	@Mapped(namespaceMap = { @XmlNsMap(namespace = "http://irods.org/hive", jsonName = "hive-vocabulary-service-rest") })
-	public List<ConceptProxy> getConcepts(
-			@PathParam("vocabulary") final String vocabulary)
+	public List<ConceptProxy> getConcept(
+
+	@PathParam("vocabulary") final String vocabulary)
 			throws JargonHiveException {
 		log.info("getConcepts()");
 
@@ -71,4 +79,193 @@ public class RestConceptService {
 		log.info("vocabulary:{}", vocabulary);
 		return vocabularyService.getSubTopConcept(vocabulary, "", true);
 	}
+
+	@GET
+	@Path("{vocabulary}/top")
+	@Produces({ "application/xml", "application/json" })
+	@Mapped(namespaceMap = { @XmlNsMap(namespace = "http://irods.org/hive", jsonName = "hive-vocabulary-service-rest") })
+	public List<ConceptProxy> getConceptQueries(
+			@QueryParam("letter") final String letter,
+			@PathParam("vocabulary") final String vocabulary)
+			throws JargonHiveException {
+		log.info("getConcepts()");
+
+		if (vocabulary == null || vocabulary.isEmpty()) {
+			throw new IllegalArgumentException("null vocabulary");
+		}
+		log.info("vocabulary:{}", vocabulary);
+		return vocabularyService.getSubTopConcept(vocabulary, letter, true);
+	}
+
+	@GET
+	@Path("{vocabulary}/top")
+	@Produces({ "application/xml", "application/json" })
+	@Mapped(namespaceMap = { @XmlNsMap(namespace = "http://irods.org/hive", jsonName = "hive-vocabulary-service-rest") })
+
+	public Concept findConceptByUri (
+			@QueryParam("uri") final String uri,
+	
+			@PathParam("vocabulary") final String vocabulary)
+			throws JargonHiveException {
+		log.info("getConcepts()");
+
+		if (vocabulary == null || vocabulary.isEmpty()) {
+			throw new IllegalArgumentException("null vocabulary");
+		}
+		log.info("vocabulary:{}", vocabulary);
+		URI uriString = null;
+		try {
+			uriString = new URI(uri);
+		} catch (URISyntaxException e) {
+			log.error(e.getMessage(), e);
+			throw new JargonHiveException("error creating URI", e);
+		}
+		String namespaceURI = uriString.getScheme() + "://"
+				+ uriString.getHost() + uriString.getPath();
+		String localPart = "#" + uriString.getFragment();
+		
+		ConceptProxy concept = vocabularyService.getConceptByURI(namespaceURI, localPart);
+		Concept result = new Concept();
+		
+		result.setBroader(findConceptBroaderByUri(uri, vocabulary));
+		result.setNarrower(findConceptNarrowerByUri(uri, vocabulary));
+		result.setRelated(findConceptRelatedByUri(uri, vocabulary));
+		result.setAltLabel(concept.getAltLabel());
+		result.setLabel(concept.getPreLabel());
+		result.setUri(concept.getURI());
+		result.setVocabName(vocabulary);
+		
+		return result;
+		
+	}
+
+	@GET
+	@Path("{vocabulary}/broader")
+	@Produces({ "application/xml", "application/json" })
+	@Mapped(namespaceMap = { @XmlNsMap(namespace = "http://irods.org/hive", jsonName = "hive-vocabulary-service-rest") })
+	public List<ConceptListEntry> findConceptBroaderByUri(
+			@QueryParam("uri") final String uri,
+			@PathParam("vocabulary") final String vocabulary)
+			throws JargonHiveException {
+		log.info("getConcepts()");
+
+		if (vocabulary == null || vocabulary.isEmpty()) {
+			throw new IllegalArgumentException("null vocabulary");
+		}
+		log.info("vocabulary:{}", vocabulary);
+		URI uriString = null;
+		try {
+			uriString = new URI(uri);
+		} catch (URISyntaxException e) {
+			log.error(e.getMessage(), e);
+			throw new JargonHiveException("error creating URI", e);
+		}
+		String namespaceURI = uriString.getScheme() + "://"
+				+ uriString.getHost() + uriString.getPath();
+
+		String localPart = "#" + uriString.getFragment();
+
+		ConceptProxy concept = vocabularyService.getConceptByURI(namespaceURI,
+				localPart);
+		List<ConceptListEntry> result = new ArrayList<ConceptListEntry>();
+		Map<String, String> broader = concept.getBroader();
+
+		Iterator<String> it = broader.keySet().iterator();
+		while (it.hasNext()) {
+			String key = it.next();
+			String v = broader.get(key);
+			ConceptListEntry listEntry = new ConceptListEntry(key, v);
+			result.add(listEntry);
+		}
+
+		return result;
+	}
+
+	@GET
+	@Path("{vocabulary}/narrower")
+	@Produces({ "application/xml", "application/json" })
+	@Mapped(namespaceMap = { @XmlNsMap(namespace = "http://irods.org/hive", jsonName = "hive-vocabulary-service-rest") })
+	public List<ConceptListEntry> findConceptNarrowerByUri(
+			@QueryParam("uri") final String uri,
+			@PathParam("vocabulary") final String vocabulary)
+			throws JargonHiveException {
+		log.info("getConcepts()");
+
+		if (vocabulary == null || vocabulary.isEmpty()) {
+			throw new IllegalArgumentException("null vocabulary");
+		}
+		log.info("vocabulary:{}", vocabulary);
+		URI uriString = null;
+		try {
+			uriString = new URI(uri);
+		} catch (URISyntaxException e) {
+			log.error(e.getMessage(), e);
+			throw new JargonHiveException("error creating URI", e);
+
+		}
+		String namespaceURI = uriString.getScheme() + "://"
+				+ uriString.getHost() + uriString.getPath();
+
+		String localPart = "#" + uriString.getFragment();
+
+		ConceptProxy concept = vocabularyService.getConceptByURI(namespaceURI,
+				localPart);
+		List<ConceptListEntry> result = new ArrayList<ConceptListEntry>();
+		Map<String, String> broader = concept.getBroader();
+
+		Iterator<String> it = broader.keySet().iterator();
+		while (it.hasNext()) {
+			String key = it.next();
+			String v = broader.get(key);
+			ConceptListEntry listEntry = new ConceptListEntry(key, v);
+			result.add(listEntry);
+		}
+
+		return result;
+	}
+
+	@GET
+	@Path("{vocabulary}/related")
+	@Produces({ "application/xml", "application/json" })
+	@Mapped(namespaceMap = { @XmlNsMap(namespace = "http://irods.org/hive", jsonName = "hive-vocabulary-service-rest") })
+	public List<ConceptListEntry> findConceptRelatedByUri(
+			@QueryParam("uri") final String uri,
+			@PathParam("vocabulary") final String vocabulary)
+			throws JargonHiveException {
+		log.info("getConcepts()");
+
+		if (vocabulary == null || vocabulary.isEmpty()) {
+			throw new IllegalArgumentException("null vocabulary");
+		}
+		log.info("vocabulary:{}", vocabulary);
+		URI uriString = null;
+		try {
+			uriString = new URI(uri);
+
+		} catch (URISyntaxException e) {
+			log.error(e.getMessage(), e);
+			throw new JargonHiveException("error creating URI", e);
+
+		}
+		String namespaceURI = uriString.getScheme() + "://"
+				+ uriString.getHost() + uriString.getPath();
+
+		String localPart = "#" + uriString.getFragment();
+
+		ConceptProxy concept = vocabularyService.getConceptByURI(namespaceURI,
+				localPart);
+		List<ConceptListEntry> result = new ArrayList<ConceptListEntry>();
+		Map<String, String> broader = concept.getBroader();
+
+		Iterator<String> it = broader.keySet().iterator();
+		while (it.hasNext()) {
+			String key = it.next();
+			String v = broader.get(key);
+			ConceptListEntry listEntry = new ConceptListEntry(key, v);
+			result.add(listEntry);
+		}
+
+		return result;
+	}
+
 }

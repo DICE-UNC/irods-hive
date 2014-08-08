@@ -1,7 +1,10 @@
 package org.irods.jargon.hive.rest.vocabservice;
 
+import static org.junit.Assert.fail;
+
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import junit.framework.Assert;
 
@@ -13,7 +16,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.irods.jargon.hive.rest.auth.DefaultHttpClientAndContext;
 import org.irods.jargon.hive.rest.auth.RestAuthUtils;
 import org.irods.jargon.hive.rest.vocabservice.utils.RestTestingProperties;
-import org.irods.jargon.hive.service.domain.VocabularyInfo;
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.plugins.server.tjws.TJWSEmbeddedJaxrsServer;
 import org.jboss.resteasy.plugins.spring.SpringBeanProcessor;
@@ -33,6 +35,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.unc.hive.client.ConceptProxy;
 
 import edu.unc.ils.mrc.hive.testframework.HiveScratchAreaCreator;
 import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
@@ -42,14 +45,15 @@ import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
 		"classpath:rest-servlet.xml" })
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
 		DirtiesContextTestExecutionListener.class })
-public class RestVocabularyServiceTest implements ApplicationContextAware {
+public class RestVocabularySearchServiceTest implements ApplicationContextAware {
 
+	@SuppressWarnings("unused")
 	private static HiveScratchAreaCreator hiveScratchAreaCreator = null;
 	private static TJWSEmbeddedJaxrsServer server;
 	private static ApplicationContext applicationContext;
 	private static Properties testingProperties = new Properties();
 	private static HiveTestingPropertiesHelper testingPropertiesHelper = new HiveTestingPropertiesHelper();
-	public static final String IRODS_TEST_SUBDIR_PATH = "RestVocabularyServiceTest";
+	public static final String IRODS_TEST_SUBDIR_PATH = "RestVocabularySearchServiceTest";
 
 	@Override
 	public void setApplicationContext(final ApplicationContext context)
@@ -96,23 +100,25 @@ public class RestVocabularyServiceTest implements ApplicationContextAware {
 				.addBeanFactoryPostProcessor(processor);
 
 		SpringResourceFactory noDefaults = new SpringResourceFactory(
-				"restVocabularyService", applicationContext,
-				RestVocabularyService.class);
+				"restVocabularySearchService", applicationContext,
+				RestVocabularySearchService.class);
 		dispatcher.getRegistry().addResourceFactory(noDefaults);
 
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testGetVocabularies() throws Exception {
+	public void testSearchConceptByTermAndVocabs() throws Exception {
 		StringBuilder sb = new StringBuilder();
 		sb.append("http://localhost:");
 		sb.append(testingPropertiesHelper.getPropertyValueAsInt(
 				testingProperties, RestTestingProperties.REST_PORT_PROPERTY));
-		sb.append("/vocabulary");
-
+		sb.append("/search");
+		sb.append("?searchTerm=stars&vocabs=uat,agrovoc");
+		
 		DefaultHttpClientAndContext clientAndContext = RestAuthUtils
 				.httpClientSetup(testingProperties);
+		
 		try {
 
 			HttpGet httpget = new HttpGet(sb.toString());
@@ -128,51 +134,12 @@ public class RestVocabularyServiceTest implements ApplicationContextAware {
 			System.out.println("JSON>>>");
 			System.out.println(entityData);
 			ObjectMapper objectMapper = new ObjectMapper();
-			List<VocabularyInfo> actual = objectMapper.readValue(entityData,
-					List.class);
+			Set<ConceptProxy> actual = objectMapper.readValue(entityData,
+					Set.class);
 
-			Assert.assertNotNull("no list of vocabs returned", actual);
-			Assert.assertFalse("vocab list is empty", actual.isEmpty());
 
-		} finally {
-			// When HttpClient instance is no longer needed,
-			// shut down the connection manager to ensure
-			// immediate deallocation of all system resources
-			clientAndContext.getHttpClient().getConnectionManager().shutdown();
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testGetVocabularyNames() throws Exception {
-		StringBuilder sb = new StringBuilder();
-		sb.append("http://localhost:");
-		sb.append(testingPropertiesHelper.getPropertyValueAsInt(
-				testingProperties, RestTestingProperties.REST_PORT_PROPERTY));
-		sb.append("/vocabulary/uat");
-
-		DefaultHttpClientAndContext clientAndContext = RestAuthUtils
-				.httpClientSetup(testingProperties);
-		try {
-
-			HttpGet httpget = new HttpGet(sb.toString());
-			httpget.addHeader("accept", "application/json");
-
-			HttpResponse response = clientAndContext.getHttpClient().execute(
-					httpget, clientAndContext.getHttpContext());
-			HttpEntity entity = response.getEntity();
-			Assert.assertEquals(200, response.getStatusLine().getStatusCode());
-			Assert.assertNotNull(entity);
-			String entityData = EntityUtils.toString(entity);
-			EntityUtils.consume(entity);
-			System.out.println("JSON>>>");
-			System.out.println(entityData);
-			ObjectMapper objectMapper = new ObjectMapper();
-			VocabularyInfo actual = objectMapper.readValue(entityData,
-					VocabularyInfo.class);
-
-			Assert.assertNotNull("no list of vocabs returned", actual);
-		//	Assert.assertFalse("vocab list is empty", actual.isEmpty());
+			Assert.assertNotNull("no list of concepts returned", actual);
+			Assert.assertFalse("concept list is empty", actual.isEmpty());
 
 		} finally {
 			// When HttpClient instance is no longer needed,

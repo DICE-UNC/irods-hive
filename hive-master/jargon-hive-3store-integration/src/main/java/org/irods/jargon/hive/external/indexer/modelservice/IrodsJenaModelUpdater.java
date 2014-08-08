@@ -26,6 +26,10 @@ import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Selector;
+import com.hp.hpl.jena.rdf.model.SimpleSelector;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.shared.Lock;
 
 /**
@@ -139,18 +143,33 @@ public class IrodsJenaModelUpdater extends AbstractJargonService {
 		ontModel.enterCriticalSection(Lock.WRITE);
 		try {
 
-			Individual indiv = ontModel.createIndividual(irodsURI.toString(),
-					collOnt);
-			ontModel.createIndividual(irodsURI.toString(), collOnt);
+			log.info("look for an individual with that iRODS uri...");
+			Individual indiv = ontModel.getIndividual(irodsURI.toString());
+			
+			if (indiv == null) {
+				log.info("no individual found, so create base ont class");
+				indiv = ontModel.createIndividual(irodsURI.toString(),
+						collOnt);
+				Property absPathProp = ontModel.getProperty(
+						JenaHiveConfiguration.NS, "absolutePath");
+				indiv.addProperty(absPathProp, collection.getAbsolutePath());
+	
+			} 
 			log.info("indiv done create prop");
-			Property absPathProp = ontModel.getProperty(
-					JenaHiveConfiguration.NS, "absolutePath");
-			indiv.addProperty(absPathProp, collection.getAbsolutePath());
+			
 			Property conceptProp = ontModel.getProperty(
 					JenaHiveConfiguration.NS, "correspondingConcept");
-			com.hp.hpl.jena.rdf.model.Resource concept = ontModel
-					.createResource(vocabularyUri);
-			indiv.addProperty(conceptProp, concept);
+			Resource concept = ontModel.getResource(vocabularyUri);
+			Selector conceptSelector = new SimpleSelector(indiv, conceptProp, concept);
+			StmtIterator iter = ontModel.listStatements(conceptSelector);
+			
+			if (iter.hasNext()) {
+				log.info("concept already present");
+			} else {
+				log.info("concept added");
+				indiv.addProperty(conceptProp, concept);
+			}
+		
 		} finally {
 			ontModel.leaveCriticalSection();
 		}
@@ -166,48 +185,62 @@ public class IrodsJenaModelUpdater extends AbstractJargonService {
 					.buildURIForAnAccountWithNoUserInformationIncluded(
 							getIrodsAccount(), dataObject.getAbsolutePath());
 			log.info("URI:{}", irodsURI);
-			Individual indiv = ontModel.createIndividual(irodsURI.toString(),
-					dataOnt);
+			
+			log.info("look for an individual with that iRODS uri...");
+			Individual indiv = ontModel.getIndividual(irodsURI.toString());
+			
+			if (indiv == null) {
+				log.info("no individual found, so create base ont class");
+				indiv = ontModel.createIndividual(irodsURI.toString(),
+						dataOnt);
+				Property absPathProp = ontModel.getProperty(
+						JenaHiveConfiguration.NS, "absolutePath");
+				indiv.addProperty(absPathProp, dataObject.getAbsolutePath());
+				if (!jenaHiveConfiguration.getIdropContext().isEmpty()) {
+					log.info("generating idrop links");
+					StringBuilder publicLink = new StringBuilder();
+					publicLink.append(jenaHiveConfiguration.getIdropContext());
+					publicLink.append("/home/link?irodsURI=");
+					publicLink
+							.append(IRODSUriUtils
+									.buildURIForAnAccountWithNoUserInformationIncluded(
+											getIrodsAccount(),
+											dataObject.getAbsolutePath()));
+					Property publicLinkProp = ontModel.getProperty(
+							JenaHiveConfiguration.NS, "hasWebInformationLink");
+					Resource concept = ontModel.createResource(publicLink.toString());
+					indiv.addProperty(publicLinkProp, concept);
+
+					log.info("adding download link");
+					StringBuilder downloadLink = new StringBuilder();
+					downloadLink.append(jenaHiveConfiguration.getIdropContext());
+					downloadLink.append("file/download?uri=");
+					downloadLink.append(IRODSUriUtils
+									.buildURIForAnAccountWithNoUserInformationIncluded(
+											getIrodsAccount(),
+											dataObject.getAbsolutePath()));
+					Property downlaodProp = ontModel.getProperty(
+							JenaHiveConfiguration.NS, "hasDownloadLocation");
+					concept = ontModel.createResource(downloadLink.toString());
+					indiv.addProperty(downlaodProp, concept);
+
+				}
+			} 
 			log.info("indiv done create prop");
-			Property absPathProp = ontModel.getProperty(
-					JenaHiveConfiguration.NS, "absolutePath");
-			indiv.addProperty(absPathProp, dataObject.getAbsolutePath());
+			
 			Property conceptProp = ontModel.getProperty(
 					JenaHiveConfiguration.NS, "correspondingConcept");
-			com.hp.hpl.jena.rdf.model.Resource concept = ontModel
-					.createResource(vocabularyUri);
-			indiv.addProperty(conceptProp, concept);
-
-			/*
-			 * if idrop context, add some links
-			 */
-
-			if (!jenaHiveConfiguration.getIdropContext().isEmpty()) {
-				log.info("generating idrop links");
-				StringBuilder publicLink = new StringBuilder();
-				publicLink.append(jenaHiveConfiguration.getIdropContext());
-				publicLink.append("/home/link?irodsURI=");
-				publicLink
-						.append(IRODSUriUtils
-								.buildURIForAnAccountWithNoUserInformationIncluded(
-										getIrodsAccount(),
-										dataObject.getAbsolutePath()));
-				Property publicLinkProp = ontModel.getProperty(
-						JenaHiveConfiguration.NS, "hasWebInformationLink");
-				concept = ontModel.createResource(publicLink.toString());
-				indiv.addProperty(publicLinkProp, concept);
-
-				log.info("adding download link");
-				StringBuilder downloadLink = new StringBuilder();
-				downloadLink.append(jenaHiveConfiguration.getIdropContext());
-				downloadLink.append("/file/download");
-				downloadLink.append(vocabularyUri);
-				Property downlaodProp = ontModel.getProperty(
-						JenaHiveConfiguration.NS, "hasDownloadLocation");
-				concept = ontModel.createResource(downloadLink.toString());
-				indiv.addProperty(downlaodProp, concept);
-
+			Resource concept = ontModel.getResource(vocabularyUri);
+			Selector conceptSelector = new SimpleSelector(indiv, conceptProp, concept);
+			StmtIterator iter = ontModel.listStatements(conceptSelector);
+			
+			if (iter.hasNext()) {
+				log.info("concept already present");
+			} else {
+				log.info("concept added");
+				indiv.addProperty(conceptProp, concept);
 			}
+			
 		} finally {
 			ontModel.leaveCriticalSection();
 		}
