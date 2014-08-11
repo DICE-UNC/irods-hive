@@ -67,7 +67,7 @@ public class RestConceptService {
 	@Path("{vocabulary}/top")
 	@Produces({ "application/xml", "application/json" })
 	@Mapped(namespaceMap = { @XmlNsMap(namespace = "http://irods.org/hive", jsonName = "hive-vocabulary-service-rest") })
-	public List<ConceptProxy> getConcept(
+	public List<Concept> getConcept(
 
 	@PathParam("vocabulary") final String vocabulary)
 			throws JargonHiveException {
@@ -77,14 +77,31 @@ public class RestConceptService {
 			throw new IllegalArgumentException("null vocabulary");
 		}
 		log.info("vocabulary:{}", vocabulary);
-		return vocabularyService.getSubTopConcept(vocabulary, "", true);
+		List<ConceptProxy> concept = vocabularyService.getSubTopConcept(vocabulary, "", true);
+		
+		List<Concept> result = new ArrayList<Concept>();
+		
+		for (ConceptProxy c : concept) {
+			Concept result1 = new Concept();
+			
+			result1.setBroader(convert(c.getBroader()));
+			result1.setNarrower(convert(c.getNarrower()));
+			result1.setRelated(convert(c.getRelated()));
+			result1.setAltLabel(c.getAltLabel());
+			result1.setLabel(c.getPreLabel());
+			result1.setUri(c.getURI());
+			result1.setVocabName(vocabulary);
+			
+			result.add(result1);
+		}
+		return result;
 	}
 
 	@GET
 	@Path("{vocabulary}/top")
 	@Produces({ "application/xml", "application/json" })
 	@Mapped(namespaceMap = { @XmlNsMap(namespace = "http://irods.org/hive", jsonName = "hive-vocabulary-service-rest") })
-	public List<ConceptProxy> getConceptQueries(
+	public List<Concept> getConceptQueries(
 			@QueryParam("letter") final String letter,
 			@PathParam("vocabulary") final String vocabulary)
 			throws JargonHiveException {
@@ -94,7 +111,26 @@ public class RestConceptService {
 			throw new IllegalArgumentException("null vocabulary");
 		}
 		log.info("vocabulary:{}", vocabulary);
-		return vocabularyService.getSubTopConcept(vocabulary, letter, true);
+		List<ConceptProxy> concept = vocabularyService.getSubTopConcept(vocabulary, letter, true);
+		
+		
+		List<Concept> result = new ArrayList<Concept>();
+		
+		for (ConceptProxy c : concept) {
+			Concept result1 = new Concept();
+			
+			result1.setBroader(convert(c.getBroader()));
+			result1.setNarrower(convert(c.getNarrower()));
+			result1.setRelated(convert(c.getRelated()));
+			result1.setAltLabel(c.getAltLabel());
+			result1.setLabel(c.getPreLabel());
+			result1.setUri(c.getURI());
+			result1.setVocabName(vocabulary);
+			
+			result.add(result1);
+		}
+		return result;
+		
 	}
 
 	@GET
@@ -180,6 +216,24 @@ public class RestConceptService {
 
 		return result;
 	}
+	
+	private List<ConceptListEntry> convert(Map<String, String> map) {
+		
+		List<ConceptListEntry> result = new ArrayList<ConceptListEntry>();
+		Map<String, String> convert = map;
+
+		Iterator<String> it = convert.keySet().iterator();
+		while (it.hasNext()) {
+			String key = it.next();
+			String v = convert.get(key);
+			ConceptListEntry listEntry = new ConceptListEntry(key, v);
+			result.add(listEntry);
+		}
+
+		return result;
+	}
+	
+
 
 	@GET
 	@Path("{vocabulary}/narrower")

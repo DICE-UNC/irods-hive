@@ -44,7 +44,6 @@ import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
 		DirtiesContextTestExecutionListener.class })
 public class RestConceptServiceTest implements ApplicationContextAware {
 
-	private static HiveScratchAreaCreator hiveScratchAreaCreator = null;
 	private static TJWSEmbeddedJaxrsServer server;
 	private static ApplicationContext applicationContext;
 	private static Properties testingProperties = new Properties();
@@ -60,7 +59,7 @@ public class RestConceptServiceTest implements ApplicationContextAware {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		testingProperties = testingPropertiesHelper.getTestProperties();
-		hiveScratchAreaCreator = new HiveScratchAreaCreator(testingProperties);
+		new HiveScratchAreaCreator(testingProperties);
 
 		if (testingPropertiesHelper.checkTestHiveFuntionalSetup() == false) {
 			throw new Exception(
@@ -131,7 +130,7 @@ public class RestConceptServiceTest implements ApplicationContextAware {
 			System.out.println("JSON>>>");
 			System.out.println(entityData);
 			ObjectMapper objectMapper = new ObjectMapper();
-			List<ConceptProxy> actual = objectMapper.readValue(entityData,
+			List<Concept> actual = objectMapper.readValue(entityData,
 					List.class);
 
 			Assert.assertNotNull("no list of concepts returned", actual);
@@ -174,7 +173,7 @@ public class RestConceptServiceTest implements ApplicationContextAware {
 			System.out.println("JSON>>>");
 			System.out.println(entityData);
 			ObjectMapper objectMapper = new ObjectMapper();
-			List<ConceptProxy> actual = objectMapper.readValue(entityData,
+			List<Concept> actual = objectMapper.readValue(entityData,
 					List.class);
 
 			Assert.assertNotNull("no list of concepts returned", actual);
@@ -218,8 +217,10 @@ public class RestConceptServiceTest implements ApplicationContextAware {
 			System.out.println("JSON>>>");
 			System.out.println(entityData);
 			ObjectMapper objectMapper = new ObjectMapper();
-			Concept actual = objectMapper.readValue(entityData,
-					Concept.class);
+			Concept[] actual = objectMapper.readValue(entityData,
+					Concept[].class);
+			
+
 
 	//		Assert.assertFalse("no njson returned", entityData.isEmpty());
 			Assert.assertNotNull("no list of concepts returned", actual);
