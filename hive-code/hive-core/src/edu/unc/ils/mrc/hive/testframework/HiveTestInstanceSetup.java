@@ -145,21 +145,29 @@ public class HiveTestInstanceSetup {
 
 		log.info("do hive import....");
 
+		String hiveParentDir = testingProperties
+				.getProperty(HiveTestingPropertiesHelper.TEST_HIVE_PARENT_DIR);
+
+		if (hiveParentDir == null || hiveParentDir.isEmpty()) {
+			throw new IllegalArgumentException("null or empty hiveParentDir");
+		}
+
+		log.info("hive parent dir:{}", hiveParentDir);
+
 		SKOSScheme schema;
 		try {
-			schema = new SKOSSchemeImpl(
-					testingProperties
-							.getProperty(HiveTestingPropertiesHelper.TEST_HIVE_PARENT_DIR),
-					vocabName, true);
+			schema = new SKOSSchemeImpl(hiveParentDir, vocabName, true);
 			schema.importConcepts(schema.getRdfPath(), true, true, true, false,
 					true);
 
 			log.info("imported");
 
 		} catch (HiveException e) {
+			log.error("hive exception copying props", e);
 			throw new JargonRuntimeException("unable to copy hive props");
 
 		} catch (Exception e) {
+			log.error("general exception copying hive props", e);
 			throw new JargonRuntimeException("unable to copy hive props");
 		}
 	}
