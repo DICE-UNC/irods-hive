@@ -17,7 +17,7 @@ import org.irods.jargon.dataprofile.DataTypeResolutionService;
 import org.irods.jargon.dataprofile.DataTypeResolutionServiceImpl;
 import org.irods.jargon.hive.external.indexer.HiveTripleStoreInitializer;
 import org.irods.jargon.hive.external.indexer.HiveTripleStoreInitializerImpl;
-import org.irods.jargon.hive.external.utils.JargonHiveConfigurationHelper;
+import org.irods.jargon.hive.external.utils.JenaHiveConfigurationHelper;
 import org.irods.jargon.hive.external.utils.JenaHiveConfiguration;
 import org.irods.jargon.hive.external.utils.JenaHiveConfiguration.JenaModelType;
 import org.irods.jargon.testutils.TestingPropertiesHelper;
@@ -103,17 +103,17 @@ public class IrodsJenaModelUpdaterTest {
 		jenaHiveConfiguration.setVocabularyRDFFileNames(vocabFileNames);
 		jenaHiveConfiguration
 				.setJenaDbDriverClass(testingProperties
-						.getProperty(JargonHiveConfigurationHelper.INDEXER_DB_DRIVER_CLASS));
+						.getProperty(JenaHiveConfigurationHelper.INDEXER_DB_DRIVER_CLASS));
 		jenaHiveConfiguration
 				.setJenaDbPassword(testingProperties
-						.getProperty(JargonHiveConfigurationHelper.INDEXER_DB_PASSWORD));
+						.getProperty(JenaHiveConfigurationHelper.INDEXER_DB_PASSWORD));
 		jenaHiveConfiguration.setJenaDbType(testingProperties
-				.getProperty(JargonHiveConfigurationHelper.INDEXER_DB_TYPE));
-		jenaHiveConfiguration.setJenaDbUri(JargonHiveConfigurationHelper
+				.getProperty(JenaHiveConfigurationHelper.INDEXER_DB_TYPE));
+		jenaHiveConfiguration.setJenaDbUri(JenaHiveConfigurationHelper
 				.buildJdbcUriFromProperties(testingProperties,
 						IRODS_TEST_SUBDIR_PATH + "/database/"));
 		jenaHiveConfiguration.setJenaDbUser(testingProperties
-				.getProperty(JargonHiveConfigurationHelper.INDEXER_DB_USER));
+				.getProperty(JenaHiveConfigurationHelper.INDEXER_DB_USER));
 
 	}
 

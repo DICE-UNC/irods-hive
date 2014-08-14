@@ -59,6 +59,12 @@
 			<version>${sl4j.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.31</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -159,6 +165,7 @@
 									indexer.jena.db.uri.suffix=${indexer.jena.db.uri.suffix}
 									indexer.jena.db.type=${indexer.jena.db.type}
 									indexer.idrop.context=${indexer.idrop.context}
+									indexer.vocab.list=${indexer.vocab.list}
 								</echo>
 							</tasks>
 						</configuration>

@@ -152,11 +152,13 @@ public class JenaModelManager {
 
 		log.info("getJdbcConnectionBasedOnHiveConfig()");
 		validateDbConfiguration(jenaHiveConfiguration);
-		
-		log.info("attempting to load driver for:{}", jenaHiveConfiguration.getJenaDbDriverClass());
-		
-		 try {
-			Class.forName(jenaHiveConfiguration.getJenaDbDriverClass()).newInstance();
+
+		log.info("attempting to load driver for:{}",
+				jenaHiveConfiguration.getJenaDbDriverClass());
+
+		try {
+			Class.forName(jenaHiveConfiguration.getJenaDbDriverClass())
+					.newInstance();
 		} catch (InstantiationException e1) {
 			log.error("instantiation exception with given database driver", e1);
 			throw new HiveIndexerException(e1);
@@ -164,16 +166,28 @@ public class JenaModelManager {
 			log.error("illegal access exception with given database driver", e1);
 			throw new HiveIndexerException(e1);
 		} catch (ClassNotFoundException e1) {
-			log.error("class not found exception with given database driver", e1);
+			log.error("class not found exception with given database driver",
+					e1);
 			throw new HiveIndexerException(e1);
 		}
 
 		Connection conn = null;
 		Properties connectionProps = new Properties();
-		connectionProps.put("user", jenaHiveConfiguration.getJenaDbUser());
-		connectionProps.put("password",
-				jenaHiveConfiguration.getJenaDbPassword());
 
+		if (jenaHiveConfiguration.getJenaDbType() == null
+				|| jenaHiveConfiguration.getJenaDbType().isEmpty()) {
+			throw new IllegalArgumentException("null or empty jena db type");
+		} else if (jenaHiveConfiguration.getJenaDbType() == JenaHiveConfiguration.JENA_MYSQL_DB_TYPE) {
+
+		} else if (jenaHiveConfiguration.getJenaDbType() == JenaHiveConfiguration.JENA_DERBY_DB_TYPE) {
+			connectionProps.put("user", jenaHiveConfiguration.getJenaDbUser());
+			connectionProps.put("password",
+					jenaHiveConfiguration.getJenaDbPassword());
+		} else {
+			log.error("unknown jena db type:{}",
+					jenaHiveConfiguration.getJenaDbType());
+			throw new IllegalArgumentException("unknown jena db type");
+		}
 		try {
 			conn = DriverManager.getConnection(
 					jenaHiveConfiguration.getJenaDbUri(), connectionProps);
