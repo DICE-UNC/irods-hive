@@ -57,9 +57,24 @@ public class JenaModelManager {
 		Connection conn = getJdbcConnectionBasedOnHiveConfig(jenaHiveConfiguration);
 		log.info("have connection, creating jena model via sdb");
 		FeatureSet featureSet = new FeatureSet();
-		StoreDesc storeDesc = new com.hp.hpl.jena.sdb.StoreDesc(
-				LayoutType.LayoutTripleNodesHash, DatabaseType.Derby,
-				featureSet);
+		StoreDesc storeDesc = null;
+		if (jenaHiveConfiguration.getJenaModelType().equals(DatabaseType.Derby)) {
+			log.info("creating derby database type");
+			storeDesc = new com.hp.hpl.jena.sdb.StoreDesc(
+					LayoutType.LayoutTripleNodesHash, DatabaseType.Derby,
+					featureSet);
+		} else if (jenaHiveConfiguration.getJenaModelType().equals(
+				DatabaseType.MySQL)) {
+			log.info("creating mysql database type");
+			storeDesc = new com.hp.hpl.jena.sdb.StoreDesc(
+					LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL,
+					featureSet);
+		} else {
+			log.info("cannot build database type:{}",
+					jenaHiveConfiguration.getJenaDbType());
+			throw new HiveIndexerException("invcalid database type");
+		}
+
 		log.info("storeDesc:{}", storeDesc);
 		log.info("sdb connection created..getting store...");
 		store = SDBFactory.connectStore(conn, storeDesc);
@@ -117,7 +132,9 @@ public class JenaModelManager {
 		}
 
 		if (jenaHiveConfiguration.getJenaDbType().equals(
-				JenaHiveConfiguration.JENA_DERBY_DB_TYPE)) {
+				JenaHiveConfiguration.JENA_DERBY_DB_TYPE)
+				|| jenaHiveConfiguration.getJenaDbType().equals(
+						JenaHiveConfiguration.JENA_MYSQL_DB_TYPE)) {
 			// ok
 			log.info("will be derby database type");
 		} else {
@@ -177,9 +194,11 @@ public class JenaModelManager {
 		if (jenaHiveConfiguration.getJenaDbType() == null
 				|| jenaHiveConfiguration.getJenaDbType().isEmpty()) {
 			throw new IllegalArgumentException("null or empty jena db type");
-		} else if (jenaHiveConfiguration.getJenaDbType() == JenaHiveConfiguration.JENA_MYSQL_DB_TYPE) {
+		} else if (jenaHiveConfiguration.getJenaDbType().equals(
+				JenaHiveConfiguration.JENA_MYSQL_DB_TYPE)) {
 
-		} else if (jenaHiveConfiguration.getJenaDbType() == JenaHiveConfiguration.JENA_DERBY_DB_TYPE) {
+		} else if (jenaHiveConfiguration.getJenaDbType().equals(
+				JenaHiveConfiguration.JENA_DERBY_DB_TYPE)) {
 			connectionProps.put("user", jenaHiveConfiguration.getJenaDbUser());
 			connectionProps.put("password",
 					jenaHiveConfiguration.getJenaDbPassword());

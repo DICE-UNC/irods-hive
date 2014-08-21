@@ -3,6 +3,8 @@
  */
 package org.irods.jargon.hive.external.utils;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -164,6 +166,42 @@ public class JenaHiveConfigurationHelper {
 
 	/**
 	 * Load the properties that specify iRODS and Jena connection parameters as
+	 * expected by this class from a file given an absolute path
+	 * 
+	 * @param propertyFileName
+	 *            <code>String</code> with the property file name
+	 * @return <code>Properties</code> class with the expected values
+	 * @throws HiveIndexerException
+	 */
+	public static Properties loadPropertiesFromAbsolutePath(
+			final String propertyFileAbsolutePath) throws HiveIndexerException {
+
+		InputStream in;
+		try {
+			in = new FileInputStream(propertyFileAbsolutePath);
+		} catch (FileNotFoundException e) {
+			throw new HiveIndexerException("no properties file found at path",
+					e);
+		}
+
+		Properties properties = new Properties();
+
+		try {
+			properties.load(in);
+		} catch (IOException ioe) {
+			throw new HiveIndexerException("error loading properties", ioe);
+		} finally {
+			try {
+				in.close();
+			} catch (Exception e) {
+				// ignore
+			}
+		}
+		return properties;
+	}
+
+	/**
+	 * Load the properties that specify iRODS and Jena connection parameters as
 	 * expected by this class.
 	 * 
 	 * @param propertyFileName
@@ -173,8 +211,7 @@ public class JenaHiveConfigurationHelper {
 	 */
 	public static Properties loadProperties(final String propertyFileName)
 			throws HiveIndexerException {
-		ClassLoader loader = JenaHiveConfigurationHelper.class
-				.getClassLoader();
+		ClassLoader loader = JenaHiveConfigurationHelper.class.getClassLoader();
 		InputStream in = loader.getResourceAsStream(propertyFileName);
 		Properties properties = new Properties();
 
