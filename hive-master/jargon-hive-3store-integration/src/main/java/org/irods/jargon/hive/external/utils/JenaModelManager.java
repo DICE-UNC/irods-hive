@@ -134,9 +134,11 @@ public class JenaModelManager {
 		if (jenaHiveConfiguration.getJenaDbType().equals(
 				JenaHiveConfiguration.JENA_DERBY_DB_TYPE)
 				|| jenaHiveConfiguration.getJenaDbType().equals(
+						JenaHiveConfiguration.JENA_DERBY_DB_TYPE)
+				|| jenaHiveConfiguration.getJenaDbType().equals(
 						JenaHiveConfiguration.JENA_MYSQL_DB_TYPE)) {
 			// ok
-			log.info("will be derby database type");
+			log.info("valid database type");
 		} else {
 			log.error("unknown database type for jena:{}",
 					jenaHiveConfiguration);
@@ -145,15 +147,6 @@ public class JenaModelManager {
 
 		// other things cannot be null but could be optional depending on the db
 
-		if (jenaHiveConfiguration.getJenaDbPassword() == null) {
-			throw new HiveIndexerException(
-					"null jena db password, set to blank if not used");
-		}
-
-		if (jenaHiveConfiguration.getJenaDbUser() == null) {
-			throw new HiveIndexerException(
-					"null jena db user, set to blank if not used");
-		}
 	}
 
 	/**
