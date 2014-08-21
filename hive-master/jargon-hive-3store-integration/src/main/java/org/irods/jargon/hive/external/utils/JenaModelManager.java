@@ -58,13 +58,14 @@ public class JenaModelManager {
 		log.info("have connection, creating jena model via sdb");
 		FeatureSet featureSet = new FeatureSet();
 		StoreDesc storeDesc = null;
-		if (jenaHiveConfiguration.getJenaModelType().equals(DatabaseType.Derby)) {
+		if (jenaHiveConfiguration.getJenaModelType().equals(
+				JenaHiveConfiguration.JENA_DERBY_DB_TYPE)) {
 			log.info("creating derby database type");
 			storeDesc = new com.hp.hpl.jena.sdb.StoreDesc(
 					LayoutType.LayoutTripleNodesHash, DatabaseType.Derby,
 					featureSet);
 		} else if (jenaHiveConfiguration.getJenaModelType().equals(
-				DatabaseType.MySQL)) {
+				JenaHiveConfiguration.JENA_MYSQL_DB_TYPE)) {
 			log.info("creating mysql database type");
 			storeDesc = new com.hp.hpl.jena.sdb.StoreDesc(
 					LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL,
@@ -72,7 +73,7 @@ public class JenaModelManager {
 		} else {
 			log.info("cannot build database type:{}",
 					jenaHiveConfiguration.getJenaDbType());
-			throw new HiveIndexerException("invcalid database type");
+			throw new HiveIndexerException("invalid database type");
 		}
 
 		log.info("storeDesc:{}", storeDesc);
