@@ -127,7 +127,7 @@ public class IrodsJenaModelUpdater extends AbstractJargonService {
 			}
 		} catch (JargonException e) {
 			log.error("Jargon error building index", e);
-			throw new HiveIndexerException("e");
+			throw new HiveIndexerException("exception in hive indexer", e);
 		}
 
 	}
@@ -145,31 +145,31 @@ public class IrodsJenaModelUpdater extends AbstractJargonService {
 
 			log.info("look for an individual with that iRODS uri...");
 			Individual indiv = ontModel.getIndividual(irodsURI.toString());
-			
+
 			if (indiv == null) {
 				log.info("no individual found, so create base ont class");
-				indiv = ontModel.createIndividual(irodsURI.toString(),
-						collOnt);
+				indiv = ontModel.createIndividual(irodsURI.toString(), collOnt);
 				Property absPathProp = ontModel.getProperty(
 						JenaHiveConfiguration.NS, "absolutePath");
 				indiv.addProperty(absPathProp, collection.getAbsolutePath());
-	
-			} 
+
+			}
 			log.info("indiv done create prop");
-			
+
 			Property conceptProp = ontModel.getProperty(
 					JenaHiveConfiguration.NS, "correspondingConcept");
 			Resource concept = ontModel.getResource(vocabularyUri);
-			Selector conceptSelector = new SimpleSelector(indiv, conceptProp, concept);
+			Selector conceptSelector = new SimpleSelector(indiv, conceptProp,
+					concept);
 			StmtIterator iter = ontModel.listStatements(conceptSelector);
-			
+
 			if (iter.hasNext()) {
 				log.info("concept already present");
 			} else {
 				log.info("concept added");
 				indiv.addProperty(conceptProp, concept);
 			}
-		
+
 		} finally {
 			ontModel.leaveCriticalSection();
 		}
@@ -185,14 +185,13 @@ public class IrodsJenaModelUpdater extends AbstractJargonService {
 					.buildURIForAnAccountWithNoUserInformationIncluded(
 							getIrodsAccount(), dataObject.getAbsolutePath());
 			log.info("URI:{}", irodsURI);
-			
+
 			log.info("look for an individual with that iRODS uri...");
 			Individual indiv = ontModel.getIndividual(irodsURI.toString());
-			
+
 			if (indiv == null) {
 				log.info("no individual found, so create base ont class");
-				indiv = ontModel.createIndividual(irodsURI.toString(),
-						dataOnt);
+				indiv = ontModel.createIndividual(irodsURI.toString(), dataOnt);
 				Property absPathProp = ontModel.getProperty(
 						JenaHiveConfiguration.NS, "absolutePath");
 				indiv.addProperty(absPathProp, dataObject.getAbsolutePath());
@@ -201,46 +200,48 @@ public class IrodsJenaModelUpdater extends AbstractJargonService {
 					StringBuilder publicLink = new StringBuilder();
 					publicLink.append(jenaHiveConfiguration.getIdropContext());
 					publicLink.append("/home/link?irodsURI=");
-					publicLink
-							.append(IRODSUriUtils
-									.buildURIForAnAccountWithNoUserInformationIncluded(
-											getIrodsAccount(),
-											dataObject.getAbsolutePath()));
+					publicLink.append(IRODSUriUtils
+							.buildURIForAnAccountWithNoUserInformationIncluded(
+									getIrodsAccount(),
+									dataObject.getAbsolutePath()));
 					Property publicLinkProp = ontModel.getProperty(
 							JenaHiveConfiguration.NS, "hasWebInformationLink");
-					Resource concept = ontModel.createResource(publicLink.toString());
+					Resource concept = ontModel.createResource(publicLink
+							.toString());
 					indiv.addProperty(publicLinkProp, concept);
 
 					log.info("adding download link");
 					StringBuilder downloadLink = new StringBuilder();
-					downloadLink.append(jenaHiveConfiguration.getIdropContext());
+					downloadLink
+							.append(jenaHiveConfiguration.getIdropContext());
 					downloadLink.append("file/download?uri=");
 					downloadLink.append(IRODSUriUtils
-									.buildURIForAnAccountWithNoUserInformationIncluded(
-											getIrodsAccount(),
-											dataObject.getAbsolutePath()));
+							.buildURIForAnAccountWithNoUserInformationIncluded(
+									getIrodsAccount(),
+									dataObject.getAbsolutePath()));
 					Property downlaodProp = ontModel.getProperty(
 							JenaHiveConfiguration.NS, "hasDownloadLocation");
 					concept = ontModel.createResource(downloadLink.toString());
 					indiv.addProperty(downlaodProp, concept);
 
 				}
-			} 
+			}
 			log.info("indiv done create prop");
-			
+
 			Property conceptProp = ontModel.getProperty(
 					JenaHiveConfiguration.NS, "correspondingConcept");
 			Resource concept = ontModel.getResource(vocabularyUri);
-			Selector conceptSelector = new SimpleSelector(indiv, conceptProp, concept);
+			Selector conceptSelector = new SimpleSelector(indiv, conceptProp,
+					concept);
 			StmtIterator iter = ontModel.listStatements(conceptSelector);
-			
+
 			if (iter.hasNext()) {
 				log.info("concept already present");
 			} else {
 				log.info("concept added");
 				indiv.addProperty(conceptProp, concept);
 			}
-			
+
 		} finally {
 			ontModel.leaveCriticalSection();
 		}
