@@ -1,5 +1,5 @@
 package org.irods.jargon.hive.rest.vocabservice.utils;
 public final class VocabServiceRestVersion {
  public static String VERSION="1.0-SNAPSHOT";
- public static String BUILD_TIME="20140823-0741";
+ public static String BUILD_TIME="20140825-1135";
 }

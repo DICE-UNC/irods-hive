@@ -224,6 +224,10 @@ public class IrodsJenaModelUpdater extends AbstractJargonService {
 					concept = ontModel.createResource(downloadLink.toString());
 					indiv.addProperty(downlaodProp, concept);
 
+					Property fileSizeProp = ontModel.getProperty(
+							JenaHiveConfiguration.NS, "hasSizeInBytes");
+					concept = ontModel.createResource(fileSizeProp.toString());
+					indiv.addLiteral(fileSizeProp, dataObject.getDataSize());
 				}
 			}
 			log.info("indiv done create prop");

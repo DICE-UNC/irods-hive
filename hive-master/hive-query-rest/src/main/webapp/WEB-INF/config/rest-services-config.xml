@@ -53,8 +53,9 @@
 		<property name="jenaDbUser" value="" />
 		<property name="jenaDbPassword" value="" />
 		<property name="jenaDbType" value="MySql" />
-		<property name="jenaDbUri" value="" />
+		<property name="jenaDbUri" value="jdbc:mysql://localhost/irodshive?user=indexing&amp;password=renci!a7indexing" />
 	</bean>
+	
 	
 	
 	<!-- 

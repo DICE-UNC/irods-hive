@@ -5,3 +5,7 @@ http://localhost:8080/hive-query-rest/preparedQuery/allForVocabularyTerm?vocabUr
 
 
 http://localhost:8080/hive-query-rest/preparedQuery/allForRelatedVocabularyTerm?vocabUri=http://www.fao.org/aos/agrovoc&termId=c_28638
+
+
+
+http://testdfc2.renci.org:8080/irods-rest-0.0.1-SNAPSHOT/preparedQuery/allForVocabularyTerm?vocabUri=http://www.fao.org/aos/agrovoc&termId=c_16499
