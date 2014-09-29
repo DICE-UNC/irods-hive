@@ -13,6 +13,7 @@
 		<java.version>1.6</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jargon.version>4.0.3-SNAPSHOT</jargon.version>
+		<indexing.extensions.version></indexing.extensions.version>
 		<spring.core.version>3.2.2.RELEASE</spring.core.version>
 		<aspectj.version>1.7.2</aspectj.version>
 		<elmo.version>1.5</elmo.version>
@@ -25,6 +26,7 @@
 		<jackson.mapper.version>1.9.12</jackson.mapper.version>
 		<sl4j.version>1.5.11</sl4j.version>
 		<log4j.version>1.2.16</log4j.version>
+		<indexing.version>0.0.1-SNAPSHOT</indexing.version>
 	</properties>
 	<issueManagement>
 		<system>GitHub</system>
@@ -484,6 +486,12 @@
 				<artifactId>slf4j-log4j12</artifactId>
 				<version>${sl4j.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>databook</groupId>
+				<artifactId>index</artifactId>
+				<version>${indexing.version}</version>
+				<type>bundle</type>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies />
@@ -555,5 +563,6 @@
 		<module>jargon-hive-3store-integration</module>
 		<module>hive-query-rest</module>
 		<module>hive-voccabservice-rest</module>
+		<module>hive-metadata-indexer</module>
 	</modules>
 </project>
