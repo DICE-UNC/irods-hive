@@ -56,8 +56,6 @@
 		<property name="jenaDbUri" value="" />
 	</bean>
 	
-	
-	
 	<!-- 
 	<bean id="jenaHiveConfiguration"
 		class="org.irods.jargon.hive.external.utils.JenaHiveConfiguration">
