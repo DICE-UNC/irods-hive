@@ -17,9 +17,9 @@ import org.irods.jargon.dataprofile.DataTypeResolutionService;
 import org.irods.jargon.dataprofile.DataTypeResolutionServiceImpl;
 import org.irods.jargon.hive.external.indexer.HiveTripleStoreInitializer;
 import org.irods.jargon.hive.external.indexer.HiveTripleStoreInitializerImpl;
-import org.irods.jargon.hive.external.utils.JenaHiveConfigurationHelper;
 import org.irods.jargon.hive.external.utils.JenaHiveConfiguration;
 import org.irods.jargon.hive.external.utils.JenaHiveConfiguration.JenaModelType;
+import org.irods.jargon.hive.external.utils.JenaHiveConfigurationHelper;
 import org.irods.jargon.testutils.TestingPropertiesHelper;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -31,7 +31,6 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.shared.Lock;
 
 import edu.unc.ils.mrc.hive.unittest.utils.HiveTestingPropertiesHelper;
-
 
 public class IrodsJenaModelUpdaterTest {
 
@@ -104,9 +103,8 @@ public class IrodsJenaModelUpdaterTest {
 		jenaHiveConfiguration
 				.setJenaDbDriverClass(testingProperties
 						.getProperty(JenaHiveConfigurationHelper.INDEXER_DB_DRIVER_CLASS));
-		jenaHiveConfiguration
-				.setJenaDbPassword(testingProperties
-						.getProperty(JenaHiveConfigurationHelper.INDEXER_DB_PASSWORD));
+		jenaHiveConfiguration.setJenaDbPassword(testingProperties
+				.getProperty(JenaHiveConfigurationHelper.INDEXER_DB_PASSWORD));
 		jenaHiveConfiguration.setJenaDbType(testingProperties
 				.getProperty(JenaHiveConfigurationHelper.INDEXER_DB_TYPE));
 		jenaHiveConfiguration.setJenaDbUri(JenaHiveConfigurationHelper
@@ -161,6 +159,8 @@ public class IrodsJenaModelUpdaterTest {
 		Assert.assertNotNull("null result set from query", queryResult);
 		boolean foundit = false;
 
+		// ontModel.write(System.out, "RDF/XML");
+
 		try {
 
 			ontModel.enterCriticalSection(Lock.READ);
@@ -171,6 +171,7 @@ public class IrodsJenaModelUpdaterTest {
 
 			while (queryResult.hasNext()) {
 				QuerySolution nextSolution = queryResult.next();
+				System.out.println("nextSolution:" + nextSolution);
 				foundit = true;
 			}
 		} finally {

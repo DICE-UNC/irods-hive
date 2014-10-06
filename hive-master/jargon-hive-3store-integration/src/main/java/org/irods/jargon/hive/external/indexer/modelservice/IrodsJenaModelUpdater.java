@@ -156,9 +156,15 @@ public class IrodsJenaModelUpdater extends AbstractJargonService {
 			}
 			log.info("indiv done create prop");
 
+			Property createDateProp = ontModel.getProperty(
+					JenaHiveConfiguration.NS, "createDate");
+			Resource concept = ontModel.createResource(createDateProp
+					.toString());
+			indiv.addLiteral(createDateProp, collection.getCreatedAt());
+
 			Property conceptProp = ontModel.getProperty(
 					JenaHiveConfiguration.NS, "correspondingConcept");
-			Resource concept = ontModel.getResource(vocabularyUri);
+			concept = ontModel.getResource(vocabularyUri);
 			Selector conceptSelector = new SimpleSelector(indiv, conceptProp,
 					concept);
 			StmtIterator iter = ontModel.listStatements(conceptSelector);
@@ -219,10 +225,17 @@ public class IrodsJenaModelUpdater extends AbstractJargonService {
 							.buildURIForAnAccountWithNoUserInformationIncluded(
 									getIrodsAccount(),
 									dataObject.getAbsolutePath()));
+
 					Property downlaodProp = ontModel.getProperty(
 							JenaHiveConfiguration.NS, "hasDownloadLocation");
 					concept = ontModel.createResource(downloadLink.toString());
 					indiv.addProperty(downlaodProp, concept);
+
+					Property createDateProp = ontModel.getProperty(
+							JenaHiveConfiguration.NS, "createDate");
+					concept = ontModel
+							.createResource(createDateProp.toString());
+					indiv.addLiteral(createDateProp, dataObject.getCreatedAt());
 
 					Property fileSizeProp = ontModel.getProperty(
 							JenaHiveConfiguration.NS, "hasSizeInBytes");
