@@ -58,11 +58,11 @@ public class JenaHiveConfigurationHelper {
 		}
 
 		try {
-			return IRODSAccount.instance(properties.getProperty(IRODS_HOST),
+			return IRODSAccount.instance(properties.getProperty(IRODS_HOST).trim(),
 					Integer.parseInt(properties.getProperty(IRODS_PORT)),
-					properties.getProperty(IRODS_USER),
-					properties.getProperty(IRODS_PASSWORD), "",
-					properties.getProperty(IRODS_ZONE), "");
+					properties.getProperty(IRODS_USER).trim(),
+					properties.getProperty(IRODS_PASSWORD).trim(), "",
+					properties.getProperty(IRODS_ZONE).trim(), "");
 		} catch (NumberFormatException e) {
 			throw new HiveIndexerException(
 					"number format error for iRODS port", e);
