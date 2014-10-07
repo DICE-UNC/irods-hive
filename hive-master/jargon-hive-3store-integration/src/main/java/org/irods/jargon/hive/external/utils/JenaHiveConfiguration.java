@@ -31,6 +31,7 @@ public class JenaHiveConfiguration {
 	public static String NS = SOURCE + "#";
 
 	public static String JENA_DERBY_DB_TYPE = "Derby";
+	public static String JENA_MYSQL_DB_TYPE = "MySql";
 
 	/**
 	 * Determines jena model type

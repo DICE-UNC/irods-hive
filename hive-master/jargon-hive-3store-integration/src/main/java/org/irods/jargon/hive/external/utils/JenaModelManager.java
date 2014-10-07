@@ -57,9 +57,25 @@ public class JenaModelManager {
 		Connection conn = getJdbcConnectionBasedOnHiveConfig(jenaHiveConfiguration);
 		log.info("have connection, creating jena model via sdb");
 		FeatureSet featureSet = new FeatureSet();
-		StoreDesc storeDesc = new com.hp.hpl.jena.sdb.StoreDesc(
-				LayoutType.LayoutTripleNodesHash, DatabaseType.Derby,
-				featureSet);
+		StoreDesc storeDesc = null;
+		if (jenaHiveConfiguration.getJenaDbType().equals(
+				JenaHiveConfiguration.JENA_DERBY_DB_TYPE)) {
+			log.info("creating derby database type");
+			storeDesc = new com.hp.hpl.jena.sdb.StoreDesc(
+					LayoutType.LayoutTripleNodesHash, DatabaseType.Derby,
+					featureSet);
+		} else if (jenaHiveConfiguration.getJenaDbType().equals(
+				JenaHiveConfiguration.JENA_MYSQL_DB_TYPE)) {
+			log.info("creating mysql database type");
+			storeDesc = new com.hp.hpl.jena.sdb.StoreDesc(
+					LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL,
+					featureSet);
+		} else {
+			log.info("cannot build database type:{}",
+					jenaHiveConfiguration.getJenaDbType());
+			throw new HiveIndexerException("invalid database type");
+		}
+
 		log.info("storeDesc:{}", storeDesc);
 		log.info("sdb connection created..getting store...");
 		store = SDBFactory.connectStore(conn, storeDesc);
@@ -117,9 +133,13 @@ public class JenaModelManager {
 		}
 
 		if (jenaHiveConfiguration.getJenaDbType().equals(
-				JenaHiveConfiguration.JENA_DERBY_DB_TYPE)) {
+				JenaHiveConfiguration.JENA_DERBY_DB_TYPE)
+				|| jenaHiveConfiguration.getJenaDbType().equals(
+						JenaHiveConfiguration.JENA_DERBY_DB_TYPE)
+				|| jenaHiveConfiguration.getJenaDbType().equals(
+						JenaHiveConfiguration.JENA_MYSQL_DB_TYPE)) {
 			// ok
-			log.info("will be derby database type");
+			log.info("valid database type");
 		} else {
 			log.error("unknown database type for jena:{}",
 					jenaHiveConfiguration);
@@ -128,15 +148,6 @@ public class JenaModelManager {
 
 		// other things cannot be null but could be optional depending on the db
 
-		if (jenaHiveConfiguration.getJenaDbPassword() == null) {
-			throw new HiveIndexerException(
-					"null jena db password, set to blank if not used");
-		}
-
-		if (jenaHiveConfiguration.getJenaDbUser() == null) {
-			throw new HiveIndexerException(
-					"null jena db user, set to blank if not used");
-		}
 	}
 
 	/**
@@ -152,11 +163,13 @@ public class JenaModelManager {
 
 		log.info("getJdbcConnectionBasedOnHiveConfig()");
 		validateDbConfiguration(jenaHiveConfiguration);
-		
-		log.info("attempting to load driver for:{}", jenaHiveConfiguration.getJenaDbDriverClass());
-		
-		 try {
-			Class.forName(jenaHiveConfiguration.getJenaDbDriverClass()).newInstance();
+
+		log.info("attempting to load driver for:{}",
+				jenaHiveConfiguration.getJenaDbDriverClass());
+
+		try {
+			Class.forName(jenaHiveConfiguration.getJenaDbDriverClass())
+					.newInstance();
 		} catch (InstantiationException e1) {
 			log.error("instantiation exception with given database driver", e1);
 			throw new HiveIndexerException(e1);
@@ -164,16 +177,30 @@ public class JenaModelManager {
 			log.error("illegal access exception with given database driver", e1);
 			throw new HiveIndexerException(e1);
 		} catch (ClassNotFoundException e1) {
-			log.error("class not found exception with given database driver", e1);
+			log.error("class not found exception with given database driver",
+					e1);
 			throw new HiveIndexerException(e1);
 		}
 
 		Connection conn = null;
 		Properties connectionProps = new Properties();
-		connectionProps.put("user", jenaHiveConfiguration.getJenaDbUser());
-		connectionProps.put("password",
-				jenaHiveConfiguration.getJenaDbPassword());
 
+		if (jenaHiveConfiguration.getJenaDbType() == null
+				|| jenaHiveConfiguration.getJenaDbType().isEmpty()) {
+			throw new IllegalArgumentException("null or empty jena db type");
+		} else if (jenaHiveConfiguration.getJenaDbType().equals(
+				JenaHiveConfiguration.JENA_MYSQL_DB_TYPE)) {
+
+		} else if (jenaHiveConfiguration.getJenaDbType().equals(
+				JenaHiveConfiguration.JENA_DERBY_DB_TYPE)) {
+			connectionProps.put("user", jenaHiveConfiguration.getJenaDbUser());
+			connectionProps.put("password",
+					jenaHiveConfiguration.getJenaDbPassword());
+		} else {
+			log.error("unknown jena db type:{}",
+					jenaHiveConfiguration.getJenaDbType());
+			throw new IllegalArgumentException("unknown jena db type");
+		}
 		try {
 			conn = DriverManager.getConnection(
 					jenaHiveConfiguration.getJenaDbUri(), connectionProps);

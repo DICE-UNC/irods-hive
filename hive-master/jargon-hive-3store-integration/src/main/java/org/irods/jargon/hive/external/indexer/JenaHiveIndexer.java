@@ -3,7 +3,7 @@ package org.irods.jargon.hive.external.indexer;
 import org.irods.jargon.core.exception.JargonException;
 import org.irods.jargon.hive.external.utils.JenaHiveConfiguration;
 
-import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.ontology.OntModel;
 
 /**
  * Interface to a service that can execute a process to index iRODS and create a
@@ -37,6 +37,6 @@ public interface JenaHiveIndexer {
 	 *         closed by the caller.
 	 * @throws JargonException
 	 */
-	Model execute() throws JargonException;
+	OntModel execute() throws JargonException;
 
 }

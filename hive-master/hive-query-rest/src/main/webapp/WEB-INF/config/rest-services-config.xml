@@ -48,15 +48,13 @@
 	<!-- Converts JSON to POJO and vice versa -->
 	<bean id="jenaHiveConfiguration"
 		class="org.irods.jargon.hive.external.utils.JenaHiveConfiguration">
-		<property name="idropContext" value="http://centos6.irods.renci.org:8080/idrop-web2" />
-		<property name="jenaDbDriverClass" value="org.apache.derby.jdbc.EmbeddedDriver" />
-		<property name="jenaDbUser" value="test" />
-		<property name="jenaDbPassword" value="test" />
-		<property name="jenaDbType" value="Derby" />
-		<property name="jenaDbUri"
-			value="jdbc:derby:/var/hive/derby;create=false" />
+		<property name="idropContext" value="http://testdfc2.renci.org:8080/idrop-web2" />
+		<property name="jenaDbDriverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jenaDbUser" value="" />
+		<property name="jenaDbPassword" value="" />
+		<property name="jenaDbType" value="MySql" />
+		<property name="jenaDbUri" value="" />
 	</bean>
-	
 	
 	<!-- 
 	<bean id="jenaHiveConfiguration"

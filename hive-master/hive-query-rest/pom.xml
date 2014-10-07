@@ -40,6 +40,12 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.2</version>
+		</dependency>
+
 		<!-- Spring dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -102,6 +108,11 @@
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.31</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -121,45 +132,16 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
-			<!-- <plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>aspectj-maven-plugin</artifactId>
-				<version>1.2</version>
-				
-				<dependencies>
-					
-					<dependency>
-						<groupId>org.aspectj</groupId>
-						<artifactId>aspectjrt</artifactId>
-						<version>${aspectj.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.aspectj</groupId>
-						<artifactId>aspectjtools</artifactId>
-						<version>${aspectj.version}</version>
-					</dependency>
-
-				</dependencies>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-							<goal>test-compile</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<outxml>true</outxml>
-					<aspectLibraries>
-						<aspectLibrary>
-							<groupId>org.springframework</groupId>
-							<artifactId>spring-aspects</artifactId>
-						</aspectLibrary>
-					</aspectLibraries>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin> -->
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>aspectj-maven-plugin</artifactId> 
+				<version>1.2</version> <dependencies> <dependency> <groupId>org.aspectj</groupId> 
+				<artifactId>aspectjrt</artifactId> <version>${aspectj.version}</version> 
+				</dependency> <dependency> <groupId>org.aspectj</groupId> <artifactId>aspectjtools</artifactId> 
+				<version>${aspectj.version}</version> </dependency> </dependencies> <executions> 
+				<execution> <goals> <goal>compile</goal> <goal>test-compile</goal> </goals> 
+				</execution> </executions> <configuration> <outxml>true</outxml> <aspectLibraries> 
+				<aspectLibrary> <groupId>org.springframework</groupId> <artifactId>spring-aspects</artifactId> 
+				</aspectLibrary> </aspectLibraries> <source>${java.version}</source> <target>${java.version}</target> 
+				</configuration> </plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
