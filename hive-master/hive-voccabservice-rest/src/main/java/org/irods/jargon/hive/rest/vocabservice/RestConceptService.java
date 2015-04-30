@@ -143,7 +143,7 @@ public class RestConceptService {
 	
 			@PathParam("vocabulary") final String vocabulary)
 			throws JargonHiveException {
-		log.info("getConcepts()");
+		log.info("findConceptByUri(String, String)()");
 
 		if (vocabulary == null || vocabulary.isEmpty()) {
 			throw new IllegalArgumentException("null vocabulary");
@@ -161,6 +161,7 @@ public class RestConceptService {
 		String localPart = "#" + uriString.getFragment();
 		
 		ConceptProxy concept = vocabularyService.getConceptByURI(namespaceURI, localPart);
+		log.info("have concept:{}", concept);
 		Concept result = new Concept();
 		
 		result.setBroader(findConceptBroaderByUri(uri, vocabulary));
