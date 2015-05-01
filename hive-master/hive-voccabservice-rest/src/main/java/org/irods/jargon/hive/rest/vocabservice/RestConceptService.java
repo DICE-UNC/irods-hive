@@ -135,7 +135,7 @@ public class RestConceptService {
 	}
 
 	@GET
-	@Path("{vocabulary}/top")
+	@Path("{vocabulary}/concept")
 	@Produces({ "application/xml", "application/json" })
 	@Mapped(namespaceMap = { @XmlNsMap(namespace = "http://irods.org/hive", jsonName = "hive-vocabulary-service-rest") })
 
