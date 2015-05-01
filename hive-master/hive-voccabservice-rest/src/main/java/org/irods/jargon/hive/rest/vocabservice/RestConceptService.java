@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.inject.Named;
 import javax.ws.rs.GET;
@@ -160,20 +161,36 @@ public class RestConceptService {
 				+ uriString.getHost() + uriString.getPath();
 		String localPart = "#" + uriString.getFragment();
 		
-		ConceptProxy concept = vocabularyService.getConceptByURI(namespaceURI, localPart);
-		log.info("have concept:{}", concept);
-		Concept result = new Concept();
+		ConceptProxy conceptProxy = vocabularyService.getConceptByURI(namespaceURI, localPart);
+		Concept translatedComcept = buildConceptFromConceptProxy(vocabulary,
+				conceptProxy);
 		
-		result.setBroader(findConceptBroaderByUri(uri, vocabulary));
-		result.setNarrower(findConceptNarrowerByUri(uri, vocabulary));
-		result.setRelated(findConceptRelatedByUri(uri, vocabulary));
-		result.setAltLabel(concept.getAltLabel());
-		result.setLabel(concept.getPreLabel());
-		result.setUri(concept.getURI());
-		result.setVocabName(vocabulary);
+		return translatedComcept;
 		
-		return result;
+	}
+
+	private Concept buildConceptFromConceptProxy(final String vocabulary,
+			ConceptProxy conceptProxy) {
+		log.info("have concept:{}", conceptProxy);
+		Concept translatedComcept = new Concept();
 		
+		for (Entry<String, String> termUri : conceptProxy.getBroader().entrySet()) {
+			translatedComcept.getBroader().add(new ConceptListEntry(termUri.getKey(), termUri.getValue()));
+		}
+		
+		for (Entry<String, String> termUri : conceptProxy.getNarrower().entrySet()) {
+			translatedComcept.getNarrower().add(new ConceptListEntry(termUri.getKey(), termUri.getValue()));
+		}
+		
+		for (Entry<String, String> termUri : conceptProxy.getRelated().entrySet()) {
+			translatedComcept.getRelated().add(new ConceptListEntry(termUri.getKey(), termUri.getValue()));
+		}
+		
+		translatedComcept.setAltLabel(conceptProxy.getAltLabel());
+		translatedComcept.setLabel(conceptProxy.getPreLabel());
+		translatedComcept.setUri(conceptProxy.getURI());
+		translatedComcept.setVocabName(vocabulary);
+		return translatedComcept;
 	}
 
 	@GET
